@@ -61,6 +61,7 @@ do
 	   [ "$CDIMAGE_DVD" != 1 ] && [ "$DIST" != warty ] && \
 	   [ "$SPECIAL" != 1 ]; then
 		make list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
+
 		export OUT="$TMP_OUT/$ARCH"; mkdir -p $OUT
 		make bin-official_images
 		echo Generating MD5Sums of the images
