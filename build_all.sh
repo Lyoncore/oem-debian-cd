@@ -57,7 +57,9 @@ do
 	done
     FULL_SIZE=`echo "($DEFSRCSIZE - $size) * 1024 * 1024" | bc`
 	echo " ... building the images"
-	if [ "$ARCH" = "i386" ]; then
+	if [ "$ARCH" = "i386" ] && [ "$CDIMAGE_INSTALL" = 1 ] && \
+	   [ "$CDIMAGE_DVD" != 1 ] && [ "$DIST" != warty ] && \
+	   [ "$SPECIAL" != 1 ]; then
 		make list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		export OUT="$TMP_OUT/$ARCH"; mkdir -p $OUT
 		make bin-official_images
