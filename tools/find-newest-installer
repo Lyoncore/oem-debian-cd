@@ -1,0 +1,21 @@
+#! /bin/sh
+set -e
+
+# Find the newest installer build available for $DI_DIST/$ARCH.
+
+current_type=installer
+current_version=
+
+for candidate in installer daily-installer; do
+	dir="$MIRROR/dists/$DI_DIST/main/$candidate-$ARCH"
+	if [ ! -h "$dir/current" ] || \
+	   ! version="$(readlink "$dir/current")"; then
+		continue
+	fi
+	if dpkg --compare-versions "$current_version" lt "$version"; then
+		current_type="$candidate"
+		current_version="$version"
+	fi
+done
+
+echo "$current_type"
