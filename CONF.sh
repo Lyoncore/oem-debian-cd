@@ -45,12 +45,28 @@ unset MAXCDS            || true
 unset SPLASHPNG         || true
 unset OMIT_MANUAL	|| true
 
+if [ -z "$DIST" ]; then
+  DIST=hoary
+fi
+
 # The debian-cd dir
 # Where I am (hoping I'm in the debian-cd dir)
 export BASEDIR=`pwd`
 
-# Building sarge cd set ...
-export CODENAME=sarge
+case $DIST in
+  warty)
+    export CODENAME=warty
+    export CAPCODENAME='Warty Warthog'
+    export DEBVERSION=4.10
+    export OFFICIAL="Linux+ Edition"
+    ;;
+  hoary)
+    export CODENAME=hoary
+    export CAPCODENAME='Hoary Hedgehog'
+    export DEBVERSION=5.04
+    export OFFICIAL="Preview"
+    ;;
+esac
 
 # By default use Debian installer packages from $CODENAME
 if [ ! "$DI_CODENAME" ]
@@ -63,16 +79,6 @@ fi
 # for the daily d-i builds. If not set, uses the official d-i images from
 # the Debian mirror.
 #export DI_WWW_HOME=default
-
-# Version number, "2.2 r0", "2.2 r1" etc.
-export DEBVERSION="3.1"
-
-# Official or non-official set.
-# NOTE: THE "OFFICIAL" DESIGNATION IS ONLY ALLOWED FOR IMAGES AVAILABLE
-# ON THE OFFICIAL DEBIAN CD WEBSITE http://cdimage.debian.org
-export OFFICIAL="Unofficial"
-#export OFFICIAL="Official"
-#export OFFICIAL="Official Beta"
 
 # ... for arch  
 export ARCH=`dpkg --print-installation-architecture`
