@@ -13,31 +13,7 @@ for i in $BDIR/*.packages; do
 	dir=${i%%.packages}
 	DISK=${dir##$BDIR/}
 	dir=$BDIR/CD$DISK
-	cp -pdf $MIRROR/README* $dir/ 
 
-	if [ -f $dir/doc/dedication-$DEBMAINVER.txt ]; then
-		mv $dir/doc/dedication-$DEBMAINVER.txt $dir/dedication.txt
-		ln -s ../dedication.txt $dir/doc/dedication-$DEBMAINVER.txt
-	fi
-
-	rm -f $dir/README $dir/README.1ST \
-		$dir/README.CD-manufacture $dir/README.multicd \
-		$dir/README.pgp $dir/README.non-US ; \
-
-	cpp -traditional -undef -P -C -Wall -nostdinc -I$dir \
-	    -D OMIT_MANUAL="$OMIT_MANUAL" \
-	    -D OUTPUTtext $BASEDIR/data/$CODENAME/README.html.in \
-		| sed -e 's/%%.//g' > $dir/README.html
-
-	lynx -dump -force_html $dir/README.html | todos \
-	> $dir/README.txt ; \
-
-	cpp -traditional -undef -P -C -Wall -nostdinc -I $dir/ \
-	    -D OMIT_MANUAL="$OMIT_MANUAL" \
-	    -D OUTPUThtml $BASEDIR/data/$CODENAME/README.html.in \
-		| sed -e 's/%%.//g' > $dir/README.html
-
-	rm -f $dir/README.diskdefines
 	mkdir -p $dir/pics 
 	cp -p $BASEDIR/data/pics/*.* $dir/pics/ 
 
