@@ -29,7 +29,7 @@ die "Missing \$MIRROR variable" unless $ENV{MIRROR};
 die "Missing \$DI_CODENAME variable" unless $ENV{DI_CODENAME};
 
 foreach my $arch (@ARCHES) {
-	my $packagefile="$ENV{MIRROR}/dists/$ENV{DI_CODENAME}/main/debian-installer/binary-$arch/Packages";
+	my $packagefile="$ENV{MIRROR}/dists/$ENV{DI_CODENAME}/main/debian-installer/binary-$arch/Packages.gz";
 	unless (-f $packagefile) {
 		print "Missing package file for arch $arch.\n";
 		next;
