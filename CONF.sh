@@ -346,3 +346,5 @@ IMAGETARGET=bin-official_images
 # Set to 1 to save space by omitting the installation manual. 
 # If so the README will link to the manual on the web site.
 #export OMIT_MANUAL=1
+
+SKIPMIRRORCHECK=yes
