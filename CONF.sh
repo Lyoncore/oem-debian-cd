@@ -84,6 +84,11 @@ fi
 # the Debian mirror.
 #export DI_WWW_HOME=default
 
+# installer for properly uploaded debian-installer builds, daily-installer
+# for autobuilt dailies. The newest available version is selected
+# automatically; this is an override.
+#export DI_TYPE=installer
+
 # ... for arch  
 export ARCH=`dpkg --print-installation-architecture`
 
