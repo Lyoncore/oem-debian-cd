@@ -261,15 +261,7 @@ src-distclean:
 status: init $(ADIR)/status
 $(ADIR)/status:
 	@echo "Generating a fake status file for apt-get and apt-cache..."
-	$(Q)if [ "$(INSTALLER_CD)" = "1" -o "$(INSTALLER_CD)" = "2" ];then \
-		:> $(ADIR)/status ; \
-	else \
-		zcat $(MIRROR)/dists/$(CODENAME)/main/binary-$(ARCH)/Packages.gz | \
-		perl -000 -ne 's/^(Package: .*)$$/$$1\nStatus: install ok installed/m; \
-	               print if (/^Priority: (required|important|standard)/m or \
-		       /^Section: base/m);' \
-		> $(ADIR)/status ; \
-	fi
+	:> $(ADIR)/status
 	# Updating the apt database
 	$(Q)$(apt) update
 	#
