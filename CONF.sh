@@ -98,7 +98,7 @@ export ARCH=`dpkg --print-installation-architecture`
 #	      images, however. Also, if you are using an NFS partition for
 #	      some part of this, you must use this option.
 # Paths to the mirrors
-export MIRROR=/srv/cdimage.no-name-yet.com/ftp
+export MIRROR=$CDIMAGE_ROOT/ftp
 
 # Comment the following line if you don't have/want non-US
 #export NONUS=/ftp/debian-non-US
@@ -109,20 +109,20 @@ export MIRROR=/srv/cdimage.no-name-yet.com/ftp
 #export FORCENONUSONCD1=1
 
 # Path of the temporary directory
-export TDIR=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/tmp
+export TDIR=$CDIMAGE_ROOT/scratch/$PROJECT/tmp
 
 # Path where the images will be written
-export OUT=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/debian-cd
+export OUT=$CDIMAGE_ROOT/scratch/$PROJECT/debian-cd
 
 # Where we keep the temporary apt stuff.
 # This cannot reside on an NFS mount.
-export APTTMP=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/apt
+export APTTMP=$CDIMAGE_ROOT/scratch/$PROJECT/apt
 
 # Where extracted debootstrap scripts live
-export DEBOOTSTRAP=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/debootstrap
+export DEBOOTSTRAP=$CDIMAGE_ROOT/scratch/$PROJECT/debootstrap
 
 # Where live filesystem images live
-export LIVEIMAGES=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/live
+export LIVEIMAGES=$CDIMAGE_ROOT/scratch/$PROJECT/live
 
 # Do I want to have NONFREE merged in the CD set
 # export NONFREE=1
@@ -144,7 +144,7 @@ export RESTRICTED=1
 # If your local packages are not under $MIRROR, but somewhere else, 
 # you can uncomment this line and edit to to point to a directory
 # containing dists/$CODENAME/local/binary-$ARCH
-# export LOCALDEBS=/srv/cdimage.no-name-yet.com/local/packages
+# export LOCALDEBS=$CDIMAGE_ROOT/local/packages
 
 # If you want a <codename>-secured tree with a copy of the signed
 # Release.gpg and files listed by this Release file, then
@@ -154,8 +154,8 @@ export RESTRICTED=1
 case $DIST in
   warty) ;;
   *)
-    export SECRET_KEYRING=/srv/cdimage.no-name-yet.com/secret/dot-gnupg/secring.gpg
-    export PUBLIC_KEYRING=/srv/cdimage.no-name-yet.com/secret/dot-gnupg/pubring.gpg
+    export SECRET_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/secring.gpg
+    export PUBLIC_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/pubring.gpg
     export SIGNING_KEYID=FBB75451
     ;;
 esac
