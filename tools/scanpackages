@@ -270,7 +270,7 @@ if [ ! -d "$BDIR/indices" ]; then
     if [ -n "$LOCALDEBS" -a -d $LOCALDEBS/indices ]; then
          cp $LOCALDEBS/indices/* $BDIR/indices/
     fi
-    gunzip -f $BDIR/indices/*.gz
+    #gunzip -f $BDIR/indices/*.gz
     for SECT in $SECTIONS; do
 	touch $BDIR/indices/override.$CODENAME.$SECT
 	touch $BDIR/indices/override.$CODENAME.extra.$SECT
