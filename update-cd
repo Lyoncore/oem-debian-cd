@@ -14,7 +14,7 @@ set -e
 # Configuration goes here.
 
 # Where is your mirror?
-MIRROR=${MIRROR:-/srv/cdimage.no-name-yet.com/ftp}
+MIRROR=${MIRROR:-$CDIMAGE_ROOT/ftp}
 
 # If you have a non-US mirror, where is it? Leave blank if you don't have one.
 NONUS=${NONUS:-/mirror/debian-non-US}
