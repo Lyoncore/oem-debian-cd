@@ -7,6 +7,18 @@
 
 # Complete the "Release" file if it exists
 
+sign_release () {
+    if [ "$SECRET_KEYRING" ] && [ "$SIGNING_KEYID" ]; then
+	GPGKEYRINGOPTS="--secret-keyring $SECRET_KEYRING"
+	if [ "$PUBLIC_KEYRING" ]; then
+	    GPGKEYRINGOPTS="$GPGKEYRINGOPTS --keyring $PUBLIC_KEYRING"
+	fi
+	gpg $GPGKEYRINGOPTS --default-key "$SIGNING_KEYID" \
+	    --no-options --batch --no-tty --armour \
+	    --detach-sign < "$1" > "$1.gpg"
+    fi
+}
+
 if [ -e "dists/$CODENAME/Release" ]; then 
     # Add the MD5Sum field again
     echo "MD5Sum:" >> dists/$CODENAME/Release
@@ -32,6 +44,7 @@ if [ -e "dists/$CODENAME/Release" ]; then
 	m=`sha1sum < $rfile | cut -d" " -f1`; \
 	printf " %s %8d %s\n" $m $c $file; \
     done) >> dists/$CODENAME/Release
+    sign_release dists/$CODENAME/Release
 fi
 
 if [ -n "$NONUS" -a -e "dists/$CODENAME/non-US/Release" ]; then
@@ -59,6 +72,7 @@ if [ -n "$NONUS" -a -e "dists/$CODENAME/non-US/Release" ]; then
 	m=`sha1sum < $rfile | cut -d" " -f1`; \
 	printf " %s %8d %s\n" $m $c $file; \
     done) >> dists/$CODENAME/non-US/Release
+    sign_release dists/$CODENAME/non-US/Release
 fi
 
 # Create the $CODENAME-secured tree by copying files from the mirror

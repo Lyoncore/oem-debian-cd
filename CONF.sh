@@ -11,6 +11,9 @@ unset EXTRANONFREE      || true
 unset LOCAL             || true
 unset LOCALDEBS         || true
 unset SECURED           || true
+unset SECRET_KEYRING    || true
+unset PUBLIC_KEYRING    || true
+unset SIGNING_KEYID     || true
 unset SECURITY          || true
 unset BOOTDIR           || true
 unset BOOTDISKS         || true
@@ -137,6 +140,15 @@ export CONTRIB=1
 # Release.gpg and files listed by this Release file, then
 # uncomment this line
 # export SECURED=1
+
+case $DIST in
+  warty) ;;
+  *)
+    export SECRET_KEYRING=/srv/cdimage.no-name-yet.com/secret/dot-gnupg/secring.gpg
+    export PUBLIC_KEYRING=/srv/cdimage.no-name-yet.com/secret/dot-gnupg/pubring.gpg
+    export SIGNING_KEYID=FBB75451
+    ;;
+esac
 
 # Where to find the security patches.  This directory should be the
 # top directory of a security.debian.org mirror.
