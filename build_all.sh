@@ -84,7 +84,8 @@ do
 				make installtools
 				make bin-images
 			else
-				exit 1
+				# exit 1
+				continue
 			fi
 		fi
 		echo Generating MD5Sums of the images
