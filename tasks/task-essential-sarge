@@ -8,7 +8,7 @@ grep-dctrl -s Key -n -e '.*' /usr/share/tasksel/debian-tasks.desc | sed -e 's? *
  * better, but hopefully this will never be needed since the goal of that
  * file is to have the more important packages of each task.
  *
- * Last updated: $Date: 2004/10/08 23:42:44 $
+ * Last updated: $Date: 2004/11/17 22:45:18 $
  */
 
 apache2-mpm-prefork
@@ -22,7 +22,6 @@ cupsys-client
 exim4
 gnome-desktop-environment
 jfbterm
-kde
 language-env
 locales
 manpages-de
@@ -46,3 +45,11 @@ xfonts-thai
 xiterm+thai
 zhcon
 t1-cyrillic
+kde-core
+kdeadmin
+kdeartwork
+kdegraphics
+kdemultimedia
+kdenetwork
+kdeutils
+kdepim
