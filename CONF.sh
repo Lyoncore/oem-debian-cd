@@ -123,7 +123,7 @@ export LIVEIMAGES=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/live
 # export NONFREE=1
 
 # Do I want to have CONTRIB merged in the CD set
-export CONTRIB=1
+#export CONTRIB=1
 
 # Do I want to have NONFREE on a separate CD (the last CD of the CD set)
 # WARNING: Don't use NONFREE and EXTRANONFREE at the same time !
