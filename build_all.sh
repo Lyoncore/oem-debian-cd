@@ -35,7 +35,7 @@ do
 	    . $BASEDIR/tools/boot/$CODENAME/boot-$ARCH.calc
 	fi
 	SIZE_ARGS=''
-	for CD in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+	for CD in 1; do
 		size=`eval echo '$'"BOOT_SIZE_${CD}"`
 		[ "$size" = "" ] && size=0
 		[ $CD = "1" ] && size=$(($size + $disks))
