@@ -215,13 +215,15 @@ fi
 # We also exclude some source packages
 #export SRCEXCLUDE="$BASEDIR"/tasks/exclude-src-potato
 
+export NODEPENDS=1
+
 # Set this if the recommended packages should be skipped when adding 
 # package on the CD.  The default is 'false'.
 export NORECOMMENDS=1
 
 # Set this if the suggested packages should be skipped when adding 
 # package on the CD.  The default is 'true'.
-#export NOSUGGESTS=1
+export NOSUGGESTS=1
 
 # Produce jigdo files:
 # 0/unset = Don't do jigdo at all, produce only the full iso image.
