@@ -90,7 +90,7 @@ export ARCH=`dpkg --print-installation-architecture`
 #	      images, however. Also, if you are using an NFS partition for
 #	      some part of this, you must use this option.
 # Paths to the mirrors
-export MIRROR=/ftp/debian
+export MIRROR=/srv/cdimage.no-name-yet.com/ftp
 
 # Comment the following line if you don't have/want non-US
 #export NONUS=/ftp/debian-non-US
@@ -101,14 +101,14 @@ export MIRROR=/ftp/debian
 #export FORCENONUSONCD1=1
 
 # Path of the temporary directory
-export TDIR=/ftp/tmp
+export TDIR=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/tmp
 
 # Path where the images will be written
-export OUT=/rack/debian-cd
+export OUT=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/debian-cd
 
 # Where we keep the temporary apt stuff.
 # This cannot reside on an NFS mount.
-export APTTMP=/ftp/tmp/apt
+export APTTMP=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/apt
 
 # Do I want to have NONFREE merged in the CD set
 # export NONFREE=1
@@ -128,7 +128,7 @@ export CONTRIB=1
 # If your local packages are not under $MIRROR, but somewhere else, 
 # you can uncomment this line and edit to to point to a directory
 # containing dists/$CODENAME/local/binary-$ARCH
-# export LOCALDEBS=/home/joey/debian/va/debian
+# export LOCALDEBS=/srv/cdimage.no-name-yet.com/local/packages
 
 # If you want a <codename>-secured tree with a copy of the signed
 # Release.gpg and files listed by this Release file, then
