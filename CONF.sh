@@ -116,6 +116,9 @@ export APTTMP=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/apt
 # Where extracted debootstrap scripts live
 export DEBOOTSTRAP=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/debootstrap
 
+# Where live filesystem images live
+export LIVEIMAGES=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/live
+
 # Do I want to have NONFREE merged in the CD set
 # export NONFREE=1
 
