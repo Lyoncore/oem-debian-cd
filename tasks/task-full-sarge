@@ -13,7 +13,7 @@ rm dumpavail
  * The file task.list lists the tasks in the order they are to 
  * be included on the CDs.
  *
- * Last update: $Date: 2004/08/12 03:57:24 $
+ * Last update: $Date: 2004/08/19 17:01:54 $
  *
  */
 
@@ -22,6 +22,7 @@ fortune-mod
 gdm
 gimp-help-sv
 gnome
+xscreensaver
 gnome-desktop-environment
 hspell-gui
 imhangul
