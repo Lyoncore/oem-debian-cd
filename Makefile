@@ -315,7 +315,7 @@ deletelist: ok
 list: bin-list src-list
 
 # Generate the listing of binary packages
-bin-list: ok apt-update genlist $(BDIR)/1.packages
+bin-list: ok apt-update bin-genlist $(BDIR)/1.packages
 $(BDIR)/1.packages:
 	@echo "Dispatching the packages on all the CDs ..."
 	$(Q)$(list2cds) $(BDIR)/list $(SIZELIMIT)
@@ -336,7 +336,7 @@ endif
 
 # Generate the listing for sources CDs corresponding to the packages included
 # in the binary set
-src-list: bin-list $(SDIR)/1.sources
+src-list: ok apt-update src-genlist $(SDIR)/1.sources
 $(SDIR)/1.sources:
 	@echo "Dispatching the sources on all the CDs ..."
 	$(Q)$(list2src) $(SDIR)/list $(SIZELIMIT)
@@ -357,7 +357,7 @@ endif
 
 # Generate the complete listing of packages from the task
 # Build a nice list without doubles and without spaces
-genlist: ok $(BDIR)/list $(BDIR)/list.exclude
+bin-genlist: ok $(BDIR)/list $(BDIR)/list.exclude
 $(BDIR)/list: $(BDIR)/rawlist
 	@echo "Generating the complete list of packages to be included ..."
 	$(Q)perl -ne 'chomp; next if /^\s*$$/; \
@@ -403,6 +403,27 @@ $(BDIR)/rawlist-exclude:
 	else \
 		echo > $(BDIR)/rawlist-exclude; \
 	fi
+
+# Generate the complete listing of sources from the task
+# Build a nice list without doubles and without spaces
+# TODO: no exclude support; does it matter?
+src-genlist: ok $(SDIR)/list
+$(SDIR)/list: $(SDIR)/rawlist
+	@echo "Generating the complete list of packages to be included ..."
+	$(Q)perl -ne 'chomp; next if /^\s*$$/; \
+	          print "$$_\n" if not $$seen{$$_}; $$seen{$$_}++;' \
+		  $(SDIR)/rawlist \
+		  > $(SDIR)/list
+
+$(SDIR)/rawlist:
+	$(Q)($(foreach arch,$(ARCHES), \
+	perl -npe 's/\@ARCH\@/$(arch)/g' $(TASK) | \
+	 cpp -nostdinc -nostdinc++ -P -undef -D ARCH=$(arch) -D ARCH_$(subst -,_,$(arch)) \
+	     -U $(arch) -U i386 -U linux -U unix \
+	     -DFORCENONUSONCD1=$(forcenonusoncd1) \
+	     -DCDIMAGE_INSTALL=$(CDIMAGE_INSTALL) -DCDIMAGE_LIVE=$(CDIMAGE_LIVE) -DCDIMAGE_DVD=$(CDIMAGE_DVD) \
+	     -I $(BASEDIR)/tasks -I $(SDIR) - -; \
+	)) | sort | uniq > $(SDIR)/rawlist
 
 ## DIRECTORIES && PACKAGES && INFOS ##
 
