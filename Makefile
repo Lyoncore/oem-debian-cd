@@ -382,7 +382,7 @@ ifdef FORCENONUSONCD1
 endif
 	$(Q)if [ -x "/usr/sbin/debootstrap" -a _$(INSTALLER_CD) != _1 ]; then \
 		/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp dummy $(DEBOOTSTRAP)/$(CODENAME)-$(ARCH) \
-		| tr ' ' '\n' >>$(BDIR)/rawlist; \
+		| tr ' ' '\n' >>$(BDIR)/rawlist.debootstrap; \
 	fi
 	$(Q)perl -npe 's/\@ARCH\@/$(ARCH)/g' $(TASK) | \
 	 cpp -nostdinc -nostdinc++ -P -undef -D ARCH=$(ARCH) -D ARCH_$(subst -,_,$(ARCH)) \
