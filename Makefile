@@ -24,27 +24,27 @@ ifndef CAPCODENAME
 CAPCODENAME:=$(shell perl -e "print ucfirst("$(CODENAME)")")
 endif
 ifndef BINDISKINFO
-export BINDISKINFO="Debian GNU/Linux $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(ARCH) Binary-$$num ($$DATE)"
+export BINDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(ARCH) Binary-$$num ($$DATE)"
 endif
 ifndef SRCDISKINFO
-export SRCDISKINFO="Debian GNU/Linux $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) Source-$$num ($$DATE)"
+export SRCDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) Source-$$num ($$DATE)"
 endif
 # ND=No-Date versions for README
 ifndef BINDISKINFOND
-export BINDISKINFOND="Debian GNU/Linux $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(ARCH) Binary-$$num"
+export BINDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(ARCH) Binary-$$num"
 endif
 ifndef SRCDISKINFOND
-export SRCDISKINFOND="Debian GNU/Linux $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) Source-$$num"
+export SRCDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) Source-$$num"
 endif
 ifndef BINVOLID
 ifeq ($(ARCH),powerpc)
-BINVOLID="Debian $(DEBVERSION) ppc Bin-$$num"
+BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc Bin-$$num"
 else
-BINVOLID="Debian $(DEBVERSION) $(ARCH) Bin-$$num"
+BINVOLID="$(CAPPROJECT) $(DEBVERSION) $(ARCH) Bin-$$num"
 endif
 endif
 ifndef SRCVOLID
-SRCVOLID="Debian $(DEBVERSION) Src-$$num"
+SRCVOLID="$(CAPPROJECT) $(DEBVERSION) Src-$$num"
 endif
 ifndef MKISOFS
 export MKISOFS=/usr/bin/mkisofs
