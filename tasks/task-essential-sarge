@@ -8,7 +8,7 @@ grep-dctrl -s Key -n -e '.*' /usr/share/tasksel/debian-tasks.desc | sed -e 's? *
  * better, but hopefully this will never be needed since the goal of that
  * file is to have the more important packages of each task.
  *
- * Last updated: $Date: 2004/08/12 03:57:24 $
+ * Last updated: $Date: 2004/10/08 23:42:44 $
  */
 
 apache2-mpm-prefork
@@ -45,3 +45,4 @@ xcin
 xfonts-thai
 xiterm+thai
 zhcon
+t1-cyrillic
