@@ -227,11 +227,28 @@ export NORECOMMENDS=1
 #     since they need the actual .iso to make it bootable. For these archs,
 #     the temp-iso will be generated, but deleted again immediately after the
 #     jigdo stuff is made; needs temporary space as big as the biggest image.
-#export DOJIGDO=2
+if [ "$CDIMAGE_DVD" = 1 ]; then
+  # disabled for now, takes ages
+  export DOJIGDO=0
+elif [ "$CDIMAGE_INSTALL" != 1 ]; then
+  # inappropriate
+  export DOJIGDO=0
+elif [ "$PROJECT" != ubuntu ]; then
+  # don't bother just yet
+  export DOJIGDO=0
+elif [ "$DIST" = warty ]; then
+  # only custom builds now
+  export DOJIGDO=0
+elif [ "$SPECIAL" = 1 ]; then
+  # special custom build
+  export DOJIGDO=0
+else
+  export DOJIGDO=1
+fi
 #
 # jigdo-file command & options
 # Note: building the cache takes hours, so keep it around for the next run
-#export JIGDOCMD="/usr/local/bin/jigdo-file --cache=$HOME/jigdo-cache.db"
+export JIGDOCMD="jigdo-file --cache=$TDIR/jigdo-cache.db"
 #
 # HTTP/FTP URL for directory where you intend to make the templates
 # available. You should not need to change this; the default value ""
@@ -252,7 +269,10 @@ export NORECOMMENDS=1
 # Space-separated list of label->URL mappings for "jigdo fallback
 # server(s)" to add to .jigdo file. If unset, no fallback URL is
 # added, which may cause problems - see README.
-#export JIGDOFALLBACKURLS="Debian=http://myserver/snapshot/Debian/ Non-US=http://myserver/snapshot/Non-US/"
+export JIGDOFALLBACKURLS="Debian=http://archive.ubuntu.com/ubuntu/"
+# commented out until the snapshot archives actually exist to avoid
+# silly server load
+#export JIGDOFALLBACKURLS="Debian=http://archive.ubuntu.com/cdimage/jigit/$CODENAME/snapshot/"
 #
 # Space-separated list of "include URLs" to add to the .jigdo file. 
 # The included files are used to provide an up-to-date list of Debian
