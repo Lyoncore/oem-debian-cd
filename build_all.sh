@@ -7,7 +7,11 @@
 rm -rf "$OUT"
 TMP_OUT=$OUT
 
-for ARCH in i386 alpha arm hppa ia64 m68k mips mipsel powerpc s390 sparc #amd64
+if [ -z "$ARCHES" ]; then
+	export ARCHES='amd64 i386 ia64 powerpc'
+fi
+
+for ARCH in $ARCHES
 do
 	export ARCH
 	echo "Now we're going to build CD for $ARCH !"
