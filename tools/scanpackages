@@ -145,30 +145,35 @@ for i in `cd dists; echo *; cd ..`; do
 done
 # Creating the file lists
 for SECT in $SECTIONS; do
-    touch $PREFIX.filelist_$SECT
+    if [ "$SECT" = local ]; then
+	OUTSECT=main
+    else
+	OUTSECT="$SECT"
+    fi
+    touch $PREFIX.filelist_$OUTSECT
     if [ -d "pool/$SECT" ]; then
-	find pool/$SECT >>$PREFIX.filelist_$SECT
+	find pool/$SECT >>$PREFIX.filelist_$OUTSECT
     fi
     if [ -d "pool/unstable/$SECT" ]; then
-	find pool/unstable/$SECT >>$PREFIX.filelist_$SECT
+	find pool/unstable/$SECT >>$PREFIX.filelist_$OUTSECT
     fi
     if [ -n "$SECURITY" -a -d "pool/updates/$SECT" ]; then
-	find pool/updates/$SECT >>$PREFIX.filelist_$SECT
+	find pool/updates/$SECT >>$PREFIX.filelist_$OUTSECT
     fi
     for DIST in $DISTS; do
 	if [ -d "dists/$DIST/$SECT/binary-$ARCH" ]; then
-	    find dists/$DIST/$SECT/binary-$ARCH >>$PREFIX.filelist_$SECT
+	    find dists/$DIST/$SECT/binary-$ARCH >>$PREFIX.filelist_$OUTSECT
 	fi
     done
     if [ -n "$NONUS" ]; then
-	touch $PREFIX.filelist_non-US_$SECT
+	touch $PREFIX.filelist_non-US_$OUTSECT
 	if [ -d "pool/non-US/$SECT" ]; then
-	    find pool/non-US/$SECT >>$PREFIX.filelist_non-US_$SECT
+	    find pool/non-US/$SECT >>$PREFIX.filelist_non-US_$OUTSECT
 	fi
 	for DIST in $DISTSNONUS; do
 	    if [ -d "dists/$DIST/non-US/$SECT/binary-$ARCH" ]; then
 		find dists/$DIST/non-US/$SECT/binary-$ARCH \
-		    >>$PREFIX.filelist_non-US_$SECT
+		    >>$PREFIX.filelist_non-US_$OUTSECT
 	    fi
 	done
     fi

@@ -554,9 +554,6 @@ $(BDIR)/packages-stamp:
 	    fi; \
 	    echo 'main' > $(BDIR)/CD$$DISK/.disk/base_components; \
 	    echo 'restricted' >> $(BDIR)/CD$$DISK/.disk/base_components; \
-	    if [ -n "$(LOCAL)" ]; then \
-	        echo 'local' >> $(BDIR)/CD$$DISK/.disk/base_components; \
-	    fi; \
 	    if [ -n "$(UDEB_INCLUDE)" ] ; then \
 		if [ -r "$(UDEB_INCLUDE)" ] ; then \
 		    cp -af "$(UDEB_INCLUDE)" \
