@@ -1,0 +1,20 @@
+/*
+ * This file is used to build a complete set of Hoary Hedgehog CDs
+ */
+
+/* Packages that should really be on CD1 */
+#if (CDIMAGE_INSTALL == 1)
+#include <ubuntu/hoary/installer>
+#endif
+#if (CDIMAGE_LIVE == 1)
+#include <ubuntu/hoary/casper>
+#endif
+
+#if (CDIMAGE_INSTALL == 1)
+#include <ubuntu/hoary/base>
+#include <ubuntu/hoary/desktop>
+#include <ubuntu/hoary/ship>
+#if (CDIMAGE_DVD == 1)
+#include <ubuntu/hoary/supported>
+#endif
+#endif
