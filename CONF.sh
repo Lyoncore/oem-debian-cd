@@ -21,6 +21,7 @@ unset MKISOFS_OPTS      || true
 unset ISOLINUX          || true
 unset EXCLUDE           || true
 unset SRCEXCLUDE        || true
+unset NODEPENDS         || true
 unset NORECOMMENDS      || true
 unset NOSUGGESTS        || true
 unset DOJIGDO           || true

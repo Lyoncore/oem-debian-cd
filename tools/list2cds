@@ -21,6 +21,7 @@ my $forcenonusoncd1 = $ENV{'FORCENONUSONCD1'} || 0;
 my $local = $ENV{'LOCAL'} || 0;
 my $complete = $ENV{'COMPLETE'} || 0;
 my $exclude = "$list.exclude";
+my $nodepends = $ENV{'NODEPENDS'} || 0;
 my $norecommends = $ENV{'NORECOMMENDS'} || 0;
 my $nosuggests = $ENV{'NOSUGGESTS'} || 1;
 my $maxcds = $ENV{'MAXCDS'} || 0;
@@ -545,6 +546,7 @@ sub add_missing {
 	my $new = shift;
 	my @backup = @{$list};
 	my $ok = 1;
+	return $ok if $nodepends;
 	
 	# Check all dependencies 
 	foreach (@{$new}) {
