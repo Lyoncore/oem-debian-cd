@@ -869,7 +869,12 @@ $(TDIR)/jigdofilelist: $(MIRROR)/dists/$(CODENAME)/main/binary-$(ARCH)/Packages.
 		     $(MIRROR)//dists/$(CODENAME) \
 		     $(MIRROR)//doc $(MIRROR)//indices \
 		     $(MIRROR)//pool $(MIRROR)//project $(MIRROR)//tools \
-		     -type f \
+		     '(' -type d -a -name 'binary-*' -a ! -name 'binary-$(ARCH)' ')' -prune -o \
+		     '(' -type d -a -name 'installer-*' -a ! -name 'installer-$(ARCH)' ')' -prune -o \
+		     '(' -type d -a -name 'daily-installer-*' -a ! -name 'daily-installer-$(ARCH)' ')' -prune -o \
+		     '(' -type f -a -name 'Contents-*.gz' -a ! -name 'Contents-$(ARCH).gz' ')' -o \
+		     '(' -type f -a -name '*.*deb' -a ! '(' -name '*_$(ARCH).*deb' -o -name '*_all.*deb' ')' ')' -o \
+		     -type f -print \
 		| egrep -v '/Contents|/README|INDEX$$|/Maintainers|/Release$$|/debian-keyring\.tar\.gz$$|/ls-lR|//doc/[^/]+/?[^/]*\.(txt|html)$$' \
 		> $(TDIR)/jigdofilelist; \
 		if [ -n "$(NONUS)" ]; then \
