@@ -1,0 +1,19 @@
+#! /bin/sh -e
+
+BDIR=$TDIR/$CODENAME-$ARCH
+
+mkdir -p "$BDIR/CD1/casper"
+ln "$LIVEIMAGES/$ARCH.cloop" "$BDIR/CD1/casper/filesystem.cloop"
+ln "$LIVEIMAGES/$ARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
+
+if [ -f "$LIVEIMAGES/$ARCH.winfoss.tgz" ]; then
+	tar -C "$BDIR/CD1" -xzf "$LIVEIMAGES/$ARCH.winfoss.tgz"
+	if [ -e "$BDIR/CD1/programs/firefox/Firefox Setup 1.0.exe" ]; then
+		mv "$BDIR/CD1/programs/firefox/Firefox Setup 1.0.exe" \
+			"$BDIR/CD1/programs/firefox/FirefoxSetup1.0.exe"
+	fi
+	if [ -e "$BDIR/CD1/programs/thunderbird/Thunderbird Setup 1.0.exe" ]; then
+		mv "$BDIR/CD1/programs/thunderbird/Thunderbird Setup 1.0.exe" \
+			"$BDIR/CD1/programs/thunderbird/ThunderbirdSetup-1.0.exe"
+	fi
+fi
