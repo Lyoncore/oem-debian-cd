@@ -46,7 +46,6 @@ unset BASE_EXCLUDE      || true
 unset INSTALLER_CD      || true
 unset DI_CODENAME       || true
 unset MAXCDS            || true
-unset SPLASHPNG         || true
 unset OMIT_MANUAL	|| true
 
 if [ -z "$DIST" ]; then
@@ -302,7 +301,9 @@ export PUBLISH_PATH="/home/jigdo-area/"
 #export MAXCDS=1
 
 # If set, overrides the boot picture used.
-#export SPLASHPNG="$BASEDIR/data/$CODENAME/splash-img.png"
+if [ -z "$SPLASHRLE" ]; then
+	export SPLASHRLE="$BASEDIR/data/$DI_CODENAME/splash.rle"
+fi
 
 # Used by build.sh to determine what to build, this is the name of a target
 # in the Makefile. Use bin-official_images to build only binary CDs. The
