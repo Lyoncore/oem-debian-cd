@@ -1028,7 +1028,7 @@ tasks/popularity-contest-$(CODENAME):
 		echo '   Popularity Contest results' ; \
 		echo '   See the README for details on updating.' ; \
 		echo '' ; \
-		echo '   Last update: $$Date: 2004/06/29 22:41:38 $$' ; \
+		echo '   Last update: $$''Date''$$' ; \
 		echo '*/' ; \
 		echo '' ; \
 	) > $@
