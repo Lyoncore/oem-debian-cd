@@ -29,7 +29,7 @@ echo $JIGDOCMD make-template \
   --image="$image" --jigdo="$jigdo" --template="$template" \
   --merge="$merge" \
   --no-servers-section \
-  --report=noprogress \
+  --report=quiet \
   $opts \
   "$matchexec"
 
@@ -39,6 +39,6 @@ $JIGDOCMD make-template \
   --image="$image" --jigdo="$jigdo" --template="$template" \
   --merge="$merge" \
   --no-servers-section \
-  --report=noprogress \
+  --report=quiet \
   $opts \
   "$matchexec"
