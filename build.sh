@@ -57,6 +57,8 @@ done
 FULL_SIZE=`echo "($DEFSRCSIZE - $size) * 1024 * 1024" | bc`
 make list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 echo " ... building the images"
+export OUT="$OUT/$ARCH"
+mkdir -p "$OUT"
 if [ -z "$IMAGETARGET" ] ; then
     IMAGETARGET="official_images"
 fi
