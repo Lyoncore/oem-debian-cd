@@ -1,3 +1,0 @@
-# The language support packages are broken on ia64. (Is this still true now
-# that we generate tasks from germinate output?)
-base-config	base-config/install-language-support	boolean false
