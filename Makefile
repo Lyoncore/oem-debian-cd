@@ -125,6 +125,18 @@ ifndef CDIMAGE_DVD
 export CDIMAGE_DVD = 0
 endif
 
+# CDBASE = $(CODENAME)-$(ARCH)-$(1)
+ifeq ($(CDIMAGE_DVD),1)
+CDBASE = $(CODENAME)-dvd-$(ARCH)
+else
+ifeq ($(CDIMAGE_INSTALL),1)
+CDBASE = $(CODENAME)-install-$(ARCH)
+else
+CDBASE = $(CODENAME)-live-$(ARCH)
+endif
+endif
+CDSRCBASE = $(CODENAME)-src-$(1)
+
 ## DEBUG STUFF ##
 
 PrintVars:
@@ -914,40 +926,40 @@ bin-images: ok bin-md5list $(OUT) $(TDIR)/jigdofilelist
 		cd $$dir/..; \
 		opts=`cat $(BDIR)/$$n.mkisofs_opts`; \
 		volid=`cat $(BDIR)/$$n.volid`; \
-		rm -f $(OUT)/$(CODENAME)-$(ARCH)-$$n.raw; \
+		rm -f $(OUT)/$(call CDBASE,$$n).raw; \
 		if [ "$(DOJIGDO)" != "0" ]; then \
 			$(JIGDOSCRIPT) \
-				"debian-`echo $(DEBVERSION) | sed -e 's/[. ]//g'`-$(ARCH)-binary-$$n.iso" \
-				"`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|$(ARCH)|g'`$(CODENAME)-$(ARCH)-$$n.template" \
+				"$(call CDBASE,$$n).iso" \
+				"`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|$(ARCH)|g'`$(call CDBASE,$$n).template" \
 				$(BINDISKINFOND) \
-				> $(TDIR)/$(CODENAME)-$(ARCH).jigdo; \
+				> $(TDIR)/$(call CDBASE,$$n).jigdo; \
 		fi; \
 		if [ "$(DOJIGDO)" != "2" -o -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
 			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
-			  -o $(OUT)/$(CODENAME)-$(ARCH)-$$n.raw $$opts CD$$n ; \
+			  -o $(OUT)/$(call CDBASE,$$n).raw $$opts CD$$n ; \
 			if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
 				$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) $$n $$dir \
-				 $(OUT)/$(CODENAME)-$(ARCH)-$$n.raw; \
+				 $(OUT)/$(call CDBASE,$$n).raw; \
 			fi; \
 			if [ "$(DOJIGDO)" != "0" ]; then \
-				$(BASEDIR)/tools/jigdo_create "$(OUT)/$(CODENAME)-$(ARCH)-$$n.raw" \
-				  "$(OUT)/$(CODENAME)-$(ARCH)-$$n.jigdo" \
-				  "$(OUT)/$(CODENAME)-$(ARCH)-$$n.template" \
-				  "$(TDIR)/$(CODENAME)-$(ARCH).jigdo"; \
+				$(BASEDIR)/tools/jigdo_create "$(OUT)/$(call CDBASE,$$n).raw" \
+				  "$(OUT)/$(call CDBASE,$$n).jigdo" \
+				  "$(OUT)/$(call CDBASE,$$n).template" \
+				  "$(TDIR)/$(call CDBASE,$$n).jigdo"; \
 			fi; \
 		else \
 			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  $$opts CD$$n \
 			| $(BASEDIR)/tools/jigdo_create "-" \
-				  "$(OUT)/$(CODENAME)-$(ARCH)-$$n.jigdo" \
-				  "$(OUT)/$(CODENAME)-$(ARCH)-$$n.template" \
-				  "$(TDIR)/$(CODENAME)-$(ARCH).jigdo"; \
+				  "$(OUT)/$(call CDBASE,$$n).jigdo" \
+				  "$(OUT)/$(call CDBASE,$$n).template" \
+				  "$(TDIR)/$(call CDBASE,$$n).jigdo"; \
 		fi; \
 		if [ "$(DOJIGDO)" = "2" ]; then \
-			rm -f $(OUT)/$(CODENAME)-$(ARCH)-$$n.raw; \
+			rm -f $(OUT)/$(call CDBASE,$$n).raw; \
 		fi; \
 	done
-	rm -f "$(TDIR)/$(CODENAME)-$(ARCH).jigdo"
+	rm -f "$(TDIR)/$(call CDBASE,$$n).jigdo"
 src-images: ok src-md5list $(OUT) $(TDIR)/jigdofilelist
 	@echo "Generating the source iso images ..."
 	$(Q)set -e; \
@@ -959,30 +971,30 @@ src-images: ok src-md5list $(OUT) $(TDIR)/jigdofilelist
 		cd $$dir/..; \
 		opts=`cat $(SDIR)/$$n.mkisofs_opts`; \
 		volid=`cat $(SDIR)/$$n.volid`; \
-		rm -f $(OUT)/$(CODENAME)-src-$$n.raw; \
+		rm -f $(OUT)/$(call CDSRCBASE,$$n).raw; \
 		if [ "$(DOJIGDO)" != "0" ]; then \
 			$(JIGDOSCRIPT) \
-				"debian-`echo $(DEBVERSION) | sed -e 's/[. ]//g'`-source-$$n.iso" \
-				"`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|$(ARCH)|g'`$(CODENAME)-src-$$n.template" \
+				"$(call CDSRCBASE,$$n).iso" \
+				"`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|$(ARCH)|g'`$(call CDSRCBASE,$$n).template" \
 				$(SRCDISKINFOND) \
-				> $(TDIR)/$(CODENAME)-src.jigdo; \
+				> $(TDIR)/$(call CDSRCBASE,$$n).jigdo; \
 		fi; \
 		if [ "$(DOJIGDO)" != "2" ]; then \
 			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
-			  -o $(OUT)/$(CODENAME)-src-$$n.raw $$opts CD$$n ; \
+			  -o $(OUT)/$(call CDSRCBASE,$$n).raw $$opts CD$$n ; \
 			if [ "$(DOJIGDO)" != "0" ]; then \
-				$(BASEDIR)/tools/jigdo_create "$(OUT)/$(CODENAME)-src-$$n.raw" \
-				  "$(OUT)/$(CODENAME)-src-$$n.jigdo" \
-				  "$(OUT)/$(CODENAME)-src-$$n.template" \
-				  "$(TDIR)/$(CODENAME)-src.jigdo"; \
+				$(BASEDIR)/tools/jigdo_create "$(OUT)/$(call CDSRCBASE,$$n).raw" \
+				  "$(OUT)/$(call CDSRCBASE,$$n).jigdo" \
+				  "$(OUT)/$(call CDSRCBASE,$$n).template" \
+				  "$(TDIR)/$(call CDSRCBASE,$$n).jigdo"; \
 			fi; \
 		else \
 			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  $$opts CD$$n \
 			| $(BASEDIR)/tools/jigdo_create "-" \
-				  "$(OUT)/$(CODENAME)-src-$$n.jigdo" \
-				  "$(OUT)/$(CODENAME)-src-$$n.template" \
-				  "$(TDIR)/$(CODENAME)-src.jigdo"; \
+				  "$(OUT)/$(call CDSRCBASE,$$n).jigdo" \
+				  "$(OUT)/$(call CDSRCBASE,$$n).template" \
+				  "$(TDIR)/$(call CDSRCBASE,$$n).jigdo"; \
 		fi; \
 	done
 	rm -f "$(TDIR)/$(CODENAME)-src.jigdo"
@@ -1001,21 +1013,21 @@ bin-image: ok bin-md5list $(OUT)
 	@echo "Generating the binary iso image n°$(CD) ..."
 	@test -n "$(CD)" || (echo "Give me a CD=<num> parameter !" && false)
 	set -e; cd $(BDIR); opts=`cat $(CD).mkisofs_opts`; \
-	 volid=`cat $(CD).volid`; rm -f $(OUT)/$(CODENAME)-$(ARCH)-$(CD).raw; \
+	 volid=`cat $(CD).volid`; rm -f $(OUT)/$(call CDBASE,$(CD)).raw; \
 	 $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
-	  -o $(OUT)/$(CODENAME)-$(ARCH)-$(CD).raw $$opts CD$(CD); \
+	  -o $(OUT)/$(call CDBASE,$(CD)).raw $$opts CD$(CD); \
          if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
                 $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) $(CD) $(BDIR)/CD$(CD) \
-                 $(OUT)/$(CODENAME)-$(ARCH)-$(CD).raw; \
+                 $(OUT)/$(call CDBASE,$(CD)).raw; \
          fi
 
 src-image: ok src-md5list $(OUT)
 	@echo "Generating the source iso image n°$(CD) ..."
 	@test -n "$(CD)" || (echo "Give me a CD=<num> parameter !" && false)
 	set -e; cd $(SDIR); opts=`cat $(CD).mkisofs_opts`; \
-	 volid=`cat $(CD).volid`; rm -f $(OUT)/$(CODENAME)-src-$(CD).raw; \
+	 volid=`cat $(CD).volid`; rm -f $(OUT)/$(call CDSRCBASE,$(CD)).raw; \
          $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
-	  -o $(OUT)/$(CODENAME)-src-$(CD).raw $$opts CD$(CD)
+	  -o $(OUT)/$(call CDSRCBASE,$(CD)).raw $$opts CD$(CD)
 
 
 #Calculate the md5sums for the images (if available), or get from templates
