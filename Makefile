@@ -661,7 +661,7 @@ need-complete-mirror:
 	# now a no-op
 
 # Add everything that is needed to make the CDs bootable
-bootable: ok disks installtools $(BDIR)/bootable-stamp
+bootable: ok disks installtools packages $(BDIR)/bootable-stamp
 $(BDIR)/bootable-stamp:
 	@echo "Making the binary CDs bootable ..."
 	$(Q)set -e; \
