@@ -1,0 +1,10 @@
+/*
+ * This file is used to build a complete set of Warty Warthog CDs
+ */
+
+/* Packages that should really be on CD1 */
+#include <ubuntu/warty/installer>
+
+#include <ubuntu/warty/base>
+#include <ubuntu/warty/desktop>
+#include <ubuntu/warty/ship>
