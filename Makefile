@@ -372,7 +372,7 @@ ifdef FORCENONUSONCD1
 		sort | uniq > $(BDIR)/Debian_$(CODENAME)_nonUS
 endif
 	$(Q)if [ -x "/usr/sbin/debootstrap" -a _$(INSTALLER_CD) != _1 ]; then \
-		/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) \
+		/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp dummy $(DEBOOTSTRAP)/$(CODENAME)-$(ARCH) \
 		| tr ' ' '\n' >>$(BDIR)/rawlist; \
 	fi
 	$(Q)perl -npe 's/\@ARCH\@/$(ARCH)/g' $(TASK) | \
@@ -500,7 +500,7 @@ $(BDIR)/packages-stamp:
 	    DISK=$${DISK##CD}; \
 	    if [ -x "/usr/sbin/debootstrap" ]; then \
 	        ok=yes; \
-	        for p in `/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME)`; do \
+	        for p in `/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp dummy $(DEBOOTSTRAP)/$(CODENAME)-$(ARCH)`; do \
 		    if ! grep -q ^$$p$$ $(BDIR)/$$DISK.packages; then \
 			if [ -n "$(BASE_EXCLUDE)" ] && grep -q ^$$p$$ $(BASE_EXCLUDE); then \
 				echo "Missing debootstrap-required $$p but included in $(BASE_EXCLUDE)"; \
