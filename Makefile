@@ -102,6 +102,7 @@ strip_nonus_bin=$(BASEDIR)/tools/strip-nonUS-bin
 add_secured=$(BASEDIR)/tools/add_secured
 md5sum=/usr/bin/md5sum.textutils
 fastsums=$(BASEDIR)/tools/fast_sums
+add_live_filesystem=$(BASEDIR)/tools/add_live_filesystem
 
 BDIR=$(TDIR)/$(CODENAME)-$(ARCH)
 ADIR=$(APTTMP)/$(CODENAME)-$(ARCH)
@@ -601,6 +602,9 @@ $(BDIR)/packages-stamp:
 		dir=$(BDIR)/CD$$dir; \
 		$(scanpackages) install $$dir; \
 	done
+ifeq ($(CDIMAGE_LIVE),1)
+	$(Q)$(add_live_filesystem)
+endif
 	$(Q)touch $(BDIR)/packages-stamp
 
 sources: src-infos src-list $(SDIR)/sources-stamp
