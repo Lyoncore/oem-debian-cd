@@ -348,3 +348,5 @@ IMAGETARGET=bin-official_images
 #export OMIT_MANUAL=1
 
 SKIPMIRRORCHECK=yes
+
+COMPLETE=0
