@@ -278,7 +278,7 @@ export JIGDOFALLBACKURLS="Debian=http://archive.ubuntu.com/ubuntu/"
 # The included files are used to provide an up-to-date list of Debian
 # mirrors to the jigdo _GUI_application_ (_jigdo-lite_ doesn't support
 # "[Include ...]").
-export JIGDOINCLUDEURLS="http://cdimage.debian.org/debian-cd/debian-servers.jigdo"
+#export JIGDOINCLUDEURLS="http://cdimage.debian.org/debian-cd/debian-servers.jigdo"
 #
 # $JIGDOTEMPLATEURL and $JIGDOINCLUDEURLS are passed to
 # "tools/jigdo_header", which is used by default to generate the
