@@ -8,8 +8,9 @@ unset FORCENONUSONCD1   || true
 unset NONFREE           || true
 unset CONTRIB           || true
 unset EXTRANONFREE      || true
-unset LOCAL             || true
-unset LOCALDEBS         || true
+# allow configuration on command line
+#unset LOCAL             || true
+#unset LOCALDEBS         || true
 unset SECURED           || true
 unset SECRET_KEYRING    || true
 unset PUBLIC_KEYRING    || true
