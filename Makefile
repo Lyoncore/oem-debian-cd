@@ -204,7 +204,7 @@ endif
 ## INITIALIZATION ##
 
 # Creation of the directories needed
-init: ok $(OUT) $(TDIR) $(BDIR) $(SDIR) $(ADIR) unstable-map
+init: ok $(OUT) $(TDIR) $(BDIR) $(SDIR) $(ADIR)
 $(OUT):
 	$(Q)mkdir -p $(OUT)
 $(TDIR):
@@ -216,15 +216,6 @@ $(SDIR):
 $(ADIR):
 	$(Q)mkdir -p $(ADIR)
 	$(Q)mkdir -p $(ADIR)/apt-ftparchive-db
-# Make sure unstable/sid points to testing/sarge, as there is no build
-# rule for unstable/sid.
-unstable-map:
-	$(Q)if [ ! -d $(BASEDIR)/data/sid ] ; then \
-		ln -s sarge $(BASEDIR)/data/sid ; \
-	fi
-	$(Q)if [ ! -d $(BASEDIR)/tools/boot/sid ] ; then \
-		ln -s sarge $(BASEDIR)/tools/boot/sid ; \
-	fi
 
 ## CLEANINGS ##
 
