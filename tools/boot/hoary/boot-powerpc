@@ -82,6 +82,7 @@ cat $BASEDIR/data/$CODENAME/yaboot/boot.msg$YABOOT_SUFFIX \
  | sed "s/\${DEBIAN_VERSION}/${DEBVERSION}/g" \
  | sed "s/\${CODENAME}/${CAPCODENAME}/g" \
  | sed "s/\${BUILD_DATE}/${BUILD_DATE}/g" \
+ | sed "s#Ubuntu#$CAPPROJECT#g" \
  > boot.msg
 cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf$YABOOT_SUFFIX \
  | sed "s/CODENAME/${CODENAME}/g" \

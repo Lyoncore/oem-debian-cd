@@ -139,7 +139,9 @@ else
 	mv "$x" "${x%.live}"
     done
 fi
-mv -f boot$N/isolinux/syslinux.txt boot$N/isolinux/isolinux.txt
+sed -e "s#Ubuntu#$CAPPROJECT#g" boot$N/isolinux/syslinux.txt \
+    > boot$N/isolinux/isolinux.txt
+rm -f boot$N/isolinux/syslinux.txt
 # Isolinux config file.
 cat > boot$N/isolinux/isolinux.cfg <<EOF
 DEFAULT /install/vmlinuz
