@@ -50,7 +50,9 @@ if [ -e "$MIRROR/dists/$CODENAME/Release" ]; then
     if ($f) { 
 	unless (/^ /) { print; $f=0 } 
     } else { print }' \
-    $MIRROR/dists/$CODENAME/Release > dists/$CODENAME/Release
+    $MIRROR/dists/$CODENAME/Release | \
+    sed -e "s|^Codename: .*$|Codename: $CODENAME|" \
+    > dists/$CODENAME/Release
 fi
 if [ -n "$NONUS" -a -e "$NONUS/dists/$CODENAME/non-US/Release" ]; then
     # Strip the MD5Sum and SHA1 field
@@ -58,7 +60,8 @@ if [ -n "$NONUS" -a -e "$NONUS/dists/$CODENAME/non-US/Release" ]; then
     if ($f) { 
 	unless (/^ /) { print; $f=0 } 
     } else { print }' \
-    $NONUS/dists/$CODENAME/non-US/Release \
+    $NONUS/dists/$CODENAME/non-US/Release | \
+    sed -e "s|^Codename: .*$|Codename: $CODENAME|" \
     > dists/$CODENAME/non-US/Release
 fi
 
