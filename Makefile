@@ -936,6 +936,10 @@ bin-images: ok bin-md5list $(OUT) $(TDIR)/jigdofilelist
 		fi; \
 	done
 	rm -f "$(TDIR)/$(call CDBASE,$$n).jigdo"
+ifeq ($(CDIMAGE_LIVE),1)
+	-cp -a $(LIVEIMAGES)/$(ARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
+endif
+
 src-images: ok src-md5list $(OUT) $(TDIR)/jigdofilelist
 	@echo "Generating the source iso images ..."
 	$(Q)set -e; \
