@@ -56,9 +56,9 @@ do
         SIZE_ARGS="$SIZE_ARGS SIZELIMIT${CD}=$FULL_SIZE"
 	done
     FULL_SIZE=`echo "($DEFSRCSIZE - $size) * 1024 * 1024" | bc`
-    make list COMPLETE=1 $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 	echo " ... building the images"
 	if [ "$ARCH" = "i386" ]; then
+		make list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		export OUT="$TMP_OUT/$ARCH"; mkdir -p $OUT
 		make bin-official_images
 		echo Generating MD5Sums of the images
@@ -73,6 +73,7 @@ do
 		echo Generating list files for images
 		make pi-makelist
 	else
+		make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		export OUT=$TMP_OUT/$ARCH; mkdir -p $OUT
 		make bin-official_images
 		if [ $? -gt 0 ]; then
