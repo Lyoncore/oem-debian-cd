@@ -201,9 +201,9 @@ else
 fi
 
 # We don't want certain packages to take up space on CD1...
-export EXCLUDE="$BASEDIR"/tasks/exclude-sarge
+#export EXCLUDE="$BASEDIR"/tasks/exclude-sarge
 # ...but they are okay for other CDs (UNEXCLUDEx == may be included on CD >= x)
-export UNEXCLUDE2="$BASEDIR"/tasks/unexclude-CD2-sarge
+#export UNEXCLUDE2="$BASEDIR"/tasks/unexclude-CD2-sarge
 # Any packages listed in EXCLUDE but not in any UNEXCLUDE will be
 # excluded completely.
 
