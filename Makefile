@@ -430,8 +430,8 @@ $(SDIR)/rawlist:
 # Create all the needed directories for installing packages (plus the
 # .disk directory)
 tree: bin-tree src-tree
-bin-tree: ok bin-list $(BDIR)/CD1/debian
-$(BDIR)/CD1/debian:
+bin-tree: ok bin-list $(BDIR)/CD1/ubuntu
+$(BDIR)/CD1/ubuntu:
 	@echo "Adding the required directories to the binary CDs ..."
 	$(Q)set -e; \
 	 for i in $(BDIR)/*.packages; do \
@@ -442,8 +442,8 @@ $(BDIR)/CD1/debian:
 		$(add_dirs) $$dir; \
 	done
 
-src-tree: ok src-list $(SDIR)/CD1/debian
-$(SDIR)/CD1/debian:
+src-tree: ok src-list $(SDIR)/CD1/ubuntu
+$(SDIR)/CD1/ubuntu:
 	@echo "Adding the required directories to the source CDs ..."
 	$(Q)set -e; \
 	 for i in $(SDIR)/*.sources; do \
