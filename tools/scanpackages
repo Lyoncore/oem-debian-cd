@@ -23,6 +23,10 @@ if [ "${CONTRIB:-0}" != "0" ]; then
   SECTIONS="${SECTIONS} contrib"
   SECTIONSNONUS="${SECTIONSNONUS} non-US/contrib"
 fi
+if [ "${RESTRICTED:-0}" != "0" ]; then
+  SECTIONS="${SECTIONS} restricted"
+  SECTIONSNONUS="${SECTIONSNONUS} non-US/restricted"
+fi
 
 if [ -n "$LOCAL" ]; then
   SECTIONS="$SECTIONS local"
@@ -94,6 +98,11 @@ fi
 if [ -e "$MIRROR/dists/$DI_CODENAME/main/debian-installer/binary-$ARCH/Release" ]; then
     cp $MIRROR/dists/$DI_CODENAME/main/debian-installer/binary-$ARCH/Release \
        dists/$CODENAME/main/debian-installer/binary-$ARCH/
+fi
+if [ "${RESTRICTED:-0}" != "0" ] && \
+   [ -e "$MIRROR/dists/$DI_CODENAME/restricted/debian-installer/binary-$ARCH/Release" ]; then
+    cp $MIRROR/dists/$DI_CODENAME/restricted/debian-installer/binary-$ARCH/Release \
+       dists/$CODENAME/restricted/debian-installer/binary-$ARCH/
 fi
 
 # Generating Packages files
@@ -217,6 +226,21 @@ Tree "dists/$CODENAME/main" {
     Packages::Extensions ".udeb";
 }
 EOF
+if [ "${RESTRICTED:-0}" != "0" ] && [ -e "$MIRROR/dists/$DI_CODENAME/restricted/debian-installer" ]; then
+cat >>$PREFIX.generate-binary-debian-installer <<EOF
+
+Tree "dists/$CODENAME/restricted" {
+    FileList "$PREFIX.filelist_restricted";
+    Sections "debian-installer";
+    Architectures "$ARCH";
+
+    BinOverride "override.$CODENAME.restricted.\$(SECTION)";
+    ExtraOverride "override.$CODENAME.extra.restricted";
+    SrcOverride "override.$CODENAME.restricted.src";
+    Packages::Extensions ".udeb";
+}
+EOF
+fi
 if [ -n "$LOCAL" -a -e "${LOCALDEBS:-$MIRROR}/dists/$DI_CODENAME/local/debian-installer" ]; then
 cat >>$PREFIX.generate-binary-debian-installer <<EOF
 
@@ -249,6 +273,9 @@ if [ ! -d "$BDIR/indices" ]; then
     done
     if [ -e "$MIRROR/dists/$DI_CODENAME/main/debian-installer" ]; then
 	touch $BDIR/indices/override.$CODENAME.main.debian-installer
+    fi
+    if [ "${RESTRICTED:-0}" != "0" ] && [ -e "$MIRROR/dists/$DI_CODENAME/restricted/debian-installer" ]; then
+	touch $BDIR/indices/override.$CODENAME.restricted.debian-installer
     fi
     if [ -n "$LOCAL" -a -e "${LOCALDEBS:-$MIRROR}/dists/$DI_CODENAME/local/debian-installer" ]; then
 	touch $BDIR/indices/override.$CODENAME.local.debian-installer

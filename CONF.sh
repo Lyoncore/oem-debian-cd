@@ -126,6 +126,8 @@ export CONTRIB=1
 # WARNING: Don't use NONFREE and EXTRANONFREE at the same time !
 # export EXTRANONFREE=1
 
+export RESTRICTED=1
+
 # If you have a $MIRROR/dists/$CODENAME/local/binary-$ARCH dir with 
 # local packages that you want to put on the CD set then
 # uncomment the following line 

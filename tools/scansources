@@ -18,6 +18,9 @@ fi
 if [ "${CONTRIB:-0}" != "0" ]; then
   SECTIONS="${SECTIONS} contrib"
 fi
+if [ "${RESTRICTED:-0}" != "0" ]; then
+  SECTIONS="${SECTIONS} restricted"
+fi
 
 cd $1
 
@@ -28,12 +31,14 @@ for i in `cd dists; echo *; cd ..`; do
     if [ ! -L "dists/$i" -a -d "dists/$i" ]; then
         if [ -d "dists/$i/main/source" -o \
 	     -d "dists/$i/non-free/source" -o \
-	     -d "dists/$i/contrib/source" ]; then
+	     -d "dists/$i/contrib/source" -o \
+	     -d "dists/$i/restricted/source" ]; then
             DISTS="$DISTS $i"
         fi
         if [ -d "dists/$i/non-US/main/source" -o \
 	     -d "dists/$i/non-US/non-free/source" -o \
-	     -d "dists/$i/non-US/contrib/source" ]; then
+	     -d "dists/$i/non-US/contrib/source" -o \
+	     -d "dists/$i/non-US/restricted/source" ]; then
             DISTSNONUS="$DISTSNONUS $i"
         fi
     fi

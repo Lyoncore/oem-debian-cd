@@ -545,6 +545,7 @@ $(BDIR)/packages-stamp:
 	        echo "Unable to find debootstrap program"; \
 	    fi; \
 	    echo 'main' > $(BDIR)/CD$$DISK/.disk/base_components; \
+	    echo 'restricted' >> $(BDIR)/CD$$DISK/.disk/base_components; \
 	    if [ -n "$(LOCAL)" ]; then \
 	        echo 'local' >> $(BDIR)/CD$$DISK/.disk/base_components; \
 	    fi; \
