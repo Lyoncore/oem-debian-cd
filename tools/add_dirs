@@ -12,8 +12,8 @@ fi
 
 cd $1
 
-if [ ! -e debian ] ; then
-    ln -sf . debian
+if [ ! -e ubuntu ] ; then
+    ln -sf . ubuntu
 fi
 
 if [ ! -d dists/$CODENAME ] ; then
