@@ -18,7 +18,7 @@ ifndef SIZELIMIT
 SIZELIMIT=$(shell echo -n $$[ 610 * 1024 * 1024 ])
 endif
 ifndef TASK
-TASK=$(BASEDIR)/tasks/Debian_$(CODENAME)
+TASK=$(BASEDIR)/tasks/$(CAPPROJECT)_$(CODENAME)
 endif
 ifndef CAPCODENAME
 CAPCODENAME:=$(shell perl -e "print ucfirst("$(CODENAME)")")
@@ -392,7 +392,7 @@ endif
 ifdef FORCENONUSONCD1
 	$(Q)$(apt) cache dumpavail | \
 		grep-dctrl -FSection -n -sPackage -e '^(non-US|non-us)' - | \
-		sort | uniq > $(BDIR)/Debian_$(CODENAME)_nonUS
+		sort | uniq > $(BDIR)/$(CAPPROJECT)_$(CODENAME)_nonUS
 endif
 	$(Q)if [ -x "/usr/sbin/debootstrap" -a _$(INSTALLER_CD) != _1 ]; then \
 		/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp dummy $(DEBOOTSTRAP)/$(CODENAME)-$(ARCH) \
