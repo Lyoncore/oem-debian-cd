@@ -800,9 +800,10 @@ $(BDIR)/CD1/md5sum.txt:
 		dir=$(BDIR)/CD$$n; \
 		test -x "$(HOOK)" && cd $(BDIR) && $(HOOK) $$n before-mkisofs; \
 		cd $$dir; \
-		find . -follow -type f | grep -v "\./md5sum" | grep -v \
-		"dists/stable" | grep -v "dists/frozen" | \
-		grep -v "dists/unstable" | xargs $(md5sum) > md5sum.txt ; \
+		find . -follow -type f -print0 | grep -zZ -v "\./md5sum" | \
+		grep -zZ -v "dists/stable" | grep -zZ -v "dists/frozen" | \
+		grep -zZ -v "dists/unstable" | \
+		xargs -0 $(md5sum) > md5sum.txt ; \
 	 done \
 	else \
 	 $(fastsums) $(BDIR); \
@@ -817,9 +818,10 @@ $(SDIR)/CD1/md5sum.txt:
 		dir=$${dir##$(SDIR)/}; \
 		dir=$(SDIR)/CD$$dir; \
 		cd $$dir; \
-		find . -follow -type f | grep -v "\./md5sum" | grep -v \
-		"dists/stable" | grep -v "dists/frozen" | \
-		grep -v "dists/unstable" | xargs $(md5sum) > md5sum.txt ; \
+		find . -follow -type f -print0 | grep -zZ -v "\./md5sum" | \
+		grep -zZ -v "dists/stable" | grep -zZ -v "dists/frozen" | \
+		grep -zZ -v "dists/unstable" | \
+		xargs -0 $(md5sum) > md5sum.txt ; \
 	 done \
 	else \
 	 $(fastsums) $(SDIR); \
@@ -1013,7 +1015,7 @@ src-image: ok src-md5list $(OUT)
 #Calculate the md5sums for the images (if available), or get from templates
 imagesums:
 	$(Q)cd $(OUT); :> MD5SUMS; for file in `find * -name \*.raw`; do \
-		$(md5sum) $$file >>MD5SUMS; \
+		$(md5sum) "$$file" >>MD5SUMS; \
 	done; \
 	for file in `find * -name \*.template`; do \
 		if [ "`tail --bytes=33 "$$file" | head --bytes=1 | od -tx1 -An | sed -e 's/ //g'`" != 05 ]; then \
