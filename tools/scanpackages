@@ -156,28 +156,28 @@ for SECT in $SECTIONS; do
     fi
     touch $PREFIX.filelist_$OUTSECT
     if [ -d "pool/$SECT" ]; then
-	find pool/$SECT >>$PREFIX.filelist_$OUTSECT
+	find pool/$SECT | sort >>$PREFIX.filelist_$OUTSECT
     fi
     if [ -d "pool/unstable/$SECT" ]; then
-	find pool/unstable/$SECT >>$PREFIX.filelist_$OUTSECT
+	find pool/unstable/$SECT | sort >>$PREFIX.filelist_$OUTSECT
     fi
     if [ -n "$SECURITY" -a -d "pool/updates/$SECT" ]; then
-	find pool/updates/$SECT >>$PREFIX.filelist_$OUTSECT
+	find pool/updates/$SECT | sort >>$PREFIX.filelist_$OUTSECT
     fi
     for DIST in $DISTS; do
 	if [ -d "dists/$DIST/$SECT/binary-$ARCH" ]; then
-	    find dists/$DIST/$SECT/binary-$ARCH >>$PREFIX.filelist_$OUTSECT
+	    find dists/$DIST/$SECT/binary-$ARCH | sort >>$PREFIX.filelist_$OUTSECT
 	fi
     done
     if [ -n "$NONUS" ]; then
 	touch $PREFIX.filelist_non-US_$OUTSECT
 	if [ -d "pool/non-US/$SECT" ]; then
-	    find pool/non-US/$SECT >>$PREFIX.filelist_non-US_$OUTSECT
+	    find pool/non-US/$SECT | sort >>$PREFIX.filelist_non-US_$OUTSECT
 	fi
 	for DIST in $DISTSNONUS; do
 	    if [ -d "dists/$DIST/non-US/$SECT/binary-$ARCH" ]; then
 		find dists/$DIST/non-US/$SECT/binary-$ARCH \
-		    >>$PREFIX.filelist_non-US_$OUTSECT
+		    | sort >>$PREFIX.filelist_non-US_$OUTSECT
 	    fi
 	done
     fi
