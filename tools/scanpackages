@@ -137,9 +137,6 @@ for i in `cd dists; echo *; cd ..`; do
 	     -d "dists/$i/contrib/binary-$ARCH" ]; then
 	    DISTS="$DISTS $i"
 	fi
-        if [ -n "$SECURITY" ]; then
-            DISTS="$DISTS $i/updates"
-        fi
 	if [ -d "dists/$i/non-US/main/binary-$ARCH" -o \
 	     -d "dists/$i/non-US/non-free/binary-$ARCH" -o \
 	     -d "dists/$i/non-US/contrib/binary-$ARCH" ]; then
@@ -160,9 +157,6 @@ for SECT in $SECTIONS; do
     fi
     if [ -d "pool/unstable/$SECT" ]; then
 	find pool/unstable/$SECT | sort >>$PREFIX.filelist_$OUTSECT
-    fi
-    if [ -n "$SECURITY" -a -d "pool/updates/$SECT" ]; then
-	find pool/updates/$SECT | sort >>$PREFIX.filelist_$OUTSECT
     fi
     for DIST in $DISTS; do
 	if [ -d "dists/$DIST/$SECT/binary-$ARCH" ]; then

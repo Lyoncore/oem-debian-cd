@@ -64,7 +64,7 @@ if [ ! -e "$APTTMP/$CODENAME-$ARCH/apt/sources.list" ]; then
 	fi
         # Security mirror ...
         if [ -n "$SECURITY" ]; then
-	  echo "deb file:${SECURITY:-$MIRROR} $CODENAME/updates $sections" \
+	  echo "deb file:${SECURITY:-$MIRROR} $CODENAME-security $sections" \
 	  >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
         fi
 	# Debian-installer

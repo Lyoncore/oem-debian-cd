@@ -153,7 +153,11 @@ esac
 
 # Where to find the security patches.  This directory should be the
 # top directory of a security.debian.org mirror.
-#export SECURITY="$TOPDIR"/debian/debian-security
+case $DIST in
+  warty)
+    export SECURITY="$MIRROR"
+    ;;
+esac
 
 # Sparc only : bootdir (location of cd.b and second.b)
 # export BOOTDIR=/boot
