@@ -88,6 +88,7 @@ endif
 ## Internal variables  
 apt=$(BASEDIR)/tools/apt-selection
 list2cds=$(BASEDIR)/tools/list2cds
+list2src=$(BASEDIR)/tools/list2src
 cds2src=$(BASEDIR)/tools/cds2src
 master2tasks=$(BASEDIR)/tools/master2tasks
 mirrorcheck=$(BASEDIR)/tools/mirror_check
@@ -346,7 +347,7 @@ endif
 src-list: bin-list $(SDIR)/1.sources
 $(SDIR)/1.sources:
 	@echo "Dispatching the sources on all the CDs ..."
-	$(Q)$(cds2src) $(SIZELIMIT)
+	$(Q)$(list2src) $(SDIR)/list $(SIZELIMIT)
 ifdef FORCENONUSONCD1
 	$(Q)set -e; \
 	 for file in $(SDIR)/*.sources; do \
