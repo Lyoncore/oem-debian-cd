@@ -110,6 +110,9 @@ export OUT=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/debian-cd
 # This cannot reside on an NFS mount.
 export APTTMP=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/apt
 
+# Where extracted debootstrap scripts live
+export DEBOOTSTRAP=/srv/cdimage.no-name-yet.com/scratch/$PROJECT/debootstrap
+
 # Do I want to have NONFREE merged in the CD set
 # export NONFREE=1
 
