@@ -42,6 +42,12 @@ foreach my $arch (@ARCHES) {
 			push @udebs, map { chomp; $_ } `zcat \Q$restrictedpackagefile\E | grep-dctrl -n -s Package ''`;
 		}
 	}
+	if (defined $ENV{LOCALDEBS}) {
+		$localpackagefile = "$ENV{LOCALDEBS}/dists/$ENV{DI_CODENAME}/local/debian-installer/binary-$arch/Packages.gz";
+		if (-f $packagefile) {
+			push @udebs, map { chomp; $_ } `zcat \Q$localpackagefile\E | grep-dctrl -n -s Package ''`;
+		}
+	}
 UDEB:	foreach my $udeb (@udebs) {
 		foreach my $pattern (@exclude) {
 			if ($udeb =~ /^$pattern$/) {
