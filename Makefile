@@ -547,6 +547,7 @@ $(BDIR)/packages-stamp:
 		    touch $(BDIR)/CD$$DISK/.disk/base_installable; \
 	        else \
 		    echo "CD$$DISK missing some packages needed by debootstrap"; \
+		    if [ "$CDIMAGE_INSTALL" = 1 ]; then exit 1; fi; \
 	        fi; \
 	    else \
 	        echo "Unable to find debootstrap program"; \
