@@ -134,6 +134,7 @@ close (STATS);
 my ($total_size, $cd_size, $size, $cd) = (0, 0, 0, 1);
 my %cds;
 
+=pod
 # Generate a dependency tree for each package
 msg(0, "-- Generating dependencies tree with apt-cache depends...\n");
 my (@list) = keys %packages;
@@ -159,6 +160,7 @@ while (@list) {
 	}
 	
 }
+=cut
 
 msg(0, "-- Adding standard, required, important and base packages \n" .
        "   on the first CD ...\n");
