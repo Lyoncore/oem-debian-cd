@@ -118,6 +118,16 @@ if [ -e "$MIRROR/dists/$DI_CODENAME/main/debian-installer" ]; then
     apt-ftparchive generate $PREFIX.generate-binary-debian-installer
 fi
 
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    for index in $(find "$BDIR"/CD* -name Packages); do
+	if [ ! -s "$index" ]; then
+	    rm -f "$index"*
+	    rm -f "${index%/*}/Release"
+	    rmdir -p --ignore-fail-on-non-empty "${index%/*}"
+	fi
+    done
+fi
+
 fi ## END "$1" = "install"
 
 # Prepare the files needed to generate the Packages files
