@@ -2,13 +2,13 @@
  *
  * Generated with: 
  
-grep-dctrl -s Essential -n -e '.*' /usr/share/tasksel/debian-tasks.desc | sed -e 's/ *//' | grep -v ^$ | sort | uniq
+grep-dctrl -s Essential -n -e '.*' /usr/share/tasksel/debian-tasks.desc | sed -e 's? *??' | grep -v ^$ | sort | uniq
 
  * If the list is too big for the first CD, then we'll have to sort it
  * better, but hopefully this will never be needed since the goal of that
  * file is to have the more important packages of each task.
  *
- * Last updated: $Date: 2002/10/10 12:56:48 $
+ * Last updated: $Date: 2002/10/10 17:27:12 $
  */
 
 ami
