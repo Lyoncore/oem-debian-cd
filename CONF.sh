@@ -341,7 +341,7 @@ fi
 # Used by build.sh to determine what to build, this is the name of a target
 # in the Makefile. Use bin-official_images to build only binary CDs. The
 # default, official_images, builds everything.
-#IMAGETARGET=official_images
+IMAGETARGET=bin-official_images
 
 # Set to 1 to save space by omitting the installation manual. 
 # If so the README will link to the manual on the web site.
