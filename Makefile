@@ -15,7 +15,7 @@ ifndef VERBOSE_MAKE
 Q=@
 endif
 ifndef SIZELIMIT
-SIZELIMIT=$(shell echo -n $$[ 610 * 1024 * 1024 ])
+export SIZELIMIT=$(shell echo -n $$[ 640 * 1024 * 1024 ])
 endif
 ifndef TASK
 TASK=$(BASEDIR)/tasks/$(CAPPROJECT)_$(CODENAME)
