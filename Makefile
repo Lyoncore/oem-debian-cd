@@ -661,12 +661,7 @@ $(SDIR)/sources-stamp:
 $(MIRROR)/doc: need-complete-mirror
 $(MIRROR)/tools: need-complete-mirror
 need-complete-mirror:
-	@# Why the hell is this needed ??
-	@if [ ! -d $(MIRROR)/doc -o ! -d $(MIRROR)/tools ]; then \
-	    echo "You need a Debian mirror with the doc, tools and"; \
-	    echo "indices directories ! "; \
-	    exit 1; \
-	fi
+	# now a no-op
 
 # Add everything that is needed to make the CDs bootable
 bootable: ok disks installtools $(BDIR)/bootable-stamp
@@ -695,23 +690,7 @@ $(BDIR)/bootable-stamp:
 bin-doc: ok bin-infos $(MIRROR)/doc $(BDIR)/CD1/doc
 $(BDIR)/CD1/doc:
 	@echo "Adding the documentation (bin) ..."
-	$(Q)set -e; \
-	 for DISK in $(FIRSTDISKS) ; do \
-		$(add_files) $(BDIR)/$$DISK $(MIRROR) doc; \
-		find $(BDIR)/$$DISK/doc -name "dedication-*" | \
-		grep -v $DEBVERSION | xargs rm -f; \
-		find $(BDIR)/$$DISK/doc -name "debian-keyring.tar.gz" | \
-		xargs rm -f; \
-	done
-	@for DISK in $(FIRSTDISKS) ; do \
-		mkdir $(BDIR)/$$DISK/doc/FAQ/html ; \
-		cd $(BDIR)/$$DISK/doc/FAQ/html ; \
-		if [ -e "../debian-faq.en.html.tar.gz" ]; then \
-		    tar xzvf ../debian-faq.en.html.tar.gz ; \
-		else \
-		    tar xzvf ../debian-faq.html.tar.gz ; \
-		fi; \
-	done
+	mkdir -p $(BDIR)/$$DISK/doc
 	$(Q)$(add_bin_doc) # Common stuff for all disks
 
 src-doc: ok src-infos $(SDIR)/CD1/README.html
@@ -722,33 +701,17 @@ $(SDIR)/CD1/README.html:
 		dir=$${i%%.sources}; \
 		dir=$${dir##$(SDIR)/}; \
 		dir=$(SDIR)/CD$$dir; \
-		cp -d $(MIRROR)/README* $$dir/; \
-		rm -f $$dir/README $$dir/README.html \
-			$$dir/README.CD-manufacture \
-			$$dir/README.pgp $$dir/README.mirrors.txt \
-			$$dir/README.mirrors.html $$dir/README.non-US; \
-		cpp -traditional -undef -P -C -Wall -nostdinc -I $$dir/ \
-		    -D OMIT_MANUAL="$(OMIT_MANUAL)" \
-		    -D OUTPUTtext $(BASEDIR)/data/$(CODENAME)/README.html.in \
-			| sed -e 's/%%.//g' > $$dir/README.html ; \
-		lynx -dump -force_html $$dir/README.html | todos \
-			> $$dir/README.txt ; \
-		cpp -traditional -undef -P -C -Wall -nostdinc -I $$dir/ \
-		    -D OMIT_MANUAL="$(OMIT_MANUAL)" \
-		    -D OUTPUThtml $(BASEDIR)/data/$(CODENAME)/README.html.in \
-			| sed -e 's/%%.//g' > $$dir/README.html ; \
-		rm -f $$dir/README.diskdefines ; \
 		mkdir -p $$dir/pics ; \
 		cp $(BASEDIR)/data/pics/*.* $$dir/pics/ ; \
 	done
 
 # Add the install stuff on the first CD
-installtools: ok bin-doc disks $(MIRROR)/tools $(BDIR)/CD1/tools
+installtools: ok bin-doc disks $(BDIR)/CD1/tools
 $(BDIR)/CD1/tools:
 	@echo "Adding install tools and documentation ..."
 	$(Q)set -e; \
 	 for DISK in $(FIRSTDISKS) ; do \
-		$(add_files) $(BDIR)/$$DISK $(MIRROR) tools ; \
+		mkdir $(BDIR)/$$DISK/tools ; \
 		mkdir $(BDIR)/$$DISK/install ; \
 		if [ -x "$(BASEDIR)/tools/$(CODENAME)/installtools.sh" ]; then \
 			$(BASEDIR)/tools/$(CODENAME)/installtools.sh $(BDIR)/$$DISK ; \
