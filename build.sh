@@ -65,3 +65,4 @@ fi
 make $IMAGETARGET
 
 make imagesums
+make pi-makelist
