@@ -67,24 +67,34 @@ else
  cp -f $YABOOT_DEBUG yaboot
 fi
 
-if [ "$CDIMAGE_INSTALL" = 1 ]; then
-  YABOOT_SUFFIX=
-else
-  YABOOT_SUFFIX=.live
-fi
-
 #
 # generate/download images for "powerpc"
 # (missing: bootvars1.3b.sit.hqx, BootX_1.2.2.sit, boot-floppy-hfs.img)
 BUILD_DATE=$(date +%Y%m%d)
-cat $BASEDIR/data/$CODENAME/yaboot/boot.msg$YABOOT_SUFFIX \
+(if [ "$CDIMAGE_DVD" = 1 ]; then
+     cat $BASEDIR/data/$CODENAME/yaboot/boot.msg.dvd
+ elif [ "$CDIMAGE_INSTALL" = 1 ]; then
+     cat $BASEDIR/data/$CODENAME/yaboot/boot.msg.install
+ elif [ "$CDIMAGE_LIVE" = 1 ]; then
+     cat $BASEDIR/data/$CODENAME/yaboot/boot.msg.live
+ fi) \
  | sed "s/\${MEDIA_TYPE}/CDROM/" \
  | sed "s/\${DEBIAN_VERSION}/${DEBVERSION}/g" \
  | sed "s/\${CODENAME}/${CAPCODENAME}/g" \
  | sed "s/\${BUILD_DATE}/${BUILD_DATE}/g" \
  | sed "s#Ubuntu#$CAPPROJECT#g" \
  > boot.msg
-cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf$YABOOT_SUFFIX \
+(if [ "$CDIMAGE_INSTALL" = 1 ]; then
+     sed 's/\${DEFAULT}/install/g' $BASEDIR/data/$CODENAME/yaboot/yaboot.conf
+ else
+     sed 's/\${DEFAULT}/live/g' $BASEDIR/data/$CODENAME/yaboot/yaboot.conf
+ fi
+ if [ "$CDIMAGE_INSTALL" = 1 ]; then
+     cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.install
+ fi
+ if [ "$CDIMAGE_LIVE" = 1 ]; then
+     cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.live
+ fi) \
  | sed "s/CODENAME/${CODENAME}/g" \
  | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
  > yaboot.conf
