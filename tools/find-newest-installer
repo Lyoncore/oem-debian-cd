@@ -3,6 +3,10 @@ set -e
 
 # Find the newest installer build available for $DI_DIST/$ARCH.
 
+if [ -z "$DI_DIST" ]; then
+	DI_DIST="$DI_CODENAME"
+fi
+
 current_type=installer
 current_version=
 
