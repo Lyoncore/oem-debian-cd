@@ -49,6 +49,13 @@ unset DI_CODENAME       || true
 unset MAXCDS            || true
 unset OMIT_MANUAL	|| true
 
+if [ -z "$PROJECT" ]; then
+  PROJECT=ubuntu
+fi
+if [ -z "$CAPPROJECT" ]; then
+  CAPPROJECT="$(echo "$PROJECT" | perl -ne 'print ucfirst')"
+fi
+
 if [ -z "$DIST" ]; then
   DIST=hoary
 fi
