@@ -67,6 +67,7 @@ else
       let newsize="$DEFBINSIZE"*4096
       echo -n " -hfs-parms MAX_XTCSIZE=$newsize" >> $N.mkisofs_opts
     fi
+  fi
 fi
 
 "$BASEDIR/tools/sorting_weights" "$N"
