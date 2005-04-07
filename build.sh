@@ -62,7 +62,7 @@ mkdir -p "$OUT"
 if [ -z "$IMAGETARGET" ] ; then
     IMAGETARGET="bin-official_images"
 fi
-make $IMAGETARGET
+make $IMAGETARGET $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 
 make imagesums
 make pi-makelist
