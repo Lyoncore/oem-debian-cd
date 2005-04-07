@@ -50,9 +50,27 @@ echo -n "--netatalk -hfs -probe -map $BASEDIR/data/hfs.map" \
 # For newworld Mac booting  - Note, no spaces in volid!
 echo -n " -part -no-desktop -hfs-bless CD$N/install -hfs-volid ${CAPPROJECT}_PowerPC_${CODENAME} " \
 	>> $N.mkisofs_opts
+# Recommended size for a HFS Catalog is 4 megas per giga, defaults to 4 megas
+if [ -n "$SIZELIMIT1" ];then
+  if [ "$SIZELIMIT1" -gt 1000000000 ];then
+    let newsize="$SIZELIMIT1"/256
+    echo -n " -hfs-parms MAX_XTCSIZE=$newsize" >> $N.mkisofs_opts
+  fi
+else
+  if [ -n "$SIZELIMIT" ];then
+    if [ "$SIZELIMIT" -gt 1000000000 ];then
+      let newsize="$SIZELIMIT"/256
+      echo -n " -hfs-parms MAX_XTCSIZE=$newsize" >> $N.mkisofs_opts
+    fi
+  else
+    if [ -n "$DEFBINSIZE" ] && [ "$DEFBINSIZE" -gt 1000 ];then
+      let newsize="$DEFBINSIZE"*4096
+      echo -n " -hfs-parms MAX_XTCSIZE=$newsize" >> $N.mkisofs_opts
+    fi
+fi
 
 "$BASEDIR/tools/sorting_weights" "$N"
-echo -n "-sort $(pwd)/$N.weights " >> $N.mkisofs_opts
+echo -n " -sort $(pwd)/$N.weights " >> $N.mkisofs_opts
 
 cd $INSTALLDIR
 # Extract yaboot from the archive
