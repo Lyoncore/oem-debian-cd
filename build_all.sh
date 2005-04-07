@@ -63,14 +63,14 @@ do
 		make list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 
 		export OUT="$TMP_OUT/$ARCH"; mkdir -p $OUT
-		make bin-official_images
+		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		echo Generating MD5Sums of the images
 		make imagesums
 		echo Generating list files for images
 		make pi-makelist
 
 		export OUT="$TMP_OUT/src"; mkdir -p $OUT
-		make src-official_images
+		make src-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		echo Generating MD5Sums of the images
 		make imagesums
 		echo Generating list files for images
@@ -78,14 +78,14 @@ do
 	else
 		make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		export OUT=$TMP_OUT/$ARCH; mkdir -p $OUT
-		make bin-official_images
+		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		if [ $? -gt 0 ]; then
 			echo "ERROR WHILE BUILDING OFFICIAL IMAGES !!" >&2
 			if [ "$ATTEMPT_FALLBACK" = "yes" ]; then
 				echo "I'll try to build a simple (non-bootable) CD" >&2
 				make clean
 				make installtools
-				make bin-images
+				make bin-images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 			else
 				# exit 1
 				continue
