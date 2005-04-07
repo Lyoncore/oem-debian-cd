@@ -104,6 +104,7 @@ add_secured=$(BASEDIR)/tools/add_secured
 md5sum=/usr/bin/md5sum.textutils
 fastsums=$(BASEDIR)/tools/fast_sums
 add_live_filesystem=$(BASEDIR)/tools/add_live_filesystem
+find_newest_installer=$(BASEDIR)/tools/find-newest-installer
 
 BDIR=$(TDIR)/$(CODENAME)-$(ARCH)
 ADIR=$(APTTMP)/$(CODENAME)-$(ARCH)
@@ -138,6 +139,9 @@ CDBASE = $(CODENAME)-live-$(ARCH)
 endif
 endif
 CDSRCBASE = $(CODENAME)-src-$(1)
+
+INSTALLER_TYPE := $(shell $(find_newest_installer))
+INSTALLER_VERSION := $(shell readlink $(MIRROR)/dists/$(CODENAME)/main/$(INSTALLER_TYPE)-$(ARCH)/current)
 
 ## DEBUG STUFF ##
 
@@ -856,16 +860,17 @@ $(TDIR)/jigdofilelist: $(MIRROR)/dists/$(CODENAME)/main/binary-$(ARCH)/Packages.
 	$(Q)set -e; \
 	if [ "$(DOJIGDO)" != 0 ]; then \
 		mkdir -p $(TDIR); \
-		find $(MIRROR)//dists/$(CODENAME)/main/disks-$(ARCH) \
+		(find $(MIRROR)//dists/$(CODENAME)/main/$(INSTALLER_TYPE)-$(ARCH)/$(INSTALLER_VERSION)/ -type f -print; \
+		 find $(MIRROR)//dists/$(CODENAME)/main/disks-$(ARCH) \
 		     $(MIRROR)//dists/$(CODENAME) \
 		     $(MIRROR)//doc $(MIRROR)//indices \
 		     $(MIRROR)//pool $(MIRROR)//project $(MIRROR)//tools \
 		     '(' -type d -a -name 'binary-*' -a ! -name 'binary-$(ARCH)' ')' -prune -o \
-		     '(' -type d -a -name 'installer-*' -a ! -name 'installer-$(ARCH)' ')' -prune -o \
-		     '(' -type d -a -name 'daily-installer-*' -a ! -name 'daily-installer-$(ARCH)' ')' -prune -o \
+		     '(' -type d -a -name 'installer-*' ')' -prune -o \
+		     '(' -type d -a -name 'daily-installer-*' ')' -prune -o \
 		     '(' -type f -a -name 'Contents-*.gz' -a ! -name 'Contents-$(ARCH).gz' ')' -o \
 		     '(' -type f -a -name '*.*deb' -a ! '(' -name '*_$(ARCH).*deb' -o -name '*_all.*deb' ')' ')' -o \
-		     -type f -print \
+		     -type f -print) \
 		| egrep -v '/Contents|/README|INDEX$$|/Maintainers|/Release$$|/debian-keyring\.tar\.gz$$|/ls-lR|//doc/[^/]+/?[^/]*\.(txt|html)$$' \
 		> $(TDIR)/jigdofilelist; \
 		if [ -n "$(NONUS)" ]; then \
