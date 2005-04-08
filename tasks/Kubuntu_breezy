@@ -1,0 +1,20 @@
+/*
+ * This file is used to build a complete set of Kubuntu Breezy Badger CDs
+ */
+
+/* Packages that should really be on CD1 */
+#if (CDIMAGE_INSTALL == 1)
+#include <kubuntu/breezy/installer>
+#endif
+#if (CDIMAGE_LIVE == 1)
+#include <kubuntu/breezy/casper>
+#endif
+
+#if (CDIMAGE_INSTALL == 1)
+#include <kubuntu/breezy/base>
+#include <kubuntu/breezy/desktop>
+#include <kubuntu/breezy/ship>
+#if (CDIMAGE_DVD == 1)
+#include <kubuntu/breezy/supported>
+#endif
+#endif

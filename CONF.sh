@@ -77,6 +77,12 @@ case $DIST in
     export DEBVERSION=5.04
     export OFFICIAL="Release"
     ;;
+  breezy)
+    export CODENAME=breezy
+    export CAPCODENAME='Breezy Badger'
+    export DEBVERSION=5.10
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
