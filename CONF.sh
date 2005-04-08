@@ -247,9 +247,6 @@ if [ "$CDIMAGE_DVD" = 1 ]; then
 elif [ "$CDIMAGE_INSTALL" != 1 ]; then
   # inappropriate
   export DOJIGDO=0
-elif [ "$PROJECT" != ubuntu ]; then
-  # don't bother just yet
-  export DOJIGDO=0
 elif [ "$DIST" = warty ]; then
   # only custom builds now
   export DOJIGDO=0
