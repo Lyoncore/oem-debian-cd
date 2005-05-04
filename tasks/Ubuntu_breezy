@@ -11,7 +11,8 @@
 #endif
 
 #if (CDIMAGE_INSTALL == 1)
-#include <ubuntu/breezy/base>
+#include <ubuntu/breezy/minimal>
+#include <ubuntu/breezy/standard>
 #include <ubuntu/breezy/desktop>
 #include <ubuntu/breezy/ship>
 #if (CDIMAGE_DVD == 1)
