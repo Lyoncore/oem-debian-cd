@@ -214,7 +214,7 @@ if [ "$CDIMAGE_DVD" = 1 ]; then
   export DEFBINSIZE=4600
   export DEFSRCSIZE=4600
 else
-  export DEFBINSIZE=640
+  export DEFBINSIZE=650
   export DEFSRCSIZE=645
 fi
 
