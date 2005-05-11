@@ -1,5 +1,5 @@
 # Adjust task names for Kubuntu.
-d-i	archive-copier/desktop-task	string kubuntu-desktop
+d-i	archive-copier/desktop-task	string kubuntu-standard|kubuntu-desktop
 d-i	archive-copier/ship-task	string kubuntu-ship
 # Install the Kubuntu desktop.
 base-config	base-config/package-selection	string ~tkubuntu-standard|~tkubuntu-desktop
