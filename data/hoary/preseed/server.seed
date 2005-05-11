@@ -1,5 +1,5 @@
 # Desktop system not installed; don't waste time and disk space copying it.
-archive-copier	archive-copier/copy	boolean	false
+d-i	archive-copier/copy	boolean	false
 # Don't install anything in the second stage apart from language packs.
 base-config	base-config/package-selection	string
 # No language support packages.

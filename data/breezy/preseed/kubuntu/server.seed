@@ -1,6 +1,6 @@
 # Desktop system not installed; don't waste time and disk space copying it.
-archive-copier	archive-copier/desktop-task	string kubuntu-standard
-archive-copier	archive-copier/ship-task	string
+d-i	archive-copier/desktop-task	string kubuntu-standard
+d-i	archive-copier/ship-task	string
 # Only install the standard system and language packs in the second stage.
 base-config	base-config/package-selection	string ~tkubuntu-standard
 # No language support packages.
