@@ -211,10 +211,6 @@ F9 f9.txt
 F0 f10.txt
 EOF
 
-(echo "Tools for DOS :" ; \
-	echo "rawrite2/       rawrite 2.0 : create disks from disk images (*.bin)"; \
-	) |todos > $CDDIR/tools/README.tools
-
 fi
 
 # write final lines to mkisofs_opts
