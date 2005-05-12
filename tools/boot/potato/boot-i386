@@ -89,6 +89,7 @@ if [ $N = "1" ] || [ $N = "1_NONUS" ] ; then
 
 cp -f $CDDIR/dists/$CODENAME/main/disks-$ARCH/current/dosutils/* $CDDIR/install/
 
+mkdir -p $CDDIR/tools
 (echo "Tools for DOS :" ; \
 	echo "lodlin/         load Linux kernel from DOS" ;\
 	echo "rawrite2/       rawrite 2.0 : create disks from disk images (*.bin)"; \

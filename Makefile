@@ -698,12 +698,11 @@ $(SDIR)/CD1/README.html:
 	done
 
 # Add the install stuff on the first CD
-installtools: ok bin-doc disks $(BDIR)/CD1/tools
-$(BDIR)/CD1/tools:
+installtools: ok bin-doc disks $(BDIR)/CD1/install
+$(BDIR)/CD1/install:
 	@echo "Adding install tools and documentation ..."
 	$(Q)set -e; \
 	 for DISK in $(FIRSTDISKS) ; do \
-		mkdir $(BDIR)/$$DISK/tools ; \
 		mkdir $(BDIR)/$$DISK/install ; \
 		if [ -x "$(BASEDIR)/tools/$(CODENAME)/installtools.sh" ]; then \
 			$(BASEDIR)/tools/$(CODENAME)/installtools.sh $(BDIR)/$$DISK ; \

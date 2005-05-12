@@ -57,6 +57,8 @@ cat <<EOF > boot1/etc/aboot.conf
 2:boot/linux root=/dev/ram initrd=boot/root.bin console=ttyS1
 EOF
 
+mkdir -p $CDDIR/tools
+
 mkdir $CDDIR/tools/rawrite1
 (cd $CDDIR/tools/rawrite1; \
    unzip -Lq $MIRROR/tools/rawrite1.zip )
