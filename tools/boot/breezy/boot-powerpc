@@ -103,16 +103,16 @@ BUILD_DATE=$(date +%Y%m%d)
  | sed "s/\${BUILD_DATE}/${BUILD_DATE}/g" \
  | sed "s#Ubuntu#$CAPPROJECT#g" \
  > boot.msg
-(if [ "$CDIMAGE_INSTALL" = 1 ]; then
-     sed 's/\${DEFAULT}/install/g' $BASEDIR/data/$CODENAME/yaboot/yaboot.conf
- else
+(if [ "$CDIMAGE_LIVE" = 1 ]; then
      sed 's/\${DEFAULT}/live/g' $BASEDIR/data/$CODENAME/yaboot/yaboot.conf
- fi
- if [ "$CDIMAGE_INSTALL" = 1 ]; then
-     cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.install
+ else
+     sed 's/\${DEFAULT}/install/g' $BASEDIR/data/$CODENAME/yaboot/yaboot.conf
  fi
  if [ "$CDIMAGE_LIVE" = 1 ]; then
      cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.live
+ fi
+ if [ "$CDIMAGE_INSTALL" = 1 ]; then
+     cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.install
  fi) \
  | sed "s/CODENAME/${CODENAME}/g" \
  | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
