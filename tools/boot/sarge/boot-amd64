@@ -169,6 +169,7 @@ EOF
 
 fi
 
+mkdir -p $CDDIR/tools
 (echo "Tools for DOS :" ; \
 	echo "lodlin/         load Linux kernel from DOS" ;\
 	echo "rawrite2/       rawrite 2.0 : create disks from disk images (*.bin)"; \
