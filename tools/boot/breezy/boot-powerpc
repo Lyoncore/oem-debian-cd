@@ -123,7 +123,7 @@ cp $BASEDIR/data/$CODENAME/yaboot/ofboot.b ofboot.b
 mkdir "$CDDIR/etc"
 cp -a "$CDDIR/install/yaboot.conf" "$CDDIR/etc/yaboot.conf"
 
-for subarch in powerpc power3 power4
+for subarch in powerpc powerpc64
 do
   if [ ! "$DI_WWW_HOME" ];then
 	DI_DIR="$MIRROR/dists/$DI_DIST/main/$DI_TYPE-$ARCH/current/images/$subarch/cdrom"
