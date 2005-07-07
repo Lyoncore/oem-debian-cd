@@ -126,6 +126,13 @@ gzip -dc $BASEDIR/data/$DI_CODENAME/sbm.bin.gz > $CDDIR/install/sbm.bin
 # Keep the original file timestamp
 touch -r $BASEDIR/data/$DI_CODENAME/sbm.bin.gz $CDDIR/install/sbm.bin
 cp -p $BASEDIR/data/$DI_CODENAME/README.sbm $CDDIR/install/
+# Extract memtest86+ from the archive
+MEMTEST86DEB="$($BASEDIR/tools/apt-selection cache show memtest86+ | \
+	grep ^Filename | awk '{print $2}')"
+ar p "$MIRROR/$MEMTEST86DEB" data.tar.gz | \
+	tar xzf - -C $CDDIR/install/ ./boot/memtest86+.bin
+mv $CDDIR/install/boot/memtest86+.bin $CDDIR/install/
+rm -rf $CDDIR/install/boot
 # Isolinux help files come from d-i.
 cat cdrom/debian-cd_info.tar.gz | (cd boot$N/isolinux/; tar zx)
 # Override splash screen.
@@ -192,6 +199,8 @@ LABEL rescue
 EOF
 fi
 cat >> boot$N/isolinux/isolinux.cfg <<EOF
+LABEL memtest
+  kernel /boot/memtest86+.bin
 DISPLAY isolinux.txt
 TIMEOUT 0
 PROMPT 1
