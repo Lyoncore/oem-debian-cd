@@ -111,7 +111,7 @@ export ARCH=`dpkg --print-installation-architecture`
 #	      images, however. Also, if you are using an NFS partition for
 #	      some part of this, you must use this option.
 # Paths to the mirrors
-export MIRROR=$CDIMAGE_ROOT/ftp
+export MIRROR=${MIRROR:-$CDIMAGE_ROOT/ftp}
 
 # Comment the following line if you don't have/want non-US
 #export NONUS=/ftp/debian-non-US
