@@ -307,6 +307,11 @@ foreach (sort { $a <=> $b } keys %cds) {
 	close CDLIST;
 	msg(0, "CD $_ will have $count packages.\n");
 }
+if ($numcds == 0) {
+	open(CDLIST, "> $dir/1.packages")
+			|| die "Can't write in $dir/1.packages: $!\n";
+	close CDLIST;
+}
 
 close LOG;
 
