@@ -19,6 +19,13 @@ do
 		# TODO: nasty upcall to cdimage wrapper scripts
 		export MIRROR="$(find-mirror "$ARCH")"
 	fi
+	case $ARCH in
+		hppa|ia64|sparc)
+			# jigdo-file seems to hang on ia64 at least, and
+			# life's too short ...
+			export DOJIGDO=0
+			;;
+	esac
 	echo " ... cleaning"
 	make distclean
 	make ${CODENAME}_status
