@@ -11,7 +11,8 @@
 #endif
 
 #if (CDIMAGE_INSTALL == 1)
-#include <kubuntu/breezy/base>
+#include <kubuntu/breezy/minimal>
+#include <kubuntu/breezy/standard>
 #include <kubuntu/breezy/desktop>
 #include <kubuntu/breezy/ship>
 #if (CDIMAGE_DVD == 1)
