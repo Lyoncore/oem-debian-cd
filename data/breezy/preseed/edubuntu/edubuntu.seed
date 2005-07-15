@@ -1,0 +1,5 @@
+# Adjust task names for Edubuntu.
+d-i	archive-copier/desktop-task	string edubuntu-standard|edubuntu-desktop
+d-i	archive-copier/ship-task	string edubuntu-ship
+# Install the Edubuntu desktop.
+base-config	base-config/package-selection	string ~tedubuntu-standard|~tedubuntu-desktop
