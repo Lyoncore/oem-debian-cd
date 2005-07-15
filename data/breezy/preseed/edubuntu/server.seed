@@ -1,0 +1,7 @@
+# Desktop system not installed; don't waste time and disk space copying it.
+d-i	archive-copier/desktop-task	string edubuntu-standard
+d-i	archive-copier/ship-task	string
+# Only install the standard system and language packs in the second stage.
+base-config	base-config/package-selection	string ~tedubuntu-standard
+# No language support packages.
+base-config	base-config/install-language-support	boolean false
