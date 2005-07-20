@@ -204,6 +204,7 @@ fi
 cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL memtest
   kernel /install/memtest86+.bin
+  append -
 DISPLAY isolinux.txt
 TIMEOUT 0
 PROMPT 1
