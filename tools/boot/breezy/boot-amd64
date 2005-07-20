@@ -180,10 +180,13 @@ EOF
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL install
   kernel /install/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=12288 root=/dev/rd/0 rw --
 LABEL linux
   kernel /install/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=12288 root=/dev/rd/0 rw --
 LABEL cdrom
   kernel /install/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=12288 root=/dev/rd/0 rw --
 LABEL expert
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED DEBCONF_PRIORITY=low vga=normal initrd=/install/initrd.gz ramdisk_size=12288 root=/dev/rd/0 rw --
