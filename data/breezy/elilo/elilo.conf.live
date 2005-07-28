@@ -28,7 +28,7 @@ image=/linux
     description="Linux 2.6 [VGA] [Server install]"
     initrd=/initrd.gz
     root=/dev/ram
-    append="preseed/file=/cdrom/preseed/server.seed ramdisk_size=8192 --"
+    append="preseed/file=/cdrom/preseed/server.seed ramdisk_size=16384 --"
     read-only
 
 image=/linux
@@ -68,7 +68,7 @@ image=/linux
     description="Linux 2.6 [9600 baud serial console] [Server install] [Text frontend]"
     initrd=/initrd.gz
     root=/dev/ram
-    append="preseed/file=/cdrom/preseed/server.seed ramdisk_size=8192 console=ttyS0,9600n8 DEBIAN_FRONTEND=text --"
+    append="preseed/file=/cdrom/preseed/server.seed ramdisk_size=16384 console=ttyS0,9600n8 DEBIAN_FRONTEND=text --"
     read-only
 
 image=/linux
@@ -76,7 +76,7 @@ image=/linux
     description="Linux 2.6 [9600 baud serial console] [Server install]"
     initrd=/initrd.gz
     root=/dev/ram
-    append="preseed/file=/cdrom/preseed/server.seed ramdisk_size=8192 console=ttyS0,9600n8 --"
+    append="preseed/file=/cdrom/preseed/server.seed ramdisk_size=16384 console=ttyS0,9600n8 --"
     read-only
 
 image=/linux
@@ -100,7 +100,7 @@ image=/linux
     description="Linux 2.6 [38400 baud serial console] [Server install]"
     initrd=/initrd.gz
     root=/dev/ram
-    append="preseed/file=/cdrom/preseed/server.seed ramdisk_size=8192 console=ttyS0,38400n8 --"
+    append="preseed/file=/cdrom/preseed/server.seed ramdisk_size=16384 console=ttyS0,38400n8 --"
     read-only
 
 image=/linux
@@ -124,5 +124,5 @@ image=/linux
     description="Linux 2.6 [115200 baud serial console] [Server install]"
     initrd=/initrd.gz
     root=/dev/ram
-    append="preseed/file=/cdrom/preseed/server.seed ramdisk_size=8192 console=ttyS0,115200n8 --"
+    append="preseed/file=/cdrom/preseed/server.seed ramdisk_size=16384 console=ttyS0,115200n8 --"
     read-only
