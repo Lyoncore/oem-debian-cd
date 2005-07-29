@@ -1,3 +1,5 @@
+# Adjust the default hostname.
+d-i	netcfg/get_hostname	string edubuntu
 # Adjust task names for Edubuntu.
 d-i	archive-copier/desktop-task	string edubuntu-standard|edubuntu-desktop
 d-i	archive-copier/ship-task	string edubuntu-ship

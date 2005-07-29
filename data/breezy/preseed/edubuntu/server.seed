@@ -1,3 +1,5 @@
+# Adjust the default hostname.
+d-i	netcfg/get_hostname	string edubuntu
 # Default to manual network configuration.
 d-i	netcfg/disable_dhcp	boolean true
 # Desktop system not installed; don't waste time and disk space copying it.
