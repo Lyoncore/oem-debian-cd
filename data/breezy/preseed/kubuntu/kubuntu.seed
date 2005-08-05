@@ -4,4 +4,4 @@ d-i	archive-copier/ship-task	string kubuntu-ship
 # Install the Kubuntu desktop.
 base-config	base-config/package-selection	string ~tkubuntu-standard|~tkubuntu-desktop
 # Install KDE translation packages.
-base-config	base-config/language-pack-patterns	string language-pack-$LL kde-i18n-$LL
+base-config	base-config/language-pack-patterns	string language-pack-$LL language-pack-kde-$LL kde-i18n-$LL
