@@ -124,9 +124,9 @@ cp $BASEDIR/data/$CODENAME/yaboot/ofboot.b ofboot.b
 mkdir "$CDDIR/etc"
 cp -a "$CDDIR/install/yaboot.conf" "$CDDIR/etc/yaboot.conf"
 mkdir "$CDDIR/ppc"
-sed "s/\${CAPPROJECT}/$CAPPROJECT/g" \
+< $BASEDIR/data/$CODENAME/yaboot/bootinfo.txt \
+    sed "s/\${CAPPROJECT}/$CAPPROJECT/g" \
   | sed "s/\${CODENAME}/$CODENAME/g" \
-  < $BASEDIR/data/$CODENAME/yaboot/bootinfo.txt \
   > "$CDDIR/ppc/bootinfo.txt"
 
 for subarch in powerpc powerpc64
