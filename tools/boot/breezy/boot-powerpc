@@ -47,6 +47,7 @@ echo -n "--netatalk -hfs -probe -map $BASEDIR/data/hfs.map" \
         > $N.mkisofs_opts
 # We are still missing this for prep
 #echo -n " -prep-boot install/powerpc/vmlinuz-prep.initrd" >> $N.mkisofs_opts
+echo -n " -chrp-boot" >> $N.mkisofs_opts
 # For newworld Mac booting  - Note, no spaces in volid!
 echo -n " -part -no-desktop -hfs-bless CD$N/install -hfs-volid ${CAPPROJECT}_PowerPC_${CODENAME} " \
 	>> $N.mkisofs_opts
@@ -122,6 +123,11 @@ cp $BASEDIR/data/$CODENAME/yaboot/ofboot.b ofboot.b
 # for CHRP systems
 mkdir "$CDDIR/etc"
 cp -a "$CDDIR/install/yaboot.conf" "$CDDIR/etc/yaboot.conf"
+mkdir "$CDDIR/ppc"
+sed "s/\${CAPPROJECT}/$CAPPROJECT/g" \
+  | sed "s/\${CODENAME}/$CODENAME/g" \
+  < $BASEDIR/data/$CODENAME/yaboot/bootinfo.txt \
+  > "$CDDIR/ppc/bootinfo.txt"
 
 for subarch in powerpc powerpc64
 do
