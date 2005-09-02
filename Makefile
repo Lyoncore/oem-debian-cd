@@ -15,7 +15,11 @@ ifndef VERBOSE_MAKE
 Q=@
 endif
 ifndef SIZELIMIT
+ifeq ($(PROJECT),edubuntu)
+export SIZELIMIT=$(shell echo -n $$[ 690 * 1024 * 1024 ])
+else
 export SIZELIMIT=$(shell echo -n $$[ 640 * 1024 * 1024 ])
+endif
 endif
 ifndef TASK
 TASK=$(BASEDIR)/tasks/$(CAPPROJECT)_$(CODENAME)
