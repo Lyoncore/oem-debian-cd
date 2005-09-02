@@ -15,6 +15,7 @@
 #include <edubuntu/breezy/standard>
 #if (CDIMAGE_INSTALL == 1)
 #include <edubuntu/breezy/desktop>
+#include <edubuntu/breezy/server>
 #include <edubuntu/breezy/ship>
 #if (CDIMAGE_DVD == 1)
 #include <edubuntu/breezy/supported>
