@@ -32,14 +32,6 @@ image=/install/powerpc/vmlinux
 	initrd-size=8192
 	read-only
 
-image=/install/powerpc/vmlinux
-	label=rescue-powerpc
-	alias=rescue
-	initrd=/install/powerpc/initrd.gz
-	append="rescue/enable=true --"
-	initrd-size=8192
-	read-only
-
 # PowerPC64 subarch
 image=/install/powerpc64/vmlinux
 	label=install-powerpc64
@@ -66,12 +58,5 @@ image=/install/powerpc64/vmlinux
 	label=server-expert-powerpc64
 	initrd=/install/powerpc64/initrd.gz
 	append="preseed/file=/cdrom/preseed/server.seed DEBCONF_PRIORITY=low --"
-	initrd-size=8192
-	read-only
-
-image=/install/powerpc64/vmlinux
-	label=rescue-powerpc64
-	initrd=/install/powerpc64/initrd.gz
-	append="rescue/enable=true --"
 	initrd-size=8192
 	read-only
