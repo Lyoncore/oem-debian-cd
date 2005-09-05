@@ -213,11 +213,8 @@ export ISOLINUX=1
 if [ "$CDIMAGE_DVD" = 1 ]; then
   export DEFBINSIZE=4600
   export DEFSRCSIZE=4600
-elif [ "$PROJECT" = edubuntu ]; then
-  export DEFBINSIZE=700
-  export DEFSRCSIZE=695
 else
-  export DEFBINSIZE=650
+  export DEFBINSIZE=700
   export DEFSRCSIZE=645
 fi
 
