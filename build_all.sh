@@ -70,7 +70,7 @@ do
 	echo " ... building the images"
 	if [ "$ARCH" = "i386" ] && [ "$CDIMAGE_INSTALL" = 1 ] && \
 	   [ "$CDIMAGE_DVD" != 1 ] && [ "$DIST" != warty ] && \
-	   [ "$SPECIAL" != 1 ]; then
+	   [ "$SPECIAL" != 1 ] && [ "$CDIMAGE_NOSOURCE" != 1 ]; then
 		make list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 
 		export OUT="$TMP_OUT/$ARCH"; mkdir -p $OUT
