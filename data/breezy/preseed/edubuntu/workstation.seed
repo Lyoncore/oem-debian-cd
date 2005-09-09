@@ -3,6 +3,8 @@ d-i	netcfg/get_hostname	string edubuntu
 # Adjust task names for Edubuntu.
 d-i	archive-copier/desktop-task	string edubuntu-standard|edubuntu-desktop
 d-i	archive-copier/ship-task	string edubuntu-ship
+# Don't build an LTSP client chroot.
+d-i	ltsp-client-builder/run	boolean false
 # Install the Edubuntu desktop.
 base-config	base-config/package-selection	string ~tedubuntu-standard|~tedubuntu-desktop
 # Install both GNOME and KDE translation packages.
