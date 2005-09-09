@@ -2,8 +2,8 @@
 d-i	netcfg/get_hostname	string edubuntu
 # Default to manual network configuration.
 d-i	netcfg/disable_dhcp	boolean true
-d-i	netcfg/get_ipaddress	string 192.168.0.1
-d-i	netcfg/get_ipaddress	seen false
+#d-i	netcfg/get_ipaddress	string 192.168.0.1
+#d-i	netcfg/get_ipaddress	seen false
 # Adjust task names for Edubuntu, and copy the server.
 d-i	archive-copier/desktop-task	string edubuntu-standard|edubuntu-desktop|edubuntu-server
 d-i	archive-copier/ship-task	string edubuntu-ship
