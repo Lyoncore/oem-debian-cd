@@ -134,7 +134,7 @@ MEMTEST86DEB="$($BASEDIR/tools/apt-selection cache show memtest86+ | \
 	grep ^Filename | awk '{print $2}')"
 ar p "$MIRROR/$MEMTEST86DEB" data.tar.gz | \
 	tar xzf - -C $CDDIR/install/ ./boot/memtest86+.bin
-mv $CDDIR/install/boot/memtest86+.bin $CDDIR/install/
+mv $CDDIR/install/boot/memtest86+.bin $CDDIR/install/mt86plus.bin
 rm -rf $CDDIR/install/boot
 # Isolinux help files come from d-i.
 cat cdrom/debian-cd_info.tar.gz | (cd boot$N/isolinux/; tar zx)
@@ -217,7 +217,7 @@ LABEL rescue
   kernel /install/vmlinuz
   append $KERNEL_PARAMS rescue/enable=true vga=normal initrd=/install/initrd.gz ramdisk_size=12288 root=/dev/rd/0 rw --
 LABEL memtest
-  kernel /install/memtest86+.bin
+  kernel /install/mt86plus.bin
   append -
 DISPLAY isolinux.txt
 TIMEOUT 0
