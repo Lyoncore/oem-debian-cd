@@ -206,7 +206,7 @@ LABEL workstation
 EOF
     fi
 fi
-if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != edubuntu ]; then
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL server
   kernel /install/vmlinuz
