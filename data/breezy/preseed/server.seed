@@ -1,5 +1,5 @@
 # Don't install usplash.
-d-i	base-installer/kernel/linux/extra-packages-2.6	string usplash
+d-i	base-installer/kernel/linux/extra-packages-2.6	string
 # Desktop system not installed; don't waste time and disk space copying it.
 d-i	archive-copier/desktop-task	string ubuntu-standard
 d-i	archive-copier/ship-task	string
