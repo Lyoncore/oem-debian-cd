@@ -1,0 +1,2 @@
+# Install oem-config along with the desktop.
+base-config	base-config/package-selection	string ~tkubuntu-standard|~tkubuntu-desktop|oem-config
