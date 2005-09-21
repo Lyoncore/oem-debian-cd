@@ -94,7 +94,7 @@ fi
 # generate/download images for "powerpc"
 # (missing: bootvars1.3b.sit.hqx, BootX_1.2.2.sit, boot-floppy-hfs.img)
 BUILD_DATE=$(date +%Y%m%d)
-(if [ "$CDIMAGE_DVD" = 1 ]; then
+(if [ "$CDIMAGE_DVD" = 1 ] && [ "$CDIMAGE_LIVE" = 1 ]; then
      cat $BASEDIR/data/$CODENAME/yaboot/boot.msg.dvd
  elif [ "$CDIMAGE_INSTALL" = 1 ]; then
      cat $BASEDIR/data/$CODENAME/yaboot/boot.msg.install
