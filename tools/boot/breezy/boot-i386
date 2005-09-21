@@ -150,7 +150,7 @@ else
 	mv "$x" "${x%.live}"
     done
 fi
-if [ "$CDIMAGE_DVD" = 1 ]; then
+if [ "$CDIMAGE_DVD" = 1 ] && [ "$CDIMAGE_LIVE" = 1 ]; then
     # overrides; these should go in debian-installer instead
     for x in $BASEDIR/data/$DI_CODENAME/isolinux/*.txt.dvd; do
 	base="${x##*/}"
