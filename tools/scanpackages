@@ -276,7 +276,9 @@ fi
 # Creating the indices directory
 if [ ! -d "$BDIR/indices" ]; then
     mkdir $BDIR/indices
-    cp $MIRROR/indices/* $BDIR/indices/
+    # always use $CDIMAGE_ROOT/ftp for now, rather than $MIRROR;
+    # ports.ubuntu.com is missing indices/
+    cp $CDIMAGE_ROOT/ftp/indices/* $BDIR/indices/
     if [ -n "$LOCALDEBS" -a -d $LOCALDEBS/indices ]; then
          cp $LOCALDEBS/indices/* $BDIR/indices/
     fi
