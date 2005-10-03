@@ -23,18 +23,6 @@ if [ -z "$DI_TYPE" ]; then
    DI_TYPE="$($BASEDIR/tools/find-newest-installer)"
 fi
 
-case $PROJECT in
-    edubuntu)
-	DEFAULT_PRESEED='preseed/file=/cdrom/preseed/edubuntu.seed'
-	;;
-    kubuntu)
-	DEFAULT_PRESEED='preseed/file=/cdrom/preseed/kubuntu.seed'
-	;;
-    *)
-	DEFAULT_PRESEED=
-	;;
-esac
-
 :> $1.mkisofs_opts
 
 "$BASEDIR/tools/sorting_weights" "$N"
