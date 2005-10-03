@@ -3,6 +3,10 @@ d-i	base-installer/kernel/linux/extra-packages-2.6	string usplash kubuntu-artwor
 # Adjust task names for Kubuntu, and copy oem-config too.
 d-i	archive-copier/desktop-task	string kubuntu-standard|kubuntu-desktop|oem-config
 d-i	archive-copier/ship-task	string kubuntu-ship
+# Create a special user with a preconfigured uid.
+passwd	passwd/user-fullname	string OEM Configuration (temporary user)
+passwd	passwd/username	string oem
+passwd	passwd/user-uid	string 29999
 # Install oem-config along with the desktop.
 base-config	base-config/package-selection	string ~tkubuntu-standard|~tkubuntu-desktop|oem-config
 # Install KDE translation packages.
