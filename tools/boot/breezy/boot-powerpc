@@ -155,6 +155,13 @@ do
   fi
   cp -a "$DI_DIR" "$subarch"
   rm -rf di_stuff
+  # Remove special initrds we don't want. OldWorld isn't supported due to
+  # the lack of boot support, and space restrictions on the live CD are too
+  # tight to support PReP.
+  rm -f "$subarch/vmlinuz-coff.initrd"
+  if [ "$CDIMAGE_INSTALL" != 1 ]; then
+	rm -f "$subarch/vmlinuz-prep.initrd" "$subarch/vmlinuz-ppcbug.initrd"
+  fi
 done
 
 exit 0
