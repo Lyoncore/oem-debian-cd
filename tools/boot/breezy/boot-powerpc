@@ -123,11 +123,11 @@ BUILD_DATE=$(date +%Y%m%d)
      if [ "$PROJECT" = edubuntu ]; then
          cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.workstation
      fi
-     if [ "$PROJECT" != edubuntu ]; then
+     if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
          cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.oem
      fi
  fi
- if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+ if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
      cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.server
  fi) \
  | sed "s/CODENAME/${CODENAME}/g" \
