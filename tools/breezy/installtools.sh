@@ -28,12 +28,13 @@ fi
 
 # Preseed files for special install types
 mkdir -p $DIR/preseed
-for file in $BASEDIR/data/$CODENAME/preseed/*.seed; do
-    cp -a "$file" $DIR/preseed/
-done
 # TODO: odd path?
 if [ -d $BASEDIR/data/$CODENAME/preseed/$PROJECT ]; then
     for file in $BASEDIR/data/$CODENAME/preseed/$PROJECT/*.seed; do
+        cp -a "$file" $DIR/preseed/
+    done
+else
+    for file in $BASEDIR/data/$CODENAME/preseed/*.seed; do
         cp -a "$file" $DIR/preseed/
     done
 fi
