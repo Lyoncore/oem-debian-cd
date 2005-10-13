@@ -162,6 +162,13 @@ if [ "$CDIMAGE_DVD" = 1 ] && [ "$CDIMAGE_LIVE" = 1 ]; then
 	cp -p "$x" "boot$N/isolinux/${base%.dvd}"
     done
 fi
+if [ "$PROJECT" = ubuntu-server ]; then
+    # last-minute override for ubuntu-server
+    for x in $BASEDIR/data/$DI_CODENAME/isolinux/*.txt.server; do
+	base="${x##*/}"
+	cp -p "$x" "boot$N/isolinux/${base%.server}"
+    done
+fi
 sed -e "s#Ubuntu#$CAPPROJECT#g" boot$N/isolinux/syslinux.txt \
     > boot$N/isolinux/isolinux.txt
 rm -f boot$N/isolinux/syslinux.txt
