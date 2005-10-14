@@ -83,6 +83,12 @@ case $DIST in
     export DEBVERSION=5.10
     export OFFICIAL="Release"
     ;;
+  dapper)
+    export CODENAME=dapper
+    export CAPCODENAME='Dapper Drake'
+    export DEBVERSION=6.04
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
