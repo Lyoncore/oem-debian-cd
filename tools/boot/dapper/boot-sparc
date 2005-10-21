@@ -64,7 +64,7 @@ silo_deb=`ls $MIRROR/pool/main/s/silo/silo_*.deb | tail -1`
 cat $BASEDIR/data/$CODENAME/sparc/silo.conf \
  | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
  > $inst/boot/silo.conf
-BUILD_DATE=$(date +%Y%m%d)
+BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
 cat $BASEDIR/data/$CODENAME/sparc/ubuntu.txt \
  | sed "s/\${MEDIA_TYPE}/CDROM/" \
  | sed "s/\${DEBIAN_VERSION}/${CODENAME}/g" \
