@@ -154,7 +154,7 @@ INSTALLER_VERSION := $(shell readlink $(MIRROR)/dists/$(CODENAME)/main/$(INSTALL
 
 PrintVars:
 	@num=1; \
-	DATE=`date +%Y%m%d` ; \
+	DATE=$${CDIMAGE_DATE:-`date +%Y%m%d`} ; \
 	echo BINDISKINFO: ; \
         echo $(BINDISKINFO) ; \
 	echo SRCDISKINFO: ; \
@@ -463,7 +463,7 @@ $(BDIR)/CD1/.disk/info:
 	@echo "Generating the binary CD labels and their volume ids ..."
 	$(Q)set -e; \
 	 nb=`ls -l $(BDIR)/?.packages | wc -l | tr -d " "`; num=0;\
-	 DATE=`date +%Y%m%d`; \
+	 DATE=$${CDIMAGE_DATE:-`date +%Y%m%d`}; \
 	for i in $(BDIR)/*.packages; do \
 		num=$${i%%.packages}; num=$${num##$(BDIR)/}; \
 		dir=$(BDIR)/CD$$num; \
@@ -494,7 +494,7 @@ $(SDIR)/CD1/.disk/info:
 	@echo "Generating the source CD labels and their volume ids ..."
 	$(Q)set -e; \
 	 nb=`ls -l $(SDIR)/?.sources | wc -l | tr -d " "`; num=0;\
-	 DATE=`date +%Y%m%d`; \
+	 DATE=$${CDIMAGE_DATE:-`date +%Y%m%d`}; \
 	for i in $(SDIR)/*.sources; do \
 		num=$${i%%.sources}; num=$${num##$(SDIR)/}; \
 		dir=$(SDIR)/CD$$num; \
