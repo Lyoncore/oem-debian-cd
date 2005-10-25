@@ -67,6 +67,11 @@ if [ ! -e "$APTTMP/$CODENAME-$ARCH/apt/sources.list" ]; then
 	  echo "deb file:${SECURITY:-$MIRROR} $CODENAME-security $sections" \
 	  >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
         fi
+	# Post-release updates
+	if [ "${UPDATES:-0}" != "0" ]; then
+	  echo "deb file:$MIRROR $CODENAME-updates $sections" \
+	  >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	fi
 	# Debian-installer
 	if [ -e "$MIRROR/dists/$DI_CODENAME/main/debian-installer" ]; then
 	  echo "deb file:$MIRROR $DI_CODENAME main/debian-installer" \
