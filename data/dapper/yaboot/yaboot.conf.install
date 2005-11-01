@@ -4,7 +4,7 @@ image=/install/powerpc/vmlinux
 	label=install-powerpc
 	alias=install
 	initrd=/install/powerpc/initrd.gz
-	append="${DEFAULT_PRESEED} --"
+	append="${DEFAULT_PRESEED} quiet --"
 	initrd-size=8192
 	read-only
 
@@ -20,7 +20,7 @@ image=/install/powerpc/vmlinux
 image=/install/powerpc64/vmlinux
 	label=install-powerpc64
 	initrd=/install/powerpc64/initrd.gz
-	append="${DEFAULT_PRESEED} --"
+	append="${DEFAULT_PRESEED} quiet --"
 	initrd-size=8192
 	read-only
 

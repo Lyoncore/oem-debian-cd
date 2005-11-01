@@ -4,7 +4,7 @@ image=/install/powerpc/vmlinux
 	label=workstation-powerpc
 	alias=workstation
 	initrd=/install/powerpc/initrd.gz
-	append="preseed/file=/cdrom/preseed/workstation.seed --"
+	append="preseed/file=/cdrom/preseed/workstation.seed quiet --"
 	initrd-size=8192
 	read-only
 
@@ -12,6 +12,6 @@ image=/install/powerpc/vmlinux
 image=/install/powerpc64/vmlinux
 	label=workstation-powerpc64
 	initrd=/install/powerpc64/initrd.gz
-	append="preseed/file=/cdrom/preseed/workstation.seed --"
+	append="preseed/file=/cdrom/preseed/workstation.seed quiet --"
 	initrd-size=8192
 	read-only

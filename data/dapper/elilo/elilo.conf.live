@@ -13,7 +13,7 @@ image=/linux
     description="Linux [Live]"
     initrd=/initrd.gz
     root=/dev/ram
-    append="casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop ramdisk_size=1048576 --"
+    append="casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop ramdisk_size=1048576 quiet --"
     read-only
 
 image=/linux
