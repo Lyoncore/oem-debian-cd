@@ -983,7 +983,7 @@ src-images: ok src-md5list $(OUT) $(TDIR)/jigdofilelist
 				  "$(TDIR)/$(call CDSRCBASE,$$n).jigdo"; \
 		fi; \
 	done
-	rm -f "$(TDIR)/$(CODENAME)-src.jigdo"
+	rm -f "$(TDIR)/$(call CDSRCBASE,$$n).jigdo"
 
 # Generate the *.list files for the Pseudo Image Kit
 pi-makelist:
