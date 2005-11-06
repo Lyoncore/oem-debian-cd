@@ -1,3 +1,13 @@
+debian-cd (2.2.23) unstable; UNRELEASED
+
+  * Steve McIntyre
+    - Added sed hack to make sarge appear as "stable" in the Release
+      files we generate on the CDs.
+    - Download the release notes and try to fit them onto
+      CD#1. Updated sarge's README.html.in to point to them
+    - Added patch from Sven Luther to add a forth script to make
+	  ppc/pegasos easier to boot.  Closes: #311925
+	
 debian-cd (2.2.22) unstable; urgency=critical
 
   * Steve McIntyre
@@ -23,6 +33,8 @@ debian-cd (2.2.22) unstable; urgency=critical
     - Don't copy the whole d-i cdrom directory onto CD1 for amd64.
       Closes: #306926
     - Don't copy boot.img.gz onto amd64 CD1.
+    - Added Manty's testingcds script as an example of debian-cd use
+    - Updated sarge task lists to match the latest sarge CD build
   * Santiago Garcia
     - Allow the usage of a local mirror of the daily d-i builds to be used
       for sid_d-i builds, this is done by setting DI_WWW_HOME=default and
