@@ -6,6 +6,11 @@ debian-cd (2.2.22) UNRELEASED; urgency=low
     - Add etch directories; point sid symlinks to them.
     - Add rescue stanzas to etch isolinux.cfg. Rescue mode is supported in
       post-sarge d-i images only.
+    - Add support for f4.txt that is for systems with the 2.6 kernel.
+    - Exclude new mouse-modules udebs from CDs until something in d-i uses
+      them.
+    - debian-installer task files renamed to include distro name and branched
+      for etch.
   * Steve McIntyre
     - Make woody's post-boot-mipsel script cope with extra fields in the
       output of sarge's isoinfo
@@ -14,6 +19,7 @@ debian-cd (2.2.22) UNRELEASED; urgency=low
       have more than 9 CDs, so ?.packages doesn't cut it any more.
     - Don't copy the whole d-i cdrom directory onto CD1 for amd64.
       Closes: #306926
+    - Don't copy boot.img.gz onto amd64 CD1.
 
  -- Joey Hess <joeyh@debian.org>  Thu, 14 Apr 2005 00:59:49 -0400
 
