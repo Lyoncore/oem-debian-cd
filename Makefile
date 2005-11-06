@@ -961,7 +961,7 @@ src-images: ok src-md5list $(OUT) $(TDIR)/jigdofilelist
 		if [ "$(DOJIGDO)" != "0" ]; then \
 			$(JIGDOSCRIPT) \
 				"$(call CDSRCBASE,$$n).iso" \
-				"`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|$(ARCH)|g'`$(call CDSRCBASE,$$n).template" \
+				"`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|src|g'`$(call CDSRCBASE,$$n).template" \
 				$(SRCDISKINFOND) \
 				> $(TDIR)/$(call CDSRCBASE,$$n).jigdo; \
 		fi; \
@@ -999,7 +999,8 @@ bin-image: ok bin-md5list $(OUT)
 	@echo "Generating the binary iso image n°$(CD) ..."
 	@test -n "$(CD)" || (echo "Give me a CD=<num> parameter !" && false)
 	set -e; cd $(BDIR); opts=`cat $(CD).mkisofs_opts`; \
-	 volid=`cat $(CD).volid`; rm -f $(OUT)/$(call CDBASE,$(CD)).raw; \
+	 volid=`cat $(CD).volid`; \
+	 rm -f $(OUT)/$(call CDBASE,$(CD)).raw; \
 	 $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 	  -o $(OUT)/$(call CDBASE,$(CD)).raw $$opts CD$(CD); \
          if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
@@ -1011,7 +1012,8 @@ src-image: ok src-md5list $(OUT)
 	@echo "Generating the source iso image n°$(CD) ..."
 	@test -n "$(CD)" || (echo "Give me a CD=<num> parameter !" && false)
 	set -e; cd $(SDIR); opts=`cat $(CD).mkisofs_opts`; \
-	 volid=`cat $(CD).volid`; rm -f $(OUT)/$(call CDSRCBASE,$(CD)).raw; \
+	 volid=`cat $(CD).volid`; \
+	 rm -f $(OUT)/$(call CDSRCBASE,$(CD)).raw; \
          $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 	  -o $(OUT)/$(call CDSRCBASE,$(CD)).raw $$opts CD$(CD)
 
