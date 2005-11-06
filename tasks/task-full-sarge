@@ -13,7 +13,7 @@ rm dumpavail
  * The file task.list lists the tasks in the order they are to 
  * be included on the CDs.
  *
- * Last update: $Date: 2005/01/23 01:19:07 $
+ * Last update: $Date: 2005/04/12 19:31:59 $
  *
  */
 
@@ -163,7 +163,6 @@ xfonts-mplus
 xfonts-shinonome
 xfonts-terminus
 xmanpages-ja
-xprt-xprintorg
 xscreensaver
 xxkb
 kdeartwork
