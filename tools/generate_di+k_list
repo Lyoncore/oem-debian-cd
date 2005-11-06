@@ -57,6 +57,12 @@ EOF
 /bin/sed -n 's/Package: \(kernel-image-2.6.*-386\)$/\1/p' \
   $MIRROR/dists/$CODENAME/main/binary-i386/Packages|/usr/bin/tail -n 1 \
   >> debian-installer+kernel-$DI_CODENAME
+/bin/sed -n 's/Package: \(kernel-headers-2.4.*-386\)$/\1/p' \
+  $MIRROR/dists/$CODENAME/main/binary-i386/Packages|/usr/bin/tail -n 1 \
+  >> debian-installer+kernel-$DI_CODENAME
+/bin/sed -n 's/Package: \(kernel-headers-2.6.*-386\)$/\1/p' \
+  $MIRROR/dists/$CODENAME/main/binary-i386/Packages|/usr/bin/tail -n 1 \
+  >> debian-installer+kernel-$DI_CODENAME
 
 cat >> debian-installer+kernel-$DI_CODENAME << EOF
 #endif
@@ -75,6 +81,9 @@ else
 	  $MIRROR/dists/$CODENAME/main/binary-amd64/Packages|/usr/bin/tail -n 1 \
 	  >> debian-installer+kernel-$DI_CODENAME
 	/bin/sed -n 's/Package: \(kernel-pcmcia-modules-2.6.*-generic\)$/\1/p' \
+	  $MIRROR/dists/$CODENAME/main/binary-amd64/Packages|/usr/bin/tail -n 1 \
+	  >> debian-installer+kernel-$DI_CODENAME
+	/bin/sed -n 's/Package: \(kernel-headers-2.6.*-generic\)$/\1/p' \
 	  $MIRROR/dists/$CODENAME/main/binary-amd64/Packages|/usr/bin/tail -n 1 \
 	  >> debian-installer+kernel-$DI_CODENAME
 fi

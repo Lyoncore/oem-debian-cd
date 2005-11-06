@@ -110,7 +110,7 @@ fi
 #export DI_TYPE=installer
 
 # ... for arch  
-export ARCH=`dpkg --print-installation-architecture`
+export ARCH=`dpkg --print-architecture`
 
 # IMPORTANT : The 4 following paths must be on the same partition/device.
 #	      If they aren't then you must set COPYLINK below to 1. This
