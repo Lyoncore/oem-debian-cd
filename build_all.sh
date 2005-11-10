@@ -19,19 +19,15 @@ do
 		# TODO: nasty upcall to cdimage wrapper scripts
 		export MIRROR="$(find-mirror "$ARCH")"
 	fi
-	case $ARCH in
-		hppa|ia64|sparc)
-			# jigdo-file seems to hang on ia64 at least, and
-			# life's too short ...
-			export DOJIGDO=0
-			;;
-	esac
 	echo " ... cleaning"
 	make distclean
 	make ${CODENAME}_status
 	echo " ... checking your mirror"
 	if [ "$SKIPMIRRORCHECK" != "yes" ] ; then 
-		make mirrorcheck
+		make mirrorcheck-binary
+      	if [ "$ARCH" = "i386" ]; then
+            make mirrorcheck-source
+        fi
 	else
 		echo "WARNING: skipping mirrorcheck"
 	fi
@@ -77,15 +73,11 @@ do
 		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		echo Generating MD5Sums of the images
 		make imagesums
-		echo Generating list files for images
-		make pi-makelist
 
 		export OUT="$TMP_OUT/src"; mkdir -p $OUT
 		make src-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		echo Generating MD5Sums of the images
 		make imagesums
-		echo Generating list files for images
-		make pi-makelist
 	else
 		make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		export OUT=$TMP_OUT/$ARCH; mkdir -p $OUT
@@ -104,8 +96,6 @@ do
 		fi
 		echo Generating MD5Sums of the images
 		make imagesums
-		echo Generating list files for images
-		make pi-makelist
 	fi
 	echo "--------------- `date` ---------------"
 done
