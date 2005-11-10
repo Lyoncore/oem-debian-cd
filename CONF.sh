@@ -29,11 +29,11 @@ unset NODEPENDS         || true
 unset NORECOMMENDS      || true
 unset NOSUGGESTS        || true
 unset DOJIGDO           || true
-unset JIGDOCMD          || true
 unset JIGDOTEMPLATEURL  || true
 unset JIGDOFALLBACKURLS || true
 unset JIGDOINCLUDEURLS  || true
 unset JIGDOSCRIPT       || true
+unset JIGDO_OPTS        || true
 unset DEFBINSIZE        || true
 unset DEFSRCSIZE        || true
 unset FASTSUMS          || true
@@ -248,16 +248,10 @@ export NOSUGGESTS=1
 # Produce jigdo files:
 # 0/unset = Don't do jigdo at all, produce only the full iso image.
 # 1 = Produce both the iso image and jigdo stuff.
-# 2 = Produce ONLY jigdo stuff by piping mkisofs directly into jigdo-file,
-#     no temporary iso image is created (saves lots of disk space).
-#     NOTE: The no-temp-iso will not work for (at least) alpha and powerpc
-#     since they need the actual .iso to make it bootable. For these archs,
-#     the temp-iso will be generated, but deleted again immediately after the
-#     jigdo stuff is made; needs temporary space as big as the biggest image.
-if [ "$CDIMAGE_DVD" = 1 ]; then
-  # disabled for now, takes ages
-  export DOJIGDO=0
-elif [ "$CDIMAGE_INSTALL" != 1 ]; then
+# 2 = Produce ONLY jigdo stuff; no iso image is created (saves lots
+#     of disk space).
+
+if [ "$CDIMAGE_INSTALL" != 1 ]; then
   # inappropriate
   export DOJIGDO=0
 elif [ "$DIST" = warty ]; then
@@ -269,11 +263,6 @@ elif [ "$SPECIAL" = 1 ]; then
 else
   export DOJIGDO=1
 fi
-#
-# jigdo-file command & options
-# Note: building the cache takes hours, so keep it around for the next run
-export JIGDOCMD="jigdo-file --cache=$TDIR/jigdo-cache.db"
-#
 # HTTP/FTP URL for directory where you intend to make the templates
 # available. You should not need to change this; the default value ""
 # means "template in same dir as the .jigdo file", which is usually
@@ -313,7 +302,7 @@ export JIGDOFALLBACKURLS="Debian=http://archive.ubuntu.com/ubuntu/"
 
 # If set, use the md5sums from the main archive, rather than calculating
 # them locally
-#export FASTSUMS=1
+export FASTSUMS=1
 
 # A couple of things used only by publish_cds, so it can tweak the
 # jigdo files, and knows where to put the results.
@@ -321,6 +310,32 @@ export JIGDOFALLBACKURLS="Debian=http://archive.ubuntu.com/ubuntu/"
 export PUBLISH_URL="http://cdimage.debian.org/jigdo-area"
 export PUBLISH_NONUS_URL="http://non-US.cdimage.debian.org/jigdo-area"
 export PUBLISH_PATH="/home/jigdo-area/"
+
+# Specify files and directories to *exclude* from jigdo processing. These
+# files on each CD are expected to be different to those on the mirror, or
+# are often subject to change. Any files matching entries in this list will
+# simply be placed straight into the template file.
+export JIGDO_EXCLUDE="'README*' /doc/ /md5sum.txt /.disk/ /pics/ 'Release*' 'Packages*' 'Sources*' 'Contents*'"
+
+# Specify files and directories to *exclude* from jigdo processing. These
+# files on each CD are expected to be different to those on the mirror, or
+# are often subject to change. Any files matching entries in this list will
+# simply be placed straight into the template file.
+export JIGDO_INCLUDE="/pool/"
+
+# Specify the minimum file size to consider for jigdo processing. Any files
+# smaller than this will simply be placed straight into the template file.
+export JIGDO_OPTS="-jigdo-min-file-size 0"
+
+for EXCL in $JIGDO_EXCLUDE
+do
+    JIGDO_OPTS="$JIGDO_OPTS -jigdo-exclude $EXCL"
+done
+
+for INCL in $JIGDO_INCLUDE
+do
+    JIGDO_OPTS="$JIGDO_OPTS -jigdo-force-md5 $INCL"
+done
 
 # Where to find the boot disks
 #export BOOTDISKS=$TOPDIR/ftp/skolelinux/boot-floppies
@@ -377,7 +392,5 @@ export OMIT_RELEASE_NOTES=0
 
 # Set this to override the defaul location
 #export RELEASE_NOTES_LOCATION="http://www.debian.org/releases/$CODENAME"
-
-SKIPMIRRORCHECK=yes
 
 COMPLETE=0

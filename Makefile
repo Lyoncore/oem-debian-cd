@@ -66,9 +66,6 @@ endif
 ifndef DOJIGDO
 export DOJIGDO=0
 endif
-ifndef JIGDOSCRIPT
-JIGDOSCRIPT=$(BASEDIR)/tools/jigdo_header
-endif
 
 ifndef UDEB_INCLUDE
 # Netinst/businesscard CD have different udeb_include files
@@ -103,6 +100,8 @@ strip_nonus_bin=$(BASEDIR)/tools/strip-nonUS-bin
 add_secured=$(BASEDIR)/tools/add_secured
 md5sum=/usr/bin/md5sum.textutils
 fastsums=$(BASEDIR)/tools/fast_sums
+jigdo_cleanup=$(BASEDIR)/tools/jigdo_cleanup
+grab_md5=$(BASEDIR)/tools/grab_md5
 add_live_filesystem=$(BASEDIR)/tools/add_live_filesystem
 find_newest_installer=$(BASEDIR)/tools/find-newest-installer
 
@@ -204,13 +203,6 @@ ifndef NONUS
 	@echo If we have FORCENONUSONCD1 set, we must also have NONUS set; false
 endif
 endif
-ifneq "$(DOJIGDO)" "0"
-ifndef JIGDOCMD
-	@echo JIGDOCMD undefined -- set up CONF.sh; false
-endif
-else
-export JIGDOCMD=false
-endif
 
 ## INITIALIZATION ##
 
@@ -237,11 +229,11 @@ bin-clean:
 	$(Q)rm -rf $(BDIR)/*_NONUS
 	$(Q)rm -f $(BDIR)/*.filelist*
 	$(Q)rm -f  $(BDIR)/packages-stamp $(BDIR)/bootable-stamp \
-	         $(BDIR)/upgrade-stamp $(BDIR)/secured-stamp
+	         $(BDIR)/upgrade-stamp $(BDIR)/secured-stamp $(BDIR)/md5-check
 src-clean:
 	$(Q)rm -rf $(SDIR)/CD[1234567890]*
 	$(Q)rm -rf $(SDIR)/*_NONUS
-	$(Q)rm -rf $(SDIR)/sources-stamp $(SDIR)/secured-stamp
+	$(Q)rm -rf $(SDIR)/sources-stamp $(SDIR)/secured-stamp $(SDIR)/md5-check
 
 # Completely cleans the current arch tree
 realclean: distclean
@@ -250,11 +242,9 @@ bin-distclean:
 	$(Q)echo "Cleaning the binary build directory"
 	$(Q)rm -rf $(BDIR)
 	$(Q)rm -rf $(ADIR)
-	$(Q)rm -rf $(TDIR)/jigdofilelist
 src-distclean:
 	$(Q)echo "Cleaning the source build directory"
 	$(Q)rm -rf $(SDIR)
-	$(Q)rm -rf $(TDIR)/jigdofilelist
 
 ## STATUS and APT ##
 
@@ -856,49 +846,16 @@ $(SDIR)/secured-stamp:
 	done
 	$(Q)touch $(SDIR)/secured-stamp
 
-# Make file list for jigdo (if DOJIGDO>0)
-# "Fake" depend on the unstable Packages.gz to make sure we only regenerate
-# this list when really necessary (saves many minutes per run).
-# Don't depend on anything else as this will not work as intended, so
-# make $(TDIR) ourselves just to be sure.
-$(TDIR)/jigdofilelist: $(MIRROR)/dists/$(CODENAME)/main/binary-$(ARCH)/Packages.gz
-	@echo "Generating file list for jigdo (if requested) ..."
-	$(Q)set -e; \
-	if [ "$(DOJIGDO)" != 0 ]; then \
-		mkdir -p $(TDIR); \
-		(find $(MIRROR)//dists/$(CODENAME)/main/$(INSTALLER_TYPE)-$(ARCH)/$(INSTALLER_VERSION)/ -type f -print; \
-		 find $(MIRROR)//dists/$(CODENAME)/main/disks-$(ARCH) \
-		     $(MIRROR)//dists/$(CODENAME) \
-		     $(MIRROR)//doc $(MIRROR)//indices \
-		     $(MIRROR)//pool $(MIRROR)//project $(MIRROR)//tools \
-		     '(' -type d -a -name 'binary-*' -a ! -name 'binary-$(ARCH)' ')' -prune -o \
-		     '(' -type d -a -name 'installer-*' ')' -prune -o \
-		     '(' -type d -a -name 'daily-installer-*' ')' -prune -o \
-		     '(' -type f -a -name 'Contents-*.gz' -a ! -name 'Contents-$(ARCH).gz' ')' -o \
-		     '(' -type f -a -name '*.*deb' -a ! '(' -name '*_$(ARCH).*deb' -o -name '*_all.*deb' ')' ')' -o \
-		     -type f -print) \
-		| egrep -v '/Contents|/README|INDEX$$|/Maintainers|/Release$$|/debian-keyring\.tar\.gz$$|/ls-lR|//doc/[^/]+/?[^/]*\.(txt|html)$$' \
-		> $(TDIR)/jigdofilelist; \
-		if [ -n "$(NONUS)" ]; then \
-			find $(NONUS)//dists/$(CODENAME) $(NONUS)// -type f \
-			| egrep -v '/Contents|/README|INDEX$$|/Maintainers|/Release$$|/debian-keyring\.tar\.gz$$|/ls-lR|//doc/[^/]+/?[^/]*\.(txt|html)$$' \
-			>> $(TDIR)/jigdofilelist; \
-		fi; \
-	fi
-
 # Generates all the images
 images: bin-images src-images
 
-# DOJIGDO postboot actions   (source has the appropriate subset)
-#    0      no     isofile
-#    0      yes    isofile  post
-#    1      no     isofile        jigdo            jigdoadd
-#    1      yes    isofile  post  jigdo            jigdoadd
-#    2      no                           isojigdo  jigdoadd
-#    2      yes    isofile  post  jigdo            jigdoadd  rmiso 
+# DOJIGDO actions   (for both binaries and source)
+#    0    isofile
+#    1    isofile + jigdo, cleanup_jigdo
+#    2    jigdo, cleanup_jigdo
 #
-bin-images: ok bin-md5list $(OUT) $(TDIR)/jigdofilelist
-	@echo "Generating the binary iso images ..."
+bin-images: ok bin-md5list $(OUT)
+	@echo "Generating the binary iso/jigdo images ..."
 	$(Q)set -e; \
 	 for file in $(BDIR)/*.packages; do \
 		dir=$${file%%.packages}; \
@@ -909,46 +866,44 @@ bin-images: ok bin-md5list $(OUT) $(TDIR)/jigdofilelist
 		opts=`cat $(BDIR)/$$n.mkisofs_opts`; \
 		volid=`cat $(BDIR)/$$n.volid`; \
 		rm -f $(OUT)/$(call CDBASE,$$n).raw; \
+		if [ "$(DOJIGDO)" = "0" ]; then \
+			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
+			  -o $(OUT)/$(call CDBASE,$$n).raw $$opts CD$$n; \
+		elif [ "$(DOJIGDO)" = "1" ]; then \
+			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
+			  -o $(OUT)/$(call CDBASE,$$n).raw \
+			  -jigdo-jigdo $(OUT)/$(call CDBASE,$$n).jigdo \
+			  -jigdo-template $(OUT)/$(call CDBASE,$$n).template \
+			  -jigdo-map Debian=$(MIRROR)/ \
+			  -jigdo-exclude boot$$n \
+			  -md5-list $(BDIR)/md5-check \
+			  $(JIGDO_OPTS) $$opts CD$$n; \
+		elif [ "$(DOJIGDO)" = "2" ]; then \
+			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
+			  -o /dev/null -v \
+			  -jigdo-jigdo $(OUT)/$(call CDBASE,$$n).jigdo \
+			  -jigdo-template $(OUT)/$(call CDBASE,$$n).template \
+			  -jigdo-map Debian=$(MIRROR)/ \
+			  -jigdo-exclude boot$$n \
+			  -md5-list $(BDIR)/md5-check \
+			  $(JIGDO_OPTS) $$opts CD$$n; \
+		fi; \
 		if [ "$(DOJIGDO)" != "0" ]; then \
-			$(JIGDOSCRIPT) \
-				"$(call CDBASE,$$n).iso" \
-				"`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|$(ARCH)|g'`$(call CDBASE,$$n).template" \
+			$(jigdo_cleanup) $(OUT)/$(call CDBASE,$$n).jigdo \
+				$(call CDBASE,$$n).iso $(BDIR)/CD$$n \
+				`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|$(ARCH)|g'`"$(call CDBASE,$$n).template" \
 				$(BINDISKINFOND) \
-				> $(TDIR)/$(call CDBASE,$$n).jigdo; \
-		fi; \
-		if [ "$(DOJIGDO)" != "2" -o -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
-			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
-			  -o $(OUT)/$(call CDBASE,$$n).raw $$opts CD$$n ; \
-			if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
-				$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) $$n $$dir \
-				 $(OUT)/$(call CDBASE,$$n).raw; \
-			fi; \
-			if [ "$(DOJIGDO)" != "0" ]; then \
-				$(BASEDIR)/tools/jigdo_create "$(OUT)/$(call CDBASE,$$n).raw" \
-				  "$(OUT)/$(call CDBASE,$$n).jigdo" \
-				  "$(OUT)/$(call CDBASE,$$n).template" \
-				  "$(TDIR)/$(call CDBASE,$$n).jigdo"; \
-			fi; \
-		else \
-			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
-			  $$opts CD$$n \
-			| $(BASEDIR)/tools/jigdo_create "-" \
-				  "$(OUT)/$(call CDBASE,$$n).jigdo" \
-				  "$(OUT)/$(call CDBASE,$$n).template" \
-				  "$(TDIR)/$(call CDBASE,$$n).jigdo"; \
-		fi; \
-		if [ "$(DOJIGDO)" = "2" ]; then \
-			rm -f $(OUT)/$(call CDBASE,$$n).raw; \
+				$(JIGDOFALLBACKURLS) ; \
 		fi; \
 	done
-	rm -f "$(TDIR)/$(call CDBASE,$$n).jigdo"
 ifeq ($(CDIMAGE_LIVE),1)
 	-cp -a $(LIVEIMAGES)/$(ARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
 endif
 
-src-images: ok src-md5list $(OUT) $(TDIR)/jigdofilelist
-	@echo "Generating the source iso images ..."
-	$(Q)set -e; \
+
+src-images: ok src-md5list $(OUT)
+	@echo "Generating the source iso/jigdo images ..."
+	$(Q)set -e; set -x; \
 	 for file in $(SDIR)/*.sources; do \
 		dir=$${file%%.sources}; \
 		n=$${dir##$(SDIR)/}; \
@@ -958,39 +913,33 @@ src-images: ok src-md5list $(OUT) $(TDIR)/jigdofilelist
 		opts=`cat $(SDIR)/$$n.mkisofs_opts`; \
 		volid=`cat $(SDIR)/$$n.volid`; \
 		rm -f $(OUT)/$(call CDSRCBASE,$$n).raw; \
-		if [ "$(DOJIGDO)" != "0" ]; then \
-			$(JIGDOSCRIPT) \
-				"$(call CDSRCBASE,$$n).iso" \
-				"`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|src|g'`$(call CDSRCBASE,$$n).template" \
-				$(SRCDISKINFOND) \
-				> $(TDIR)/$(call CDSRCBASE,$$n).jigdo; \
-		fi; \
-		if [ "$(DOJIGDO)" != "2" ]; then \
+		if [ "$(DOJIGDO)" = "0" ]; then \
 			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o $(OUT)/$(call CDSRCBASE,$$n).raw $$opts CD$$n ; \
-			if [ "$(DOJIGDO)" != "0" ]; then \
-				$(BASEDIR)/tools/jigdo_create "$(OUT)/$(call CDSRCBASE,$$n).raw" \
-				  "$(OUT)/$(call CDSRCBASE,$$n).jigdo" \
-				  "$(OUT)/$(call CDSRCBASE,$$n).template" \
-				  "$(TDIR)/$(call CDSRCBASE,$$n).jigdo"; \
-			fi; \
-		else \
+		elif [ "$(DOJIGDO)" = "1" ]; then \
 			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
-			  $$opts CD$$n \
-			| $(BASEDIR)/tools/jigdo_create "-" \
-				  "$(OUT)/$(call CDSRCBASE,$$n).jigdo" \
-				  "$(OUT)/$(call CDSRCBASE,$$n).template" \
-				  "$(TDIR)/$(call CDSRCBASE,$$n).jigdo"; \
+			  -o $(OUT)/$(call CDSRCBASE,$$n).raw \
+			  -jigdo-jigdo $(OUT)/$(call CDSRCBASE,$$n).jigdo \
+			  -jigdo-template $(OUT)/$(call CDSRCBASE,$$n).template \
+			  -jigdo-map Debian=$(MIRROR)/ \
+			  -md5-list $(SDIR)/md5-check \
+			  $(JIGDO_OPTS) $$opts CD$$n ; \
+		elif [ "$(DOJIGDO)" = "2" ]; then \
+			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
+			  -o /dev/null \
+			  -jigdo-jigdo $(OUT)/$(call CDSRCBASE,$$n).jigdo \
+			  -jigdo-template $(OUT)/$(call CDSRCBASE,$$n).template \
+			  -jigdo-map Debian=$(MIRROR)/ \
+			  -md5-list $(SDIR)/md5-check \
+			  $(JIGDO_OPTS) $$opts CD$$n ; \
 		fi; \
-	done
-	rm -f "$(TDIR)/$(call CDSRCBASE,$$n).jigdo"
-
-# Generate the *.list files for the Pseudo Image Kit
-pi-makelist:
-	$(Q)set -e; \
-	 cd $(OUT); for file in `find * -name \*.raw`; do \
-		$(BASEDIR)/tools/pi-makelist \
-			$$file > $${file%%.raw}.list; \
+		if [ "$(DOJIGDO)" != "0" ]; then \
+			$(jigdo_cleanup) $(OUT)/$(call CDSRCBASE,$$n).jigdo \
+				$(call CDSRCBASE,$$n).iso $(SDIR)/CD$$n \
+				`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|src|g'`"$(call CDSRCBASE,$$n).template" \
+				$(SRCDISKINFOND) \
+				$(JIGDOFALLBACKURLS) ; \
+		fi; \
 	done
 
 # Generate only one image number $(CD)
@@ -1047,8 +996,19 @@ readme:
 conf:
 	sensible-editor $(BASEDIR)/CONF.sh
 
-mirrorcheck: ok apt-update
-	$(Q)$(apt) cache dumpavail | $(mirrorcheck)
+mirrorcheck-binary: ok
+	rm -f $(BDIR)/md5-check
+	$(Q)$(grab_md5) $(MIRROR) $(ARCH) $(CODENAME) $(BDIR)/md5-check
+	if [ -n "$(NONUS)" ]; then \
+		$(grab_md5) $(NONUS) $(ARCH) $(CODENAME) $(BDIR)/md5-check; \
+	fi
+
+mirrorcheck-source: ok
+	rm -f $(SDIR)/md5-check
+	$(Q)$(grab_md5) $(MIRROR) source $(CODENAME) $(SDIR)/md5-check
+	if [ -n "$(NONUS)" ]; then \
+		$(grab_md5) $(NONUS) source $(CODENAME) $(SDIR)/md5-check; \
+	fi
 
 update-popcon:
 	rm -f popcon-inst

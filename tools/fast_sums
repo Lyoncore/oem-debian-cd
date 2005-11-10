@@ -18,7 +18,7 @@ my %md5 ;
 my $BDIR = shift @ARGV ;
 
 foreach my $sumsfile ($BDIR . "/indices/md5sums", $BDIR . "/indices-non-US/md5sums") {
-  if (open(MD5SUMS, $sumsfile)) {
+  if (open(MD5SUMS, $sumsfile) or (-e "$sumsfile.gz" and open(MD5SUMS, "-|", "zcat", "$sumsfile.gz"))) {
     while (<MD5SUMS>) {
       chomp;
       my ( $sum, $name ) = split(' ') ;
