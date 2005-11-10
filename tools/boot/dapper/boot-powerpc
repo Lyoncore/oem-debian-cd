@@ -146,14 +146,15 @@ mkdir "$CDDIR/ppc"
 
 for subarch in powerpc powerpc64
 do
+  cdrom="cdrom${subarch#powerpc}"
   if [ ! "$DI_WWW_HOME" ];then
-	DI_DIR="$MIRROR/dists/$DI_DIST/main/$DI_TYPE-$ARCH/current/images/$subarch/cdrom"
+	DI_DIR="$MIRROR/dists/$DI_DIST/main/$DI_TYPE-$ARCH/current/images/$subarch/$cdrom"
   else
 	DI_DIR="di_stuff"
 	for image in initrd.gz initrd.list vmlinux; do
 		dir="$(dirname "$image")"
 		mkdir -p "$DI_DIR/$dir"
-		wget "$DI_WWW_HOME/$subarch/cdrom/$image" -O "$DI_DIR/$image"
+		wget "$DI_WWW_HOME/$subarch/$cdrom/$image" -O "$DI_DIR/$image"
 	done
   fi
   cp -a "$DI_DIR" "$subarch"
