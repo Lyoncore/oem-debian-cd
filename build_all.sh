@@ -73,11 +73,15 @@ do
 		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		echo Generating MD5Sums of the images
 		make imagesums
+		echo Generating list files for images
+		make pi-makelist
 
 		export OUT="$TMP_OUT/src"; mkdir -p $OUT
 		make src-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		echo Generating MD5Sums of the images
 		make imagesums
+		echo Generating list files for images
+		make pi-makelist
 	else
 		make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		export OUT=$TMP_OUT/$ARCH; mkdir -p $OUT
@@ -96,6 +100,8 @@ do
 		fi
 		echo Generating MD5Sums of the images
 		make imagesums
+		echo Generating list files for images
+		make pi-makelist
 	fi
 	echo "--------------- `date` ---------------"
 done
