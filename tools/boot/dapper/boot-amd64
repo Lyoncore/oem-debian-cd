@@ -65,7 +65,7 @@ KTYPE[10]=""
 
 THISTYPE=${KTYPE[$NN]}
 
-BOOT_IMAGES="cdrom/initrd.gz cdrom/initrd.list cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
+BOOT_IMAGES="udeb.list cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
 DISK_IMAGES=""
 TAR_IMAGES="netboot/netboot.tar.gz"
 
@@ -88,7 +88,6 @@ if [ "$NN" = "1" ]; then
     cp -f $BASEDIR/data/$DI_CODENAME/isolinux.bin boot$N/isolinux/
     cp -lf cdrom/vmlinuz $CDDIR/install/
     cp -lf cdrom/initrd.gz $CDDIR/install/
-    cp -lf cdrom/initrd.list $CDDIR/install/
     echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " > $N.mkisofs_opts
 else
     if [ -n "$THISTYPE" ]; then
