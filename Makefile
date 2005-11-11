@@ -942,6 +942,14 @@ src-images: ok src-md5list $(OUT)
 		fi; \
 	done
 
+# Generate the *.list files for the Pseudo Image Kit
+pi-makelist:
+	$(Q)set -e; \
+	 cd $(OUT); for file in `find * -name \*.raw`; do \
+		$(BASEDIR)/tools/pi-makelist \
+			$$file > $${file%%.raw}.list; \
+	done
+
 # Generate only one image number $(CD)
 image: bin-image
 bin-image: ok bin-md5list $(OUT)
