@@ -169,9 +169,9 @@ if [ "$PROJECT" = ubuntu-server ]; then
 	cp -p "$x" "boot$N/isolinux/${base%.server}"
     done
 fi
-sed -e "s#Ubuntu#$CAPPROJECT#g" boot$N/isolinux/syslinux.txt \
+sed -e "s#Ubuntu#$CAPPROJECT#g" boot$N/isolinux/boot.txt \
     > boot$N/isolinux/isolinux.txt
-rm -f boot$N/isolinux/syslinux.txt
+rm -f boot$N/isolinux/boot.txt
 # Isolinux config file.
 cat > boot$N/isolinux/isolinux.cfg <<EOF
 DEFAULT /install/vmlinuz
