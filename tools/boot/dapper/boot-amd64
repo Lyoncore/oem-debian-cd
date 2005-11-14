@@ -85,7 +85,12 @@ done
 if [ "$NN" = "1" ]; then
     echo "Using ISOLINUX boot-disks image on CD$N"
     mkdir -p boot$N/isolinux
-    cp -f $BASEDIR/data/$DI_CODENAME/isolinux.bin boot$N/isolinux/
+    SYSLINUXDEB="$($BASEDIR/tools/apt-selection cache show syslinux | \
+	grep ^Filename | awk '{print $2}')"
+    (ar p "$MIRROR/$SYSLINUXDEB" data.tar.gz | \
+	tar zxf - -C . ./usr/lib/syslinux/isolinux.bin)
+    mv usr/lib/syslinux/isolinux.bin boot$N/isolinux/
+    rm -rf usr
     cp -lf cdrom/vmlinuz $CDDIR/install/
     cp -lf cdrom/initrd.gz $CDDIR/install/
     echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " > $N.mkisofs_opts
