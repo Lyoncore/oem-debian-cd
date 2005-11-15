@@ -183,47 +183,47 @@ DEFAULT /install/vmlinuz
 EOF
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
-APPEND $KERNEL_PARAMS casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/rd/0 rw quiet --
+APPEND $KERNEL_PARAMS casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet --
 LABEL live
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/rd/0 rw quiet --
+  append $KERNEL_PARAMS casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet --
 LABEL live-expert
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS DEBCONF_PRIORITY=low casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/rd/0 rw --
+  append $KERNEL_PARAMS DEBCONF_PRIORITY=low casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
     if [ "$CDIMAGE_LIVE" != 1 ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
-APPEND $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/rd/0 rw quiet --
+APPEND $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 EOF
     fi
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL install
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/rd/0 rw quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 LABEL linux
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/rd/0 rw quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 LABEL cdrom
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/rd/0 rw quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 LABEL expert
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED DEBCONF_PRIORITY=low vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/rd/0 rw --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED DEBCONF_PRIORITY=low vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 EOF
     if [ "$PROJECT" = edubuntu ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL workstation
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS preseed/file=/cdrom/preseed/workstation.seed vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/rd/0 rw quiet --
+  append $KERNEL_PARAMS preseed/file=/cdrom/preseed/workstation.seed vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 EOF
     fi
     if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL oem
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS preseed/file=/cdrom/preseed/oem.seed vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/rd/0 rw quiet --
+  append $KERNEL_PARAMS preseed/file=/cdrom/preseed/oem.seed vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 EOF
     fi
 fi
@@ -231,16 +231,16 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL server
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS preseed/file=/cdrom/preseed/server.seed vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/rd/0 rw --
+  append $KERNEL_PARAMS preseed/file=/cdrom/preseed/server.seed vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 LABEL server-expert
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS preseed/file=/cdrom/preseed/server.seed DEBCONF_PRIORITY=low vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/rd/0 rw --
+  append $KERNEL_PARAMS preseed/file=/cdrom/preseed/server.seed DEBCONF_PRIORITY=low vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 EOF
 fi
 cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL rescue
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS rescue/enable=true vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/rd/0 rw --
+  append $KERNEL_PARAMS rescue/enable=true vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 LABEL memtest
   kernel /install/mt86plus
   append -
