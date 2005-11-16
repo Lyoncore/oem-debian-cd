@@ -11,6 +11,7 @@
 #endif
 
 #if (CDIMAGE_INSTALL_BASE == 1)
+#include <kubuntu/dapper/boot>
 #include <kubuntu/dapper/minimal>
 #include <kubuntu/dapper/standard>
 #if (CDIMAGE_INSTALL == 1)
