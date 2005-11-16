@@ -11,6 +11,7 @@
 #endif
 
 #if (CDIMAGE_INSTALL_BASE == 1)
+#include <ubuntu/dapper/boot>
 #include <ubuntu/dapper/minimal>
 #include <ubuntu/dapper/standard>
 #if (CDIMAGE_INSTALL == 1)
