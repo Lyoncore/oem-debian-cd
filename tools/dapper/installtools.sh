@@ -16,13 +16,13 @@ else
 fi
 
 # Put the install documentation in /doc/install
-if [ ! -d $DOCS ]; then
-    echo "ERROR: Unable to copy installer documentation to CD."
-    exit
-fi
-cd $DOCS
-mkdir -p $DIR/$DOCDIR/install
-if ! cp -a * $DIR/$DOCDIR/install; then
+if [ -d $DOCS ]; then
+    cd $DOCS
+    mkdir -p $DIR/$DOCDIR/install
+    if ! cp -a * $DIR/$DOCDIR/install; then
+        echo "ERROR: Unable to copy installer documentation to CD."
+    fi
+else
     echo "ERROR: Unable to copy installer documentation to CD."
 fi
 
