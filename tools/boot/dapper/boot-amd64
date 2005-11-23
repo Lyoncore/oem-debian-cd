@@ -245,7 +245,7 @@ LABEL memtest
   kernel /install/mt86plus
   append -
 DISPLAY isolinux.txt
-TIMEOUT 0
+TIMEOUT 300
 PROMPT 1
 F1 f1.txt
 F2 f2.txt
