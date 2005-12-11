@@ -5,4 +5,4 @@ passwd	passwd/user-fullname	string OEM Configuration (temporary user)
 passwd	passwd/username	string oem
 passwd	passwd/user-uid	string 29999
 # Install oem-config along with the desktop.
-base-config	base-config/package-selection	string ~tubuntu-standard|~tubuntu-desktop|oem-config
+base-config	base-config/package-selection	string ~t^ubuntu-standard$|~t^ubuntu-desktop$|~n^oem-config$
