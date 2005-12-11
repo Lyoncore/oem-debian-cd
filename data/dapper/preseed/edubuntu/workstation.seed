@@ -8,6 +8,6 @@ d-i	archive-copier/ship-task	string edubuntu-ship
 # Don't build an LTSP client chroot.
 d-i	ltsp-client-builder/run	boolean false
 # Install the Edubuntu desktop.
-base-config	base-config/package-selection	string ~tedubuntu-standard|~tedubuntu-desktop
+base-config	base-config/package-selection	string ~t^edubuntu-standard$|~t^edubuntu-desktop$
 # Install both GNOME and KDE translation packages.
 base-config	base-config/language-pack-patterns	string language-pack-$LL language-pack-gnome-$LL language-pack-kde-$LL kde-i18n-$LL
