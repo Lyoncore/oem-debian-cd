@@ -91,6 +91,15 @@ if [ "$NN" = "1" ]; then
     (ar p "$MIRROR/$SYSLINUXDEB" data.tar.gz | \
 	tar zxf - -C . ./usr/lib/syslinux/isolinux.bin)
     mv usr/lib/syslinux/isolinux.bin boot$N/isolinux/
+
+    GFXBOOT=
+    if THEMEDEB="$($BASEDIR/tools/apt-selection cache show gfxboot-theme-ubuntu)"; then
+	THEMEDEB="$(echo "$THEMEDEB" | grep ^Filename | awk '{print $2}')"
+	ar p "$MIRROR/$THEMEDEB" data.tar.gz | tar zxf - -C . ./usr/share/gfxboot/themes/Ubuntu/bootlogo.tar.gz
+	tar zxf usr/share/gfxboot/themes/Ubuntu/bootlogo.tar.gz -C boot$N/isolinux
+	GFXBOOT=1
+    fi
+
     rm -rf usr
     cp -lf cdrom/vmlinuz $CDDIR/install/
     cp -lf cdrom/initrd.gz $CDDIR/install/
@@ -180,6 +189,11 @@ rm -f boot$N/isolinux/boot.txt
 cat > boot$N/isolinux/isolinux.cfg <<EOF
 DEFAULT /install/vmlinuz
 EOF
+if [ "$GFXBOOT" ]; then
+    cat >> boot$N/isolinux/isolinux.cfg <<EOF
+GFXBOOT bootlogo
+EOF
+fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 APPEND $KERNEL_PARAMS casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet --
