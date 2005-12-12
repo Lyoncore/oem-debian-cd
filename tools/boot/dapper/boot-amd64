@@ -162,6 +162,9 @@ cat cdrom/debian-cd_info.tar.gz | (cd boot$N/isolinux/; tar zx)
 if [ "$SPLASHRLE" ] && [ -e "$SPLASHRLE" ]; then
     cp -p "$SPLASHRLE" boot$N/isolinux/splash.rle
 fi
+if [ "$GFXSPLASH" ] && [ -e "$GFXSPLASH" ]; then
+    cp -p "$GFXSPLASH" boot$N/isolinux/splash.pcx
+fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
     rm -f boot$N/isolinux/*.txt.live
 else
