@@ -256,6 +256,10 @@ LABEL memtest
   menu label ^Memory test
   kernel /install/mt86plus
   append -
+LABEL hd
+  menu label ^Boot from first hard disk
+  localboot 0x80
+  append -
 DISPLAY isolinux.txt
 TIMEOUT 300
 PROMPT 1
