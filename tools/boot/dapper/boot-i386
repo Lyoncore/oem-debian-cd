@@ -102,7 +102,11 @@ if [ "$NN" = "1" ]; then
 
     rm -rf usr
     cp -lf cdrom/vmlinuz $CDDIR/install/
-    cp -lf cdrom/initrd.gz $CDDIR/install/
+    if [ -e $CDDIR/casper/filesystem.initrd ]; then
+	mv $CDDIR/casper/filesystem.initrd $CDDIR/install/initrd.gz
+    else
+	cp -lf cdrom/initrd.gz $CDDIR/install/
+    fi
     echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " > $N.mkisofs_opts
 else
     if [ -n "$THISTYPE" ]; then

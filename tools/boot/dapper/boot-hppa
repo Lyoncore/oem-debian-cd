@@ -63,7 +63,11 @@ fi
 	
 cp "$DI_DIR"/vmlinux-*-hppa32 "$CDROOT/install"
 cp "$DI_DIR"/vmlinux-*-hppa64 "$CDROOT/install"
-cp "$DI_DIR"/initrd.gz "$CDROOT/install"
+if [ -e "$CDROOT/casper/filesystem.initrd" ]; then
+	mv "$CDROOT/casper/filesystem.initrd" "$CDROOT/install/initrd.gz"
+else
+	cp "$DI_DIR"/initrd.gz "$CDROOT/install"
+fi
 
 install_languages "$CDROOT"
 
