@@ -199,15 +199,11 @@ EOF
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
-APPEND $KERNEL_PARAMS casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet --
+APPEND $KERNEL_PARAMS boot=casper vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet --
 LABEL live
   menu label Run preinstalled ^live system
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet --
-LABEL live-expert
-  menu label Run preinstalled live system (expert mode)
-  kernel /install/vmlinuz
-  append $KERNEL_PARAMS DEBCONF_PRIORITY=low casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw --
+  append $KERNEL_PARAMS boot=casper vga=normal initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
