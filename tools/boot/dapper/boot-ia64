@@ -61,6 +61,7 @@ for image in boot.img; do
 	fi
     fi
 done
+# TODO: copy casper's initrd into boot.img if present
 
 install_languages $CDDIR
 

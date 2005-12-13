@@ -82,5 +82,9 @@ else
 	wget "$DI_WWW_HOME/vmlinuz"
 	wget "$DI_WWW_HOME/initrd.gz"
 fi
-cp "$DI_DIR"/initrd.gz "$inst/boot/initrd.gz"
+if [ -e "$CDDIR/casper/filesystem.initrd" ]; then
+	cp -a "$CDDIR/casper/filesystem.initrd" "$inst/boot/initrd.gz"
+else
+	cp "$DI_DIR"/initrd.gz "$inst/boot/initrd.gz"
+fi
 zcat "$DI_DIR"/vmlinuz > "$inst/boot/sparc64"
