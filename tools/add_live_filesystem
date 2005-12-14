@@ -4,13 +4,11 @@ BDIR=$TDIR/$CODENAME-$ARCH
 
 mkdir -p "$BDIR/CD1/casper"
 ln "$LIVEIMAGES/$ARCH.cloop" "$BDIR/CD1/casper/filesystem.cloop"
-case $DIST in
-	warty|hoary|breezy)
-		;;
-	*)
-		ln "$LIVEIMAGES/$ARCH.initrd" "$BDIR/CD1/casper/filesystem.initrd"
-		;;
-esac
+for initrd in "$LIVEIMAGES/$ARCH.initrd"-*; do
+	if [ -f "$initrd" ]; then
+		ln "$initrd" "$BDIR/CD1/casper/filesystem.${initrd#$LIVEIMAGES/$ARCH.}"
+	fi
+done
 ln "$LIVEIMAGES/$ARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
 
 if [ -f "$LIVEIMAGES/$ARCH.winfoss.tgz" ]; then

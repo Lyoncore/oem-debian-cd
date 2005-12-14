@@ -164,6 +164,17 @@ do
 	done
   fi
   cp -a "$DI_DIR" "$subarch"
+  case $subarch in
+    powerpc)
+      casper_subarch=powerpc
+      ;;
+    powerpc64)
+      casper_subarch=powerpc64-smp
+      ;;
+  esac
+  if [ -e "$CDDIR/casper/filesystem.initrd-$casper_subarch" ]
+    cp -a "$CDDIR/casper/filesystem.initrd-$casper_subarch" "$subarch/initrd.gz"
+  fi
   rm -rf di_stuff
   # Remove special initrds we don't want. OldWorld isn't supported due to
   # the lack of boot support, and space restrictions are too tight to
@@ -171,11 +182,6 @@ do
   rm -f "$subarch/vmlinuz-coff.initrd"
   rm -f "$subarch/vmlinuz-prep.initrd" "$subarch/vmlinuz-ppcbug.initrd"
 done
-
-# TODO: needed for both powerpc and powerpc64
-if [ -e "$CDDIR/casper/filesystem.initrd" ]; then
-  cp -a "$CDDIR/casper/filesystem.initrd" powerpc/initrd.gz
-fi
 
 # Copy pegasos forth script, since pegasos machines don't support yaboot yet.
 cat $BASEDIR/data/$DI_CODENAME/pegasos/pegasos \
