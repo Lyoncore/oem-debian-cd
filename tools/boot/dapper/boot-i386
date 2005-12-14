@@ -102,8 +102,8 @@ if [ "$NN" = "1" ]; then
 
     rm -rf usr
     cp -lf cdrom/vmlinuz $CDDIR/install/
-    if [ -e $CDDIR/casper/filesystem.initrd ]; then
-	mv $CDDIR/casper/filesystem.initrd $CDDIR/install/initrd.gz
+    if [ -e $CDDIR/casper/filesystem.initrd-386 ]; then
+	mv $CDDIR/casper/filesystem.initrd-386 $CDDIR/install/initrd.gz
     else
 	cp -lf cdrom/initrd.gz $CDDIR/install/
     fi
