@@ -238,7 +238,7 @@ EOF
     if [ "$PROJECT" = edubuntu ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL workstation
-  menu label ^Workstation installation
+  menu label Install a ^workstation
   kernel /install/vmlinuz
   append $KERNEL_PARAMS preseed/file=/cdrom/preseed/workstation.seed vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 EOF
@@ -246,7 +246,7 @@ EOF
     if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL oem
-  menu label ^OEM installation
+  menu label Install in ^OEM mode
   kernel /install/vmlinuz
   append $KERNEL_PARAMS preseed/file=/cdrom/preseed/oem.seed vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 EOF
@@ -255,11 +255,11 @@ fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL server
-  menu label ^Server installation
+  menu label Install a ^server
   kernel /install/vmlinuz
   append $KERNEL_PARAMS preseed/file=/cdrom/preseed/server.seed vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 LABEL server-expert
-  menu label Server installation (expert mode)
+  menu label Install a server (expert mode)
   kernel /install/vmlinuz
   append $KERNEL_PARAMS preseed/file=/cdrom/preseed/server.seed DEBCONF_PRIORITY=low vga=normal initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 EOF
