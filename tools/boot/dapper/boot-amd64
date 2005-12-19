@@ -190,6 +190,11 @@ if [ "$PROJECT" = ubuntu-server ]; then
 	cp -p "$x" "boot$N/isolinux/${base%.server}"
     done
 fi
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    timeout=300
+else
+    timeout=0
+fi
 sed -e "s#Ubuntu#$CAPPROJECT#g" boot$N/isolinux/boot.txt \
     > boot$N/isolinux/isolinux.txt
 rm -f boot$N/isolinux/boot.txt
@@ -278,7 +283,7 @@ LABEL hd
   localboot 0x80
   append -
 DISPLAY isolinux.txt
-TIMEOUT 300
+TIMEOUT $timeout
 PROMPT 1
 F1 f1.txt
 F2 f2.txt
