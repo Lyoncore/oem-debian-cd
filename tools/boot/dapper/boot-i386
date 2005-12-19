@@ -230,7 +230,7 @@ LABEL cdrom
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 LABEL expert
-  menu label Install to the hard disk (expert mode)
+  menu hide
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED DEBCONF_PRIORITY=low initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 EOF
@@ -258,7 +258,7 @@ LABEL server
   kernel /install/vmlinuz
   append $KERNEL_PARAMS preseed/file=/cdrom/preseed/server.seed initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 LABEL server-expert
-  menu label Install a server (expert mode)
+  menu hide
   kernel /install/vmlinuz
   append $KERNEL_PARAMS preseed/file=/cdrom/preseed/server.seed DEBCONF_PRIORITY=low initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 EOF
