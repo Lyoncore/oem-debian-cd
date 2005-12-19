@@ -93,6 +93,12 @@ else
  cp -f $YABOOT_DEBUG yaboot
 fi
 
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    timeout=300
+else
+    timeout=0
+fi
+
 #
 # generate/download images for "powerpc"
 # (missing: bootvars1.3b.sit.hqx, BootX_1.2.2.sit, boot-floppy-hfs.img)
@@ -132,6 +138,7 @@ BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
  fi) \
  | sed "s/CODENAME/${CODENAME}/g" \
  | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
+ | sed "s,\${TIMEOUT},${timeout},g" \
  > yaboot.conf
 cp $BASEDIR/data/$CODENAME/yaboot/ofboot.b ofboot.b
 
