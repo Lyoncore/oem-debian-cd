@@ -6,9 +6,6 @@
 #if (CDIMAGE_INSTALL_BASE == 1)
 #include <kubuntu/dapper/installer>
 #endif
-#if (CDIMAGE_LIVE == 1)
-#include <kubuntu/dapper/casper>
-#endif
 
 #if (CDIMAGE_INSTALL_BASE == 1)
 #include <kubuntu/dapper/boot>
