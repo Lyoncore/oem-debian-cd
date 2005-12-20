@@ -37,10 +37,7 @@ case $PROJECT in
 esac
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    # This should really be:
-    #EXTRA_ARGS='casper/enable=true casper-udeb/snapshot/backing-file=/cdrom/casper/filesystem.cloop'
-    # ... but this overflows palo's command-line limit.
-    EXTRA_ARGS='casper/enable=true'
+    EXTRA_ARGS='boot=casper'
 else
     EXTRA_ARGS=
 fi
