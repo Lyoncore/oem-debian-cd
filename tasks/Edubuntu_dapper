@@ -6,9 +6,6 @@
 #if (CDIMAGE_INSTALL_BASE == 1)
 #include <edubuntu/dapper/installer>
 #endif
-#if (CDIMAGE_LIVE == 1)
-#include <edubuntu/dapper/casper>
-#endif
 
 #if (CDIMAGE_INSTALL_BASE == 1)
 #include <edubuntu/dapper/boot>
