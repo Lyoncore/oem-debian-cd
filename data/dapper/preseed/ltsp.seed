@@ -1,4 +1,4 @@
 # Install the LTSP server.
-base-config	base-config/package-selection	string ~t^ubuntu-standard$|~t^ubuntu-desktop$|~n^ltsp-server-standalone$
+d-i	pkgsel/install-pattern	string ~t^ubuntu-standard$|~t^ubuntu-desktop$|~n^ltsp-server-standalone$
 # Build a client chroot.
-base-config	base-config/late_command	string ltsp-build-client
+d-i	preseed/late_command	string chroot /target ltsp-build-client

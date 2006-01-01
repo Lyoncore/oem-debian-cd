@@ -4,6 +4,6 @@ d-i	base-installer/kernel/linux/extra-packages-2.6	string usplash kubuntu-artwor
 d-i	archive-copier/desktop-task	string kubuntu-standard|kubuntu-desktop
 d-i	archive-copier/ship-task	string kubuntu-ship
 # Install the Kubuntu desktop.
-base-config	base-config/package-selection	string ~t^kubuntu-standard$|~t^kubuntu-desktop$
+d-i	pkgsel/install-pattern	string ~t^kubuntu-standard$|~t^kubuntu-desktop$
 # Install KDE translation packages.
-base-config	base-config/language-pack-patterns	string language-pack-$LL language-pack-kde-$LL kde-i18n-$LL
+d-i	pkgsel/language-pack-patterns	string language-pack-kde-$LL kde-i18n-$LL

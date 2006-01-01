@@ -1,8 +1,8 @@
 # Copy oem-config along with the desktop.
 d-i	archive-copier/desktop-task	string ubuntu-standard|ubuntu-desktop|oem-config
+# Install oem-config along with the desktop.
+d-i	pkgsel/install-pattern	string ~t^ubuntu-standard$|~t^ubuntu-desktop$|~n^oem-config$
 # Create a special user with a preconfigured uid.
 passwd	passwd/user-fullname	string OEM Configuration (temporary user)
 passwd	passwd/username	string oem
 passwd	passwd/user-uid	string 29999
-# Install oem-config along with the desktop.
-base-config	base-config/package-selection	string ~t^ubuntu-standard$|~t^ubuntu-desktop$|~n^oem-config$

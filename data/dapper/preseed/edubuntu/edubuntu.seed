@@ -8,8 +8,8 @@ d-i	base-installer/kernel/linux/extra-packages-2.6	string usplash edubuntu-artwo
 d-i	archive-copier/desktop-task	string edubuntu-standard|edubuntu-desktop|edubuntu-server
 d-i	archive-copier/ship-task	string edubuntu-ship
 # Install the Edubuntu desktop and server.
-base-config	base-config/package-selection	string ~t^edubuntu-standard$|~t^edubuntu-desktop$|~t^edubuntu-server$
-# Build a client chroot.
-base-config	base-config/late_command	string /usr/sbin/ltsp-update-sshkeys
+d-i	pkgsel/install-pattern	string ~t^edubuntu-standard$|~t^edubuntu-desktop$|~t^edubuntu-server$
 # Install both GNOME and KDE translation packages.
-base-config	base-config/language-pack-patterns	string language-pack-$LL language-pack-gnome-$LL language-pack-kde-$LL kde-i18n-$LL
+d-i	pkgsel/language-pack-patterns	string language-pack-gnome-$LL language-pack-kde-$LL kde-i18n-$LL
+# Build a client chroot.
+d-i	preseed/late_command	string chroot /target /usr/sbin/ltsp-update-sshkeys

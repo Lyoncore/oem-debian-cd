@@ -8,6 +8,6 @@ passwd	passwd/user-fullname	string OEM Configuration (temporary user)
 passwd	passwd/username	string oem
 passwd	passwd/user-uid	string 29999
 # Install oem-config along with the desktop.
-base-config	base-config/package-selection	string ~t^kubuntu-standard$|~t^kubuntu-desktop$|~n^oem-config$
+d-i	pkgsel/install-pattern	string ~t^kubuntu-standard$|~t^kubuntu-desktop$|~n^oem-config$
 # Install KDE translation packages.
-base-config	base-config/language-pack-patterns	string language-pack-$LL language-pack-kde-$LL kde-i18n-$LL
+d-i	pkgsel/language-pack-patterns	string language-pack-kde-$LL kde-i18n-$LL
