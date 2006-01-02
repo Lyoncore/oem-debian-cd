@@ -4,7 +4,7 @@ image=/install/powerpc/vmlinux
 	label=live-powerpc
 	alias=live
 	initrd=/install/powerpc/initrd.gz
-	append="boot=casper quiet --"
+	append="boot=casper quiet splash --"
 	initrd-size=1048576
 	read-only
 
@@ -12,6 +12,6 @@ image=/install/powerpc/vmlinux
 image=/install/powerpc64/vmlinux
 	label=live-powerpc64
 	initrd=/install/powerpc64/initrd.gz
-	append="boot=casper quiet --"
+	append="boot=casper quiet splash --"
 	initrd-size=1048576
 	read-only

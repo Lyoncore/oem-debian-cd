@@ -37,7 +37,7 @@ case $PROJECT in
 esac
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    EXTRA_ARGS='boot=casper'
+    EXTRA_ARGS='boot=casper splash'
 else
     EXTRA_ARGS=
 fi
