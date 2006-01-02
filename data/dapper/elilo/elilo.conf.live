@@ -13,7 +13,7 @@ image=/linux
     description="Linux [Live]"
     initrd=/initrd.gz
     root=/dev/ram
-    append="boot=casper ramdisk_size=1048576 quiet --"
+    append="boot=casper ramdisk_size=1048576 quiet splash --"
     read-only
 
 image=/linux
