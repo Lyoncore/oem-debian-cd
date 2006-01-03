@@ -1,16 +1,17 @@
 
 # PowerPC subarch 
 image=/install/powerpc/vmlinux
-	label=workstation-powerpc
-	alias=workstation
+	label=workstation
+	alias=workstation-powerpc
 	initrd=/install/powerpc/initrd.gz
 	append="preseed/file=/cdrom/preseed/workstation.seed quiet --"
 	initrd-size=8192
 	read-only
 
 # PowerPC64 subarch
-image=/install/powerpc64/vmlinux
-	label=workstation-powerpc64
+image[macrisc4]=/install/powerpc64/vmlinux
+	label=workstation
+	alias=workstation-powerpc64
 	initrd=/install/powerpc64/initrd.gz
 	append="preseed/file=/cdrom/preseed/workstation.seed quiet --"
 	initrd-size=8192
