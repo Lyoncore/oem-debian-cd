@@ -135,6 +135,9 @@ BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
  fi
  if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
      cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.server
+ fi
+ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+     cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.check
  fi) \
  | sed "s/CODENAME/${CODENAME}/g" \
  | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
