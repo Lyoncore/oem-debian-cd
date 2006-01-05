@@ -23,3 +23,11 @@ image=/linux
     root=/dev/ram
     append="boot=casper ramdisk_size=1048576 console=ttyS0 --"
     read-only
+
+image=/linux
+    label=Check
+    description="Check CD for defects"
+    initrd=/initrd.gz
+    root=/dev/ram
+    append="boot=casper integrity-check ramdisk_size=1048576 quiet splash --"
+    read-only
