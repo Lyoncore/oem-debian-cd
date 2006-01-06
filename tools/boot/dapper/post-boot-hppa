@@ -42,12 +42,10 @@ else
     EXTRA_ARGS=
 fi
 
-K32=$(ls $CDROOT/install/vmlinux-*-hppa32|head -1)
-K64=$(ls $CDROOT/install/vmlinux-*-hppa64|head -1)
 /sbin/palo \
      --commandline="0/vmlinux $DEFAULT_PRESEED $EXTRA_ARGS root=/dev/ram initrd=0/ramdisk ramdisk_size=1048576" \
-     --recoverykernel="$K32" \
-     --recoverykernel="$K64" \
+     --recoverykernel="$CDROOT/install/vmlinux-hppa32" \
+     --recoverykernel="$CDROOT/install/vmlinux-hppa64" \
      --bootloader="$CDROOT/install/iplboot" \
      --ramdisk="$CDROOT/install/initrd.gz" \
      --init-cdrom=$CDIMAGE --configfile=/dev/null

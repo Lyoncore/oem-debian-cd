@@ -4,10 +4,12 @@ BDIR=$TDIR/$CODENAME-$ARCH
 
 mkdir -p "$BDIR/CD1/casper"
 ln "$LIVEIMAGES/$ARCH.cloop" "$BDIR/CD1/casper/filesystem.cloop"
-for initrd in "$LIVEIMAGES/$ARCH.initrd"-*; do
-	if [ -f "$initrd" ]; then
-		ln "$initrd" "$BDIR/CD1/casper/filesystem.${initrd#$LIVEIMAGES/$ARCH.}"
-	fi
+for item in kernel initrd; do
+	for path in "$LIVEIMAGES/$ARCH.$item"-*; do
+		if [ -f "$path" ]; then
+			ln "$path" "$BDIR/CD1/casper/filesystem.${path#$LIVEIMAGES/$ARCH.}"
+		fi
+	done
 done
 ln "$LIVEIMAGES/$ARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
 

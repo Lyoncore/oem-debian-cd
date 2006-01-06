@@ -184,6 +184,9 @@ do
       casper_subarch=powerpc64-smp
       ;;
   esac
+  if [ -e "$CDDIR/casper/filesystem.kernel-$casper_subarch" ]; then
+    cp -a "$CDDIR/casper/filesystem.kernel-$casper_subarch" "$subarch/vmlinux"
+  fi
   if [ -e "$CDDIR/casper/filesystem.initrd-$casper_subarch" ]; then
     cp -a "$CDDIR/casper/filesystem.initrd-$casper_subarch" "$subarch/initrd.gz"
   fi
