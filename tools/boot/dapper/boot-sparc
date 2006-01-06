@@ -87,4 +87,8 @@ if [ -e "$CDDIR/casper/filesystem.initrd-sparc64" ]; then
 else
 	cp "$DI_DIR"/initrd.gz "$inst/boot/initrd.gz"
 fi
-zcat "$DI_DIR"/vmlinuz > "$inst/boot/sparc64"
+if [ -e "$CDDIR/casper/filesystem.kernel-sparc64" ]; then
+	zcat "$CDDIR/casper/filesystem.kernel-sparc64" > "$inst/boot/sparc64"
+else
+	zcat "$DI_DIR"/vmlinuz > "$inst/boot/sparc64"
+fi
