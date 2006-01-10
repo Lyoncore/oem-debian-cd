@@ -3,7 +3,13 @@
 BDIR=$TDIR/$CODENAME-$ARCH
 
 mkdir -p "$BDIR/CD1/casper"
-ln "$LIVEIMAGES/$ARCH.cloop" "$BDIR/CD1/casper/filesystem.cloop"
+if [ -e "$LIVEIMAGES/$ARCH.cloop" ]; then
+	ln "$LIVEIMAGES/$ARCH.cloop" "$BDIR/CD1/casper/filesystem.cloop"
+elif [ -e "$LIVEIMAGES/$ARCH.squashfs" ]; then
+	ln "$LIVEIMAGES/$ARCH.squashfs" "$BDIR/CD1/casper/filesystem.squashfs"
+else
+	echo "No filesystem for $ARCH!" >&2
+fi
 for item in kernel initrd; do
 	for path in "$LIVEIMAGES/$ARCH.$item"-*; do
 		if [ -f "$path" ]; then
