@@ -94,9 +94,9 @@ else
 fi
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    timeout=300
+    timeout='timeout=300'
 else
-    timeout=0
+    timeout=
 fi
 
 #
