@@ -18,7 +18,7 @@ else
 fi
 
 # Put the install documentation in /doc/install
-if [ -d $DOCS ]; then
+if [ "$DOCS" ] && [ -d "$DOCS" ]; then
     cd $DOCS
     mkdir -p $DIR/$DOCDIR/install
     if ! cp -a * $DIR/$DOCDIR/install; then
