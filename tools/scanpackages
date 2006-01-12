@@ -126,6 +126,9 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     done
 fi
 
+# Only keep Packages.gz; it's a waste of space to keep Packages too.
+find "$BDIR"/CD* -name Packages -print0 | xargs -0r rm -f
+
 fi ## END "$1" = "install"
 
 # Prepare the files needed to generate the Packages files
@@ -192,7 +195,6 @@ Dir::ArchiveDir "$2";
 Dir::OverrideDir "$BDIR/indices";
 Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
 
-Default::Packages::Compress "gzip";
 TreeDefault::Contents " ";
 
 Tree "dists/$CODENAME" {
@@ -210,7 +212,6 @@ Dir::ArchiveDir "$2";
 Dir::OverrideDir "$BDIR/indices-non-US";
 Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
 
-Default::Packages::Compress "gzip";
 TreeDefault::Contents " ";
 
 Tree "dists/$CODENAME/non-US" {
@@ -228,7 +229,6 @@ Dir::ArchiveDir "$2";
 Dir::OverrideDir "$BDIR/indices";
 Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
 
-Default::Packages::Compress "gzip";
 TreeDefault::Contents " ";
 
 Tree "dists/$CODENAME/main" {
