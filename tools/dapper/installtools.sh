@@ -10,6 +10,8 @@ DOCDIR=doc
 
 if [ -n "$BOOTDISKS" -a -e $BOOTDISKS/current/$DOCDIR ] ; then
         DOCS=$BOOTDISKS/current/$DOCDIR
+elif MANUALDEB="$($BASEDIR/tools/apt-selection cache show "installation-guide-$ARCH")"; then
+        MANUALDEB="$(echo "$MANUALDEB" | grep ^Filename | awk '{print $2}')"
 else
         echo "WARNING: Using $DI_CODENAME bootdisk documentation"
         DOCS=$MIRROR/dists/$DI_CODENAME/main/installer-$ARCH/current/$DOCDIR
@@ -22,6 +24,16 @@ if [ -d $DOCS ]; then
     if ! cp -a * $DIR/$DOCDIR/install; then
         echo "ERROR: Unable to copy installer documentation to CD."
     fi
+elif [ "$MANUALDEB" ]; then
+    mkdir -p "$DIR/$DOCDIR/install/tmp" "$DIR/$DOCDIR/install/manual"
+    ar p "$MIRROR/$MANUALDEB" data.tar.gz | tar xzf - -C "$DIR/$DOCDIR/install/tmp"
+    mv "$DIR/$DOCDIR/install/tmp/usr/share/doc/installation-guide-$ARCH"/* "$DIR/$DOCDIR/install/manual/"
+    rm -rf "$DIR/$DOCDIR/install/tmp"
+    # just keep the HTML version
+    rm -f "$DIR/$DOCDIR/install/manual/copyright" \
+        "$DIR/$DOCDIR/install/manual/changelog.gz" \
+        "$DIR/$DOCDIR/install/manual"/*/install.*.pdf* \
+        "$DIR/$DOCDIR/install/manual"/*/install.*.txt*
 else
     echo "ERROR: Unable to copy installer documentation to CD."
 fi
