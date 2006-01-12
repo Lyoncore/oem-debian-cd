@@ -124,5 +124,10 @@ if [ -n "$NONUS" -a -e "$NONUS/dists/$CODENAME/non-US/Release" ]; then
     ln -sf ../files.list.gz dists/$CODENAME-secured/non-US/files.list.gz
 fi
 
+# Only keep Packages.gz; it's a waste of space to keep Packages too. We
+# delete these here rather than earlier because (for now) debootstrap *does*
+# need Packages to be mentioned in the Release file.
+find dists/$CODENAME/ -name Packages -print0 | xargs -0r rm -f
+
 
 fi # if secured
