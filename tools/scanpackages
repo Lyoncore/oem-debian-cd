@@ -192,6 +192,7 @@ Dir::ArchiveDir "$2";
 Dir::OverrideDir "$BDIR/indices";
 Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
 
+Default::Packages::Compress "gzip";
 TreeDefault::Contents " ";
 
 Tree "dists/$CODENAME" {
@@ -209,6 +210,7 @@ Dir::ArchiveDir "$2";
 Dir::OverrideDir "$BDIR/indices-non-US";
 Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
 
+Default::Packages::Compress "gzip";
 TreeDefault::Contents " ";
 
 Tree "dists/$CODENAME/non-US" {
@@ -226,6 +228,7 @@ Dir::ArchiveDir "$2";
 Dir::OverrideDir "$BDIR/indices";
 Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
 
+Default::Packages::Compress "gzip";
 TreeDefault::Contents " ";
 
 Tree "dists/$CODENAME/main" {
