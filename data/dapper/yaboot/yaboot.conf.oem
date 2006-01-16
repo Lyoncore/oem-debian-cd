@@ -4,7 +4,7 @@ image=/install/powerpc/vmlinux
 	label=oem
 	alias=oem-powerpc
 	initrd=/install/powerpc/initrd.gz
-	append="preseed/file=/cdrom/preseed/oem.seed quiet --"
+	append="anna/choose_modules=oem-config-udeb quiet --"
 	initrd-size=8192
 	read-only
 
@@ -13,6 +13,6 @@ image[macrisc4]=/install/powerpc64/vmlinux
 	label=oem
 	alias=oem-powerpc64
 	initrd=/install/powerpc64/initrd.gz
-	append="preseed/file=/cdrom/preseed/oem.seed quiet --"
+	append="anna/choose_modules=oem-config-udeb quiet --"
 	initrd-size=8192
 	read-only
