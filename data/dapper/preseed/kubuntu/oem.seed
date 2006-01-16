@@ -5,10 +5,6 @@ d-i	base-installer/kernel/linux/extra-packages-2.6	string usplash kubuntu-artwor
 # Adjust task names for Kubuntu.
 d-i	archive-copier/desktop-task	string kubuntu-standard|kubuntu-desktop
 d-i	archive-copier/ship-task	string kubuntu-ship
-# Create a special user with a preconfigured uid.
-passwd	passwd/user-fullname	string OEM Configuration (temporary user)
-passwd	passwd/username	string oem
-passwd	passwd/user-uid	string 29999
 # Install the Kubuntu desktop.
 d-i	pkgsel/install-pattern	string ~t^kubuntu-standard$|~t^kubuntu-desktop$
 # Install KDE translation packages.

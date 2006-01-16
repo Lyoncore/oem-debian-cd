@@ -1,6 +1,2 @@
 # Install oem-config.
 d-i	anna/choose_modules	multiselect oem-config-udeb
-# Create a special user with a preconfigured uid.
-passwd	passwd/user-fullname	string OEM Configuration (temporary user)
-passwd	passwd/username	string oem
-passwd	passwd/user-uid	string 29999
