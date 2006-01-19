@@ -76,7 +76,7 @@ else
     EXTRA_ARGS=
 fi
 
-echo " -hppa-cmdline '0/vmlinux $DEFAULT_PRESEED $EXTRA_ARGS root=/dev/ram initrd=0/ramdisk ramdisk_size=1048576'" >> $1.mkisofs_opts
+echo " -hppa-cmdline 0/vmlinux,${DEFAULT_PRESEED:+$DEFAULT_PRESEED,}${EXTRA_ARGS:+$EXTRA_ARGS,}root=/dev/ram,initrd=0/ramdisk,ramdisk_size=1048576" >> $1.mkisofs_opts
 K32=$(ls $CDROOT/install/vmlinux-*-hppa32 | sed 's?^.*/install/?install/?g')
 echo " -hppa-kernel-32 $K32" >> $1.mkisofs_opts
 K64=$(ls $CDROOT/install/vmlinux-*-hppa64 | sed 's?^.*/install/?install/?g')
