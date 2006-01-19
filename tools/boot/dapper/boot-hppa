@@ -82,12 +82,12 @@ fi
 install_languages "$CDROOT"
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    EXTRA_ARGS='boot=casper splash'
+    EXTRA_ARGS='boot=casper,splash'
 else
     EXTRA_ARGS=
 fi
 
-echo " -hppa-cmdline '0/vmlinux $DEFAULT_PRESEED $EXTRA_ARGS root=/dev/ram initrd=0/ramdisk ramdisk_size=1048576'" >> $1.mkisofs_opts
+echo " -hppa-cmdline 0/vmlinux,${DEFAULT_PRESEED:+$DEFAULT_PRESEED,}${EXTRA_ARGS:+$EXTRA_ARGS,}root=/dev/ram,initrd=0/ramdisk,ramdisk_size=1048576" >> $1.mkisofs_opts
 echo " -hppa-kernel-32 install/vmlinux-hppa32" >> $1.mkisofs_opts
 echo " -hppa-kernel-64 install/vmlinux-hppa64" >> $1.mkisofs_opts
 echo " -hppa-bootloader install/iplboot" >> $1.mkisofs_opts
