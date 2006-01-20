@@ -16,3 +16,20 @@ install_languages() {
     fi
 }
 
+default_preseed() {
+    case $PROJECT in
+	kubuntu)
+	    DEFAULT_PRESEED='preseed/file=/cdrom/preseed/kubuntu.seed'
+	    ;;
+	edubuntu)
+	    DEFAULT_PRESEED='preseed/file=/cdrom/preseed/edubuntu.seed'
+	    ;;
+	ubuntu-server)
+	    DEFAULT_PRESEED='preseed/file=/cdrom/preseed/ubuntu-server.seed'
+	    ;;
+	*)
+	    DEFAULT_PRESEED=
+	    ;;
+    esac
+}
+
