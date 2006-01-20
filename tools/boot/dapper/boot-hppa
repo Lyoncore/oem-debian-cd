@@ -23,20 +23,7 @@ if [ -z "$DI_TYPE" ]; then
    DI_TYPE="$($BASEDIR/tools/find-newest-installer)"
 fi
 
-case $PROJECT in
-    edubuntu)
-	DEFAULT_PRESEED='preseed/file=/cdrom/preseed/edubuntu.seed'
-	;;
-    kubuntu)
-	DEFAULT_PRESEED='preseed/file=/cdrom/preseed/kubuntu.seed'
-	;;
-    ubuntu-server)
-	DEFAULT_PRESEED='preseed/file=/cdrom/preseed/ubuntu-server.seed'
-	;;
-    *)
-	DEFAULT_PRESEED=
-	;;
-esac
+default_preseed
 
 :> $1.mkisofs_opts
 
