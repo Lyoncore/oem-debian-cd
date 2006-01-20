@@ -1,0 +1,21 @@
+/*
+ * This file is used to build a complete set of Xubuntu Dapper Drake CDs
+ */
+
+/* Packages that should really be on CD1 */
+#if (CDIMAGE_INSTALL_BASE == 1)
+#include <xubuntu/dapper/installer>
+#endif
+
+#if (CDIMAGE_INSTALL_BASE == 1)
+#include <xubuntu/dapper/boot>
+#include <xubuntu/dapper/minimal>
+#include <xubuntu/dapper/standard>
+#if (CDIMAGE_INSTALL == 1)
+#include <xubuntu/dapper/desktop>
+#include <xubuntu/dapper/ship>
+#if (CDIMAGE_DVD == 1)
+#include <xubuntu/dapper/supported>
+#endif
+#endif
+#endif
