@@ -162,8 +162,14 @@ if [ "$GFXSPLASH" ] && [ -e "$GFXSPLASH" ]; then
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
     rm -f boot$N/isolinux/*.txt.live
+    rm -f boot$N/isolinux/*.hlp.live
 else
     for x in boot$N/isolinux/*.txt.live; do
+	[ -f "$x" ] || continue
+	mv "$x" "${x%.live}"
+    done
+    for x in boot$N/isolinux/*.hlp.live; do
+	[ -f "$x" ] || continue
 	mv "$x" "${x%.live}"
     done
 fi
