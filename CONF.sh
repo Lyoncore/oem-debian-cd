@@ -129,20 +129,20 @@ export MIRROR=${MIRROR:-$CDIMAGE_ROOT/ftp}
 #export FORCENONUSONCD1=1
 
 # Path of the temporary directory
-export TDIR=$CDIMAGE_ROOT/scratch/$PROJECT/tmp
+export TDIR=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/tmp
 
 # Path where the images will be written
-export OUT=$CDIMAGE_ROOT/scratch/$PROJECT/debian-cd
+export OUT=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/debian-cd
 
 # Where we keep the temporary apt stuff.
 # This cannot reside on an NFS mount.
-export APTTMP=$CDIMAGE_ROOT/scratch/$PROJECT/apt
+export APTTMP=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/apt
 
 # Where extracted debootstrap scripts live
-export DEBOOTSTRAP=$CDIMAGE_ROOT/scratch/$PROJECT/debootstrap
+export DEBOOTSTRAP=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/debootstrap
 
 # Where live filesystem images live
-export LIVEIMAGES=$CDIMAGE_ROOT/scratch/$PROJECT/live
+export LIVEIMAGES=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/live
 
 # Do I want to have NONFREE merged in the CD set
 # export NONFREE=1
