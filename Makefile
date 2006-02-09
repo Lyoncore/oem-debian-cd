@@ -381,7 +381,7 @@ endif
 	     -U $(ARCH) -U i386 -U linux -U unix \
 	     -DFORCENONUSONCD1=$(forcenonusoncd1) \
 	     -DCDIMAGE_INSTALL_BASE=$(CDIMAGE_INSTALL_BASE) -DCDIMAGE_INSTALL=$(CDIMAGE_INSTALL) -DCDIMAGE_LIVE=$(CDIMAGE_LIVE) -DCDIMAGE_DVD=$(CDIMAGE_DVD) \
-	     -I $(BASEDIR)/auto/$(IMAGE_TYPE) -I $(BASEDIR)/tasks -I $(BDIR) - - >> $(BDIR)/rawlist
+	     -I $(BASEDIR)/tasks/auto/$(IMAGE_TYPE) -I $(BASEDIR)/tasks -I $(BDIR) - - >> $(BDIR)/rawlist
 
 # Build the raw list (cpp output) with doubles and spaces for excluded packages
 $(BDIR)/rawlist-exclude:
@@ -391,7 +391,7 @@ $(BDIR)/rawlist-exclude:
 				-U $(ARCH) -U i386 -U linux -U unix \
 	     			-DFORCENONUSONCD1=$(forcenonusoncd1) \
 				-DCDIMAGE_INSTALL_BASE=$(CDIMAGE_INSTALL_BASE) -DCDIMAGE_INSTALL=$(CDIMAGE_INSTALL) -DCDIMAGE_LIVE=$(CDIMAGE_LIVE) -DCDIMAGE_DVD=$(CDIMAGE_DVD) \
-	     			-I $(BASEDIR)/auto/$(IMAGE_TYPE) -I $(BASEDIR)/tasks -I $(BDIR) - - >> $(BDIR)/rawlist-exclude; \
+	     			-I $(BASEDIR)/tasks/auto/$(IMAGE_TYPE) -I $(BASEDIR)/tasks -I $(BDIR) - - >> $(BDIR)/rawlist-exclude; \
 	else \
 		echo > $(BDIR)/rawlist-exclude; \
 	fi
@@ -414,7 +414,7 @@ $(SDIR)/rawlist:
 	     -U $(arch) -U i386 -U linux -U unix \
 	     -DFORCENONUSONCD1=$(forcenonusoncd1) \
 	     -DCDIMAGE_INSTALL_BASE=$(CDIMAGE_INSTALL_BASE) -DCDIMAGE_INSTALL=$(CDIMAGE_INSTALL) -DCDIMAGE_LIVE=$(CDIMAGE_LIVE) -DCDIMAGE_DVD=$(CDIMAGE_DVD) \
-	     -I $(BASEDIR)/auto/$(IMAGE_TYPE) -I $(BASEDIR)/tasks -I $(SDIR) - -; \
+	     -I $(BASEDIR)/tasks/auto/$(IMAGE_TYPE) -I $(BASEDIR)/tasks -I $(SDIR) - -; \
 	)) | sort | uniq > $(SDIR)/rawlist
 
 ## DIRECTORIES && PACKAGES && INFOS ##
