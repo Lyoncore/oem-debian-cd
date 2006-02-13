@@ -278,13 +278,13 @@ LABEL check
   menu label Check CD for defects
   kernel /install/vmlinuz
   append $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
-EOF
-fi
-cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL rescue
   menu label ^Rescue a broken system
   kernel /install/vmlinuz
   append $KERNEL_PARAMS rescue/enable=true initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
+EOF
+fi
+cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL memtest
   menu label ^Memory test
   kernel /install/mt86plus
