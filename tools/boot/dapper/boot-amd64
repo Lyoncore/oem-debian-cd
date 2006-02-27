@@ -253,6 +253,18 @@ LABEL oem
   append $KERNEL_PARAMS anna/choose_modules=oem-config-udeb initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 EOF
     fi
+    if [ "$PROJECT" = ubuntu-server ]; then
+	cat >> boot$N/isolinux/isolinux.cfg <<EOF
+LABEL lamp-server
+  menu label Install a ^LAMP server
+  kernel /install/vmlinuz
+  append $KERNEL_PARAMS $LAMP_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+LABEL lamp-server-expert
+  menu hide
+  kernel /install/vmlinuz
+  append $KERNEL_PARAMS $LAMP_PRESEED DEBCONF_PRIORITY=low initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
+EOF
+    fi
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF

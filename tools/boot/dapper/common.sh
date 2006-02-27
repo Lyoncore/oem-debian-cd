@@ -29,6 +29,7 @@ default_preseed() {
 	    ;;
 	ubuntu-server)
 	    DEFAULT_PRESEED='preseed/file=/cdrom/preseed/ubuntu-server.seed'
+	    LAMP_PRESEED='preseed/file=/cdrom/preseed/ubuntu-server-lamp.seed'
 	    ;;
 	*)
 	    DEFAULT_PRESEED=
