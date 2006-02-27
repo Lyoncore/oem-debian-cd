@@ -133,6 +133,7 @@ BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
  fi) \
  | sed "s/CODENAME/${CODENAME}/g" \
  | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
+ | sed "s,\${LAMP_PRESEED},${LAMP_PRESEED},g" \
  | sed "s,\${TIMEOUT},${timeout},g" \
  > yaboot.conf
 cp $BASEDIR/data/$CODENAME/yaboot/ofboot.b ofboot.b
