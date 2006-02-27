@@ -4,7 +4,7 @@ d-i	base-installer/kernel/linux/extra-packages-2.6	string
 d-i	archive-copier/desktop-task	string ubuntu-standard
 d-i	archive-copier/ship-task	string
 # Only install the standard system, language packs and LAMP
-d-i	pkgsel/install-pattern	string ~t^ubuntu-standard$|~n^php5-mysql$|~n^libapache2-mod-php5$|~n^php-pear$|~n^mysql-server$
+d-i	pkgsel/install-pattern	string ~t^ubuntu-standard$|~n^apache2$|~n^php5-mysql$|~n^libapache2-mod-php5$|~n^mysql-server$
 d-i	pkgsel/language-pack-patterns	string
 # No language support packages.
 d-i	pkgsel/install-language-support	boolean false
