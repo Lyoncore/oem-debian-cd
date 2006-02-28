@@ -280,14 +280,14 @@ fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL check
-  menu label Check CD for defects
+  menu label ^Check CD for defects
   kernel /install/vmlinuz
   append $KERNEL_PARAMS boot=casper integrity-check initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 EOF
 elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL check
-  menu label Check CD for defects
+  menu label ^Check CD for defects
   kernel /install/vmlinuz
   append $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 LABEL rescue
