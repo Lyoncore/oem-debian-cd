@@ -208,7 +208,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 APPEND $KERNEL_PARAMS boot=casper initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 LABEL live
-  menu label Run preinstalled ^live system
+  menu label ^Start $CAPPROJECT
   kernel /install/vmlinuz
   append $KERNEL_PARAMS boot=casper initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 EOF
