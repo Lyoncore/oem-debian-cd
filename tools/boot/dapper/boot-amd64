@@ -203,6 +203,11 @@ if [ "$GFXBOOT" ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 GFXBOOT bootlogo
 EOF
+    if [ "$PROJECT" = ubuntu ]; then
+	cat >> boot$N/isolinux/isolinux.cfg <<EOF
+GFXBOOT-BACKGROUND 0xB6875A
+EOF
+    fi
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
