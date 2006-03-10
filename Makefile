@@ -898,6 +898,7 @@ bin-images: ok bin-md5list $(OUT)
 	done
 ifeq ($(CDIMAGE_LIVE),1)
 	-cp -a $(LIVEIMAGES)/$(ARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
+	-cp -a $(LIVEIMAGES)/$(ARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
 endif
 
 
