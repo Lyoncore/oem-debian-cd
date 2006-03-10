@@ -18,6 +18,7 @@ for item in kernel initrd; do
 	done
 done
 ln "$LIVEIMAGES/$ARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
+ln "$LIVEIMAGES/$ARCH.manifest-desktop" "$BDIR/CD1/casper/filesystem.manifest-desktop" || true
 
 if [ -f "$LIVEIMAGES/$ARCH.winfoss.tgz" ]; then
 	tar -C "$BDIR/CD1" -xzf "$LIVEIMAGES/$ARCH.winfoss.tgz"
