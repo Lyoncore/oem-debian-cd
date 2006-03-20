@@ -87,7 +87,7 @@ case $DIST in
   dapper)
     export CODENAME=dapper
     export CAPCODENAME='Dapper Drake'
-    export DEBVERSION=6.04
+    export DEBVERSION=6.06
     export OFFICIAL="Alpha"
     ;;
 esac
