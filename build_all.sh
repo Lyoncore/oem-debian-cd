@@ -8,7 +8,7 @@ rm -rf "$OUT"
 TMP_OUT=$OUT
 
 if [ -z "$ARCHES" ]; then
-	export ARCHES='amd64 i386 ia64 powerpc'
+	export ARCHES='amd64 i386 powerpc'
 fi
 
 for ARCH in $ARCHES
