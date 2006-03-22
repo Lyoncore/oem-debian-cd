@@ -15,8 +15,8 @@ my $infile = shift;
 my $outfile = shift;
 
 my $apt = "$ENV{'BASEDIR'}/tools/apt-selection";
-my $adir = "$ENV{'APTTMP'}/$ENV{'CODENAME'}-$ENV{'ARCH'}";
-my $dir = "$ENV{'TDIR'}/$ENV{'CODENAME'}-$ENV{'ARCH'}";
+my $adir = "$ENV{'APTTMP'}/$ENV{'CODENAME'}-$ENV{'FULLARCH'}";
+my $dir = "$ENV{'TDIR'}/$ENV{'CODENAME'}-$ENV{'FULLARCH'}";
 my $verbose = $ENV{'VERBOSE'} || 0;
 my $nonuslist = "$dir/non-US.list";
 

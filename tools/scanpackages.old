@@ -17,7 +17,7 @@ if [ "$1"x = "-noPackages.cd"x ] ; then
 	CDPACKAGES=0
 fi	
 
-BDIR=$TDIR/$CODENAME-$ARCH
+BDIR=$TDIR/$CODENAME-$FULLARCH
 
 PREFIX=`echo $2 | sed "s?$BDIR/CD?$BDIR/?"`
 
@@ -83,9 +83,9 @@ for SECT in $SECTIONS; do
 	# packages files only - we don't want later (supposedly
 	# common) CDs having dependencies on a non-US CD#1...
 	if [ $CDPACKAGES -eq 1 ] ; then
-		for i in $TDIR/$CODENAME-$ARCH/?.packages; do
+		for i in $TDIR/$CODENAME-$FULLARCH/?.packages; do
 			dir=${i%%.packages}
-			n=${dir##$TDIR/$CODENAME-$ARCH/}
+			n=${dir##$TDIR/$CODENAME-$FULLARCH/}
 			if [ $n -le $NUM ]; then
 			   cat $dir.Packages-$SECT \
 				  >>dists/$CODENAME/$SECT/binary-$ARCH/Packages.cd
@@ -109,9 +109,9 @@ if [ -n "$NONUS" -a "$CODENAME" = "slink" ]; then
 	     >dists/$CODENAME/non-US/binary-$ARCH/Packages
 	grep -v ^X-Medium $PREFIX.Packages-non-US | gzip --best \
 	     >dists/$CODENAME/non-US/binary-$ARCH/Packages.gz
-	for i in $TDIR/$CODENAME-$ARCH/?.packages; do
+	for i in $TDIR/$CODENAME-$FULLARCH/?.packages; do
 		dir=${i%%.packages}
-		n=${dir##$TDIR/$CODENAME-$ARCH/}
+		n=${dir##$TDIR/$CODENAME-$FULLARCH/}
 		if [ $n -le $NUM ]; then
 		      cat $dir.Packages-non-US \
 		          >>dists/$CODENAME/non-US/binary-$ARCH/Packages.cd
@@ -131,9 +131,9 @@ if [ -n "$LOCAL" ]; then
 	grep -v ^X-Medium $PREFIX.Packages-local | gzip --best \
 	     >dists/$CODENAME/local/binary-$ARCH/Packages.gz
 
-	for i in $TDIR/$CODENAME-$ARCH/?.packages; do
+	for i in $TDIR/$CODENAME-$FULLARCH/?.packages; do
 		dir=${i%%.packages}
-		n=${dir##$TDIR/$CODENAME-$ARCH/}
+		n=${dir##$TDIR/$CODENAME-$FULLARCH/}
 		if [ $n -le $NUM ]; then
 			cat $dir.Packages-local \
 			    >>dists/$CODENAME/local/binary-$ARCH/Packages.cd

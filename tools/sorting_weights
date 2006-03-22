@@ -4,7 +4,7 @@
 #
 # First argument = CD number
 
-BDIR="$TDIR/$CODENAME-$ARCH"
+BDIR="$TDIR/$CODENAME-$FULLARCH"
 CD="$1"
 
 SECTIONS="main non-US/main"
