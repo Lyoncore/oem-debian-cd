@@ -92,6 +92,7 @@ if [ "$NN" = "1" ]; then
     fi
     echo -n "-cache-inodes -J -l " > $N.mkisofs_opts
     # HFS hybrid filesystem for booting on Intel-based Macs
+    echo -n "--netatalk -hfs -probe -map $BASEDIR/data/hfs.map " >> $N.mkisofs_opts
     echo -n "-part -no-desktop -hfs-bless CD$N/install -hfs-bless-file CD$N/install/elilo.efi -hfs-volid ${CAPPROJECT}_i386_${CODENAME} " >> $N.mkisofs_opts
     # Recommended size for an HFS catalog is 4 MB per GB, defaults to 4 MB
     if [ "$SIZELIMIT1" ]; then
