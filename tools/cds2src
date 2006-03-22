@@ -22,7 +22,7 @@ my $contrib = $ENV{'CONTRIB'} || 0;
 my $complete = $ENV{'COMPLETE'} || 0;
 my $local = $ENV{'LOCAL'} || 0;
 
-my $bdir = "$ENV{'TDIR'}/$ENV{'CODENAME'}-$ENV{'ARCH'}";
+my $bdir = "$ENV{'TDIR'}/$ENV{'CODENAME'}-$ENV{'FULLARCH'}";
 my $sdir = "$ENV{'TDIR'}/$ENV{'CODENAME'}-src";
 my $verbose = $ENV{'VERBOSE'} || 0;
 

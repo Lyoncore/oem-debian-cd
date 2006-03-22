@@ -1,22 +1,22 @@
 #!/bin/sh
 
 # This script tries to get good estimations into the .calc files at
-# boot/$CODENAME/boot-$ARCH.calc, so you can use it whenever you want to
+# boot/$CODENAME/boot-$FULLARCH.calc, so you can use it whenever you want to
 # update these .calc files with more recent estimations.
 
-# It uses info taken from the temporary dir of a previous build for $ARCH,
+# It uses info taken from the temporary dir of a previous build for $FULLARCH,
 # $CODENAME. This doesn't need to be a full build, you can get the needed
 # stuff by running a build.sh with something like:
 # IMAGETARGET="ok bootable upgrade bin-infos bin-list"
 
 # Temporary directory of the previous build.
-BDIR="$TDIR/$CODENAME-$ARCH"
+BDIR="$TDIR/$CODENAME-$FULLARCH"
 
 #Get info from older build if it exists
 if [ -d "$BDIR" ];
 then
   echo Estimated sizes:
-  rm -f "boot/$CODENAME/boot-$ARCH.calc"
+  rm -f "boot/$CODENAME/boot-$FULLARCH.calc"
   for i in `du -sm "$BDIR"/CD[0123456789]* |
               sed -n 's/^\([0-9]\+\).*CD\([0-9]\+\)/\2=\1/p'`
   do
@@ -30,9 +30,9 @@ then
     fi
     #add it all up and write it to the .calc file
     echo BOOT_SIZE_${i%=*}=${i#*=}+$imgdu
-    echo BOOT_SIZE_${i%=*}=$((${i#*=}+$imgdu)) >> "boot/$CODENAME/boot-$ARCH.calc"
-    case "$ARCH" in
-      m68k)	echo SIZE_MULT_${i%=*}=97 >> "boot/$CODENAME/boot-$ARCH.calc";;
+    echo BOOT_SIZE_${i%=*}=$((${i#*=}+$imgdu)) >> "boot/$CODENAME/boot-$FULLARCH.calc"
+    case "$FULLARCH" in
+      m68k)	echo SIZE_MULT_${i%=*}=97 >> "boot/$CODENAME/boot-$FULLARCH.calc";;
     esac
   done
 fi
@@ -42,11 +42,11 @@ if [ -n "$SIZELIMIT1" ] && [ "$SIZELIMIT1" -gt 1000000000 ] ||
    [ -n "$SIZELIMIT" ] && [ "$SIZELIMIT" -gt 1000000000 ] ||
    [ -n "$DEFBINSIZE" ] && [ "$DEFBINSIZE" -gt 1000 ]
 then
-  case "$ARCH" in
-    powerpc)     echo SIZE_MULT_1=92 >> "boot/$CODENAME/boot-$ARCH.calc";;
+  case "$FULLARCH" in
+    powerpc)     echo SIZE_MULT_1=92 >> "boot/$CODENAME/boot-$FULLARCH.calc";;
   esac
 else
-  case "$ARCH" in
-    powerpc)     echo SIZE_MULT_1=96 >> "boot/$CODENAME/boot-$ARCH.calc";;
+  case "$FULLARCH" in
+    powerpc)     echo SIZE_MULT_1=96 >> "boot/$CODENAME/boot-$FULLARCH.calc";;
   esac
 fi

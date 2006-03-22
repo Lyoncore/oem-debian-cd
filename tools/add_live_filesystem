@@ -1,6 +1,6 @@
 #! /bin/sh -e
 
-BDIR=$TDIR/$CODENAME-$ARCH
+BDIR=$TDIR/$CODENAME-$FULLARCH
 
 mkdir -p "$BDIR/CD1/casper"
 if [ -e "$LIVEIMAGES/$ARCH.cloop" ]; then

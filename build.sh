@@ -12,7 +12,9 @@ if [ -z "$COMPLETE" ] ; then
 fi
 
 if [ -n "$1" ] ; then
-    export ARCH=$1
+    FULLARCH="$1"
+    export ARCH="${FULLARCH%%+*}"
+    export SUBARCH="${FULLARCH#*+}"
 fi
 
 make distclean
@@ -35,8 +37,8 @@ if [ -e ${MIRROR}/dists/${DI_CODENAME}/main/disks-${ARCH}/current/. ] ; then
 else
 	disks=0
 fi
-if [ -f $BASEDIR/tools/boot/$DI_CODENAME/boot-$ARCH.calc ]; then
-    . $BASEDIR/tools/boot/$DI_CODENAME/boot-$ARCH.calc
+if [ -f $BASEDIR/tools/boot/$DI_CODENAME/boot-$FULLARCH.calc ]; then
+    . $BASEDIR/tools/boot/$DI_CODENAME/boot-$FULLARCH.calc
 fi
 SIZE_ARGS=''
 for CD in 1; do
@@ -58,7 +60,7 @@ done
 FULL_SIZE=`echo "($DEFSRCSIZE - $size) * 1024 * 1024" | bc`
 make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 echo " ... building the images"
-export OUT="$OUT/$ARCH"
+export OUT="$OUT/$FULLARCH"
 mkdir -p "$OUT"
 if [ -z "$IMAGETARGET" ] ; then
     IMAGETARGET="bin-official_images"

@@ -9,7 +9,7 @@
 
 #set -e
 
-BDIR=$TDIR/$CODENAME-$ARCH
+BDIR=$TDIR/$CODENAME-$FULLARCH
 
 PREFIX=`echo $2 | sed "s?$BDIR/CD?$BDIR/?"`
 
@@ -190,7 +190,7 @@ done
 cat >$PREFIX.generate-binary <<EOF
 Dir::ArchiveDir "$2";
 Dir::OverrideDir "$BDIR/indices";
-Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
+Dir::CacheDir "$APTTMP/$CODENAME-$FULLARCH/apt-ftparchive-db";
 
 TreeDefault::Contents " ";
 
@@ -207,7 +207,7 @@ EOF
 cat >$PREFIX.generate-binary-non-US <<EOF
 Dir::ArchiveDir "$2";
 Dir::OverrideDir "$BDIR/indices-non-US";
-Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
+Dir::CacheDir "$APTTMP/$CODENAME-$FULLARCH/apt-ftparchive-db";
 
 TreeDefault::Contents " ";
 
@@ -224,7 +224,7 @@ EOF
 cat >$PREFIX.generate-binary-debian-installer <<EOF
 Dir::ArchiveDir "$2";
 Dir::OverrideDir "$BDIR/indices";
-Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
+Dir::CacheDir "$APTTMP/$CODENAME-$FULLARCH/apt-ftparchive-db";
 
 TreeDefault::Contents " ";
 

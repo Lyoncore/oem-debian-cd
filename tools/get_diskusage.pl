@@ -7,7 +7,7 @@
 # added to the CD size.
 
 $logfile = ($ARGV[0] ||
-            "$ENV{TDIR}/$ENV{CODENAME}-$ENV{ARCH}/log.list2cds");
+            "$ENV{TDIR}/$ENV{CODENAME}-$ENV{FULLARCH}/log.list2cds");
 
 open(LOG, $logfile) || die "Unable to open $logfile";
 

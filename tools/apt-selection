@@ -20,11 +20,14 @@ if [ -z "$CODENAME" -o -z "$ARCH" -o -z "$APTTMP" ]; then
 		echo "APTTMP=$APTTMP"
 	fi
 fi
+if [ -z "$FULLARCH" ]; then
+	FULLARCH="$ARCH"
+fi
 
-options=" -q -o Dir::State::status=$APTTMP/$CODENAME-$ARCH/status \
-          -o Dir::State=$APTTMP/$CODENAME-$ARCH/apt-state/ \
-	  -o Dir::Cache=$APTTMP/$CODENAME-$ARCH/apt-cache/ \
-	  -o Dir::Etc=$APTTMP/$CODENAME-$ARCH/apt/ \
+options=" -q -o Dir::State::status=$APTTMP/$CODENAME-$FULLARCH/status \
+          -o Dir::State=$APTTMP/$CODENAME-$FULLARCH/apt-state/ \
+	  -o Dir::Cache=$APTTMP/$CODENAME-$FULLARCH/apt-cache/ \
+	  -o Dir::Etc=$APTTMP/$CODENAME-$FULLARCH/apt/ \
 	  -o APT::Cache::AllVersions=0 \
 	  -o APT::Architecture=$ARCH "
 
@@ -40,62 +43,62 @@ if [ "${RESTRICTED:-0}" != "0" ]; then
 fi
 
 # Check for the necessary dirs and files ...
-if [ ! -d "$APTTMP/$CODENAME-$ARCH/apt-state/lists/partial" ]; then
-	mkdir -p "$APTTMP/$CODENAME-$ARCH/apt-state/lists/partial"
+if [ ! -d "$APTTMP/$CODENAME-$FULLARCH/apt-state/lists/partial" ]; then
+	mkdir -p "$APTTMP/$CODENAME-$FULLARCH/apt-state/lists/partial"
 fi
-if [ ! -d "$APTTMP/$CODENAME-$ARCH/apt-cache/archives/partial" ]; then
-	mkdir -p "$APTTMP/$CODENAME-$ARCH/apt-cache/archives/partial"
+if [ ! -d "$APTTMP/$CODENAME-$FULLARCH/apt-cache/archives/partial" ]; then
+	mkdir -p "$APTTMP/$CODENAME-$FULLARCH/apt-cache/archives/partial"
 fi
-if [ ! -d "$APTTMP/$CODENAME-$ARCH/apt" ]; then
-	mkdir -p "$APTTMP/$CODENAME-$ARCH/apt"
+if [ ! -d "$APTTMP/$CODENAME-$FULLARCH/apt" ]; then
+	mkdir -p "$APTTMP/$CODENAME-$FULLARCH/apt"
 fi
-if [ ! -e "$APTTMP/$CODENAME-$ARCH/apt/sources.list" ]; then
+if [ ! -e "$APTTMP/$CODENAME-$FULLARCH/apt/sources.list" ]; then
 	# Generating a correct sources.list file
 	echo "deb file:$MIRROR $CODENAME $sections" \
-	> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	if [ -n "$NONUS" ]; then
 	     echo "deb file:$NONUS $CODENAME/non-US $sections" \
-	     >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	     >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	fi
 	# Local packages ...
 	if [ -n "$LOCAL" ]; then
 	  echo "deb file:${LOCALDEBS:-$MIRROR} $CODENAME local" \
-	  >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	fi
         # Security mirror ...
         if [ -n "$SECURITY" ]; then
 	  echo "deb file:${SECURITY:-$MIRROR} $CODENAME-security $sections" \
-	  >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
         fi
 	# Post-release updates
 	if [ "${UPDATES:-0}" != "0" ]; then
 	  echo "deb file:$MIRROR $CODENAME-updates $sections" \
-	  >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	fi
 	# Debian-installer
 	if [ -e "$MIRROR/dists/$DI_CODENAME/main/debian-installer" ]; then
 	  echo "deb file:$MIRROR $DI_CODENAME main/debian-installer" \
-	  >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  if [ "${UPDATES:-0}" != "0" ]; then
 	    echo "deb file:$MIRROR $DI_CODENAME-updates main/debian-installer" \
-	    >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	fi
 	if [ "${RESTRICTED:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME/restricted/debian-installer" ]; then
 	  echo "deb file:$MIRROR $DI_CODENAME restricted/debian-installer" \
-	  >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  if [ "${UPDATES:-0}" != "0" ]; then
 	    echo "deb file:$MIRROR $DI_CODENAME-updates restricted/debian-installer" \
-	    >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	fi
 	if [ -n "$LOCAL" -a -e "${LOCALDEBS:-$MIRROR}/dists/$DI_CODENAME/local/debian-installer" ]; then
 	  echo "deb file:${LOCALDEBS:-$MIRROR} $DI_CODENAME local/debian-installer" \
-	  >> $APTTMP/$CODENAME-$ARCH/apt/sources.list
+	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	fi
 fi
 
-temp=$APTTMP/$CODENAME-$ARCH/temp.apt-selection
+temp=$APTTMP/$CODENAME-$FULLARCH/temp.apt-selection
 
 # Launch the command
 if [ "$1" = "update" -o "$1" = "check" ]; then

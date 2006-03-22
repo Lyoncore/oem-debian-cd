@@ -11,6 +11,11 @@
 
 
 ## DEFAULT VALUES
+ifdef SUBARCH
+export FULLARCH=$(ARCH)+$(SUBARCH)
+else
+export FULLARCH=$(ARCH)
+endif
 ifndef VERBOSE_MAKE
 Q=@
 endif
@@ -24,14 +29,14 @@ ifndef CAPCODENAME
 CAPCODENAME:=$(shell perl -e "print ucfirst("$(CODENAME)")")
 endif
 ifndef BINDISKINFO
-export BINDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(ARCH) ($$DATE)"
+export BINDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(FULLARCH) ($$DATE)"
 endif
 ifndef SRCDISKINFO
 export SRCDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) Source-$$num ($$DATE)"
 endif
 # ND=No-Date versions for README
 ifndef BINDISKINFOND
-export BINDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(ARCH)"
+export BINDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(FULLARCH)"
 endif
 ifndef SRCDISKINFOND
 export SRCDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) Source-$$num"
@@ -105,8 +110,8 @@ grab_md5=$(BASEDIR)/tools/grab_md5
 add_live_filesystem=$(BASEDIR)/tools/add_live_filesystem
 find_newest_installer=$(BASEDIR)/tools/find-newest-installer
 
-BDIR=$(TDIR)/$(CODENAME)-$(ARCH)
-ADIR=$(APTTMP)/$(CODENAME)-$(ARCH)
+BDIR=$(TDIR)/$(CODENAME)-$(FULLARCH)
+ADIR=$(APTTMP)/$(CODENAME)-$(FULLARCH)
 SDIR=$(TDIR)/$(CODENAME)-src
 
 FIRSTDISKS=CD1 
@@ -134,14 +139,14 @@ ifndef CDIMAGE_DVD
 export CDIMAGE_DVD = 0
 endif
 
-# CDBASE = $(CODENAME)-$(ARCH)-$(1)
+# CDBASE = $(CODENAME)-$(FULLARCH)-$(1)
 ifeq ($(CDIMAGE_DVD),1)
-CDBASE = $(CODENAME)-dvd-$(ARCH)
+CDBASE = $(CODENAME)-dvd-$(FULLARCH)
 else
 ifeq ($(CDIMAGE_INSTALL),1)
-CDBASE = $(CODENAME)-install-$(ARCH)
+CDBASE = $(CODENAME)-install-$(FULLARCH)
 else
-CDBASE = $(CODENAME)-live-$(ARCH)
+CDBASE = $(CODENAME)-live-$(FULLARCH)
 endif
 endif
 CDSRCBASE = $(CODENAME)-src-$(1)
@@ -373,7 +378,7 @@ ifdef FORCENONUSONCD1
 		sort | uniq > $(BDIR)/$(CAPPROJECT)_$(CODENAME)_nonUS
 endif
 	$(Q)if [ -x "/usr/sbin/debootstrap" -a _$(INSTALLER_CD) != _1 ]; then \
-		/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp dummy $(DEBOOTSTRAP)/$(CODENAME)-$(ARCH) \
+		/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp dummy $(DEBOOTSTRAP)/$(CODENAME)-$(FULLARCH) \
 		| tr ' ' '\n' >>$(BDIR)/rawlist.debootstrap; \
 	fi
 	$(Q)perl -npe 's/\@ARCH\@/$(ARCH)/g' $(TASK) | \
@@ -524,7 +529,7 @@ $(BDIR)/packages-stamp:
 	    DISK=$${DISK##CD}; \
 	    if [ -x "/usr/sbin/debootstrap" ]; then \
 	        ok=yes; \
-	        for p in `/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp dummy $(DEBOOTSTRAP)/$(CODENAME)-$(ARCH)`; do \
+	        for p in `/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp dummy $(DEBOOTSTRAP)/$(CODENAME)-$(FULLARCH)`; do \
 		    if ! grep -q ^$$p$$ $(BDIR)/$$DISK.packages; then \
 			if [ -n "$(BASE_EXCLUDE)" ] && grep -q ^$$p$$ $(BASE_EXCLUDE); then \
 				echo "Missing debootstrap-required $$p but included in $(BASE_EXCLUDE)"; \
@@ -661,13 +666,17 @@ $(BDIR)/bootable-stamp:
 		dir=$${file%%.packages}; \
 		n=$${dir##$(BDIR)/}; \
 		dir=$(BDIR)/CD$$n; \
-		if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/boot-$(ARCH) ]; then \
+		if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/boot-$(FULLARCH) ]; then \
+		    cd $(BDIR); \
+		    echo "Running tools/boot/$(DI_CODENAME)/boot-$(FULLARCH) $$n $$dir" ; \
+		    $(BASEDIR)/tools/boot/$(DI_CODENAME)/boot-$(FULLARCH) $$n $$dir; \
+		elif [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/boot-$(ARCH) ]; then \
 		    cd $(BDIR); \
 		    echo "Running tools/boot/$(DI_CODENAME)/boot-$(ARCH) $$n $$dir" ; \
 		    $(BASEDIR)/tools/boot/$(DI_CODENAME)/boot-$(ARCH) $$n $$dir; \
 		else \
 		    if [ "$${IGNORE_MISSING_BOOT_SCRIPT:-0}" = "0" ]; then \
-			echo "No script to make CDs bootable for $(ARCH) ..."; \
+			echo "No script to make CDs bootable for $(FULLARCH) ..."; \
 			exit 1; \
 		    fi; \
 		fi; \
@@ -891,7 +900,7 @@ bin-images: ok bin-md5list $(OUT)
 		if [ "$(DOJIGDO)" != "0" ]; then \
 			$(jigdo_cleanup) $(OUT)/$(call CDBASE,$$n).jigdo \
 				$(call CDBASE,$$n).iso $(BDIR)/CD$$n \
-				`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|$(ARCH)|g'`"$(call CDBASE,$$n).template" \
+				`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|$(FULLARCH)|g'`"$(call CDBASE,$$n).template" \
 				$(BINDISKINFOND) \
 				$(JIGDOFALLBACKURLS) ; \
 		fi; \
@@ -961,7 +970,10 @@ bin-image: ok bin-md5list $(OUT)
 	 rm -f $(OUT)/$(call CDBASE,$(CD)).raw; \
 	 $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 	  -o $(OUT)/$(call CDBASE,$(CD)).raw $$opts CD$(CD); \
-         if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
+         if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) ]; then \
+                $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) $(CD) $(BDIR)/CD$(CD) \
+                 $(OUT)/$(call CDBASE,$(CD)).raw; \
+         elif [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
                 $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) $(CD) $(BDIR)/CD$(CD) \
                  $(OUT)/$(call CDBASE,$(CD)).raw; \
          fi

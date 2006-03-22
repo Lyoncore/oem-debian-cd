@@ -11,10 +11,11 @@ if [ -z "$ARCHES" ]; then
 	export ARCHES='amd64 i386 powerpc'
 fi
 
-for ARCH in $ARCHES
+for FULLARCH in $ARCHES
 do
-	export ARCH
-	echo "Now we're going to build CD for $ARCH !"
+	export ARCH="${FULLARCH%%+*}"
+	export SUBARCH="${FULLARCH#*+}"
+	echo "Now we're going to build CD for $FULLARCH !"
 	if type find-mirror >/dev/null 2>&1; then
 		# TODO: nasty upcall to cdimage wrapper scripts
 		export MIRROR="$(find-mirror "$ARCH")"
@@ -25,7 +26,7 @@ do
 	echo " ... checking your mirror"
 	if [ "$SKIPMIRRORCHECK" != "yes" ] ; then 
 		make mirrorcheck-binary
-      	if [ "$ARCH" = "i386" ]; then
+      	if [ "$FULLARCH" = "i386" ]; then
             make mirrorcheck-source
         fi
 	else
@@ -43,8 +44,8 @@ do
 	else
 		disks=0
 	fi
-	if [ -f $BASEDIR/tools/boot/$CODENAME/boot-$ARCH.calc ]; then
-	    . $BASEDIR/tools/boot/$CODENAME/boot-$ARCH.calc
+	if [ -f $BASEDIR/tools/boot/$CODENAME/boot-$FULLARCH.calc ]; then
+	    . $BASEDIR/tools/boot/$CODENAME/boot-$FULLARCH.calc
 	fi
 	SIZE_ARGS=''
 	for CD in 1; do
@@ -64,12 +65,12 @@ do
 	done
     FULL_SIZE=`echo "($DEFSRCSIZE - $size) * 1024 * 1024" | bc`
 	echo " ... building the images"
-	if [ "$ARCH" = "i386" ] && [ "$CDIMAGE_INSTALL" = 1 ] && \
+	if [ "$FULLARCH" = "i386" ] && [ "$CDIMAGE_INSTALL" = 1 ] && \
 	   [ "$CDIMAGE_DVD" != 1 ] && [ "$DIST" != warty ] && \
 	   [ "$SPECIAL" != 1 ] && [ "$CDIMAGE_NOSOURCE" != 1 ]; then
 		make list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 
-		export OUT="$TMP_OUT/$ARCH"; mkdir -p $OUT
+		export OUT="$TMP_OUT/$FULLARCH"; mkdir -p $OUT
 		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		echo Generating MD5Sums of the images
 		make imagesums
@@ -84,7 +85,7 @@ do
 		make pi-makelist
 	else
 		make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
-		export OUT=$TMP_OUT/$ARCH; mkdir -p $OUT
+		export OUT=$TMP_OUT/$FULLARCH; mkdir -p $OUT
 		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		if [ $? -gt 0 ]; then
 			echo "ERROR WHILE BUILDING OFFICIAL IMAGES !!" >&2

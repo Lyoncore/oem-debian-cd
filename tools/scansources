@@ -95,7 +95,7 @@ done
 cat >$PREFIX.generate-source <<EOF
 Dir::ArchiveDir "$1";
 Dir::OverrideDir "$SDIR/indices";
-Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
+Dir::CacheDir "$APTTMP/$CODENAME-$FULLARCH/apt-ftparchive-db";
 
 TreeDefault::Contents " ";
 
@@ -112,7 +112,7 @@ EOF
 cat >$PREFIX.generate-source-non-US <<EOF
 Dir::ArchiveDir "$1";
 Dir::OverrideDir "$SDIR/indices-non-US";
-Dir::CacheDir "$APTTMP/$CODENAME-$ARCH/apt-ftparchive-db";
+Dir::CacheDir "$APTTMP/$CODENAME-$FULLARCH/apt-ftparchive-db";
 
 TreeDefault::Contents " ";
 
