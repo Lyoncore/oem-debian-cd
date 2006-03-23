@@ -72,12 +72,12 @@ done
 
 if [ "$NN" = "1" ]; then
     echo "Using elilo boot-disks image on CD$N"
-    mkdir -p boot$N/install
+    mkdir -p $CDDIR/install
     ELILODEB="$($BASEDIR/tools/apt-selection cache show elilo | \
 	grep ^Filename | awk '{print $2}')"
     (ar p "$MIRROR/$ELILODEB" data.tar.gz | \
 	tar zxf - -C . ./usr/lib/elilo/elilo.efi)
-    mv usr/lib/elilo/elilo.efi boot$N/install/
+    mv usr/lib/elilo/elilo.efi $CDDIR/install/
 
     rm -rf usr
     if [ -e $CDDIR/casper/filesystem.kernel-386 ]; then
@@ -145,26 +145,26 @@ ar p "$MIRROR/$MEMTEST86DEB" data.tar.gz | \
 mv $CDDIR/install/boot/memtest86+.bin $CDDIR/install/mt86plus
 rm -rf $CDDIR/install/boot
 # elilo help files come from d-i.
-cat cdrom/debian-cd_info.tar.gz | (cd boot$N/install/; tar zx)
+cat cdrom/debian-cd_info.tar.gz | (cd $CDDIR/install/; tar zx)
 # Remove ISOLINUX configuration; only for non-Macs.
-rm -f boot$N/install/isolinux*
-rm -f boot$N/install/*.txt*
-rm -f boot$N/install/*.hlp*
+rm -f $CDDIR/install/isolinux*
+rm -f $CDDIR/install/*.txt*
+rm -f $CDDIR/install/*.hlp*
 # Override splash screen.
 if [ "$SPLASHRLE" ] && [ -e "$SPLASHRLE" ]; then
-    cp -p "$SPLASHRLE" boot$N/install/splash.rle
+    cp -p "$SPLASHRLE" $CDDIR/install/splash.rle
 fi
 if [ "$GFXSPLASH" ] && [ -e "$GFXSPLASH" ]; then
-    cp -p "$GFXSPLASH" boot$N/install/splash.pcx
+    cp -p "$GFXSPLASH" $CDDIR/install/splash.pcx
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
-    rm -f boot$N/install/*.msg.live
+    rm -f $CDDIR/install/*.msg.live
 else
-    for x in boot$N/install/*.msg.live; do
+    for x in $CDDIR/install/*.msg.live; do
 	[ -f "$x" ] || continue
 	mv "$x" "${x%.live}"
     done
-    for x in boot$N/install/*.msg.live; do
+    for x in $CDDIR/install/*.msg.live; do
 	[ -f "$x" ] || continue
 	mv "$x" "${x%.live}"
     done
@@ -173,11 +173,9 @@ fi
 fi
 
 # write final lines to mkisofs_opts
-if [ "$NN" = "1" ]; then
-    echo -n "boot$N " >> $N.mkisofs_opts
-else
+if [ "$NN" != "1" ]; then
     if [ -n "$THISTYPE" ]; then
-	echo -n "-c boot/boot.catalog boot$N "  >> $N.mkisofs_opts
+	echo -n "-c boot/boot.catalog "  >> $N.mkisofs_opts
     fi
 fi
 
