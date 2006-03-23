@@ -14,7 +14,11 @@ fi
 for FULLARCH in $ARCHES
 do
 	export ARCH="${FULLARCH%%+*}"
-	export SUBARCH="${FULLARCH#*+}"
+	if [ "$ARCH" = "$FULLARCH" ]; then
+		export SUBARCH=
+	else
+		export SUBARCH="${FULLARCH#*+}"
+	fi
 	echo "Now we're going to build CD for $FULLARCH !"
 	if type find-mirror >/dev/null 2>&1; then
 		# TODO: nasty upcall to cdimage wrapper scripts

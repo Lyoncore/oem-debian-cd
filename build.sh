@@ -14,7 +14,11 @@ fi
 if [ -n "$1" ] ; then
     FULLARCH="$1"
     export ARCH="${FULLARCH%%+*}"
-    export SUBARCH="${FULLARCH#*+}"
+    if [ "$ARCH" = "$FULLARCH" ]; then
+        export SUBARCH=
+    else
+        export SUBARCH="${FULLARCH#*+}"
+    fi
 fi
 
 make distclean
