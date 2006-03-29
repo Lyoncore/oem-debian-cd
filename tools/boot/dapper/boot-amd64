@@ -160,6 +160,9 @@ fi
 if [ "$GFXSPLASH" ] && [ -e "$GFXSPLASH" ]; then
     cp -p "$GFXSPLASH" boot$N/isolinux/splash.pcx
 fi
+# Remove elilo configuration; only for Macs.
+rm -f boot$N/isolinux/elilo*
+rm -f boot$N/isolinux/*.msg*
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
     rm -f boot$N/isolinux/*.txt.live
     rm -f boot$N/isolinux/*.hlp.live
