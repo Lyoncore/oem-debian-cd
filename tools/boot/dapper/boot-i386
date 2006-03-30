@@ -111,7 +111,7 @@ else
     fi
 fi
 
-"$BASEDIR/tools/sorting_weights" "$N"
+"$BASEDIR/tools/sorting_weights" "$N" isolinux/isolinux.bin isolinux/boot.cat
 echo -n "-sort $(pwd)/$N.weights " >> $N.mkisofs_opts
 
 #install_languages $CDDIR
