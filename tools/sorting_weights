@@ -3,9 +3,11 @@
 # Create weighting files suitable for 'mkisofs -sort'.
 #
 # First argument = CD number
+# Subsequent arguments = files or directories to be sorted to the start
 
 BDIR="$TDIR/$CODENAME-$FULLARCH"
 CD="$1"
+shift
 
 SECTIONS="main non-US/main"
 if [ "${CONTRIB:-0}" != 0 ]; then
@@ -21,7 +23,13 @@ if [ "$LOCAL" ]; then
 	SECTIONS="$SECTIONS local"
 fi
 
-rm -f "$BDIR/$CD.weights_in"
+rm -f "$BDIR/$CD.weights_in" "$BDIR/$CD.weights"
+
+for file in $@; do
+	# These files (or directories) sort before everything else.
+	echo "$file 1000" >> "$BDIR/$CD.weights"
+done
+
 for type in udeb deb; do
 	for section in $SECTIONS; do
 		if [ -s "$BDIR/$CD.filelist_$section" ]; then
@@ -36,7 +44,7 @@ while read file; do
 	# Use negative weight so that everything else sorts to the start
 	echo "CD$CD/$file -$weight"
 	weight="$(($weight + 1))"
-done < "$BDIR/$CD.weights_in" > "$BDIR/$CD.weights"
+done < "$BDIR/$CD.weights_in" >> "$BDIR/$CD.weights"
 
 rm -f "$BDIR/$CD.weights_in"
 
