@@ -25,9 +25,11 @@ fi
 
 rm -f "$BDIR/$CD.weights_in" "$BDIR/$CD.weights"
 
+i="$#"
 for file in $@; do
 	# These files (or directories) sort before everything else.
-	echo "CD$CD/$file 1000" >> "$BDIR/$CD.weights"
+	echo "CD$CD/$file +$i" >> "$BDIR/$CD.weights"
+	i="$(($i - 1))"
 done
 
 for type in udeb deb; do
