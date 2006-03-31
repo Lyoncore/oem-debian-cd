@@ -4,6 +4,7 @@
 #
 # First argument = CD number
 # Subsequent arguments = files or directories to be sorted to the start
+# Note that these filenames are relative to $BDIR, not $BDIR/CD$CD.
 
 BDIR="$TDIR/$CODENAME-$FULLARCH"
 CD="$1"
@@ -28,7 +29,7 @@ rm -f "$BDIR/$CD.weights_in" "$BDIR/$CD.weights"
 i="$#"
 for file in $@; do
 	# These files (or directories) sort before everything else.
-	echo "CD$CD/$file +$i" >> "$BDIR/$CD.weights"
+	echo "$file +$i" >> "$BDIR/$CD.weights"
 	i="$(($i - 1))"
 done
 
