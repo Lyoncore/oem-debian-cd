@@ -109,6 +109,7 @@ jigdo_cleanup=$(BASEDIR)/tools/jigdo_cleanup
 grab_md5=$(BASEDIR)/tools/grab_md5
 add_live_filesystem=$(BASEDIR)/tools/add_live_filesystem
 find_newest_installer=$(BASEDIR)/tools/find-newest-installer
+verbose=$(BASEDIR)/tools/verbose_command
 
 BDIR=$(TDIR)/$(CODENAME)-$(FULLARCH)
 ADIR=$(APTTMP)/$(CODENAME)-$(FULLARCH)
@@ -876,10 +877,10 @@ bin-images: ok bin-md5list $(OUT)
 		volid=`cat $(BDIR)/$$n.volid`; \
 		rm -f $(OUT)/$(call CDBASE,$$n).raw; \
 		if [ "$(DOJIGDO)" = "0" ]; then \
-			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
+			$(verbose) $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o $(OUT)/$(call CDBASE,$$n).raw $$opts CD$$n; \
 		elif [ "$(DOJIGDO)" = "1" ]; then \
-			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
+			$(verbose) $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o $(OUT)/$(call CDBASE,$$n).raw \
 			  -jigdo-jigdo $(OUT)/$(call CDBASE,$$n).jigdo \
 			  -jigdo-template $(OUT)/$(call CDBASE,$$n).template \
@@ -888,7 +889,7 @@ bin-images: ok bin-md5list $(OUT)
 			  -md5-list $(BDIR)/md5-check \
 			  $(JIGDO_OPTS) $$opts CD$$n; \
 		elif [ "$(DOJIGDO)" = "2" ]; then \
-			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
+			$(verbose) $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o /dev/null -v \
 			  -jigdo-jigdo $(OUT)/$(call CDBASE,$$n).jigdo \
 			  -jigdo-template $(OUT)/$(call CDBASE,$$n).template \
