@@ -4,6 +4,7 @@
 
 . CONF.sh
 
+rm -rf "$TDIR"
 rm -rf "$OUT"
 TMP_OUT=$OUT
 
