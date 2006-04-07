@@ -218,6 +218,10 @@ LABEL live
   menu label ^Start $CAPPROJECT
   kernel /install/vmlinuz
   append $KERNEL_PARAMS boot=casper initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+LABEL xforcevesa
+  menu label Start $CAPPROJECT in safe ^graphics mode
+  kernel /install/vmlinuz
+  append $KERNEL_PARAMS boot=casper xforcevesa initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
