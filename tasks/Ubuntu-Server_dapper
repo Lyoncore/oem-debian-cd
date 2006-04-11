@@ -14,8 +14,8 @@
 #include <ubuntu-server/dapper/standard>
 #if (CDIMAGE_INSTALL == 1)
 #include <ubuntu-server/dapper/server>
-#include <ubuntu-server/dapper/ship>
 #if (CDIMAGE_DVD == 1)
+#include <ubuntu-server/dapper/ship>
 #include <ubuntu-server/dapper/supported>
 #endif
 #endif
