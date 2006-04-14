@@ -190,6 +190,17 @@ if [ "$PROJECT" = ubuntu-server ]; then
 	cp -p "$x" "boot$N/isolinux/${base%.server}"
     done
 fi
+
+# Set up-to-date build dates. Kludgy because d-i sets its own version as
+# the build date.
+DI_VERSION="$(perl -lne 'if (/built on ([0-9a-z]*)/) { print $1 }'
+			"boot$N/isolinux/f1.txt")"
+if [ "$DI_VERSION" ]; then
+    : "${CDIMAGE_DATE:=$(date +%Y%m%d)}"
+    sed -i "s/$DI_VERSION/$CDIMAGE_DATE/g" \
+	"boot$N"/isolinux/*.txt "boot$N"/isolinux/*.hlp
+fi
+
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     timeout=300
 else
