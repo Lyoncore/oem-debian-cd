@@ -192,7 +192,7 @@ fi
 
 # Set up-to-date build dates. Kludgy because d-i sets its own version as
 # the build date.
-DI_VERSION="$(perl -lne 'if (/built on ([0-9a-z]*)/) { print $1 }'
+DI_VERSION="$(perl -lne 'if (/built on ([0-9a-z]*)/) { print $1 }' \
 			"boot$N/isolinux/f1.txt")"
 if [ "$DI_VERSION" ]; then
     : "${CDIMAGE_DATE:=$(date +%Y%m%d)}"
