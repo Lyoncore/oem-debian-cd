@@ -48,12 +48,18 @@ silo_deb="$($BASEDIR/tools/apt-selection cache show silo | \
 (ar p "$MIRROR/$silo_deb" data.tar.gz | \
 	tar zxf - -C $inst/ ./boot/{isofs,second}.b)
 
+if [ "$CDIMAGE_INSTALL" = 1 ]; then
+	SILO_SUFFIX=
+else
+	SILO_SUFFIX=.live
+fi
+
 # Some custom etc files
-cat $BASEDIR/data/$CODENAME/sparc/silo.conf \
+cat $BASEDIR/data/$CODENAME/sparc/silo.conf$SILO_SUFFIX \
  | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
  > $inst/boot/silo.conf
 BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
-cat $BASEDIR/data/$CODENAME/sparc/ubuntu.txt \
+cat $BASEDIR/data/$CODENAME/sparc/ubuntu.txt$SILO_SUFFIX \
  | sed "s/\${MEDIA_TYPE}/CDROM/" \
  | sed "s/\${DEBIAN_VERSION}/${CODENAME}/g" \
  | sed "s/\${BUILD_DATE}/${BUILD_DATE}/g" \
