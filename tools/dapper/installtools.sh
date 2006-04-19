@@ -42,11 +42,15 @@ fi
 mkdir -p $DIR/preseed
 # TODO: odd path?
 if [ -d $BASEDIR/data/$CODENAME/preseed/$PROJECT ]; then
-    for file in $BASEDIR/data/$CODENAME/preseed/$PROJECT/*.seed; do
-        cp -a "$file" $DIR/preseed/
-    done
+    PRESEED_ROOT=$BASEDIR/data/$CODENAME/preseed/$PROJECT
 else
-    for file in $BASEDIR/data/$CODENAME/preseed/*.seed; do
+    PRESEED_ROOT=$BASEDIR/data/$CODENAME/preseed
+fi
+for file in $PRESEED_ROOT/*.seed; do
+    cp -a "$file" $DIR/preseed/
+done
+if [ -d $PRESEED_ROOT/$ARCH ]; then
+    for file in $PRESEED_ROOT/$ARCH/*.seed; do
         cp -a "$file" $DIR/preseed/
     done
 fi
