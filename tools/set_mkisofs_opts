@@ -29,5 +29,13 @@ case "$ARCH" in
     ;;
 esac
 
+case "$TYPE" in
+  src)
+    # breaks Joliet specification, but needed due to some absurdly long
+    # filenames that need .dsc/.diff.gz to be distinct
+    OPTS="${OPTS:+$OPTS }-joliet-long"
+    ;;
+esac
+
 echo -n "$OPTS "
 
