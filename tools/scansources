@@ -154,9 +154,9 @@ if [ -n "$NONUS" -a ! -d "$SDIR/indices-non-US" ]; then
     done
 fi
 
-apt-ftparchive generate $PREFIX.generate-source
+apt-ftparchive --no-contents generate $PREFIX.generate-source
 if [ -n "$NONUS" ]; then
-    apt-ftparchive generate $PREFIX.generate-source-non-US
+    apt-ftparchive --no-contents generate $PREFIX.generate-source-non-US
 fi
 
 
