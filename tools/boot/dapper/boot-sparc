@@ -76,13 +76,13 @@ else
 	wget "$DI_WWW_HOME/vmlinuz"
 	wget "$DI_WWW_HOME/initrd.gz"
 fi
-if [ -e "$CDDIR/casper/filesystem.initrd-sparc64" ]; then
-	cp -a "$CDDIR/casper/filesystem.initrd-sparc64" "$inst/boot/initrd.gz"
-else
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	cp "$DI_DIR"/initrd.gz "$inst/boot/initrd.gz"
+	zcat "$DI_DIR"/vmlinuz > "$inst/boot/sparc64"
 fi
 if [ -e "$CDDIR/casper/filesystem.kernel-sparc64" ]; then
-	zcat "$CDDIR/casper/filesystem.kernel-sparc64" > "$inst/boot/sparc64"
-else
-	zcat "$DI_DIR"/vmlinuz > "$inst/boot/sparc64"
+	zcat "$CDDIR/casper/filesystem.kernel-sparc64" \
+		> "$CDDIR/casper/filesystem.kernel-sparc64.new"
+	mv "$CDDIR/casper/filesystem.kernel-sparc64.new" \
+	   "$CDDIR/casper/filesystem.kernel-sparc64"
 fi
