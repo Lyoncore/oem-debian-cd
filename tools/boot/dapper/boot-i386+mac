@@ -80,14 +80,8 @@ if [ "$NN" = "1" ]; then
     mv usr/lib/elilo/elilo.efi boot$N/install/
 
     rm -rf usr
-    if [ -e $CDDIR/casper/filesystem.kernel-386 ]; then
-	mv $CDDIR/casper/filesystem.kernel-386 $CDDIR/install/vmlinuz
-    else
+    if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	cp -lf cdrom/vmlinuz $CDDIR/install/
-    fi
-    if [ -e $CDDIR/casper/filesystem.initrd-386 ]; then
-	mv $CDDIR/casper/filesystem.initrd-386 $CDDIR/install/initrd.gz
-    else
 	cp -lf cdrom/initrd.gz $CDDIR/install/
     fi
     echo -n "-cache-inodes -J -l " > $N.mkisofs_opts

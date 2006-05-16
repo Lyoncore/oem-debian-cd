@@ -48,22 +48,19 @@ else
 	wget -r -nd --no-parent -P "$DI_DIR" "$DI_WWW_HOME"
 fi
 	
-if [ -e "$CDROOT/casper/filesystem.kernel-hppa32" ]; then
-	mv "$CDROOT/casper/filesystem.kernel-hppa32" "$CDROOT/install/vmlinux-hppa32"
-else
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	cp "$DI_DIR"/vmlinux-*-hppa32 "$CDROOT/install/vmlinux-hppa32"
-fi
-if [ -e "$CDROOT/casper/filesystem.kernel-hppa64" ]; then
-	mv "$CDROOT/casper/filesystem.kernel-hppa64" "$CDROOT/install/vmlinux-hppa64"
-else
 	cp "$DI_DIR"/vmlinux-*-hppa64 "$CDROOT/install/vmlinux-hppa64"
-fi
-# TODO: we're screwed here, because mkisofs only supports one ramdisk. Pick
-# hppa32 arbitrarily for now.
-if [ -e "$CDROOT/casper/filesystem.initrd-hppa32" ]; then
-	mv "$CDROOT/casper/filesystem.initrd-hppa32" "$CDROOT/install/initrd.gz"
-else
 	cp "$DI_DIR"/initrd.gz "$CDROOT/install"
+	KERNEL32=install/vmlinux-hppa32
+	KERNEL64=install/vmlinux-hppa64
+	RAMDISK=install/initrd.gz
+else
+	KERNEL32=casper/filesystem.kernel-hppa32
+	KERNEL64=casper/filesystem.kernel-hppa64
+	# TODO: we're screwed here, because mkisofs only supports one
+	# ramdisk. Pick hppa32 arbitrarily for now.
+	RAMDISK=casper/filesystem.initrd-hppa32
 fi
 
 install_languages "$CDROOT"
@@ -75,9 +72,9 @@ else
 fi
 
 echo " -hppa-cmdline 0/vmlinux,${DEFAULT_PRESEED:+$DEFAULT_PRESEED,}${EXTRA_ARGS:+$EXTRA_ARGS,}root=/dev/ram,initrd=0/ramdisk,ramdisk_size=1048576" >> $1.mkisofs_opts
-echo " -hppa-kernel-32 install/vmlinux-hppa32" >> $1.mkisofs_opts
-echo " -hppa-kernel-64 install/vmlinux-hppa64" >> $1.mkisofs_opts
+echo " -hppa-kernel-32 $KERNEL32" >> $1.mkisofs_opts
+echo " -hppa-kernel-64 $KERNEL64" >> $1.mkisofs_opts
 echo " -hppa-bootloader install/iplboot" >> $1.mkisofs_opts
-echo " -hppa-ramdisk install/initrd.gz" >> $1.mkisofs_opts
+echo " -hppa-ramdisk $RAMDISK" >> $1.mkisofs_opts
 
 exit 0

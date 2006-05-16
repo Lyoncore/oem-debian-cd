@@ -87,14 +87,8 @@ if [ "$NN" = "1" ]; then
     fi
 
     rm -rf usr
-    if [ -e $CDDIR/casper/filesystem.kernel-amd64-generic ]; then
-	mv $CDDIR/casper/filesystem.kernel-amd64-generic $CDDIR/install/vmlinuz
-    else
+    if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	cp -lf cdrom/vmlinuz $CDDIR/install/
-    fi
-    if [ -e $CDDIR/casper/filesystem.initrd-amd64-generic ]; then
-	mv $CDDIR/casper/filesystem.initrd-amd64-generic $CDDIR/install/initrd.gz
-    else
 	cp -lf cdrom/initrd.gz $CDDIR/install/
     fi
     echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " > $N.mkisofs_opts
@@ -210,9 +204,15 @@ sed -e "s#Ubuntu#$CAPPROJECT#g" boot$N/isolinux/boot.txt \
     > boot$N/isolinux/isolinux.txt
 rm -f boot$N/isolinux/boot.txt
 # Isolinux config file.
-cat > boot$N/isolinux/isolinux.cfg <<EOF
-DEFAULT /install/vmlinuz
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    cat > boot$N/isolinux/isolinux.cfg <<EOF
+    DEFAULT /casper/filesystem.kernel-amd64-generic
 EOF
+else
+    cat > boot$N/isolinux/isolinux.cfg <<EOF
+    DEFAULT /install/vmlinuz
+EOF
+fi
 if [ "$GFXBOOT" ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 GFXBOOT bootlogo
@@ -225,15 +225,15 @@ EOF
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
-APPEND $KERNEL_PARAMS boot=casper initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+    APPEND $KERNEL_PARAMS boot=casper initrd=/casper/filesystem.initrd-amd64-generic ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 LABEL live
   menu label ^Start $CAPPROJECT
-  kernel /install/vmlinuz
-  append $KERNEL_PARAMS boot=casper initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+  kernel /casper/filesystem.kernel-amd64-generic
+  append $KERNEL_PARAMS boot=casper initrd=/casper/filesystem.initrd-amd64-generic ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 LABEL xforcevesa
   menu label Start $CAPPROJECT in safe ^graphics mode
-  kernel /install/vmlinuz
-  append $KERNEL_PARAMS boot=casper xforcevesa initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+  kernel /casper/filesystem.kernel-amd64-generic
+  append $KERNEL_PARAMS boot=casper xforcevesa initrd=/casper/filesystem.initrd-amd64-generic ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
@@ -305,8 +305,8 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL check
   menu label ^Check CD for defects
-  kernel /install/vmlinuz
-  append $KERNEL_PARAMS boot=casper integrity-check initrd=/install/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+  kernel /casper/filesystem.kernel-amd64-generic
+  append $KERNEL_PARAMS boot=casper integrity-check initrd=/casper/filesystem.initrd-amd64-generic ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 EOF
 elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF

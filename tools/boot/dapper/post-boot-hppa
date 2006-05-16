@@ -25,14 +25,22 @@ default_preseed
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     EXTRA_ARGS='boot=casper splash'
+    KERNEL32=casper/filesystem.kernel-hppa32
+    KERNEL64=casper/filesystem.kernel-hppa64
+    # TODO: we're screwed here, because mkisofs only supports one ramdisk.
+    # Pick hppa32 arbitrarily for now.
+    RAMDISK=casper/filesystem.initrd-hppa32
 else
     EXTRA_ARGS=
+    KERNEL32=install/vmlinux-hppa32
+    KERNEL64=install/vmlinux-hppa64
+    RAMDISK=install/initrd.gz
 fi
 
 /sbin/palo \
      --commandline="0/vmlinux $DEFAULT_PRESEED $EXTRA_ARGS root=/dev/ram initrd=0/ramdisk ramdisk_size=1048576" \
-     --recoverykernel="$CDROOT/install/vmlinux-hppa32" \
-     --recoverykernel="$CDROOT/install/vmlinux-hppa64" \
+     --recoverykernel="$CDROOT/$KERNEL32" \
+     --recoverykernel="$CDROOT/$KERNEL64" \
      --bootloader="$CDROOT/install/iplboot" \
-     --ramdisk="$CDROOT/install/initrd.gz" \
+     --ramdisk="$CDROOT/$RAMDISK" \
      --init-cdrom=$CDIMAGE --configfile=/dev/null

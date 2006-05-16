@@ -1,34 +1,34 @@
 
 # PowerPC subarch 
-image=/install/powerpc/vmlinux
+image=/casper/filesystem.kernel-powerpc
 	label=live
 	alias=live-powerpc
-	initrd=/install/powerpc/initrd.gz
+	initrd=/casper/filesystem.initrd-powerpc
 	append="boot=casper quiet splash --"
 	initrd-size=1048576
 	read-only
 
-image=/install/powerpc/vmlinux
+image=/casper/filesystem.kernel-powerpc
 	label=live-nosplash
 	alias=live-nosplash-powerpc
-	initrd=/install/powerpc/initrd.gz
+	initrd=/casper/filesystem.initrd-powerpc
 	append="boot=casper quiet --"
 	initrd-size=1048576
 	read-only
 
 # PowerPC64 subarch
-image[macrisc4]=/install/powerpc64/vmlinux
+image[macrisc4]=/casper/filesystem.kernel-powerpc64-smp
 	label=live
 	alias=live-powerpc64
-	initrd=/install/powerpc64/initrd.gz
+	initrd=/casper/filesystem.initrd-powerpc64-smp
 	append="boot=casper quiet splash --"
 	initrd-size=1048576
 	read-only
 
-image[macrisc4]=/install/powerpc64/vmlinux
+image[macrisc4]=/casper/filesystem.kernel-powerpc64-smp
 	label=live-nosplash
 	alias=live-nosplash-powerpc64
-	initrd=/install/powerpc64/initrd.gz
+	initrd=/casper/filesystem.initrd-powerpc64-smp
 	append="boot=casper quiet --"
 	initrd-size=1048576
 	read-only
