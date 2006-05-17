@@ -56,11 +56,14 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	KERNEL64=install/vmlinux-hppa64
 	RAMDISK=install/initrd.gz
 else
-	KERNEL32=casper/filesystem.kernel-hppa32
-	KERNEL64=casper/filesystem.kernel-hppa64
+	mv "$CDROOT/casper/filesystem.kernel-hppa32" "$CDROOT/casper/vmlinux-hppa32"
+	mv "$CDROOT/casper/filesystem.kernel-hppa64" "$CDROOT/casper/vmlinux-hppa64"
+	KERNEL32=casper/vmlinux-hppa32
+	KERNEL64=casper/vmlinux-hppa64
 	# TODO: we're screwed here, because mkisofs only supports one
 	# ramdisk. Pick hppa32 arbitrarily for now.
-	RAMDISK=casper/filesystem.initrd-hppa32
+	mv "$CDROOT/casper/filesystem.initrd-hppa32" "$CDROOT/casper/initrd.gz"
+	RAMDISK=casper/initrd.gz
 fi
 
 install_languages "$CDROOT"
