@@ -175,6 +175,21 @@ do
     rm -f "$subarch/vmlinuz-coff.initrd"
     rm -f "$subarch/vmlinuz-prep.initrd" "$subarch/vmlinuz-ppcbug.initrd"
   fi
+  if [ "$CDIMAGE_LIVE" = 1 ]; then
+    case $subarch in
+      powerpc)
+        casper_subarch=powerpc
+        ;;
+      powerpc64)
+        casper_subarch=powerpc64-smp
+        ;;
+    esac
+    mkdir -p "$CDDIR/casper/$subarch"
+    mv "$CDDIR/casper/filesystem.kernel-$casper_subarch" \
+       "$CDDIR/casper/$subarch/vmlinux"
+    mv "$CDDIR/casper/filesystem.initrd-$casper_subarch" \
+       "$CDDIR/casper/$subarch/initrd.gz"
+  fi
 done
 
 # Copy pegasos forth script, since pegasos machines don't support yaboot yet.

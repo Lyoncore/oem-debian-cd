@@ -1,18 +1,18 @@
 
 # PowerPC subarch
-image=/casper/filesystem.kernel-powerpc
+image=/casper/powerpc/vmlinux
 	label=check
 	alias=check-powerpc
-	initrd=/casper/filesystem.initrd-powerpc
+	initrd=/casper/powerpc/initrd.gz
 	append="boot=casper integrity-check quiet splash --"
 	initrd-size=1048576
 	read-only
 
 # PowerPC64 subarch
-image[macrisc4]=/casper/filesystem.kernel-powerpc64-smp
+image[macrisc4]=/casper/powerpc64/vmlinux
 	label=check
 	alias=check-powerpc64
-	initrd=/casper/filesystem.initrd-powerpc64-smp
+	initrd=/casper/powerpc64/initrd.gz
 	append="boot=casper integrity-check quiet splash --"
 	initrd-size=1048576
 	read-only

@@ -25,11 +25,11 @@ default_preseed
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     EXTRA_ARGS='boot=casper splash'
-    KERNEL32=casper/filesystem.kernel-hppa32
-    KERNEL64=casper/filesystem.kernel-hppa64
+    KERNEL32=casper/vmlinux-hppa32
+    KERNEL64=casper/vmlinux-hppa64
     # TODO: we're screwed here, because mkisofs only supports one ramdisk.
     # Pick hppa32 arbitrarily for now.
-    RAMDISK=casper/filesystem.initrd-hppa32
+    RAMDISK=casper/initrd.gz
 else
     EXTRA_ARGS=
     KERNEL32=install/vmlinux-hppa32

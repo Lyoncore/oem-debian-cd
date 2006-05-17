@@ -84,6 +84,10 @@ if [ "$NN" = "1" ]; then
 	cp -lf cdrom/vmlinuz $CDDIR/install/
 	cp -lf cdrom/initrd.gz $CDDIR/install/
     fi
+    if [ "$CDIMAGE_LIVE" = 1 ]; then
+	mv $CDDIR/casper/filesystem.kernel-386 $CDDIR/casper/vmlinuz
+	mv $CDDIR/casper/filesystem.initrd-386 $CDDIR/casper/initrd.gz
+    fi
     echo -n "-cache-inodes -J -l " > $N.mkisofs_opts
     # HFS hybrid filesystem for booting on Intel-based Macs
     echo -n "--netatalk -hfs -probe -map $BASEDIR/data/hfs.map " >> $N.mkisofs_opts

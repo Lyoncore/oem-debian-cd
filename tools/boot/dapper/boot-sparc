@@ -80,9 +80,8 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	cp "$DI_DIR"/initrd.gz "$inst/boot/initrd.gz"
 	zcat "$DI_DIR"/vmlinuz > "$inst/boot/sparc64"
 fi
-if [ -e "$CDDIR/casper/filesystem.kernel-sparc64" ]; then
-	zcat "$CDDIR/casper/filesystem.kernel-sparc64" \
-		> "$CDDIR/casper/filesystem.kernel-sparc64.new"
-	mv "$CDDIR/casper/filesystem.kernel-sparc64.new" \
-	   "$CDDIR/casper/filesystem.kernel-sparc64"
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+	# TODO: does putting boot images in /casper/ actually work on sparc?
+	mv "$CDDIR/casper/filesystem.initrd-sparc64" "$CDDIR/casper/initrd.gz"
+	zcat "$CDDIR/casper/filesystem.kernel-sparc64" > "$CDDIR/casper/sparc64"
 fi
