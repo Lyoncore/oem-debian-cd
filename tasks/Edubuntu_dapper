@@ -20,3 +20,7 @@
 #endif
 #endif
 #endif
+
+#if (CDIMAGE_LIVE == 1)
+#include <edubuntu/dapper/ship-live>
+#endif
