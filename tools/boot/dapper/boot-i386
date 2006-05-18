@@ -228,15 +228,15 @@ EOF
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
-APPEND $KERNEL_PARAMS boot=casper initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+APPEND $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 LABEL live
   menu label ^Start $CAPPROJECT
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS boot=casper initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 LABEL xforcevesa
   menu label Start $CAPPROJECT in safe ^graphics mode
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS boot=casper xforcevesa initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper xforcevesa initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
