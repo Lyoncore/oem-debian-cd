@@ -88,7 +88,7 @@ case $DIST in
     export CODENAME=dapper
     export CAPCODENAME='Dapper Drake'
     export DEBVERSION=6.06
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Release Candidate"
     ;;
 esac
 
