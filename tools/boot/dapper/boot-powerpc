@@ -123,7 +123,7 @@ BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
          cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.lamp
      fi
  fi
- if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
+ if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
      cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.server
  fi
  if [ "$CDIMAGE_LIVE" = 1 ]; then
