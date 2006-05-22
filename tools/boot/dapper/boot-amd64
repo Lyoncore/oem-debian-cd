@@ -231,7 +231,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
     APPEND $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 LABEL live
-  menu label ^Start $CAPPROJECT
+  menu label ^Start or install $CAPPROJECT
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
 LABEL xforcevesa
@@ -248,7 +248,7 @@ EOF
     fi
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL install
-  menu label ^Install to the hard disk
+  menu label ^Install in text mode
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 LABEL linux
