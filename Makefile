@@ -145,16 +145,24 @@ ifeq ($(CDIMAGE_DVD),1)
 CDBASE = $(CODENAME)-dvd-$(FULLARCH)
 else
 ifeq ($(CDIMAGE_INSTALL),1)
+ifneq (,$(findstring :$(PROJECT):,:edubuntu:ubuntu-server:))
+CDBASE = $(CODENAME)-install-$(FULLARCH)
+else
 ifneq (,$(findstring $(CODENAME),warty hoary breezy))
 CDBASE = $(CODENAME)-install-$(FULLARCH)
 else
 CDBASE = $(CODENAME)-alternate-$(FULLARCH)
 endif
+endif
+else
+ifneq (,$(findstring :$(PROJECT):,:edubuntu:ubuntu-server:))
+CDBASE = $(CODENAME)-live-$(FULLARCH)
 else
 ifneq (,$(findstring $(CODENAME),warty hoary breezy))
 CDBASE = $(CODENAME)-live-$(FULLARCH)
 else
 CDBASE = $(CODENAME)-desktop-$(FULLARCH)
+endif
 endif
 endif
 endif
