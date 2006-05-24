@@ -3,6 +3,8 @@ d-i	base-installer/kernel/linux/extra-packages-2.6	string
 # Desktop system not installed; don't waste time and disk space copying it.
 d-i	archive-copier/desktop-task	string xubuntu-standard
 d-i	archive-copier/ship-task	string
+# Don't build an LTSP client chroot (workaround for Dapper RC only).
+d-i	ltsp-client-builder/run	boolean false
 # Only install the standard system and language packs.
 d-i	pkgsel/install-pattern	string ~t^xubuntu-standard$
 d-i	pkgsel/language-pack-patterns	string
