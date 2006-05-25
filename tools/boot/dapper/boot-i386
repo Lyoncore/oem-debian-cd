@@ -304,6 +304,14 @@ LABEL server-expert
   append $KERNEL_PARAMS preseed/file=/cdrom/preseed/server.seed DEBCONF_PRIORITY=low initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 EOF
 fi
+if [ "$CDIMAGE_INSTALL" = 1 ] && [ "$PROJECT" = xubuntu ]; then
+    cat >> boot$N/isolinux/isolinux.cfg <<EOF
+LABEL ltsp-server
+  menu label Install an ^LTSP server
+  kernel /install/vmlinuz
+  append $KERNEL_PARAMS preseed/file=/cdrom/preseed/ltsp.seed initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
+EOF
+fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL check
