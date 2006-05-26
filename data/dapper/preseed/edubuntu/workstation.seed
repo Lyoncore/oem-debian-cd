@@ -5,8 +5,6 @@ d-i	base-installer/kernel/linux/extra-packages-2.6	string usplash edubuntu-artwo
 # Adjust task names for Edubuntu.
 d-i	archive-copier/desktop-task	string edubuntu-standard|edubuntu-desktop
 d-i	archive-copier/ship-task	string edubuntu-ship
-# Don't build an LTSP client chroot.
-d-i	ltsp-client-builder/run	boolean false
 # Install the Edubuntu desktop.
 d-i	pkgsel/install-pattern	string ~t^edubuntu-standard$|~t^edubuntu-desktop$
 # Install both GNOME and KDE translation packages.
