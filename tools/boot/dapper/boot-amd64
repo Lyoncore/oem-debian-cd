@@ -246,11 +246,22 @@ if [ "$CDIMAGE_INSTALL" = 1 ]; then
 APPEND $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 EOF
     fi
-    cat >> boot$N/isolinux/isolinux.cfg <<EOF
+    if [ "$PROJECT" = edubuntu ] || [ "$PROJECT" = ubuntu-server ]; then
+	cat >> boot$N/isolinux/isolinux.cfg <<EOF
+LABEL install
+  menu label ^Install to the hard disk
+  kernel /install/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+EOF
+    else
+	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL install
   menu label ^Install in text mode
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+EOF
+    fi
+    cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL linux
   menu hide
   kernel /install/vmlinuz
