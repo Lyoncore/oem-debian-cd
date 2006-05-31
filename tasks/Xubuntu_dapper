@@ -15,11 +15,12 @@
 #include <xubuntu/dapper/desktop>
 #include <xubuntu/dapper/ship>
 #if (CDIMAGE_DVD == 1)
+#include <xubuntu/dapper/live>
 #include <xubuntu/dapper/supported>
 #endif
 #endif
 #endif
 
-#if (CDIMAGE_LIVE == 1)
+#if (CDIMAGE_LIVE == 1 || CDIMAGE_DVD == 1)
 #include <xubuntu/dapper/ship-live>
 #endif
