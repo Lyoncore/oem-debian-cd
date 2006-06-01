@@ -1,0 +1,27 @@
+/*
+ * This file is used to build a complete set of Edubuntu Edgy Eft CDs
+ */
+
+/* Packages that should really be on CD1 */
+#if (CDIMAGE_INSTALL_BASE == 1)
+#include <edubuntu/edgy/installer>
+#endif
+
+#if (CDIMAGE_INSTALL_BASE == 1)
+#include <edubuntu/edgy/boot>
+#include <edubuntu/edgy/minimal>
+#include <edubuntu/edgy/standard>
+#if (CDIMAGE_INSTALL == 1)
+#include <edubuntu/edgy/desktop>
+#include <edubuntu/edgy/server>
+#include <edubuntu/edgy/ship>
+#if (CDIMAGE_DVD == 1)
+#include <edubuntu/edgy/live>
+#include <edubuntu/edgy/supported>
+#endif
+#endif
+#endif
+
+#if (CDIMAGE_LIVE == 1 || CDIMAGE_DVD == 1)
+#include <edubuntu/edgy/ship-live>
+#endif

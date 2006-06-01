@@ -1,0 +1,18 @@
+
+# PowerPC subarch 
+image=/install/powerpc/vmlinux
+	label=oem
+	alias=oem-powerpc
+	initrd=/install/powerpc/initrd.gz
+	append="anna/choose_modules=oem-config-udeb quiet --"
+	initrd-size=8192
+	read-only
+
+# PowerPC64 subarch
+image[macrisc4]=/install/powerpc64/vmlinux
+	label=oem
+	alias=oem-powerpc64
+	initrd=/install/powerpc64/initrd.gz
+	append="anna/choose_modules=oem-config-udeb quiet --"
+	initrd-size=8192
+	read-only
