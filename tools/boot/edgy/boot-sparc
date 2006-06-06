@@ -55,7 +55,12 @@ else
 fi
 
 # Some custom etc files
-cat $BASEDIR/data/$CODENAME/sparc/silo.conf$SILO_SUFFIX \
+(cat $BASEDIR/data/$CODENAME/sparc/silo.conf$SILO_SUFFIX
+ if [ "$CDIMAGE_INSTALL" = 1 ]; then
+     if [ "$PROJECT" = ubuntu-server ] || [ "$CDIMAGE_DVD" = 1 ]; then
+         cat $BASEDIR/data/$CODENAME/sparc/silo.conf.lamp
+     fi
+ fi) \
  | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
  > $inst/boot/silo.conf
 BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"

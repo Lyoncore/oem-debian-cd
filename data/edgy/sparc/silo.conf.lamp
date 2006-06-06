@@ -1,0 +1,9 @@
+
+# LAMP boots
+image[sun4u]=/boot/sparc64
+  label=lamp-server
+  append="preseed/file=/cdrom/preseed/lamp.seed --"
+
+image[sun4u]=/boot/sparc64
+  label=lamp-server-expert
+  append="preseed/file=/cdrom/preseed/lamp.seed DEBCONF_PRIORITY=low --"
