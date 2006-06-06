@@ -378,6 +378,10 @@ done
 # If set, limits the number of binary CDs to produce.
 export MAXCDS=1
 
+# If set to 0, never overflow binary CDs (for when you only want a single CD
+# and want to know when it overflows).
+export OVERFLOWBINCDS=0
+
 # If set, overrides the boot picture used.
 if [ -z "$SPLASHRLE" ]; then
 	export SPLASHRLE="$BASEDIR/data/$DI_CODENAME/splash.rle"

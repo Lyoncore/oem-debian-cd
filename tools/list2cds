@@ -25,6 +25,7 @@ my $nodepends = $ENV{'NODEPENDS'} || 0;
 my $norecommends = $ENV{'NORECOMMENDS'} || 0;
 my $nosuggests = $ENV{'NOSUGGESTS'} || 1;
 my $maxcds = $ENV{'MAXCDS'} || 0;
+my $overflowbincds = $ENV{'OVERFLOWBINCDS'} || 1;
 
 my $apt = "$ENV{'BASEDIR'}/tools/apt-selection";
 my $adir = "$ENV{'APTTMP'}/$ENV{'CODENAME'}-$ENV{'FULLARCH'}";
@@ -490,7 +491,7 @@ sub add_package {
 	$size = get_size (\@dep);
 
 	# Creation of a new CD when needed
-	if ($cd_size + $size > $limit) {
+	if ($overflowbincds and $cd_size + $size > $limit) {
 		my $try_size = $cd_size + $size;
 		msg(0, "CD $cd filled with $cd_size bytes ... ",
 		       "(limit was $limit, would have taken $try_size)\n");		
