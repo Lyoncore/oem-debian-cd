@@ -19,8 +19,8 @@ fi
 if [ ! "$DI_DIST" ]; then
    export DI_DIST="$DI_CODENAME"
 fi
-if [ -z "$DI_TYPE" ]; then
-   DI_TYPE="$($BASEDIR/tools/find-newest-installer)"
+if [ -z "$DI_PATH" ]; then
+   DI_PATH="$($BASEDIR/tools/find-newest-installer)"
 fi
 
 case $PROJECT in
@@ -126,7 +126,7 @@ cp -a "$CDDIR/install/yaboot.conf" "$CDDIR/etc/yaboot.conf"
 for subarch in powerpc power3 power4
 do
   if [ ! "$DI_WWW_HOME" ];then
-	DI_DIR="$MIRROR/dists/$DI_DIST/main/$DI_TYPE-$ARCH/current/images/$subarch/cdrom"
+	DI_DIR="$DI_PATH/current/images/$subarch/cdrom"
   else
 	DI_DIR="di_stuff"
 	for image in initrd.gz initrd.list vmlinux; do

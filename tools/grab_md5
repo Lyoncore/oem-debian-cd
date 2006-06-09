@@ -72,15 +72,15 @@ case $ARCH in
 			;;
 		*)
 			# Use the new D-I images
-			DI_TYPE="$($BASEDIR/tools/find-newest-installer)"
-			DI_VERSION="$(readlink "$MIRROR/dists/$SUITE/main/$DI_TYPE-$ARCH/current")"
-			FILE=$MIRROR/dists/$SUITE/main/$DI_TYPE-$ARCH/$DI_VERSION/images/MD5SUMS
+			DI_PATH="$($BASEDIR/tools/find-newest-installer)"
+			DI_VERSION="$(readlink "$DI_PATH/current")"
+			FILE=$DI_PATH/$DI_VERSION/images/MD5SUMS
 			if [ -e "$FILE" ]; then
 				echo "Using MD5 sums from d-i: $FILE"
-				LOC=dists/$SUITE/main/$DI_TYPE-$ARCH/$DI_VERSION/images
+				LOC=$DI_PATH/$DI_VERSION/images
 				for ENTRY in `cat $FILE | sed 's/  /:/g'`
 				do
-					PATH=`echo $ENTRY | /bin/sed "s?^.*:\./?$MIRROR/$LOC/?g"`
+					PATH=`echo $ENTRY | /bin/sed "s?^.*:\./?$LOC/?g"`
 					MD5=`echo $ENTRY | /bin/sed 's/:.*$//g'`
 					SIZE=`/usr/bin/stat -c %s $PATH`
 					printf '%s  %12.12s  %s\n' $MD5 $SIZE $PATH
