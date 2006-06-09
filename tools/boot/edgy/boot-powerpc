@@ -19,8 +19,8 @@ fi
 if [ ! "$DI_DIST" ]; then
    export DI_DIST="$DI_CODENAME"
 fi
-if [ -z "$DI_TYPE" ]; then
-   DI_TYPE="$($BASEDIR/tools/find-newest-installer)"
+if [ -z "$DI_PATH" ]; then
+   DI_PATH="$($BASEDIR/tools/find-newest-installer)"
 fi
 
 default_preseed
@@ -150,7 +150,7 @@ mkdir "$CDDIR/ppc"
   > "$CDDIR/ppc/bootinfo.txt"
 
 if [ ! "$DI_WWW_HOME" ]; then
-  cp -a "$MIRROR/dists/$DI_DIST/main/$DI_TYPE-$ARCH/current/images/udeb.list" .
+  cp -a "$DI_PATH/current/images/udeb.list" .
 else
   wget "$DI_WWW_HOME/udeb.list"
 fi
@@ -159,7 +159,7 @@ for subarch in powerpc powerpc64
 do
   cdrom="cdrom${subarch#powerpc}"
   if [ ! "$DI_WWW_HOME" ];then
-	DI_DIR="$MIRROR/dists/$DI_DIST/main/$DI_TYPE-$ARCH/current/images/$subarch/$cdrom"
+	DI_DIR="$DI_PATH/current/images/$subarch/$cdrom"
   else
 	DI_DIR="di_stuff"
 	for image in initrd.gz vmlinux; do
