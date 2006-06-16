@@ -1044,12 +1044,24 @@ mirrorcheck-binary: ok
 	if [ -n "$(NONUS)" ]; then \
 		$(grab_md5) $(NONUS) $(ARCH) $(CODENAME) $(BDIR)/md5-check; \
 	fi
+	if [ -n "$(SECURITY)" ]; then \
+		$(grab_md5) $(SECURITY) $(ARCH) $(CODENAME)-security $(BDIR)/md5-check; \
+	fi
+	if [ "$(UPDATES)" = 1 ]; then \
+		$(grab_md5) $(MIRROR) $(ARCH) $(CODENAME)-updates $(BDIR)/md5-check; \
+	fi
 
 mirrorcheck-source: ok
 	rm -f $(SDIR)/md5-check
 	$(Q)$(grab_md5) $(MIRROR) source $(CODENAME) $(SDIR)/md5-check
 	if [ -n "$(NONUS)" ]; then \
 		$(grab_md5) $(NONUS) source $(CODENAME) $(SDIR)/md5-check; \
+	fi
+	if [ -n "$(SECURITY)" ]; then \
+		$(grab_md5) $(SECURITY) source $(CODENAME)-security $(BDIR)/md5-check; \
+	fi
+	if [ "$(UPDATES)" = 1 ]; then \
+		$(grab_md5) $(MIRROR) source $(CODENAME)-updates $(BDIR)/md5-check; \
 	fi
 
 update-popcon:
