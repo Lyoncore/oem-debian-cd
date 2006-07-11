@@ -4,7 +4,7 @@ image=/install/powerpc/vmlinux
 	label=lamp-server
 	alias=lamp-server-powerpc
 	initrd=/install/powerpc/initrd.gz
-	append="preseed/file=/cdrom/preseed/lamp.seed --"
+	append="file=/cdrom/preseed/lamp.seed --"
 	initrd-size=8192
 	read-only
 
@@ -12,7 +12,7 @@ image=/install/powerpc/vmlinux
 	label=lamp-server-expert
 	alias=lamp-server-expert-powerpc
 	initrd=/install/powerpc/initrd.gz
-	append="preseed/file=/cdrom/preseed/lamp.seed DEBCONF_PRIORITY=low --"
+	append="file=/cdrom/preseed/lamp.seed priority=low --"
 	initrd-size=8192
 	read-only
 
@@ -21,7 +21,7 @@ image[macrisc4]=/install/powerpc64/vmlinux
 	label=lamp-server
 	alias=lamp-server-powerpc64
 	initrd=/install/powerpc64/initrd.gz
-	append="preseed/file=/cdrom/preseed/lamp.seed --"
+	append="file=/cdrom/preseed/lamp.seed --"
 	initrd-size=8192
 	read-only
 
@@ -29,6 +29,6 @@ image[macrisc4]=/install/powerpc64/vmlinux
 	label=lamp-server-expert
 	alias=lamp-server-expert-powerpc64
 	initrd=/install/powerpc64/initrd.gz
-	append="preseed/file=/cdrom/preseed/lamp.seed DEBCONF_PRIORITY=low --"
+	append="file=/cdrom/preseed/lamp.seed priority=low --"
 	initrd-size=8192
 	read-only

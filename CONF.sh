@@ -380,7 +380,7 @@ done
 
 # Parameters to pass to kernel when the CD boots. Not currently supported
 # for all architectures.
-#export KERNEL_PARAMS="DEBCONF_PRIORITY=critical"
+#export KERNEL_PARAMS="priority=critical"
 
 # If set, limits the number of binary CDs to produce.
 export MAXCDS=1
