@@ -36,7 +36,7 @@
   ."  " cr
   case
     1 of " cd install/powerpc/vmlinuz-chrp.initrd --" endof
-    2 of " cd install/powerpc/vmlinuz-chrp.initrd DEBCONF_PRIORITY=low --" endof
+    2 of " cd install/powerpc/vmlinuz-chrp.initrd priority=low --" endof
     3 of " none" endof
   endcase
   $boot

@@ -12,7 +12,7 @@ image=/install/powerpc/vmlinux
 	label=expert
 	alias=expert-powerpc
 	initrd=/install/powerpc/initrd.gz
-	append="${DEFAULT_PRESEED} DEBCONF_PRIORITY=low --"
+	append="${DEFAULT_PRESEED} priority=low --"
 	initrd-size=8192
 	read-only
 
@@ -29,6 +29,6 @@ image[macrisc4]=/install/powerpc64/vmlinux
 	label=expert
 	alias=expert-powerpc64
 	initrd=/install/powerpc64/initrd.gz
-	append="${DEFAULT_PRESEED} DEBCONF_PRIORITY=low --"
+	append="${DEFAULT_PRESEED} priority=low --"
 	initrd-size=8192
 	read-only

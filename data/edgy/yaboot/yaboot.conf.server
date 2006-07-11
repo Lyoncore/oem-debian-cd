@@ -4,7 +4,7 @@ image=/install/powerpc/vmlinux
 	label=server
 	alias=server-powerpc
 	initrd=/install/powerpc/initrd.gz
-	append="preseed/file=/cdrom/preseed/server.seed --"
+	append="file=/cdrom/preseed/server.seed --"
 	initrd-size=8192
 	read-only
 
@@ -12,7 +12,7 @@ image=/install/powerpc/vmlinux
 	label=server-expert
 	alias=server-expert-powerpc
 	initrd=/install/powerpc/initrd.gz
-	append="preseed/file=/cdrom/preseed/server.seed DEBCONF_PRIORITY=low --"
+	append="file=/cdrom/preseed/server.seed priority=low --"
 	initrd-size=8192
 	read-only
 
@@ -21,7 +21,7 @@ image[macrisc4]=/install/powerpc64/vmlinux
 	label=server
 	alias=server-powerpc64
 	initrd=/install/powerpc64/initrd.gz
-	append="preseed/file=/cdrom/preseed/server.seed --"
+	append="file=/cdrom/preseed/server.seed --"
 	initrd-size=8192
 	read-only
 
@@ -29,6 +29,6 @@ image[macrisc4]=/install/powerpc64/vmlinux
 	label=server-expert
 	alias=server-expert-powerpc64
 	initrd=/install/powerpc64/initrd.gz
-	append="preseed/file=/cdrom/preseed/server.seed DEBCONF_PRIORITY=low --"
+	append="file=/cdrom/preseed/server.seed priority=low --"
 	initrd-size=8192
 	read-only
