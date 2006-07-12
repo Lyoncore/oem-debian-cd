@@ -81,8 +81,8 @@ if [ "$NN" = "1" ]; then
     GFXBOOT=
     if THEMEDEB="$($BASEDIR/tools/apt-selection cache show gfxboot-theme-ubuntu)"; then
 	THEMEDEB="$(echo "$THEMEDEB" | grep ^Filename | awk '{print $2}')"
-	ar p "$MIRROR/$THEMEDEB" data.tar.gz | tar zxf - -C . ./usr/share/gfxboot/themes/Ubuntu/bootlogo.tar.gz
-	tar zxf usr/share/gfxboot/themes/Ubuntu/bootlogo.tar.gz -C boot$N/isolinux
+	ar p "$MIRROR/$THEMEDEB" data.tar.gz | tar zxf - -C . ./usr/share/gfxboot-theme-ubuntu/bootlogo.tar.gz
+	tar zxf usr/share/gfxboot-theme-ubuntu/bootlogo.tar.gz -C boot$N/isolinux
 	GFXBOOT=1
     fi
 
