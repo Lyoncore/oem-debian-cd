@@ -15,7 +15,7 @@
 #include <xubuntu/edgy/desktop>
 #include <xubuntu/edgy/ship>
 #if (CDIMAGE_DVD == 1)
-#include <xubuntu/edgy/server>
+#include <xubuntu/edgy/server-ship>
 #include <xubuntu/edgy/live>
 #include <xubuntu/edgy/supported>
 #endif
