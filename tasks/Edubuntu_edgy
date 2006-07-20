@@ -16,6 +16,7 @@
 #include <edubuntu/edgy/server>
 #include <edubuntu/edgy/ship>
 #if (CDIMAGE_DVD == 1)
+#include <edubuntu/edgy/server-ship>
 #include <edubuntu/edgy/live>
 #include <edubuntu/edgy/supported>
 #endif
