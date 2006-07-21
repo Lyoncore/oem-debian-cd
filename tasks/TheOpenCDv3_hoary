@@ -1,5 +1,0 @@
-/*
- * This file is used to build a complete set of TheOpenCDv3 Hoary Hedgehog CDs
- */
-
-#include <tocd3/hoary/casper>
