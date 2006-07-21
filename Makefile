@@ -23,7 +23,11 @@ ifndef SIZELIMIT
 export SIZELIMIT=$(shell echo -n $$[ 690 * 1024 * 1024 ])
 endif
 ifndef TASK
+ifneq (,$(wildcard $(BASEDIR)/tasks/auto/$(IMAGE_TYPE)/$(PROJECT)/$(DIST)/MASTER))
+TASK=$(BASEDIR)/tasks/auto/$(IMAGE_TYPE)/$(PROJECT)/$(DIST)/MASTER
+else
 TASK=$(BASEDIR)/tasks/$(CAPPROJECT)_$(CODENAME)
+endif
 endif
 ifndef CAPCODENAME
 CAPCODENAME:=$(shell perl -e "print ucfirst("$(CODENAME)")")
