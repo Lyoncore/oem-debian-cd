@@ -527,6 +527,7 @@ $(BDIR)/packages-stamp:
 	@echo "Current disk usage on the binary CDs (before the debs are added) :"
 	@cd $(BDIR) && du -sm CD[0123456789]*
 	@echo "Adding the selected packages to each CD :"
+ifeq ($(CDIMAGE_INSTALL_BASE),1)
 	@# Check that all packages required by debootstrap are included
 	@# and create .disk/base_installable if yes
 	@# Also create .disk/base_components
@@ -549,7 +550,7 @@ $(BDIR)/packages-stamp:
 		    touch $(BDIR)/CD$$DISK/.disk/base_installable; \
 	        else \
 		    echo "CD$$DISK missing some packages needed by debootstrap"; \
-		    if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then exit 1; fi; \
+		    exit 1; \
 	        fi; \
 	    else \
 	        echo "Unable to find debootstrap program"; \
@@ -589,6 +590,7 @@ $(BDIR)/packages-stamp:
 		fi; \
 	    fi; \
 	done
+endif
 	$(Q)set -e; \
 	 for i in $(BDIR)/*.packages; do \
 		dir=$${i%%.packages}; \
