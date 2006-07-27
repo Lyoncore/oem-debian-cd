@@ -119,9 +119,6 @@ BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
      if [ "$PROJECT" != kubuntu ] && [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
          cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.oem
      fi
-     if [ "$PROJECT" = ubuntu-server ] || [ "$CDIMAGE_DVD" = 1 ]; then
-         cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.lamp
-     fi
  fi
  if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
      cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.server
