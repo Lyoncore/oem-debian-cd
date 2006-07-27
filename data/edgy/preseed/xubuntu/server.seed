@@ -1,7 +1,7 @@
 # Don't install usplash.
 d-i	base-installer/kernel/linux/extra-packages-2.6	string
 # Only install the standard system and language packs.
-d-i	pkgsel/install-pattern	string ~t^xubuntu-standard$
+tasksel	tasksel/first	multiselect
 d-i	pkgsel/language-pack-patterns	string
 # No language support packages.
 d-i	pkgsel/install-language-support	boolean false
