@@ -19,7 +19,6 @@ image=/casper/powerpc/vmlinux
 # PowerPC64 subarch
 image[macrisc4]=/casper/powerpc64/vmlinux
 	label=live
-	alias=live-powerpc64
 	initrd=/casper/powerpc64/initrd.gz
 	append="${DEFAULT_PRESEED} boot=casper quiet splash --"
 	initrd-size=1048576
@@ -27,7 +26,20 @@ image[macrisc4]=/casper/powerpc64/vmlinux
 
 image[macrisc4]=/casper/powerpc64/vmlinux
 	label=live-nosplash
-	alias=live-nosplash-powerpc64
+	initrd=/casper/powerpc64/initrd.gz
+	append="${DEFAULT_PRESEED} boot=casper quiet --"
+	initrd-size=1048576
+	read-only
+
+image=/casper/powerpc64/vmlinux
+	label=live-powerpc64
+	initrd=/casper/powerpc64/initrd.gz
+	append="${DEFAULT_PRESEED} boot=casper quiet splash --"
+	initrd-size=1048576
+	read-only
+
+image=/casper/powerpc64/vmlinux
+	label=live-nosplash-powerpc64
 	initrd=/casper/powerpc64/initrd.gz
 	append="${DEFAULT_PRESEED} boot=casper quiet --"
 	initrd-size=1048576

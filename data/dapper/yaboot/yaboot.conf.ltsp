@@ -11,7 +11,13 @@ image=/install/powerpc/vmlinux
 # PowerPC64 subarch
 image[macrisc4]=/install/powerpc64/vmlinux
 	label=ltsp-server
-	alias=ltsp-server-powerpc64
+	initrd=/install/powerpc64/initrd.gz
+	append="preseed/file=/cdrom/preseed/ltsp.seed --"
+	initrd-size=8192
+	read-only
+
+image=/install/powerpc64/vmlinux
+	label=ltsp-server-powerpc64
 	initrd=/install/powerpc64/initrd.gz
 	append="preseed/file=/cdrom/preseed/ltsp.seed --"
 	initrd-size=8192
