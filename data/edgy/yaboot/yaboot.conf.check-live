@@ -11,7 +11,13 @@ image=/casper/powerpc/vmlinux
 # PowerPC64 subarch
 image[macrisc4]=/casper/powerpc64/vmlinux
 	label=check
-	alias=check-powerpc64
+	initrd=/casper/powerpc64/initrd.gz
+	append="boot=casper integrity-check quiet splash --"
+	initrd-size=1048576
+	read-only
+
+image=/casper/powerpc64/vmlinux
+	label=check-powerpc64
 	initrd=/casper/powerpc64/initrd.gz
 	append="boot=casper integrity-check quiet splash --"
 	initrd-size=1048576
