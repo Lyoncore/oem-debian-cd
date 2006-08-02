@@ -8,6 +8,7 @@ unset FORCENONUSONCD1   || true
 unset NONFREE           || true
 unset CONTRIB           || true
 unset EXTRANONFREE      || true
+unset RESTRICTED        || true
 # allow configuration on command line
 #unset LOCAL             || true
 #unset LOCALDEBS         || true
@@ -160,7 +161,9 @@ export LIVEIMAGES=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/live
 # WARNING: Don't use NONFREE and EXTRANONFREE at the same time !
 # export EXTRANONFREE=1
 
-export RESTRICTED=1
+if [ -z "$CDIMAGE_ONLYFREE" ]; then
+  export RESTRICTED=1
+fi
 
 # If you have a $MIRROR/dists/$CODENAME/local/binary-$ARCH dir with 
 # local packages that you want to put on the CD set then
