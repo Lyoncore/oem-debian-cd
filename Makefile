@@ -556,7 +556,9 @@ ifeq ($(CDIMAGE_INSTALL_BASE),1)
 	        echo "Unable to find debootstrap program"; \
 	    fi; \
 	    echo 'main' > $(BDIR)/CD$$DISK/.disk/base_components; \
-	    echo 'restricted' >> $(BDIR)/CD$$DISK/.disk/base_components; \
+	    if [ "$$RESTRICTED" = 1 ]; then \
+		echo 'restricted' >> $(BDIR)/CD$$DISK/.disk/base_components; \
+	    fi; \
 	    if [ -n "$(UDEB_INCLUDE)" ] ; then \
 		if [ -r "$(UDEB_INCLUDE)" ] ; then \
 		    cp -af "$(UDEB_INCLUDE)" \
