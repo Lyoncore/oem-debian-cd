@@ -27,8 +27,8 @@ default_preseed() {
 	xubuntu)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/xubuntu.seed'
 	    ;;
-	foobuntu)
-	    DEFAULT_PRESEED='file=/cdrom/preseed/foobuntu.seed'
+	gnubuntu)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/gnubuntu.seed'
 	    ;;
 	ubuntu-server)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-server.seed'
