@@ -18,6 +18,9 @@ install_languages() {
 
 default_preseed() {
     case $PROJECT in
+	ubuntu)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu.seed'
+	    ;;
 	kubuntu)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/kubuntu.seed'
 	    ;;
