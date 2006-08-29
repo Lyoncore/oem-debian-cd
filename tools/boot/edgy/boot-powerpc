@@ -175,6 +175,10 @@ do
     # support PReP.
     rm -f "$subarch/vmlinuz-coff.initrd"
     rm -f "$subarch/vmlinuz-prep.initrd" "$subarch/vmlinuz-ppcbug.initrd"
+    # We only have room for CHRP initrds (including Pegasos) on DVDs.
+    if [ "$CDIMAGE_DVD" != 1 ]; then
+      rm -f "$subarch/vmlinuz-chrp.initrd"
+    fi
   fi
   if [ "$CDIMAGE_LIVE" = 1 ]; then
     case $subarch in
