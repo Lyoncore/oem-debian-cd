@@ -754,7 +754,7 @@ upgrade: ok bin-infos $(BDIR)/upgrade-stamp
 $(BDIR)/upgrade-stamp:
 	@echo "Trying to add upgrade* directories ..."
 	$(Q)if [ -x "$(BASEDIR)/tools/$(CODENAME)/upgrade.sh" ]; then \
-		$(BASEDIR)/tools/$(CODENAME)/upgrade.sh; \
+		$(BASEDIR)/tools/$(CODENAME)/upgrade.sh $(BDIR); \
 	 fi
 	$(Q)if [ -x "$(BASEDIR)/tools/$(CODENAME)/upgrade-$(ARCH).sh" ]; then \
 		$(BASEDIR)/tools/$(CODENAME)/upgrade-$(ARCH).sh $(BDIR); \
