@@ -1,5 +1,0 @@
-# Install the LTSP server.
-tasksel	tasksel/first	multiselect ubuntu-desktop
-d-i	pkgsel/include	string ltsp-server-standalone
-# Build a client chroot.
-d-i	preseed/late_command	string chroot /target ltsp-build-client
