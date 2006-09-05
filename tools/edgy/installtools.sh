@@ -42,17 +42,12 @@ fi
 
 # Preseed files for special install types
 mkdir -p $DIR/preseed
-# TODO: odd path?
-if [ -d $BASEDIR/data/$CODENAME/preseed/$PROJECT ]; then
-    PRESEED_ROOT=$BASEDIR/data/$CODENAME/preseed/$PROJECT
-else
-    PRESEED_ROOT=$BASEDIR/data/$CODENAME/preseed
-fi
-for file in $PRESEED_ROOT/*.seed; do
-    cp -a "$file" $DIR/preseed/
-done
-if [ -d $PRESEED_ROOT/$ARCH ]; then
-    for file in $PRESEED_ROOT/$ARCH/*.seed; do
+PRESEED_ROOT=$BASEDIR/data/$CODENAME/preseed
+for preseed_dir in \
+        $PRESEED_ROOT $PRESEED_ROOT/$ARCH \
+        $PRESEED_ROOT/$PROJECT $PRESEED_ROOT/$PROJECT/$ARCH; do
+    [ -d "$preseed_dir" ] || continue
+    for file in $preseed_dir/*.seed; do
         cp -a "$file" $DIR/preseed/
     done
-fi
+done
