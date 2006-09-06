@@ -283,7 +283,7 @@ LABEL workstation
   append $KERNEL_PARAMS file=/cdrom/preseed/workstation.seed initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 EOF
     fi
-    if [ "$PROJECT" != kubuntu ] && [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
+    if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL oem
   menu label Install in ^OEM mode
