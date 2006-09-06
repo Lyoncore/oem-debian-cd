@@ -226,6 +226,15 @@ EOF
 GFXBOOT-BACKGROUND 0xB6875A
 EOF
     fi
+    if [ "$PROJECT" = kubuntu ]; then
+	cat >> boot$N/isolinux/isolinux.cfg <<EOF
+GFXBOOT-ACCESS-OPTIONS v1 v2 m1
+EOF
+    elif [ "$PROJECT" = xubuntu ]; then
+	cat >> boot$N/isolinux/isolinux.cfg <<EOF
+GFXBOOT-ACCESS-OPTIONS v1
+EOF
+    fi
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
