@@ -386,7 +386,8 @@ ifdef FORCENONUSONCD1
 		sort | uniq > $(BDIR)/$(CAPPROJECT)_$(CODENAME)_nonUS
 endif
 	$(Q)if [ -x "/usr/sbin/debootstrap" -a _$(INSTALLER_CD) != _1 ]; then \
-		/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp dummy $(DEBOOTSTRAP)/$(CODENAME)-$(FULLARCH) \
+		mkdir -p /tmp/debian-cd-debootstrap ; \
+		/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp/debian-cd-debootstrap file://$(MIRROR) $(DEBOOTSTRAP)/$(CODENAME)-$(FULLARCH) \
 		| tr ' ' '\n' >>$(BDIR)/rawlist.debootstrap; \
 	fi
 	$(Q)perl -npe 's/\@ARCH\@/$(ARCH)/g' $(TASK) | \
@@ -535,7 +536,8 @@ ifeq ($(CDIMAGE_INSTALL_BASE),1)
 	    DISK=$${DISK##CD}; \
 	    if [ -x "/usr/sbin/debootstrap" ]; then \
 	        ok=yes; \
-	        for p in `/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp dummy $(DEBOOTSTRAP)/$(CODENAME)-$(FULLARCH)`; do \
+		mkdir -p /tmp/debian-cd-debootstrap ; \
+	        for p in `/usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) /tmp/debian-cd-debootstrap file://$(MIRROR) $(DEBOOTSTRAP)/$(CODENAME)-$(FULLARCH)`; do \
 		    if ! grep -q ^$$p$$ $(BDIR)/$$DISK.packages; then \
 			if [ -n "$(BASE_EXCLUDE)" ] && grep -q ^$$p$$ $(BASE_EXCLUDE); then \
 				echo "Missing debootstrap-required $$p but included in $(BASE_EXCLUDE)"; \
