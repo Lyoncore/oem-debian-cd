@@ -24,6 +24,9 @@ do
 	if type find-mirror >/dev/null 2>&1; then
 		# TODO: nasty upcall to cdimage wrapper scripts
 		export MIRROR="$(find-mirror "$ARCH")"
+		if [ "$SECURITY" ]; then
+			export SECURITY="$MIRROR"
+		fi
 	fi
 	echo " ... cleaning"
 	make distclean
