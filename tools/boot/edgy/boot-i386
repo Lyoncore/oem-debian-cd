@@ -92,8 +92,8 @@ if [ "$NN" = "1" ]; then
 	cp -lf cdrom/initrd.gz $CDDIR/install/
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
-	mv $CDDIR/casper/filesystem.kernel-686 $CDDIR/casper/vmlinuz
-	mv $CDDIR/casper/filesystem.initrd-686 $CDDIR/casper/initrd.gz
+	mv $CDDIR/casper/filesystem.kernel-generic $CDDIR/casper/vmlinuz
+	mv $CDDIR/casper/filesystem.initrd-generic $CDDIR/casper/initrd.gz
     fi
     echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " > $N.mkisofs_opts
 else
