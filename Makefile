@@ -1038,6 +1038,9 @@ mirrorcheck-binary: ok
 	if [ "$(UPDATES)" = 1 ]; then \
 		$(grab_md5) $(MIRROR) $(ARCH) $(CODENAME)-updates $(BDIR)/md5-check; \
 	fi
+	if [ "$(PROPOSED)" = 1 ]; then \
+		$(grab_md5) $(MIRROR) $(ARCH) $(CODENAME)-proposed $(BDIR)/md5-check; \
+	fi
 
 mirrorcheck-source: ok
 	rm -f $(SDIR)/md5-check
@@ -1050,6 +1053,9 @@ mirrorcheck-source: ok
 	fi
 	if [ "$(UPDATES)" = 1 ]; then \
 		$(grab_md5) $(MIRROR) source $(CODENAME)-updates $(BDIR)/md5-check; \
+	fi
+	if [ "$(PROPOSED)" = 1 ]; then \
+		$(grab_md5) $(MIRROR) source $(CODENAME)-proposed $(BDIR)/md5-check; \
 	fi
 
 update-popcon:

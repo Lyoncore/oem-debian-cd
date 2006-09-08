@@ -75,6 +75,10 @@ if [ ! -e "$APTTMP/$CODENAME-$FULLARCH/apt/sources.list" ]; then
 	  echo "deb file:$MIRROR $CODENAME-updates $sections" \
 	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	fi
+	if [ "${PROPOSED:-0}" != "0" ]; then
+	  echo "deb file:$MIRROR $CODENAME-proposed $sections" \
+	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
+	fi
 	# Debian-installer
 	if [ -e "$MIRROR/dists/$DI_CODENAME/main/debian-installer" ]; then
 	  echo "deb file:$MIRROR $DI_CODENAME main/debian-installer" \

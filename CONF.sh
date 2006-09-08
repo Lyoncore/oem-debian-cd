@@ -204,6 +204,12 @@ case $DIST in
     ;;
 esac
 
+case $DIST in
+  dapper)
+    #export PROPOSED=1
+    ;;
+esac
+
 # Sparc only : bootdir (location of cd.b and second.b)
 # export BOOTDIR=/boot
 
