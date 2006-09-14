@@ -297,7 +297,7 @@ EOF
 LABEL oem
   menu label Install in ^OEM mode
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS anna/choose_modules=oem-config-udeb initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED anna/choose_modules=oem-config-udeb initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
 EOF
     fi
 fi
