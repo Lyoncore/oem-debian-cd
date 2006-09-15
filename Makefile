@@ -463,7 +463,7 @@ bin-infos: bin-tree $(BDIR)/CD1/.disk/info
 $(BDIR)/CD1/.disk/info:
 	@echo "Generating the binary CD labels and their volume ids ..."
 	$(Q)set -e; \
-	 nb=`find $(BDIR) -name \*.packages | grep '^..?\.packages$' | wc -l | tr -d " "`; num=0;\
+	 nb=`find $(BDIR) -name \*.packages | grep '^..?\.packages$$' | wc -l | tr -d " "`; num=0;\
 	 DATE=$${CDIMAGE_DATE:-`date +%Y%m%d`}; \
 	for i in $(BDIR)/*.packages; do \
 		num=$${i%%.packages}; num=$${num##$(BDIR)/}; \
@@ -494,7 +494,7 @@ src-infos: src-tree $(SDIR)/CD1/.disk/info
 $(SDIR)/CD1/.disk/info:
 	@echo "Generating the source CD labels and their volume ids ..."
 	$(Q)set -e; \
-	 nb=`find $(SDIR) -name \*.sources | grep '^..?\.sources$'  | wc -l | tr -d " "`; num=0;\
+	 nb=`find $(SDIR) -name \*.sources | grep '^..?\.sources$$'  | wc -l | tr -d " "`; num=0;\
 	 DATE=$${CDIMAGE_DATE:-`date +%Y%m%d`}; \
 	for i in $(SDIR)/*.sources; do \
 		num=$${i%%.sources}; num=$${num##$(SDIR)/}; \
