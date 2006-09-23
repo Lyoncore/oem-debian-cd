@@ -299,16 +299,16 @@ LABEL oem
 EOF
     fi
 fi
-if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
-LABEL server
-  menu label Install a ^server
+LABEL cli
+  menu label Install a comm^and-line system
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS file=/cdrom/preseed/server.seed initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
-LABEL server-expert
+  append $KERNEL_PARAMS file=/cdrom/preseed/cli.seed initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
+LABEL cli-expert
   menu hide
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS file=/cdrom/preseed/server.seed priority=low initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
+  append $KERNEL_PARAMS file=/cdrom/preseed/cli.seed priority=low initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ] && [ "$PROJECT" = xubuntu ]; then
