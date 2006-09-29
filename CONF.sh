@@ -95,7 +95,7 @@ case $DIST in
     export CODENAME=edgy
     export CAPCODENAME='Edgy Eft'
     export DEBVERSION=6.10
-    export OFFICIAL="Beta"
+    export OFFICIAL="Alpha"
     ;;
 esac
 
