@@ -1,5 +1,3 @@
-# Adjust the default hostname.
-d-i	netcfg/get_hostname	string edubuntu
 # Don't install usplash.
 d-i	base-installer/kernel/linux/extra-packages-2.6	string
 # Only install the standard system and language packs.
