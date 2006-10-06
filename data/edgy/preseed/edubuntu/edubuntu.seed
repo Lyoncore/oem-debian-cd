@@ -1,8 +1,6 @@
 # Adjust the default hostname.
 d-i	netcfg/get_hostname	string edubuntu
 d-i	netcfg/get_hostname	seen false
-# Install the Edubuntu usplash image.
-d-i	base-installer/kernel/linux/extra-packages-2.6	string usplash edubuntu-artwork-usplash
 # Build an LTSP client chroot.
 d-i	ltsp-client-builder/run	boolean true
 # Install the Edubuntu desktop and server.
