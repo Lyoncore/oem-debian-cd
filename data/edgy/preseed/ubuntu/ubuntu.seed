@@ -1,4 +1,2 @@
-# Install the Ubuntu usplash image.
-d-i	base-installer/kernel/linux/extra-packages-2.6	string usplash usplash-theme-ubuntu
 # Install the Ubuntu desktop.
 tasksel	tasksel/first	multiselect ubuntu-desktop

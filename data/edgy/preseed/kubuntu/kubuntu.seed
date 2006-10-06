@@ -1,5 +1,3 @@
-# Install the Kubuntu usplash image.
-d-i	base-installer/kernel/linux/extra-packages-2.6	string usplash kubuntu-artwork-usplash
 # Install the Kubuntu desktop.
 tasksel	tasksel/first	multiselect kubuntu-desktop
 # Install KDE translation packages.
