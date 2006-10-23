@@ -229,8 +229,9 @@ EOF
 GFXBOOT-ACCESS-OPTIONS v1 v2 m1
 EOF
     elif [ "$PROJECT" = xubuntu ]; then
+	# v1 and m1 don't have the necessary sed calls for Xubuntu yet.
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
-GFXBOOT-ACCESS-OPTIONS v1
+GFXBOOT-ACCESS-OPTIONS v2 v3 m2
 EOF
     fi
 fi
