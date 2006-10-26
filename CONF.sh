@@ -97,6 +97,12 @@ case $DIST in
     export DEBVERSION=6.10
     export OFFICIAL="Release"
     ;;
+  feisty)
+    export CODENAME=feisty
+    export CAPCODENAME='Feisty Fawn'
+    export DEBVERSION=7.04
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
