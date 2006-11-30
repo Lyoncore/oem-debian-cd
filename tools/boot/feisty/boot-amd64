@@ -239,21 +239,21 @@ EOF
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
-    APPEND $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+    APPEND $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz quiet splash --
 LABEL live
   menu label ^Start or install $CAPPROJECT
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz quiet splash --
 LABEL xforcevesa
   menu label Start $CAPPROJECT in safe ^graphics mode
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper xforcevesa initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper xforcevesa initrd=/casper/initrd.gz quiet splash --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
     if [ "$CDIMAGE_LIVE" != 1 ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
-APPEND $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+APPEND $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 EOF
     fi
     if [ "$PROJECT" = edubuntu ] || [ "$PROJECT" = ubuntu-server ]; then
@@ -261,36 +261,36 @@ EOF
 LABEL install
   menu label ^Install to the hard disk
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 EOF
     else
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL install
   menu label ^Install in text mode
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 EOF
     fi
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL linux
   menu hide
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 LABEL cdrom
   menu hide
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 LABEL expert
   menu hide
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED priority=low initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED priority=low initrd=/install/initrd.gz --
 EOF
     if [ "$PROJECT" = edubuntu ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL workstation
   menu label Install a ^workstation
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS file=/cdrom/preseed/workstation.seed initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+  append $KERNEL_PARAMS file=/cdrom/preseed/workstation.seed initrd=/install/initrd.gz quiet --
 EOF
     fi
     if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
@@ -298,7 +298,7 @@ EOF
 LABEL oem
   menu label Install in ^OEM mode
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED anna/choose_modules=oem-config-udeb initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED anna/choose_modules=oem-config-udeb initrd=/install/initrd.gz quiet --
 EOF
     fi
 fi
@@ -307,11 +307,11 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
 LABEL cli
   menu label Install a comm^and-line system
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS file=/cdrom/preseed/cli.seed initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
+  append $KERNEL_PARAMS file=/cdrom/preseed/cli.seed initrd=/install/initrd.gz --
 LABEL cli-expert
   menu hide
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS file=/cdrom/preseed/cli.seed priority=low initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
+  append $KERNEL_PARAMS file=/cdrom/preseed/cli.seed priority=low initrd=/install/initrd.gz --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ] && [ "$PROJECT" = xubuntu ]; then
@@ -319,7 +319,7 @@ if [ "$CDIMAGE_INSTALL" = 1 ] && [ "$PROJECT" = xubuntu ]; then
 LABEL ltsp-server
   menu label Install an ^LTSP server
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS file=/cdrom/preseed/ltsp.seed initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
+  append $KERNEL_PARAMS file=/cdrom/preseed/ltsp.seed initrd=/install/initrd.gz --
 EOF
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
@@ -327,18 +327,18 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 LABEL check
   menu label ^Check CD for defects
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS boot=casper integrity-check initrd=/casper/initrd.gz ramdisk_size=1048576 root=/dev/ram rw quiet splash --
+  append $KERNEL_PARAMS boot=casper integrity-check initrd=/casper/initrd.gz quiet splash --
 EOF
 elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL check
   menu label ^Check CD for defects
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --
+  append $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu initrd=/install/initrd.gz quiet --
 LABEL rescue
   menu label ^Rescue a broken system
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS rescue/enable=true initrd=/install/initrd.gz ramdisk_size=16384 root=/dev/ram rw --
+  append $KERNEL_PARAMS rescue/enable=true initrd=/install/initrd.gz --
 EOF
 fi
 cat >> boot$N/isolinux/isolinux.cfg <<EOF

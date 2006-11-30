@@ -74,7 +74,7 @@ else
     EXTRA_ARGS=
 fi
 
-echo " -hppa-cmdline 0/vmlinux,${DEFAULT_PRESEED:+$DEFAULT_PRESEED,}${EXTRA_ARGS:+$EXTRA_ARGS,}root=/dev/ram,initrd=0/ramdisk,ramdisk_size=1048576" >> $1.mkisofs_opts
+echo " -hppa-cmdline 0/vmlinux,${DEFAULT_PRESEED:+$DEFAULT_PRESEED,}${EXTRA_ARGS:+$EXTRA_ARGS,}initrd=0/ramdisk" >> $1.mkisofs_opts
 echo " -hppa-kernel-32 $KERNEL32" >> $1.mkisofs_opts
 echo " -hppa-kernel-64 $KERNEL64" >> $1.mkisofs_opts
 echo " -hppa-bootloader install/iplboot" >> $1.mkisofs_opts
