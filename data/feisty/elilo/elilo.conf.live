@@ -13,7 +13,7 @@ image=/linux
     description="Linux [Live]"
     initrd=/initrd.gz
     root=/dev/ram
-    append="boot=casper ramdisk_size=1048576 quiet splash --"
+    append="boot=casper quiet splash --"
     read-only
 
 image=/linux
@@ -21,7 +21,7 @@ image=/linux
     description="Linux [Live] [serial console]"
     initrd=/initrd.gz
     root=/dev/ram
-    append="boot=casper ramdisk_size=1048576 console=ttyS0 --"
+    append="boot=casper console=ttyS0 --"
     read-only
 
 image=/linux
@@ -29,5 +29,5 @@ image=/linux
     description="Check CD for defects"
     initrd=/initrd.gz
     root=/dev/ram
-    append="boot=casper integrity-check ramdisk_size=1048576 quiet splash --"
+    append="boot=casper integrity-check quiet splash --"
     read-only

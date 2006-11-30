@@ -38,7 +38,7 @@ else
 fi
 
 /sbin/palo \
-     --commandline="0/vmlinux $DEFAULT_PRESEED $EXTRA_ARGS root=/dev/ram initrd=0/ramdisk ramdisk_size=1048576" \
+     --commandline="0/vmlinux $DEFAULT_PRESEED $EXTRA_ARGS initrd=0/ramdisk" \
      --recoverykernel="$CDROOT/$KERNEL32" \
      --recoverykernel="$CDROOT/$KERNEL64" \
      --bootloader="$CDROOT/install/iplboot" \
