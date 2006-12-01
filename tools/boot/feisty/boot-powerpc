@@ -156,15 +156,14 @@ fi
 
 for subarch in powerpc powerpc64
 do
-  cdrom="cdrom${subarch#powerpc}"
   if [ ! "$DI_WWW_HOME" ];then
-	DI_DIR="$DI_PATH/current/images/$subarch/$cdrom"
+	DI_DIR="$DI_PATH/current/images/$subarch/cdrom"
   else
 	DI_DIR="di_stuff"
 	for image in initrd.gz vmlinux; do
 		dir="$(dirname "$image")"
 		mkdir -p "$DI_DIR/$dir"
-		wget "$DI_WWW_HOME/$subarch/$cdrom/$image" -O "$DI_DIR/$image"
+		wget "$DI_WWW_HOME/$subarch/cdrom/$image" -O "$DI_DIR/$image"
 	done
   fi
   if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
