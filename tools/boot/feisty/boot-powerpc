@@ -167,7 +167,7 @@ do
 	done
   fi
   if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-    cp -a "$DI_DIR" "$subarch"
+    cp -dR --preserve=mode,timestamps "$DI_DIR" "$subarch"
     rm -rf di_stuff
     # Remove special initrds we don't want. OldWorld isn't supported due to
     # the lack of boot support, and space restrictions are too tight to
