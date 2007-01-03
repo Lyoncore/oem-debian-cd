@@ -59,7 +59,7 @@ if [ -z "$CAPPROJECT" ]; then
 fi
 
 if [ -z "$DIST" ]; then
-  DIST=edgy
+  DIST=feisty
 fi
 
 # The debian-cd dir
