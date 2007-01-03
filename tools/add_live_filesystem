@@ -34,8 +34,12 @@ fi
 
 # Release notes URL for use by Ubiquity. '${LANG}' will be replaced with the
 # installation locale code.
-case $DIST in
-	feisty)
-		RELEASE_NOTES='http://www.ubuntu.com/testing/herd1'
+case $PROJECT in
+	ubuntu|kubuntu|edubuntu|xubuntu)
+		case $DIST in
+			feisty)
+				RELEASE_NOTES="http://www.ubuntu.com/products/GetUbuntu/ReleaseNotes?os=$PROJECT&ver=$DEBVERSION&lang=\${LANG}"
+				;;
+		esac
 		;;
 esac
