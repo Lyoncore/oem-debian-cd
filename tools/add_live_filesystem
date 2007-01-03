@@ -31,3 +31,11 @@ if [ -f "$LIVEIMAGES/$ARCH.winfoss.tgz" ]; then
 			"$BDIR/CD1/programs/thunderbird/ThunderbirdSetup-1.0.exe"
 	fi
 fi
+
+# Release notes URL for use by Ubiquity. '${LANG}' will be replaced with the
+# installation locale code.
+case $DIST in
+	feisty)
+		RELEASE_NOTES='http://www.ubuntu.com/testing/herd1'
+		;;
+esac
