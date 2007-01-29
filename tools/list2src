@@ -163,6 +163,7 @@ if (-e $list) {
 
     while (defined($_ = <LIST>)) {
         chomp;
+        next if $_ eq 'FORCE-CD-BREAK';
         push @list, $_;
     }
     close LIST;
