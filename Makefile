@@ -136,7 +136,7 @@ ifeq ($(PROJECT),edubuntu)
 ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
 CDBASE = $(CODENAME)-install-$(FULLARCH)
 else
-CDBASE = $(CODENAME)-server-$(FULLARCH)
+CDBASE = $(CODENAME)-$(if $(filter 1,$(1)),server,serveraddon)-$(FULLARCH)
 endif
 else
 ifneq (,$(findstring $(CODENAME),warty hoary breezy))
