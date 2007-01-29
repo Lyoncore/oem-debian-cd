@@ -189,6 +189,11 @@ open (LIST, "< $list") || die "Can't open $list : $!\n";
 while (defined($_=<LIST>)) {
 	chomp;
 	next if m/^\s*$/;
+	if ($_ eq 'FORCE-CD-BREAK') {
+	    msg(0, "CD break encountered at $cd_size bytes.\n");
+	    new_cd();
+	    next;
+	}
 	if (not exists $packages{$_}) { 
 	    msg(1, "WARNING: '$_' does not appear to be available ... " . 
 	           "(ignored)\n");
@@ -257,6 +262,7 @@ if ($extranonfree and (! $nonfree))
 	while (defined($_=<LIST>)) {
 		chomp;
 		next if m/^\s*$/;
+		next if $_ eq 'FORCE-CD-BREAK';
 		next if $included{$_};
 		next if $excluded{$_};
 		if (not exists $packages{$_}) { 
@@ -432,6 +438,17 @@ sub read_virtualdepends {
 	}
 }
 
+sub new_cd {
+	$cd++;
+	$cd_size = 0;
+	# New limit
+	$limit = $ENV{"SIZELIMIT$cd"} || $deflimit;
+	msg(2, "Limit for CD $cd is $limit.\n");
+
+	# Unexclude packages
+	unexclude ($cd);
+}
+
 sub add_package {
 	my $p = shift;
 	my $add_rec = shift; # Do we look for recommends
@@ -495,14 +512,7 @@ sub add_package {
 		my $try_size = $cd_size + $size;
 		msg(0, "CD $cd filled with $cd_size bytes ... ",
 		       "(limit was $limit, would have taken $try_size)\n");		
-		$cd++;
-		$cd_size = 0;
-		# New limit
-		$limit = $ENV{"SIZELIMIT$cd"} || $deflimit;
-		msg(2, "Limit for CD $cd is $limit.\n");
-
-		# Unexclude packages
-		unexclude ($cd);
+		new_cd();
 	}
 
 	add_to_cd ($cd, $size, \@dep);
