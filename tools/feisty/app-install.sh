@@ -38,6 +38,8 @@ for name in $DESKTOPS; do
 	fi
     fi
 done
+cp -a "$TMP/usr/share/app-install/desktop/applications.menu" \
+    "$DIR/app-install/desktop/" || true
 
 rm -rf "$DIR/app-install/tmp"
 
