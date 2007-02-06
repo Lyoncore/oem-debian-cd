@@ -21,7 +21,8 @@ find "$TMP/usr/share/app-install/desktop" \
     xargs -r0 grep -aHi '^X-AppInstall-Package=' | \
     perl -pe 's,^usr/share/app-install/desktop/,,; s/\.desktop:.*?=/ /' | \
     sort -k2 > "$TMP/desktop-list"
-DESKTOPS="$(sort "$BDIR/$N.packages" | join -1 2 -o 1.1 "$TMP/desktop-list" -)"
+DESKTOPS="$(sort "$DIR/../$N.packages" | \
+	    join -1 2 -o 1.1 "$TMP/desktop-list" -)"
 
 for name in $DESKTOPS; do
     desktop="$TMP/usr/share/app-install/desktop/$desktop.desktop"
