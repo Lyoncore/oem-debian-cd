@@ -19,13 +19,13 @@ ar p "$MIRROR/$APP_INSTALL_DATA_DEB" data.tar.gz | tar -xzf - -C "$TMP"
 find "$TMP/usr/share/app-install/desktop" \
     -name \*.desktop -print0 | \
     xargs -r0 grep -aHi '^X-AppInstall-Package=' | \
-    perl -pe 's,^usr/share/app-install/desktop/,,; s/\.desktop:.*?=/ /' | \
+    perl -pe "s,^$TMP/usr/share/app-install/desktop/,,; s/\.desktop:.*?=/ /" | \
     sort -k2 > "$TMP/desktop-list"
 DESKTOPS="$(sort "$DIR/../$N.packages" | \
 	    join -1 2 -o 1.1 "$TMP/desktop-list" -)"
 
 for name in $DESKTOPS; do
-    desktop="$TMP/usr/share/app-install/desktop/$desktop.desktop"
+    desktop="$TMP/usr/share/app-install/desktop/$name.desktop"
     cp -a "$desktop" "$DIR/app-install/desktop/"
     icon="$(grep -ai '^Icon=' "$desktop" | head -n1 | cut -d= -f2)"
     if [ "$icon" ]; then
