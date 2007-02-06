@@ -767,7 +767,7 @@ $(BDIR)/CD1/install:
 ifeq (,$(findstring serveraddon,$(call CDBASE,2)))
 appinstall:
 else
-appinstall: ok packages $(BDIR)/CD2/app-install:
+appinstall: ok packages $(BDIR)/CD2/app-install
 $(BDIR)/CD2/app-install:
 	@echo "Adding app-install data ..."
 	$(Q)set -e; \
