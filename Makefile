@@ -10,6 +10,16 @@
 # file in your shell
 
 
+ifeq ($(PROJECT),edubuntu)
+ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
+MULTIPLE_DISKS := no
+else
+MULTIPLE_DISKS := yes
+endif
+else
+MULTIPLE_DISKS := no
+endif
+
 ## DEFAULT VALUES
 ifdef SUBARCH
 export FULLARCH=$(ARCH)+$(SUBARCH)
@@ -33,23 +43,39 @@ ifndef CAPCODENAME
 CAPCODENAME:=$(shell perl -e "print ucfirst("$(CODENAME)")")
 endif
 ifndef BINDISKINFO
+ifeq ($(MULTIPLE_DISKS),yes)
+export BINDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(FULLARCH) Binary-$$num ($$DATE)"
+else
 export BINDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(FULLARCH) ($$DATE)"
+endif
 endif
 ifndef SRCDISKINFO
 export SRCDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) Source-$$num ($$DATE)"
 endif
 # ND=No-Date versions for README
 ifndef BINDISKINFOND
+ifeq ($(MULTIPLE_DISKS),yes)
+export BINDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(FULLARCH) Binary-$$num"
+else
 export BINDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(FULLARCH)"
+endif
 endif
 ifndef SRCDISKINFOND
 export SRCDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) Source-$$num"
 endif
 ifndef BINVOLID
 ifeq ($(ARCH),powerpc)
+ifeq ($(MULTIPLE_DISKS),yes)
+BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc Bin-$$num"
+else
 BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc"
+endif
+else
+ifeq ($(MULTIPLE_DISKS),yes)
+BINVOLID="$(CAPPROJECT) $(DEBVERSION) $(ARCH) Bin-$$num"
 else
 BINVOLID="$(CAPPROJECT) $(DEBVERSION) $(ARCH)"
+endif
 endif
 endif
 ifndef SRCVOLID
@@ -738,6 +764,18 @@ $(BDIR)/CD1/install:
 		fi ; \
 	done
 
+ifeq (,$(findstring serveraddon,$(call CDBASE,2)))
+appinstall:
+else
+appinstall: ok packages $(BDIR)/CD2/app-install:
+$(BDIR)/CD2/app-install:
+	@echo "Adding app-install data ..."
+	$(Q)set -e; \
+	if [ -x "$(BASEDIR)/tools/$(CODENAME)/app-install.sh" ]; then \
+		$(BASEDIR)/tools/$(CODENAME)/app-install.sh 2 $(BDIR)/CD2; \
+	fi
+endif
+
 # Add the disks-arch directories if/where needed
 disks: ok bin-infos $(BDIR)/CD1/dists/$(DI_CODENAME)/main/disks-$(ARCH)
 $(BDIR)/CD1/dists/$(DI_CODENAME)/main/disks-$(ARCH):
@@ -1093,7 +1131,7 @@ update-popcon:
 
 # Little trick to simplify things
 official_images: bin-official_images src-official_images
-bin-official_images: ok bootable upgrade bin-images
+bin-official_images: ok bootable upgrade app-install bin-images
 src-official_images: ok src-doc src-images
 
 $(CODENAME)_status: ok init
