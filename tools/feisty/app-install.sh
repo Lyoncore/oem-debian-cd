@@ -19,7 +19,7 @@ ar p "$MIRROR/$APP_INSTALL_DATA_DEB" data.tar.gz | tar -xzf - -C "$TMP"
 find "$TMP/usr/share/app-install/desktop" \
     -name \*.desktop -print0 | \
     xargs -r0 grep -aHi '^X-AppInstall-Package=' | \
-    perl -pe 's,^usr/share/app-install/desktop/,,; s/\.desktop:.*?=/ /' \
+    perl -pe 's,^usr/share/app-install/desktop/,,; s/\.desktop:.*?=/ /' | \
     sort -k2 > "$TMP/desktop-list"
 DESKTOPS="$(sort "$BDIR/$N.packages" | join -1 2 -o 1.1 "$TMP/desktop-list" -)"
 
