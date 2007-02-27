@@ -802,6 +802,9 @@ ifdef BOOTDISKS
 	done
 endif
 
+ifneq ($(CDIMAGE_INSTALL_BASE),1)
+upgrade:
+else
 upgrade: ok bin-infos $(BDIR)/upgrade-stamp
 $(BDIR)/upgrade-stamp:
 	@echo "Trying to add upgrade* directories ..."
@@ -812,6 +815,7 @@ $(BDIR)/upgrade-stamp:
 		$(BASEDIR)/tools/$(CODENAME)/upgrade-$(ARCH).sh $(BDIR); \
 	 fi
 	$(Q)touch $(BDIR)/upgrade-stamp
+endif
 
 ## EXTRAS ##
 
