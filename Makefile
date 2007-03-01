@@ -138,6 +138,7 @@ fastsums=$(BASEDIR)/tools/fast_sums
 jigdo_cleanup=$(BASEDIR)/tools/jigdo_cleanup
 grab_md5=$(BASEDIR)/tools/grab_md5
 add_live_filesystem=$(BASEDIR)/tools/add_live_filesystem
+add_winfoss=$(BASEDIR)/tools/add_winfoss
 find_newest_installer=$(BASEDIR)/tools/find-newest-installer
 verbose=$(BASEDIR)/tools/verbose_command
 
@@ -656,6 +657,14 @@ endif
 	done
 ifeq ($(CDIMAGE_LIVE),1)
 	$(Q)$(add_live_filesystem)
+ifneq ($(PROJECT),edubuntu)
+	$(Q)$(add_winfoss)
+endif
+endif
+ifeq ($(PROJECT),edubuntu)
+ifeq ($(CDIMAGE_INSTALL),1)
+	$(Q)$(add_winfoss)
+endif
 endif
 	$(Q)touch $(BDIR)/packages-stamp
 
