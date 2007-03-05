@@ -248,6 +248,10 @@ LABEL xforcevesa
   menu label Start $CAPPROJECT in safe ^graphics mode
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper xforcevesa initrd=/casper/initrd.gz quiet splash --
+LABEL driverupdates
+  menu label Install with driver ^update CD
+  kernel /casper/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true initrd=/casper/initrd.gz quiet splash --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then

@@ -16,6 +16,14 @@ image=/casper/powerpc/vmlinux
 	initrd-size=1048576
 	read-only
 
+image=/casper/powerpc/vmlinux
+	label=driverupdates
+	alias=driverupdates-powerpc
+	initrd=/casper/powerpc/initrd.gz
+	append="${DEFAULT_PRESEED} boot=casper debian-installer/driver-update=true quiet splash --"
+	initrd-size=1048576
+	read-only
+
 # PowerPC64 subarch
 image[macrisc4]=/casper/powerpc64/vmlinux
 	label=live
@@ -31,6 +39,13 @@ image[macrisc4]=/casper/powerpc64/vmlinux
 	initrd-size=1048576
 	read-only
 
+image[macrisc4]=/casper/powerpc64/vmlinux
+	label=driverupdates
+	initrd=/casper/powerpc64/initrd.gz
+	append="${DEFAULT_PRESEED} boot=casper debian-installer/driver-update=true quiet splash --"
+	initrd-size=1048576
+	read-only
+
 image=/casper/powerpc64/vmlinux
 	label=live-powerpc64
 	initrd=/casper/powerpc64/initrd.gz
@@ -42,5 +57,12 @@ image=/casper/powerpc64/vmlinux
 	label=live-nosplash-powerpc64
 	initrd=/casper/powerpc64/initrd.gz
 	append="${DEFAULT_PRESEED} boot=casper quiet --"
+	initrd-size=1048576
+	read-only
+
+image=/casper/powerpc64/vmlinux
+	label=driverupdates-powerpc64
+	initrd=/casper/powerpc64/initrd.gz
+	append="${DEFAULT_PRESEED} boot=casper debian-installer/driver-update=true quiet splash --"
 	initrd-size=1048576
 	read-only
