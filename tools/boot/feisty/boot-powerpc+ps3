@@ -129,7 +129,7 @@ else
     done
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-    cp -dR --preserve=mode,timestamps "$DI_DIR" .
+    cp -dR --preserve=mode,timestamps "$DI_DIR"/* .
     rm -rf di_stuff
     # Remove special initrds we don't want.
     rm -f vmlinuz-*.initrd
