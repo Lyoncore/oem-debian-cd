@@ -3,22 +3,22 @@
 BDIR=$TDIR/$CODENAME-$FULLARCH
 
 mkdir -p "$BDIR/CD1/casper"
-if [ -e "$LIVEIMAGES/$ARCH.cloop" ]; then
-	ln "$LIVEIMAGES/$ARCH.cloop" "$BDIR/CD1/casper/filesystem.cloop"
-elif [ -e "$LIVEIMAGES/$ARCH.squashfs" ]; then
-	ln "$LIVEIMAGES/$ARCH.squashfs" "$BDIR/CD1/casper/filesystem.squashfs"
+if [ -e "$LIVEIMAGES/$FULLARCH.cloop" ]; then
+	ln "$LIVEIMAGES/$FULLARCH.cloop" "$BDIR/CD1/casper/filesystem.cloop"
+elif [ -e "$LIVEIMAGES/$FULLARCH.squashfs" ]; then
+	ln "$LIVEIMAGES/$FULLARCH.squashfs" "$BDIR/CD1/casper/filesystem.squashfs"
 else
-	echo "No filesystem for $ARCH!" >&2
+	echo "No filesystem for $FULLARCH!" >&2
 fi
 for item in kernel initrd; do
-	for path in "$LIVEIMAGES/$ARCH.$item"-*; do
+	for path in "$LIVEIMAGES/$FULLARCH.$item"-*; do
 		if [ -f "$path" ]; then
-			ln "$path" "$BDIR/CD1/casper/filesystem.${path#$LIVEIMAGES/$ARCH.}"
+			ln "$path" "$BDIR/CD1/casper/filesystem.${path#$LIVEIMAGES/$FULLARCH.}"
 		fi
 	done
 done
-ln "$LIVEIMAGES/$ARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
-ln "$LIVEIMAGES/$ARCH.manifest-desktop" "$BDIR/CD1/casper/filesystem.manifest-desktop" || true
+ln "$LIVEIMAGES/$FULLARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
+ln "$LIVEIMAGES/$FULLARCH.manifest-desktop" "$BDIR/CD1/casper/filesystem.manifest-desktop" || true
 
 # Release notes URL for use by Ubiquity. '${LANG}' will be replaced with the
 # installation locale code.
