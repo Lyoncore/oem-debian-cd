@@ -40,7 +40,7 @@ echo -n "-cache-inodes -J -l" > $N.mkisofs_opts
 "$BASEDIR/tools/sorting_weights" "$N"
 echo -n " -sort $(pwd)/$N.weights " >> $N.mkisofs_opts
 
-cd $INSTALLDIR
+cd $CDDIR
 mkdir -p kboot
 if [ -z "$KBOOT_DEBUG" ]; then
     KBOOTDEB="$($BASEDIR/tools/apt-selection cache show ps3-kboot | \
@@ -109,6 +109,8 @@ check='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS MENU=/bin/cdrom
 rescue='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS rescue/enable=true --'
 EOF
 fi
+
+cd $INSTALLDIR
 
 if [ ! "$DI_WWW_HOME" ]; then
     cp -a "$DI_PATH/current/images/udeb.list" .
