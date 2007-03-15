@@ -53,13 +53,28 @@ else
 fi
 
 mkdir -p etc
-> etc/kboot.conf
+
+BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
+(if [ "$CDIMAGE_DVD" = 1 ] && [ "$CDIMAGE_LIVE" = 1 ]; then
+     cat $BASEDIR/data/$CODENAME/kboot/kboot.msg.dvd
+ elif [ "$CDIMAGE_INSTALL" = 1 ]; then
+     cat $BASEDIR/data/$CODENAME/kboot/kboot.msg.install
+ elif [ "$CDIMAGE_LIVE" = 1 ]; then
+     cat $BASEDIR/data/$CODENAME/kboot/kboot.msg.live
+ fi) \
+ | sed "s/\${MEDIA_TYPE}/CDROM/" \
+ | sed "s/\${DEBIAN_VERSION}/${DEBVERSION}/g" \
+ | sed "s/\${CODENAME}/${CAPCODENAME}/g" \
+ | sed "s/\${BUILD_DATE}/${BUILD_DATE}/g" \
+ | sed "s#Ubuntu#$CAPPROJECT#g" \
+ > etc/kboot.msg
+
+echo 'message=/etc/kboot.msg' > etc/kboot.conf
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     echo 'timeout=300' >> etc/kboot.conf
 fi
 
-mkdir -p etc
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     echo 'default=live' >> etc/kboot.conf
 else
