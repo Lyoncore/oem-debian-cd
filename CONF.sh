@@ -400,21 +400,25 @@ done
 #export KERNEL_PARAMS="priority=critical"
 
 # If set, limits the number of binary CDs to produce.
-case $PROJECT in
-	edubuntu)
-		case $DIST in
-			warty|hoary|breezy|dapper|edgy)
-				export MAXCDS=1
-				;;
-			*)
-				export MAXCDS=2
-				;;
-		esac
-		;;
-	*)
-		export MAXCDS=1
-		;;
-esac
+if [ "$CDIMAGE_DVD" = 1 ]; then
+	export MAXCDS=1
+else
+	case $PROJECT in
+		edubuntu)
+			case $DIST in
+				warty|hoary|breezy|dapper|edgy)
+					export MAXCDS=1
+					;;
+				*)
+					export MAXCDS=2
+					;;
+			esac
+			;;
+		*)
+			export MAXCDS=1
+			;;
+	esac
+fi
 
 # If set to 0, never overflow binary CDs (for when you only want a single CD
 # and want to know when it overflows).
