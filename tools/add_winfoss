@@ -2,7 +2,7 @@
 
 BDIR=$TDIR/$CODENAME-$FULLARCH
 
-if [ "$PROJECT" = edubuntu ]; then
+if [ "$PROJECT" = edubuntu ] && [ "$CDIMAGE_DVD" != 1 ]; then
 	CD=CD2 # add-on CD
 else
 	CD=CD1
