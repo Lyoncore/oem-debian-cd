@@ -41,15 +41,15 @@ echo -n "-cache-inodes -J -l" > $N.mkisofs_opts
 echo -n " -sort $(pwd)/$N.weights " >> $N.mkisofs_opts
 
 cd $CDDIR
-mkdir -p kboot
+mkdir -p PS3/otheros
 if [ -z "$KBOOT_DEBUG" ]; then
     KBOOTDEB="$($BASEDIR/tools/apt-selection cache show ps3-kboot | \
 		grep ^Filename | awk '{print $2}')"
     ar p "$MIRROR/$KBOOTDEB" data.tar.gz | tar -xzf - -C . ./boot/otheros.bld
-    mv boot/otheros.bld kboot/
+    mv boot/otheros.bld PS3/otheros/
     rmdir boot
 else
-    cp -f $KBOOT_DEBUG kboot/otheros.bld
+    cp -f $KBOOT_DEBUG PS3/otheros/otheros.bld
 fi
 
 mkdir -p etc
