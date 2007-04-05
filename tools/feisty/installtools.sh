@@ -51,3 +51,13 @@ for preseed_dir in \
         cp -a "$file" $DIR/preseed/
     done
 done
+if [ "$CDIMAGE_DVD" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
+    # include server on normal DVDs
+    for preseed_dir in \
+            $PRESEED_ROOT/ubuntu-server $PRESEED_ROOT/ubuntu-server/$ARCH; do
+        [ -d "$preseed_dir" ] || continue
+        for file in $preseed_dir/*.seed; do
+            cp -a "$file" $DIR/preseed/
+        done
+    done
+fi
