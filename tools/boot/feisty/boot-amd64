@@ -300,7 +300,7 @@ EOF
     if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL oem
-  menu label Install in ^OEM mode
+  menu label Text mode install for ma^nufacturers
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED anna/choose_modules=oem-config-udeb initrd=/install/initrd.gz quiet --
 EOF
