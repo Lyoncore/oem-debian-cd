@@ -22,6 +22,7 @@ ln "$LIVEIMAGES/$FULLARCH.manifest-desktop" "$BDIR/CD1/casper/filesystem.manifes
 
 # Release notes URL for use by Ubiquity. '${LANG}' will be replaced with the
 # installation locale code.
+RELEASE_NOTES=
 case $PROJECT in
 	ubuntu|kubuntu|edubuntu|xubuntu)
 		case $DIST in
@@ -31,3 +32,7 @@ case $PROJECT in
 		esac
 		;;
 esac
+if [ "$RELEASE_NOTES" ]; then
+	mkdir -p "$BDIR/CD1/.disk"
+	echo "$RELEASE_NOTES" > "$BDIR/CD1/.disk/release_notes_url"
+fi
