@@ -49,10 +49,5 @@ for preseed_dir in \
     [ -d "$preseed_dir" ] || continue
     for file in $preseed_dir/*.seed; do
         cp -a "$file" $DIR/preseed/
-	cat >>"$DIR/preseed/${file##*/}" <<EOF
-# Work around i82365 oops (https://launchpad.net/bugs/74122).
-d-i	hw-detect/start_pcmcia	boolean false
-d-i	hw-detect/start_pcmcia	seen false
-EOF
     done
 done
