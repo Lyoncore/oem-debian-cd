@@ -151,8 +151,8 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     mkdir -p "$CDDIR/casper"
-    mv "$CDDIR/casper/filesystem.kernel-ps3" "$CDDIR/casper/vmlinux"
-    mv "$CDDIR/casper/filesystem.initrd-ps3" "$CDDIR/casper/initrd.gz"
+    mv "$CDDIR/casper/filesystem.kernel-powerpc64-smp" "$CDDIR/casper/vmlinux"
+    mv "$CDDIR/casper/filesystem.initrd-powerpc64-smp" "$CDDIR/casper/initrd.gz"
 fi
 
 exit 0
