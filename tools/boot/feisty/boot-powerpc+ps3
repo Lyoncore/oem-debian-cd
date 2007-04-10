@@ -134,13 +134,13 @@ else
 fi
 
 if [ ! "$DI_WWW_HOME" ];then
-    DI_DIR="$DI_PATH/current/images/powerpc/cdrom"
+    DI_DIR="$DI_PATH/current/images/powerpc64/cdrom"
 else
     DI_DIR="di_stuff"
     for image in initrd.gz vmlinux; do
 	dir="$(dirname "$image")"
 	mkdir -p "$DI_DIR/$dir"
-	wget "$DI_WWW_HOME/powerpc/cdrom/$image" -O "$DI_DIR/$image"
+	wget "$DI_WWW_HOME/powerpc64/cdrom/$image" -O "$DI_DIR/$image"
     done
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
