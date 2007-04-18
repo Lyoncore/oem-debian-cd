@@ -295,7 +295,7 @@ LABEL workstation
   append $KERNEL_PARAMS file=/cdrom/preseed/workstation.seed initrd=/install/initrd.gz quiet --
 EOF
     fi
-    if [ "$CDIMAGE_DVD" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
+    if [ "$CDIMAGE_DVD" = 1 ] && [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL server
   menu label Install a ser^ver
