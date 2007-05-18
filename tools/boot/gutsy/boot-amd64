@@ -310,7 +310,7 @@ EOF
 LABEL oem
   menu label Text mode install for ma^nufacturers
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED anna/choose_modules=oem-config-udeb initrd=/install/initrd.gz quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED oem-config/enable=true initrd=/install/initrd.gz quiet --
 EOF
     fi
 fi
