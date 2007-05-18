@@ -99,7 +99,7 @@ EOF
     fi
     if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
 	cat >> etc/kboot.conf <<EOF
-oem='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED anna/choose_modules=oem-config-udeb quiet --'
+oem='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED oem-config/enable=true quiet --'
 EOF
     fi
 fi
