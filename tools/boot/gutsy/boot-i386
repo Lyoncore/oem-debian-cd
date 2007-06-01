@@ -208,11 +208,11 @@ rm -f boot$N/isolinux/boot.txt
 # Isolinux config file.
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat > boot$N/isolinux/isolinux.cfg <<EOF
-    DEFAULT /casper/vmlinuz
+DEFAULT /casper/vmlinuz
 EOF
 else
     cat > boot$N/isolinux/isolinux.cfg <<EOF
-    DEFAULT /install/vmlinuz
+DEFAULT /install/vmlinuz
 EOF
 fi
 if [ "$GFXBOOT" ]; then
