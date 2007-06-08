@@ -45,8 +45,8 @@ for i in `cd dists; echo *; cd ..`; do
 done
 
 if [ -e "$MIRROR/dists/$CODENAME/Release" ]; then
-    # Strip the MD5Sum and SHA1 field
-    perl -ne 'if (/^(MD5Sum|SHA1):/) { $f=1; next; }
+    # Strip the MD5Sum, SHA1, and SHA256 fields
+    perl -ne 'if (/^(MD5Sum|SHA1|SHA256):/) { $f=1; next; }
     if ($f) { 
 	unless (/^ /) { print; $f=0 } 
     } else { print }' \
@@ -55,8 +55,8 @@ if [ -e "$MIRROR/dists/$CODENAME/Release" ]; then
     > dists/$CODENAME/Release
 fi
 if [ -n "$NONUS" -a -e "$NONUS/dists/$CODENAME/non-US/Release" ]; then
-    # Strip the MD5Sum and SHA1 field
-    perl -ne 'if (/^(MD5Sum|SHA1):/) { $f=1; next; }
+    # Strip the MD5Sum, SHA1, and SHA256 fields
+    perl -ne 'if (/^(MD5Sum|SHA1|SHA256):/) { $f=1; next; }
     if ($f) { 
 	unless (/^ /) { print; $f=0 } 
     } else { print }' \
