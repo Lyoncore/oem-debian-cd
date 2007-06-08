@@ -47,12 +47,12 @@ if [ "$1" = "install" ]; then
 #     sed -e "s/^Description: .*$/Description: Debian $DEBVERSION/" | \
 
 if [ -e "$MIRROR/dists/$CODENAME/Release" ]; then
-    # Strip the MD5Sum and SHA1 fields
+    # Strip the MD5Sum, SHA1, and SHA256 fields
     # Update some other information as well
     sed -e "s/^Architectures: .*$/Architectures: $ARCH/" \
     $MIRROR/dists/$CODENAME/Release | \
     sed -e "s|^Components: .*$|Components: $COMPONENTS|" | \
-    perl -ne 'if (/^(MD5Sum|SHA1):/i) { $f=1; next } 
+    perl -ne 'if (/^(MD5Sum|SHA1|SHA256):/i) { $f=1; next } 
     if ($f) { 
 	unless (/^ /) { print; $f=0 }
     } else { print }' > dists/$CODENAME/Release
@@ -62,12 +62,12 @@ else
 fi
 if [ -n "$NONUS" ]; then
 if [ -e "$NONUS/dists/$CODENAME/non-US/Release" ]; then
-    # Strip the MD5Sum and SHA1 fields
+    # Strip the MD5Sum, SHA1, and SHA256 fields
     # Update some other information as well
     sed -e "/^ /d" -e "s/^Architectures: .*$/Architectures: $ARCH/" \
     $NONUS/dists/$CODENAME/non-US/Release | \
     sed -e "s|^Components: .*$|Components: $SECTIONSNONUS|" | \
-    perl -ne 'if (/^(MD5Sum|SHA1):/i) { $f=1; next } 
+    perl -ne 'if (/^(MD5Sum|SHA1|SHA256):/i) { $f=1; next } 
     if ($f) { 
 	unless (/^ /) { print; $f=0 }
     } else { print }' > dists/$CODENAME/non-US/Release
