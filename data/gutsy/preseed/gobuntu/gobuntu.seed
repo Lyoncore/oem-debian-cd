@@ -1,5 +1,5 @@
 # Disable the restricted component. (It should be missing from the CDs
 # anyway, but let's make sure.)
 d-i	apt-setup/restricted	boolean false
-# Install the Ubuntu desktop.
-tasksel	tasksel/first	multiselect ubuntu-desktop
+# Install the Gobuntu desktop.
+tasksel	tasksel/first	multiselect gobuntu-desktop
