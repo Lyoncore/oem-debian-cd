@@ -26,8 +26,8 @@ RELEASE_NOTES=
 case $PROJECT in
 	ubuntu|kubuntu|edubuntu|xubuntu)
 		case $DIST in
-			feisty)
-				RELEASE_NOTES="http://www.ubuntu.com/products/GetUbuntu/ReleaseNotes?os=$PROJECT&ver=$DEBVERSION&lang=\${LANG}"
+			feisty|gutsy)
+				RELEASE_NOTES="http://www.ubuntu.com/getubuntu/ReleaseNotes?os=$PROJECT&ver=$DEBVERSION&lang=\${LANG}"
 				;;
 		esac
 		;;
