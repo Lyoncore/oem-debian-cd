@@ -6,6 +6,19 @@ N="$1"
 # The location of the tree where we should install app-install data files
 DIR="$2"
 
+if [ "$PROJECT" = edubuntu ]; then
+    EDU_APP_INSTALL_DATA_DEB="$($BASEDIR/tools/apt-selection cache \
+				show app-install-data-edubuntu | \
+				grep ^Filename: | awk '{print $2}' || true)"
+
+    [ "$EDU_APP_INSTALL_DATA_DEB" ] || exit 0
+
+    mkdir -p "$DIR/app-install/edubuntu/"
+    TMP_EDU="$DIR/app-install/edubuntu/"
+
+    ar p "$MIRROR/$EDU_APP_INSTALL_DATA_DEB" data.tar.gz | tar -xzf - -C "$TMP_EDU"
+fi
+
 APP_INSTALL_DATA_DEB="$($BASEDIR/tools/apt-selection cache \
 			show app-install-data | \
 			grep ^Filename: | awk '{print $2}' || true)"
@@ -38,8 +51,17 @@ for name in $DESKTOPS; do
 	fi
     fi
 done
-cp -a "$TMP/usr/share/app-install/desktop/applications.menu" \
-    "$DIR/app-install/desktop/" || true
+
+if [ "$PROJECT" = edubuntu ]; then
+    cp -a "$TMP_EDU/usr/share/app-install-data-edubuntu/desktop/applications.menu" \
+	"$DIR/app-install/desktop/" || true
+    find "$TMP_EDU/usr/share/app-install-data-edubuntu/desktop" -name \*.directory -print0 | \
+	xargs -0r cp --target-directory "$DIR/app-install/desktop" || true
+    rm -rf "$DIR/app-install/edubuntu"
+else
+    cp -a "$TMP/usr/share/app-install/desktop/applications.menu" \
+	"$DIR/app-install/desktop/" || true
+fi
 
 rm -rf "$DIR/app-install/tmp"
 
