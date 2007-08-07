@@ -209,14 +209,15 @@ sed -e "s#Ubuntu#$CAPPROJECT#g" boot$N/isolinux/boot.txt \
 rm -f boot$N/isolinux/boot.txt
 # Isolinux config file.
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    cat > boot$N/isolinux/isolinux.cfg <<EOF
-DEFAULT /casper/vmlinuz
-EOF
+    DEFAULT_KERNEL=/casper/vmlinuz
+    DEFAULT_INITRD=/casper/initrd.gz
 else
-    cat > boot$N/isolinux/isolinux.cfg <<EOF
-DEFAULT /install/vmlinuz
-EOF
+    DEFAULT_KERNEL=/install/vmlinuz
+    DEFAULT_INITRD=/install/initrd.gz
 fi
+cat > boot$N/isolinux/isolinux.cfg <<EOF
+DEFAULT $DEFAULT_KERNEL
+EOF
 if [ "$GFXBOOT" ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 GFXBOOT bootlogo
@@ -310,8 +311,8 @@ if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL oem
   menu label ^OEM install (for manufacturers)
-  kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED oem-config/enable=true initrd=/install/initrd.gz quiet --
+  kernel $DEFAULT_KERNEL
+  append $KERNEL_PARAMS $DEFAULT_PRESEED oem-config/enable=true initrd=$DEFAULT_INITRD quiet --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
