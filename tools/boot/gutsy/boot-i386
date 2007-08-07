@@ -303,14 +303,14 @@ LABEL server
   append $KERNEL_PARAMS file=/cdrom/preseed/ubuntu-server.seed initrd=/install/initrd.gz quiet --
 EOF
     fi
-    if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
-	cat >> boot$N/isolinux/isolinux.cfg <<EOF
+fi
+if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
+    cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL oem
-  menu label Text mode install for ma^nufacturers
+  menu label ^OEM install (for manufacturers)
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED oem-config/enable=true initrd=/install/initrd.gz quiet --
 EOF
-    fi
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
