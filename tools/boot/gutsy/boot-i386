@@ -208,10 +208,8 @@ rm -f boot$N/isolinux/boot.txt
 # Isolinux config file.
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     DEFAULT_KERNEL=/casper/vmlinuz
-    DEFAULT_INITRD=/casper/initrd.gz
 else
     DEFAULT_KERNEL=/install/vmlinuz
-    DEFAULT_INITRD=/install/initrd.gz
 fi
 cat > boot$N/isolinux/isolinux.cfg <<EOF
 DEFAULT $DEFAULT_KERNEL
@@ -306,12 +304,21 @@ EOF
     fi
 fi
 if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
-    cat >> boot$N/isolinux/isolinux.cfg <<EOF
+    if [ "$CDIMAGE_LIVE" = 1 ]; then
+	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL oem
   menu label ^OEM install (for manufacturers)
-  kernel $DEFAULT_KERNEL
-  append $KERNEL_PARAMS $DEFAULT_PRESEED oem-config/enable=true initrd=$DEFAULT_INITRD quiet --
+  kernel /casper/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper oem-config/enable=true initrd=/casper/initrd.gz quiet splash --
 EOF
+    else
+	cat >> boot$N/isolinux/isolinux.cfg <<EOF
+LABEL oem
+  menu label ^OEM install (for manufacturers)
+  kernel /install/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED oem-config/enable=true initrd=/install/initrd.gz quiet --
+EOF
+    fi
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
