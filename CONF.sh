@@ -218,7 +218,7 @@ esac
 
 case $DIST in
   dapper)
-    #export PROPOSED=1
+    export PROPOSED=1
     ;;
 esac
 
