@@ -235,7 +235,6 @@ esac
 
 # Options
 # export MKISOFS=/usr/bin/mkisofs
-export MKISOFS=/home/cjwatson/mkisofs
 # export MKISOFS_OPTS="-r"		#For normal users
 # export MKISOFS_OPTS="-r -F ."	#For symlink farmers
 
