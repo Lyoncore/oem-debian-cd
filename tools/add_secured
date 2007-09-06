@@ -45,6 +45,19 @@ if [ -e "dists/$CODENAME/Release" ]; then
 	printf " %s %8d %s\n" $m $c $file; \
     done) >> dists/$CODENAME/Release
     sign_release dists/$CODENAME/Release
+    # Add the SHA256 field again
+    echo "SHA256:" >> dists/$CODENAME/Release
+    find dists/$CODENAME/ -name 'Packages' -o -name 'Packages.gz' \
+    -o -name 'Sources' -o -name 'Sources.gz' -o -name 'Release' | \
+    grep -v non-US/ | grep -v dists/$CODENAME/Release | \
+    sed -e "s#^dists/$CODENAME/##" | \
+    (while read file; do \
+        rfile="dists/$CODENAME/$file"; \
+    	c=`wc -c < $rfile`; \
+	m=`python -c 'import apt_pkg; print apt_pkg.sha256sum(open("'"$rfile"'"))'`; \
+	printf " %s %8d %s\n" $m $c $file; \
+    done) >> dists/$CODENAME/Release
+    sign_release dists/$CODENAME/Release
 fi
 
 if [ -n "$NONUS" -a -e "dists/$CODENAME/non-US/Release" ]; then
@@ -70,6 +83,19 @@ if [ -n "$NONUS" -a -e "dists/$CODENAME/non-US/Release" ]; then
         rfile="dists/$CODENAME/non-US/$file"; \
     	c=`wc -c < $rfile`; \
 	m=`sha1sum < $rfile | cut -d" " -f1`; \
+	printf " %s %8d %s\n" $m $c $file; \
+    done) >> dists/$CODENAME/non-US/Release
+    sign_release dists/$CODENAME/non-US/Release
+    # Add the SHA256 field again
+    echo "SHA256:" >> dists/$CODENAME/non-US/Release
+    find dists/$CODENAME/non-US/ -name 'Packages' -o -name 'Packages.gz' \
+    -o -name 'Sources' -o -name 'Sources.gz' -o -name 'Release' | \
+    grep -v dists/$CODENAME/non-US/Release | \
+    sed -e "s#^dists/$CODENAME/non-US/##" | \
+    (while read file; do \
+        rfile="dists/$CODENAME/non-US/$file"; \
+    	c=`wc -c < $rfile`; \
+	m=`python -c 'import apt_pkg; print apt_pkg.sha256sum(open("'"$rfile"'"))'`; \
 	printf " %s %8d %s\n" $m $c $file; \
     done) >> dists/$CODENAME/non-US/Release
     sign_release dists/$CODENAME/non-US/Release
