@@ -19,3 +19,8 @@ if [ -f "$LIVEIMAGES/$ARCH.winfoss.tgz" ]; then
 			"$BDIR/$CD/programs/thunderbird/ThunderbirdSetup-1.0.exe"
 	fi
 fi
+
+if [ -f "$LIVEIMAGES/$ARCH.wubi.exe" ]; then
+	# Wubi always goes on CD1.
+	cp -a "$LIVEIMAGES/$ARCH.wubi.exe" "$BDIR/CD1/wubi.exe"
+fi
