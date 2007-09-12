@@ -17,4 +17,13 @@ if [ -d "$SOURCEDIR" ]; then
     tar -C "$DIR" -x -z -f "$TARGETDIR/$CODENAME.tar.gz" ./cdromupgrade
 fi
 
+# now check if any prerequisites need to go onto the CD
+PACKAGESGZ="$MIRROR/dists/$PREV_CODENAME-backports/main/debian-installer/binary-$ARCH/Packages.gz"
+ARCH_TARGETDIR="$DIR/dists/$CODENAME/main/dist-upgrader/binary-$ARCH"
+mkdir -p "$ARCH_TARGETDIR"
+for pkg in $(zcat "$PACKAGESGZ" | grep-dctrl -PrnsFilename ^release-upgrader-); do
+    echo "Adding: $pkg"
+    cp -a "$MIRROR/$pkg" "$ARCH_TARGETDIR"
+done
+
 exit 0
