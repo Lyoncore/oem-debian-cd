@@ -104,6 +104,7 @@ case $DIST in
     export OFFICIAL="Release"
     ;;
   gutsy)
+    export PREV_CODENAME=feisty
     export CODENAME=gutsy
     export CAPCODENAME='Gutsy Gibbon'
     export DEBVERSION=7.10
