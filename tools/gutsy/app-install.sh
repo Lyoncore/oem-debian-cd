@@ -53,10 +53,10 @@ for name in $DESKTOPS; do
 done
 
 if [ "$PROJECT" = edubuntu ]; then
-    cp -a "$TMP_EDU/usr/share/app-install-data-edubuntu/desktop/applications.menu" \
-	"$DIR/app-install/desktop/" || true
-    find "$TMP_EDU/usr/share/app-install-data-edubuntu/desktop" -name \*.directory -print0 | \
+    find "$TMP_EDU/usr/share/app-install-data-edubuntu/desktop/" -type f -print0 | \
 	xargs -0r cp --target-directory "$DIR/app-install/desktop" || true
+    find "$TMP_EDU/usr/share/app-install-data-edubuntu/icons/" -type f -print0 | \
+	xargs -0r cp --target-directory "$DIR/app-install/icons" || true
     rm -rf "$DIR/app-install/edubuntu"
 else
     cp -a "$TMP/usr/share/app-install/desktop/applications.menu" \
