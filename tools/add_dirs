@@ -48,6 +48,14 @@ if [ "${RESTRICTED:-0}" != "0" ]; then
     mkdir -p dists/$CODENAME/restricted/binary-$ARCH
     mkdir -p dists/$CODENAME/restricted/source
 fi
+if [ "${UNIVERSE:-0}" != "0" ]; then
+    mkdir -p dists/$CODENAME/universe/binary-$ARCH
+    mkdir -p dists/$CODENAME/universe/source
+fi
+if [ "${MULTIVERSE:-0}" != "0" ]; then
+    mkdir -p dists/$CODENAME/multiverse/binary-$ARCH
+    mkdir -p dists/$CODENAME/multiverse/source
+fi
 
 if [ -n "$LOCAL"  -a -e "${LOCALDEBS:-$MIRROR}/dists/$DI_CODENAME/local/debian-installer" ]; then
     mkdir -p dists/$CODENAME/local/debian-installer/binary-$ARCH
@@ -58,6 +66,10 @@ fi
 if [ "${RESTRICTED:-0}" != "0" ] && \
    [ -e "$MIRROR/dists/$DI_CODENAME/restricted/debian-installer" ]; then
     mkdir -p dists/$CODENAME/restricted/debian-installer/binary-$ARCH
+fi
+if [ "${UNIVERSE:-0}" !+ "0" ] && \
+   [ -e "$MIRROR/dists/$DI_CODENAME/universe/debian-installer" ]; then
+    mkdir -p dists/$CODENAME/universe/debian-installer/binary-$ARCH
 fi
     
 if [ -n "$NONUS" ]; then
@@ -74,6 +86,14 @@ if [ -n "$NONUS" ]; then
     if [ "${RESTRICTED:-0}" != "0" ]; then
 	    mkdir -p dists/$CODENAME/non-US/restricted/binary-$ARCH
 	    mkdir -p dists/$CODENAME/non-US/restricted/source
+    fi
+    if [ "${UNIVERSE:-0}" != "0" ]; then
+	    mkdir -p dists/$CODENAME/non-US/universe/binary-$ARCH
+	    mkdir -p dists/$CODENAME/non-US/universe/source
+    fi
+    if [ "${MULTIVERSE:-0}" != "0" ]; then
+	    mkdir -p dists/$CODENAME/non-US/multiverse/binary-$ARCH
+	    mkdir -p dists/$CODENAME/non-US/multiverse/source
     fi
 fi
 

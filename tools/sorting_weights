@@ -20,6 +20,12 @@ fi
 if [ "${RESTRICTED:-0}" != 0 ]; then
 	SECTIONS="$SECTIONS restricted non-US/restricted"
 fi
+if [ "${UNIVERSE:-0}" != 0 ]; then
+	SECTIONS="$SECTIONS universe non-US/universe"
+fi
+if [ "${MULTIVERSE:-0}" != 0 ]; then
+	SECTIONS="$SECTIONS multiverse non-US/multiverse"
+fi
 if [ "$LOCAL" ]; then
 	SECTIONS="$SECTIONS local"
 fi
