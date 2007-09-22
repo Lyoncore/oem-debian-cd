@@ -322,7 +322,7 @@ LABEL oem
 EOF
     fi
 fi
-if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ] && [ "$PROJECT" != ubuntustudio ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL cli
   menu label Install a comm^and-line system
