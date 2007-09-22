@@ -182,7 +182,9 @@ fi
 
 if [ "$CDIMAGE_UNSUPPORTED" ]; then
   export UNIVERSE=1
-  export MULTIVERSE=1
+  if [ -z "$CDIMAGE_ONLYFREE" ]; then
+    export MULTIVERSE=1
+  fi
 fi
 
 # If you have a $MIRROR/dists/$CODENAME/local/binary-$ARCH dir with 
