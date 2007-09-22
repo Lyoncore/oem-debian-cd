@@ -600,6 +600,12 @@ ifeq ($(CDIMAGE_INSTALL_BASE),1)
 	    if [ "$$RESTRICTED" = 1 ]; then \
 		echo 'restricted' >> $(BDIR)/CD$$DISK/.disk/base_components; \
 	    fi; \
+	    if [ "$$UNIVERSE" = 1 ]; then \
+		echo 'universe' >> $(BDIR)/CD$$DISK/.disk/base_components; \
+	    fi; \
+	    if [ "$$MULTIVERSE" = 1 ]; then \
+		echo 'multiverse' >> $(BDIR)/CD$$DISK/.disk/base_components; \
+	    fi; \
 	    if [ -n "$(UDEB_INCLUDE)" ] ; then \
 		if [ -r "$(UDEB_INCLUDE)" ] ; then \
 		    cp -af "$(UDEB_INCLUDE)" \
