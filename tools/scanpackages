@@ -27,6 +27,14 @@ if [ "${RESTRICTED:-0}" != "0" ]; then
   SECTIONS="${SECTIONS} restricted"
   SECTIONSNONUS="${SECTIONSNONUS} non-US/restricted"
 fi
+if [ "${UNIVERSE:-0}" != "0" ]; then
+  SECTIONS="${SECTIONS} universe"
+  SECTIONSNONUS="${SECTIONSNONUS} non-US/universe"
+fi
+if [ "${MULTIVERSE:-0}" != "0" ]; then
+  SECTIONS="${SECTIONS} multiverse"
+  SECTIONSNONUS="${SECTIONSNONUS} non-US/multiverse"
+fi
 
 COMPONENTS="$SECTIONS"
 
@@ -106,6 +114,11 @@ if [ "${RESTRICTED:-0}" != "0" ] && \
     cp $MIRROR/dists/$DI_CODENAME/restricted/debian-installer/binary-$ARCH/Release \
        dists/$CODENAME/restricted/debian-installer/binary-$ARCH/
 fi
+if [ "${UNIVERSE:-0}" != "0" ] && \
+   [ -e "$MIRROR/dists/$DI_CODENAME/universe/debian-installer/binary-$ARCH/Release" ]; then
+    cp $MIRROR/dists/$DI_CODENAME/universe/debian-installer/binary-$ARCH/Release \
+       dists/$CODENAME/universe/debian-installer/binary-$ARCH/
+fi
 
 # Generating Packages files
 apt-ftparchive --no-contents generate $PREFIX.generate-binary
@@ -143,13 +156,17 @@ for i in `cd dists; echo *; cd ..`; do
 	if [ -d "dists/$i/main/binary-$ARCH" -o \
 	     -d "dists/$i/non-free/binary-$ARCH" -o \
 	     -d "dists/$i/contrib/binary-$ARCH" -o \
-	     -d "dists/$i/restricted/binary-$ARCH" ]; then
+	     -d "dists/$i/restricted/binary-$ARCH" -o \
+	     -d "dists/$i/universe/binary-$ARCH" -o \
+	     -d "dists/$i/multiverse/binary-$ARCH" ]; then
 	    DISTS="$DISTS $i"
 	fi
 	if [ -d "dists/$i/non-US/main/binary-$ARCH" -o \
 	     -d "dists/$i/non-US/non-free/binary-$ARCH" -o \
 	     -d "dists/$i/non-US/contrib/binary-$ARCH" -o \
-	     -d "dists/$i/non-US/restricted/binary-$ARCH" ]; then
+	     -d "dists/$i/non-US/restricted/binary-$ARCH" -o \
+	     -d "dists/$i/non-US/universe/binary-$ARCH" -o \
+	     -d "dists/$i/non-US/multiverse/binary-$ARCH" ]; then
 	    DISTSNONUS="$DISTSNONUS $i"
 	fi
     fi
@@ -254,6 +271,21 @@ Tree "dists/$CODENAME/restricted" {
 }
 EOF
 fi
+if [ "${UNIVERSE:-0}" != "0" ] && [ -e "$MIRROR/dists/$DI_CODENAME/universe/debian-installer" ]; then
+cat >>$PREFIX.generate-binary-debian-installer <<EOF
+
+Tree "dists/$CODENAME/universe" {
+    FileList "$PREFIX.filelist_universe";
+    Sections "debian-installer";
+    Architectures "$ARCH";
+
+    BinOverride "override.$CODENAME.universe.\$(SECTION)";
+    ExtraOverride "override.$CODENAME.extra.universe";
+    SrcOverride "override.$CODENAME.universe.src";
+    Packages::Extensions ".udeb";
+}
+EOF
+fi
 if [ -n "$LOCAL" -a -e "${LOCALDEBS:-$MIRROR}/dists/$DI_CODENAME/local/debian-installer" ]; then
 cat >>$PREFIX.generate-binary-debian-installer <<EOF
 
@@ -296,6 +328,9 @@ if [ ! -d "$BDIR/indices" ]; then
     fi
     if [ "${RESTRICTED:-0}" != "0" ] && [ -e "$MIRROR/dists/$DI_CODENAME/restricted/debian-installer" ]; then
 	touch $BDIR/indices/override.$CODENAME.restricted.debian-installer
+    fi
+    if [ "${UNIVERSE:-0}" != "0" ] && [ -e "$MIRROR/dists/$DI_CODENAME/universe/debian-installer" ]; then
+	touch $BDIR/indices/override.$CODENAME.universe.debian-installer
     fi
     if [ -n "$LOCAL" -a -e "${LOCALDEBS:-$MIRROR}/dists/$DI_CODENAME/local/debian-installer" ]; then
 	touch $BDIR/indices/override.$CODENAME.local.debian-installer

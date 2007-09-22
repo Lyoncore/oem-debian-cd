@@ -41,6 +41,12 @@ fi
 if [ "${RESTRICTED:-0}" != "0" ]; then
 	sections="$sections restricted"
 fi
+if [ "${UNIVERSE:-0}" != "0" ]; then
+	sections="$sections universe"
+fi
+if [ "${MULTIVERSE:-0}" != "0" ]; then
+	sections="$sections multiverse"
+fi
 
 # Check for the necessary dirs and files ...
 if [ ! -d "$APTTMP/$CODENAME-$FULLARCH/apt-state/lists/partial" ]; then
@@ -101,6 +107,18 @@ if [ ! -e "$APTTMP/$CODENAME-$FULLARCH/apt/sources.list" ]; then
 	  fi
 	  if [ "${UPDATES:-0}" != "0" ]; then
 	    echo "deb file:$MIRROR $DI_CODENAME-updates restricted/debian-installer" \
+	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
+	  fi
+	fi
+	if [ "${UNIVERSE:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME/universe/debian-installer" ]; then
+	  echo "deb file:$MIRROR $DI_CODENAME universe/debian-installer" \
+	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
+	  if [ -n "$SECURITY" ]; then
+	    echo "deb file:${SECURITY:-$MIRROR} $DI_CODENAME-security universe/debian-installer" \
+	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
+	  fi
+	  if [ "${UPDATES:-0}" != "0" ]; then
+	    echo "deb file:$MIRROR $DI_CODENAME-updates universe/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	fi

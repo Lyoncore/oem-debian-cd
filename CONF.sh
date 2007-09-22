@@ -9,6 +9,8 @@ unset NONFREE           || true
 unset CONTRIB           || true
 unset EXTRANONFREE      || true
 unset RESTRICTED        || true
+unset UNIVERSE          || true
+unset MULTIVERSE        || true
 # allow configuration on command line
 #unset LOCAL             || true
 #unset LOCALDEBS         || true
