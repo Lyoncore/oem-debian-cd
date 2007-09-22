@@ -180,6 +180,11 @@ if [ -z "$CDIMAGE_ONLYFREE" ]; then
   export RESTRICTED=1
 fi
 
+if [ "$CDIMAGE_UNSUPPORTED" ]; then
+  export UNIVERSE=1
+  export MULTIVERSE=1
+fi
+
 # If you have a $MIRROR/dists/$CODENAME/local/binary-$ARCH dir with 
 # local packages that you want to put on the CD set then
 # uncomment the following line 
