@@ -103,7 +103,7 @@ oem='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED 
 EOF
     fi
 fi
-if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ] && [ "$PROJECT" != ubuntu-server ] && [ "$PROJECT" != ubuntustudio ]; then
     cat >> etc/kboot.conf <<EOF
 cli='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS file=/cdrom/preseed/cli.seed --'
 cli_expert='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS file=/cdrom/preseed/cli.seed priority=low --'
