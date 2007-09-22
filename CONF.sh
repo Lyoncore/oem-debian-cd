@@ -306,6 +306,9 @@ elif [ "$DIST" = warty ]; then
 elif [ "$SPECIAL" = 1 ]; then
   # special custom build
   export DOJIGDO=0
+elif [ "$CDIMAGE_UNSUPPORTED" ]; then
+  # cjwatson: broken, not sure why yet
+  export DOJIGDO=0
 else
   export DOJIGDO=1
 fi
