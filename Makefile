@@ -429,8 +429,8 @@ endif
 		$(DEBOOTSTRAPROOT) /usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) $(DEBOOTSTRAP)/tmp-$(ARCH) file://$(MIRROR) $(DEBOOTSTRAP)/$(CODENAME)-$(FULLARCH) \
 		| tr ' ' '\n' >>$(BDIR)/rawlist.debootstrap; \
 	fi
-	$(Q)perl -npe 's/\@ARCH\@/$(ARCH)/g' $(TASK) | \
-	 cpp -nostdinc -nostdinc++ -P -undef -D ARCH=$(ARCH) -D ARCH_$(subst -,_,$(ARCH)) \
+	$(Q)perl -npe 's/\@ARCH\@/$(FULLARCH)/g' $(TASK) | \
+	 cpp -nostdinc -nostdinc++ -P -undef -D ARCH=$(FULLARCH) -D ARCH_$(subst -,_,$(subst +,_,$(FULLARCH))) \
 	     -U $(ARCH) -U i386 -U linux -U unix \
 	     -DFORCENONUSONCD1=$(forcenonusoncd1) \
 	     -I $(BASEDIR)/tasks/auto/$(IMAGE_TYPE) -I $(BASEDIR)/tasks -I $(BDIR) - - >> $(BDIR)/rawlist
@@ -438,8 +438,8 @@ endif
 # Build the raw list (cpp output) with doubles and spaces for excluded packages
 $(BDIR)/rawlist-exclude:
 	$(Q)if [ -n "$(EXCLUDE)" ]; then \
-	 	perl -npe 's/\@ARCH\@/$(ARCH)/g' $(EXCLUDE) | \
-			cpp -nostdinc -nostdinc++ -P -undef -D ARCH=$(ARCH) -D ARCH_$(subst -,_,$(ARCH)) \
+	 	perl -npe 's/\@ARCH\@/$(FULLARCH)/g' $(EXCLUDE) | \
+			cpp -nostdinc -nostdinc++ -P -undef -D ARCH=$(FULLARCH) -D ARCH_$(subst -,_,$(subst +,_,$(FULLARCH))) \
 				-U $(ARCH) -U i386 -U linux -U unix \
 	     			-DFORCENONUSONCD1=$(forcenonusoncd1) \
 	     			-I $(BASEDIR)/tasks/auto/$(IMAGE_TYPE) -I $(BASEDIR)/tasks -I $(BDIR) - - >> $(BDIR)/rawlist-exclude; \
@@ -461,7 +461,7 @@ $(SDIR)/list: $(SDIR)/rawlist
 $(SDIR)/rawlist:
 	$(Q)($(foreach arch,$(ARCHES), \
 	perl -npe 's/\@ARCH\@/$(arch)/g' $(TASK) | \
-	 cpp -nostdinc -nostdinc++ -P -undef -D ARCH=$(arch) -D ARCH_$(subst -,_,$(arch)) \
+	 cpp -nostdinc -nostdinc++ -P -undef -D ARCH=$(arch) -D ARCH_$(subst -,_,$(subst +,_,$(arch))) \
 	     -U $(arch) -U i386 -U linux -U unix \
 	     -DFORCENONUSONCD1=$(forcenonusoncd1) \
 	     -I $(BASEDIR)/tasks/auto/$(IMAGE_TYPE) -I $(BASEDIR)/tasks -I $(SDIR) - -; \
