@@ -320,8 +320,8 @@ if [ ! -d "$BDIR/indices" ]; then
 	# TODO: evil hack that relies on cdimage/bin/germinate-to-tasks
 	grep -vw Task "$BDIR/indices/override.$CODENAME.extra.$SECT" > "$BDIR/indices/override.$CODENAME.extra.$SECT.new"
 	mv "$BDIR/indices/override.$CODENAME.extra.$SECT.new" "$BDIR/indices/override.$CODENAME.extra.$SECT"
-	cat "$BASEDIR/tasks/auto/$IMAGE_TYPE/$PROJECT/$CODENAME/override.$ARCH" >> "$BDIR/indices/override.$CODENAME.extra.$SECT"
-	"$BASEDIR/tools/sync-priorities" "$BDIR/indices/override.$CODENAME.$SECT" "$BASEDIR/tasks/auto/$IMAGE_TYPE/$PROJECT/$CODENAME/important.$ARCH"
+	cat "$BASEDIR/tasks/auto/$IMAGE_TYPE/$PROJECT/$CODENAME/override.$FULLARCH" >> "$BDIR/indices/override.$CODENAME.extra.$SECT"
+	"$BASEDIR/tools/sync-priorities" "$BDIR/indices/override.$CODENAME.$SECT" "$BASEDIR/tasks/auto/$IMAGE_TYPE/$PROJECT/$CODENAME/important.$FULLARCH"
     done
     if [ -e "$MIRROR/dists/$DI_CODENAME/main/debian-installer" ]; then
 	touch $BDIR/indices/override.$CODENAME.main.debian-installer
