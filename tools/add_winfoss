@@ -24,3 +24,8 @@ if [ -f "$LIVEIMAGES/$ARCH.wubi.exe" ]; then
 	# Wubi always goes on CD1.
 	cp -a "$LIVEIMAGES/$ARCH.wubi.exe" "$BDIR/CD1/wubi.exe"
 fi
+
+if [ -f "$LIVEIMAGES/$ARCH.wubi-cdboot.exe" ]; then
+	# Wubi (for CD booting only) always goes on CD1.
+	cp -a "$LIVEIMAGES/$ARCH.wubi-cdboot.exe" "$BDIR/CD1/wubi-cdboot.exe"
+fi
