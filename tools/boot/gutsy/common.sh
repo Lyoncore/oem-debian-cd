@@ -36,6 +36,9 @@ default_preseed() {
 	ubuntu-server)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-server.seed'
 	    ;;
+	ubuntustudio)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntustudio.seed'
+	    ;;
 	*)
 	    DEFAULT_PRESEED=
 	    ;;
