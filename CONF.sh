@@ -110,7 +110,7 @@ case $DIST in
     export CODENAME=gutsy
     export CAPCODENAME='Gutsy Gibbon'
     export DEBVERSION=7.10
-    export OFFICIAL="Daily Build"
+    export OFFICIAL="Release Candidate"
     ;;
 esac
 
