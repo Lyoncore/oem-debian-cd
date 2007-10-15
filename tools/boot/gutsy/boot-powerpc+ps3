@@ -75,22 +75,26 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     echo 'timeout=300' >> etc/kboot.conf
 fi
 
-if [ "$CDIMAGE_LIVE" = 1 ]; then
-    echo 'default=live' >> etc/kboot.conf
-else
-    echo 'default=install' >> etc/kboot.conf
-fi
+echo 'default=install' >> etc/kboot.conf
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> etc/kboot.conf <<EOF
+install='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet splash only-ubiquity --'
+install_nosplash='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet only-ubiquity --'
+install_driverupdates='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true quiet splash only-ubiquity --'
 live='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet splash --'
 live_nosplash='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet --'
 driverupdates='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true quiet splash --'
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
+    if [ "$CDIMAGE_LIVE" = 1 ]; then
+	install_suffix=_alternate
+    else
+	install_suffix=
+    fi
     cat >> etc/kboot.conf <<EOF
-install='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED quiet --'
-expert='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED priority=low --'
+install$install_suffix='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED quiet --'
+expert$install_suffix='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED priority=low --'
 EOF
     if [ "$PROJECT" = edubuntu ]; then
 	cat >> etc/kboot.conf <<EOF
