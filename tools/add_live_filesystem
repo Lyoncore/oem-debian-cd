@@ -36,7 +36,7 @@ for path in "$BDIR/CD1/casper/filesystem.initrd"-*; do (
 # installation locale code.
 RELEASE_NOTES=
 case $PROJECT in
-	ubuntu|kubuntu|edubuntu|xubuntu)
+	ubuntu|kubuntu|edubuntu|xubuntu|gobuntu)
 		case $DIST in
 			warty|hoary|breezy|dapper|edgy)
 				;;
