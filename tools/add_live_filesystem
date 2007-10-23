@@ -38,7 +38,9 @@ RELEASE_NOTES=
 case $PROJECT in
 	ubuntu|kubuntu|edubuntu|xubuntu)
 		case $DIST in
-			feisty|gutsy)
+			warty|hoary|breezy|dapper|edgy)
+				;;
+			*)
 				RELEASE_NOTES="http://www.ubuntu.com/getubuntu/releasenotes?os=$PROJECT&ver=$DEBVERSION&lang=\${LANG}"
 				;;
 		esac
