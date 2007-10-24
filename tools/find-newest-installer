@@ -14,6 +14,9 @@ try_suites="$DI_DIST"
 if [ -n "$SECURITY" ]; then
 	try_suites="$try_suites $DI_DIST-security"
 fi
+if [ "${PROPOSED:-0}" != "0" ]; then
+	try_suites="$try_suites $DI_DIST-proposed"
+fi
 if [ "${UPDATES:-0}" != "0" ]; then
 	try_suites="$try_suites $DI_DIST-updates"
 fi
