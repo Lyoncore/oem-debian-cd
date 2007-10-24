@@ -97,6 +97,10 @@ if [ ! -e "$APTTMP/$CODENAME-$FULLARCH/apt/sources.list" ]; then
 	    echo "deb file:$MIRROR $DI_CODENAME-updates main/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
+	  if [ "${PROPOSED:-0}" != "0" ]; then
+	    echo "deb file:$MIRROR $DI_CODENAME-proposed main/debian-installer" \
+	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
+	  fi
 	fi
 	if [ "${RESTRICTED:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME/restricted/debian-installer" ]; then
 	  echo "deb file:$MIRROR $DI_CODENAME restricted/debian-installer" \
@@ -109,6 +113,10 @@ if [ ! -e "$APTTMP/$CODENAME-$FULLARCH/apt/sources.list" ]; then
 	    echo "deb file:$MIRROR $DI_CODENAME-updates restricted/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
+	  if [ "${PROPOSED:-0}" != "0" ]; then
+	    echo "deb file:$MIRROR $DI_CODENAME-proposed restricted/debian-installer" \
+	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
+	  fi
 	fi
 	if [ "${UNIVERSE:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME/universe/debian-installer" ]; then
 	  echo "deb file:$MIRROR $DI_CODENAME universe/debian-installer" \
@@ -119,6 +127,10 @@ if [ ! -e "$APTTMP/$CODENAME-$FULLARCH/apt/sources.list" ]; then
 	  fi
 	  if [ "${UPDATES:-0}" != "0" ]; then
 	    echo "deb file:$MIRROR $DI_CODENAME-updates universe/debian-installer" \
+	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
+	  fi
+	  if [ "${PROPOSED:-0}" != "0" ]; then
+	    echo "deb file:$MIRROR $DI_CODENAME-proposed universe/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	fi
