@@ -10,9 +10,10 @@ Unless your system has more than 256 megabytes of memory, you will not
 be able to install permanently from the 'live' option; use the
 'install' option for that.
 
-To use a different video mode, use 'install video=ps3fb:mode:X', setting
-X to the video mode (such as 3 for 720p). See
-https://help.ubuntu.com/community/PlayStation_3#video for a table of modes.
+To use a different video mode, use 'install video=ps3fb:mode:X',
+setting X to the video mode (such as 3 for 720p). See
+https://help.ubuntu.com/community/PlayStation_3#video for a table of
+modes.
 
 If in doubt, just press Enter.
 
