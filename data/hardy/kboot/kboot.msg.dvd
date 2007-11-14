@@ -12,5 +12,9 @@ be able to install permanently from the 'live' option; use the
 For a text-based installation process offering more control, use the
 'install_alternate' or 'expert_alternate' options.
 
+To use a different video mode, use 'install video=ps3fb:mode:X', setting
+X to the video mode (such as 3 for 720p). See
+https://help.ubuntu.com/community/PlayStation_3#video for a table of modes.
+
 If in doubt, just press Enter.
 
