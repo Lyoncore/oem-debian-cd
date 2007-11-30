@@ -172,7 +172,11 @@ else
 ifeq ($(PROJECT),ubuntu-server)
 CDBASE = $(CODENAME)-server-$(FULLARCH)
 else
+ifeq ($(PROJECT),jeos)
+CDBASE = $(CODENAME)-jeos-$(FULLARCH)
+else
 CDBASE = $(CODENAME)-alternate-$(FULLARCH)
+endif
 endif
 endif
 endif
