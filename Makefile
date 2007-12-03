@@ -606,6 +606,11 @@ ifeq ($(CDIMAGE_INSTALL_BASE),1)
 	    if [ "$$MULTIVERSE" = 1 ]; then \
 		echo 'multiverse' >> $(BDIR)/CD$$DISK/.disk/base_components; \
 	    fi; \
+	    if [ "$CDIMAGE_DVD" = 1 ]; then \
+	    	echo 'dvd' > $(BDIR)/CD$$DISK/.disk/cd_type; \
+	    else \
+	        echo 'full_cd' > $(BDIR)/CD$$DISK/.disk/cd_type; \
+	    fi; \
 	    if [ -n "$(UDEB_INCLUDE)" ] ; then \
 		if [ -r "$(UDEB_INCLUDE)" ] ; then \
 		    cp -af "$(UDEB_INCLUDE)" \
