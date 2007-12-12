@@ -15,7 +15,7 @@ OUT=$4
 
 case $ARCH in
     source)
-        FILES=`find $MIRROR/dists/$SUITE/ -name Sources.gz`
+        FILES=`find $MIRROR/dists/$SUITE/ -L -name Sources.gz`
         echo -e "Using MD5 sums from Sources files:\n$FILES"
         zcat -f $FILES | awk -v MIRROR=$MIRROR '
             /^Directory:/ 	{
@@ -43,7 +43,7 @@ case $ARCH in
                             }' | sort | uniq >> $OUT
         ;;
     alpha|amd64|arm|hppa|i386|ia64|m68k|mips|mipsel|powerpc|s390|sparc)
-        FILES=`find $MIRROR/dists/$SUITE/ -name Packages -o -name Packages.gz | grep binary-$ARCH`
+        FILES=`find $MIRROR/dists/$SUITE/ -L -name Packages -o -name Packages.gz | grep binary-$ARCH`
         echo -e "Using MD5 sums from Packages files:\n$FILES"
         zcat -f $FILES | awk -v MIRROR=$MIRROR '
             /^Filename:/    {
