@@ -219,18 +219,18 @@ if [ "$GFXBOOT" ]; then
 GFXBOOT bootlogo
 EOF
     if [ "$PROJECT" = ubuntu ]; then
-	cat >> boot$N/isolinux/isolinux.cfg <<EOF
-GFXBOOT-BACKGROUND 0xB6875A
+	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+background=0xB6875A
 EOF
     fi
     if [ "$PROJECT" = kubuntu ]; then
-	cat >> boot$N/isolinux/isolinux.cfg <<EOF
-GFXBOOT-ACCESS-OPTIONS v1 v2 m1
+	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+access-options=v1 v2 m1
 EOF
     elif [ "$PROJECT" = xubuntu ]; then
 	# v1 and m1 don't have the necessary sed calls for Xubuntu yet.
-	cat >> boot$N/isolinux/isolinux.cfg <<EOF
-GFXBOOT-ACCESS-OPTIONS v2 v3 m2
+	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+access-options=v2 v3 m2
 EOF
     fi
 fi
