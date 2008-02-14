@@ -158,43 +158,47 @@ endif
 ifeq ($(CDIMAGE_DVD),1)
 CDBASE = $(CODENAME)-dvd-$(FULLARCH)
 else
- ifeq ($(CDIMAGE_INSTALL),1)
-  ifeq ($(PROJECT),edubuntu)
-   ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
-CDBASE = $(CODENAME)-install-$(FULLARCH)
-   else
-CDBASE = $(CODENAME)-$$(if test "$(1)" = 1; then echo server; else echo serveraddon; fi)-$(FULLARCH)
-   endif
-  else
-   ifneq (,$(findstring $(CODENAME),warty hoary breezy))
-CDBASE = $(CODENAME)-install-$(FULLARCH)
-   else
-    ifeq ($(PROJECT),ubuntu-server)
-CDBASE = $(CODENAME)-server-$(FULLARCH)
+ ifeq ($(CDIMAGE_ADDON),1)
+  CDBASE = $(CODENAME)-addon-$(FULLARCH)
+ else
+  ifeq ($(CDIMAGE_INSTALL),1)
+   ifeq ($(PROJECT),edubuntu)
+    ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
+ CDBASE = $(CODENAME)-install-$(FULLARCH)
     else
-     ifeq ($(PROJECT),jeos)
-CDBASE = $(CODENAME)-jeos-$(FULLARCH)
+ CDBASE = $(CODENAME)-$$(if test "$(1)" = 1; then echo server; else echo serveraddon; fi)-$(FULLARCH)
+    endif
+   else
+    ifneq (,$(findstring $(CODENAME),warty hoary breezy))
+ CDBASE = $(CODENAME)-install-$(FULLARCH)
+    else
+     ifeq ($(PROJECT),ubuntu-server)
+ CDBASE = $(CODENAME)-server-$(FULLARCH)
      else
-CDBASE = $(CODENAME)-alternate-$(FULLARCH)
+      ifeq ($(PROJECT),jeos)
+ CDBASE = $(CODENAME)-jeos-$(FULLARCH)
+      else
+ CDBASE = $(CODENAME)-alternate-$(FULLARCH)
+      endif
      endif
     endif
    endif
-  endif
- else
-  ifeq ($(PROJECT),edubuntu)
-   ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
-CDBASE = $(CODENAME)-live-$(FULLARCH)
-   else
-CDBASE = $(CODENAME)-desktop-$(FULLARCH)
-   endif
   else
-   ifneq (,$(findstring $(CODENAME),warty hoary breezy))
-CDBASE = $(CODENAME)-live-$(FULLARCH)
-   else
-    ifeq ($(PROJECT),ubuntu-server)
-CDBASE = $(CODENAME)-live-$(FULLARCH)
+   ifeq ($(PROJECT),edubuntu)
+    ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
+ CDBASE = $(CODENAME)-live-$(FULLARCH)
     else
-CDBASE = $(CODENAME)-desktop-$(FULLARCH)
+ CDBASE = $(CODENAME)-desktop-$(FULLARCH)
+    endif
+   else
+    ifneq (,$(findstring $(CODENAME),warty hoary breezy))
+ CDBASE = $(CODENAME)-live-$(FULLARCH)
+    else
+     ifeq ($(PROJECT),ubuntu-server)
+ CDBASE = $(CODENAME)-live-$(FULLARCH)
+     else
+ CDBASE = $(CODENAME)-desktop-$(FULLARCH)
+     endif
     endif
    endif
   endif
@@ -572,6 +576,7 @@ $(BDIR)/packages-stamp:
 	@cd $(BDIR) && du -sm CD[0123456789]*
 	@echo "Adding the selected packages to each CD :"
 ifeq ($(CDIMAGE_INSTALL_BASE),1)
+ifneq ($(CDIMAGE_ADDON),1)
 	@# Check that all packages required by debootstrap are included
 	@# and create .disk/base_installable if yes
 	@# Also create .disk/base_components
@@ -648,6 +653,7 @@ ifeq ($(CDIMAGE_INSTALL_BASE),1)
 		fi; \
 	    fi; \
 	done
+endif
 endif
 	$(Q)set -e; \
 	 for i in $(BDIR)/*.packages; do \
@@ -789,7 +795,17 @@ $(BDIR)/CD1/install:
 	done
 
 ifeq (,$(findstring serveraddon,$(call CDBASE,2)))
+ifeq ($(CDIMAGE_ADDON),1)
+app-install: ok packages $(BDIR)/CD1/app-install
+$(BDIR)/CD1/app-install:
+	@echo "Adding app-install data ..."
+	$(Q)set -e; \
+	if [ -x "$(BASEDIR)/tools/$(CODENAME)/app-install.sh" ]; then \
+		$(BASEDIR)/tools/$(CODENAME)/app-install.sh 1 $(BDIR)/CD1; \
+	fi
+else
 app-install:
+endif
 else
 app-install: ok packages $(BDIR)/CD2/app-install
 $(BDIR)/CD2/app-install:
