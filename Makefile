@@ -158,47 +158,47 @@ endif
 ifeq ($(CDIMAGE_DVD),1)
 CDBASE = $(CODENAME)-dvd-$(FULLARCH)
 else
-ifeq ($(CDIMAGE_INSTALL),1)
-ifeq ($(PROJECT),edubuntu)
-ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
+ ifeq ($(CDIMAGE_INSTALL),1)
+  ifeq ($(PROJECT),edubuntu)
+   ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
 CDBASE = $(CODENAME)-install-$(FULLARCH)
-else
+   else
 CDBASE = $(CODENAME)-$$(if test "$(1)" = 1; then echo server; else echo serveraddon; fi)-$(FULLARCH)
-endif
-else
-ifneq (,$(findstring $(CODENAME),warty hoary breezy))
+   endif
+  else
+   ifneq (,$(findstring $(CODENAME),warty hoary breezy))
 CDBASE = $(CODENAME)-install-$(FULLARCH)
-else
-ifeq ($(PROJECT),ubuntu-server)
+   else
+    ifeq ($(PROJECT),ubuntu-server)
 CDBASE = $(CODENAME)-server-$(FULLARCH)
-else
-ifeq ($(PROJECT),jeos)
+    else
+     ifeq ($(PROJECT),jeos)
 CDBASE = $(CODENAME)-jeos-$(FULLARCH)
-else
+     else
 CDBASE = $(CODENAME)-alternate-$(FULLARCH)
-endif
-endif
-endif
-endif
-else
-ifeq ($(PROJECT),edubuntu)
-ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
+     endif
+    endif
+   endif
+  endif
+ else
+  ifeq ($(PROJECT),edubuntu)
+   ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
 CDBASE = $(CODENAME)-live-$(FULLARCH)
-else
+   else
 CDBASE = $(CODENAME)-desktop-$(FULLARCH)
-endif
-else
-ifneq (,$(findstring $(CODENAME),warty hoary breezy))
+   endif
+  else
+   ifneq (,$(findstring $(CODENAME),warty hoary breezy))
 CDBASE = $(CODENAME)-live-$(FULLARCH)
-else
-ifeq ($(PROJECT),ubuntu-server)
+   else
+    ifeq ($(PROJECT),ubuntu-server)
 CDBASE = $(CODENAME)-live-$(FULLARCH)
-else
+    else
 CDBASE = $(CODENAME)-desktop-$(FULLARCH)
-endif
-endif
-endif
-endif
+    endif
+   endif
+  endif
+ endif
 endif
 CDSRCBASE = $(CODENAME)-src-$(1)
 
