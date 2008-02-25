@@ -314,7 +314,7 @@ append oem=oem-config/enable=true
 EOF
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-applies oem=live
+applies oem=live live-install install
 EOF
     else
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
