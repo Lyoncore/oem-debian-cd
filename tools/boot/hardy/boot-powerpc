@@ -103,7 +103,7 @@ BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
  | sed "s/\${DEBIAN_VERSION}/${DEBVERSION}/g" \
  | sed "s/\${CODENAME}/${CAPCODENAME}/g" \
  | sed "s/\${BUILD_DATE}/${BUILD_DATE}/g" \
- | sed "s#Ubuntu#$CAPPROJECT#g" \
+ | sed "s#Ubuntu#$HUMANPROJECT#g" \
  > boot.msg
 (if [ "$CDIMAGE_LIVE" = 1 ]; then
      sed 's/\${DEFAULT}/live/g' $BASEDIR/data/$CODENAME/yaboot/yaboot.conf
@@ -144,7 +144,7 @@ mkdir "$CDDIR/etc"
 cp -a "$CDDIR/install/yaboot.conf" "$CDDIR/etc/yaboot.conf"
 mkdir "$CDDIR/ppc"
 < $BASEDIR/data/$CODENAME/yaboot/bootinfo.txt \
-    sed "s/\${CAPPROJECT}/$CAPPROJECT/g" \
+    sed "s/\${HUMANPROJECT}/$HUMANPROJECT/g" \
   | sed "s/\${CODENAME}/$CODENAME/g" \
   > "$CDDIR/ppc/bootinfo.txt"
 

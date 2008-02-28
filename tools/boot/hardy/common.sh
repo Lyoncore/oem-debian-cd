@@ -48,3 +48,5 @@ default_preseed() {
     esac
 }
 
+HUMANPROJECT="$(echo "$CAPPROJECT" | sed 's/-/ /g')"
+

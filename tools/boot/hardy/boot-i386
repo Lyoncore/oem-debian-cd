@@ -202,7 +202,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 else
     timeout=0
 fi
-sed -e "s#Ubuntu#$CAPPROJECT#g" boot$N/isolinux/boot.txt \
+sed -e "s#Ubuntu#$HUMANPROJECT#g" boot$N/isolinux/boot.txt \
     > boot$N/isolinux/isolinux.txt
 rm -f boot$N/isolinux/boot.txt
 # Isolinux config file.
@@ -242,11 +242,11 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 APPEND $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz quiet splash --
 LABEL live
-  menu label ^Try $CAPPROJECT without any change to your computer
+  menu label ^Try $HUMANPROJECT without any change to your computer
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz quiet splash --
 LABEL live-install
-  menu label ^Install $CAPPROJECT
+  menu label ^Install $HUMANPROJECT
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=/casper/initrd.gz quiet splash --
 EOF
@@ -264,14 +264,14 @@ if [ "$CDIMAGE_INSTALL" = 1 ]; then
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 APPEND $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 LABEL install
-  menu label ^Install $CAPPROJECT
+  menu label ^Install $HUMANPROJECT
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 EOF
     else
 	cat >> boot$N/isolinux/isolinux.cfg <<EOF
 LABEL install
-  menu label ^Install $CAPPROJECT in text mode
+  menu label ^Install $HUMANPROJECT in text mode
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 EOF
