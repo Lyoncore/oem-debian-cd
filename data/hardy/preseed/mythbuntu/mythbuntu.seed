@@ -1,0 +1,4 @@
+# Install the Mythbuntu desktop.
+tasksel	tasksel/first	multiselect mythbuntu-desktop
+# No XFCE translation packages yet.
+d-i	pkgsel/language-pack-patterns	string
