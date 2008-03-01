@@ -42,6 +42,9 @@ default_preseed() {
 	ubuntustudio)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntustudio.seed'
 	    ;;
+	mythbuntu)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/mythbuntu.seed'
+	    ;;
 	*)
 	    DEFAULT_PRESEED=
 	    ;;
