@@ -28,7 +28,7 @@ default_preseed
 cd $CDDIR/..
 
 #
-# This script is called with $1 (now $N) as the CD to 
+# This script is called with $1 (now $N) as the CD to
 # make bootable.  N may be in the form "n" or "n_NONUS"
 # There may be more than 4 disks...support extras.
 
@@ -330,6 +330,13 @@ fi
 if [ "$CDIMAGE_INSTALL" = 1 ] && [ "$PROJECT" = xubuntu ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label ltsp=Install an LTSP server
+replace ltsp=file=/cdrom/preseed/ltsp.seed
+applies ltsp=install
+EOF
+fi
+if [ "$CDIMAGE_INSTALL" = 1 ] && [ "$PROJECT" = mythbuntu ]; then
+    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+label ltsp=Install a Diskless Image Server
 replace ltsp=file=/cdrom/preseed/ltsp.seed
 applies ltsp=install
 EOF
