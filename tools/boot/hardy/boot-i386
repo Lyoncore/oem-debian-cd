@@ -327,7 +327,7 @@ replace cli=file=/cdrom/preseed/cli.seed
 applies cli=install
 EOF
 fi
-if [ "$CDIMAGE_INSTALL" = 1 ] && [ "$PROJECT" = xubuntu ]; then
+if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubuntu ]); then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label ltsp=Install an LTSP server
 replace ltsp=file=/cdrom/preseed/ltsp.seed
