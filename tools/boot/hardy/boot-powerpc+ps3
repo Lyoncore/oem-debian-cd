@@ -28,7 +28,7 @@ default_preseed
 cd $CDDIR/..
 
 # Only disk 1* bootable
-if [ $N != 1 -a $N != 1_NONUS ]; then
+if [ $N != 1 ] && [ $N != 1_NONUS ] && [ -z "$CDIMAGE_ADDON" ]; then
     :> $N.mkisofs_opts
     exit 0
 fi

@@ -25,7 +25,7 @@ default_preseed
 :> $N.mkisofs_opts
 
 # Only disc 1* bootable
-if [ $N != 1 -a $N != 1_NONUS ]; then 
+if [ $N != 1 ] && [ $N != 1_NONUS ] && [ -z "$CDIMAGE_ADDON" ]; then 
 	exit 0; 
 fi
 

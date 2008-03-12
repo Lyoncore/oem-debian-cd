@@ -37,6 +37,11 @@ cd $CDDIR/..
 #
 NN=`echo $N | sed -e 's/_NONUS//'`
 
+if [ "$CDIMAGE_ADDON" ]; then
+    # second disk, at least in spirit
+    NN=2
+fi
+
 # List of boot image for each CD
 KTYPE[1]="" #isolinux multiboot in fact
 KTYPE[2]=""
