@@ -113,7 +113,7 @@ case $DIST in
     export OFFICIAL="Release"
     ;;
   hardy)
-    export PREV_CODENAME=gutsy
+    export PREV_CODENAME=dapper # need to support upgrades from previous LTS
     export CODENAME=hardy
     export CAPCODENAME='Hardy Heron'
     export DEBVERSION=8.04
