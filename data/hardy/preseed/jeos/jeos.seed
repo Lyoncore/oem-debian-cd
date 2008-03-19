@@ -1,0 +1,2 @@
+# Language support is unlikely to be needed on JeOS.
+d-i	pkgsel/install-language-support	boolean false
