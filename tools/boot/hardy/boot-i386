@@ -224,7 +224,7 @@ if [ "$GFXBOOT" ]; then
 GFXBOOT bootlogo
 EOF
 fi
-if [ "$PROJECT" = ubuntu ]; then
+if [ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-server ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 background=0xB6875A
 EOF
