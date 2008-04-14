@@ -2,8 +2,8 @@
 d-i	mythbuntu-diskless-client-builder/run	boolean true
 # install the client-builder udeb
 d-i anna/choose_modules string mythbuntu-diskless-client-builder
-# Install the Mythbuntu desktop and LTSP server.
-tasksel	tasksel/first	multiselect mythbuntu-desktop
+# let the user handle task selection
+# tasksel	tasksel/first	multiselect mythbuntu-desktop
 d-i	pkgsel/include	string mythbuntu-diskless-server dhcp3-server
 # No XFCE translation packages yet.
 d-i	pkgsel/install-language-support	boolean false
