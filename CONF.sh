@@ -116,7 +116,7 @@ case $DIST in
     export PREV_CODENAME=dapper # need to support upgrades from previous LTS
     export CODENAME=hardy
     export CAPCODENAME='Hardy Heron'
-    export DEBVERSION=8.04
+    export DEBVERSION=8.04.1
     export OFFICIAL="Release"
     ;;
   intrepid)
