@@ -80,8 +80,10 @@ if [ "$NN" = "1" ]; then
     SYSLINUXDEB="$($BASEDIR/tools/apt-selection cache show syslinux | \
 	grep ^Filename | awk '{print $2}')"
     (ar p "$MIRROR/$SYSLINUXDEB" data.tar.gz | \
-	tar zxf - -C . ./usr/lib/syslinux/isolinux.bin)
+	tar zxf - -C . ./usr/lib/syslinux/isolinux.bin \
+	    ./usr/lib/syslinux/vesamenu.c32)
     mv usr/lib/syslinux/isolinux.bin boot$N/isolinux/
+    mv usr/lib/syslinux/vesamenu.c32 boot$N/isolinux/
 
     GFXBOOT=
     if THEMEDEB="$($BASEDIR/tools/apt-selection cache show gfxboot-theme-ubuntu)"; then
