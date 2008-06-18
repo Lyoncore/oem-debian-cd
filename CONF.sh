@@ -458,6 +458,12 @@ export OVERFLOWBINCDS=0
 if [ -z "$SPLASHRLE" ]; then
 	export SPLASHRLE="$BASEDIR/data/$DI_CODENAME/splash.rle"
 fi
+if [ -z "$GFXSPLASH" ]; then
+	export GFXSPLASH="$BASEDIR/data/$DI_CODENAME/splash.pcx"
+fi
+if [ -z "$SPLASHPNG" ]; then
+	export SPLASHPNG="$BASEDIR/data/$DI_CODENAME/splash.png"
+fi
 
 # Used by build.sh to determine what to build, this is the name of a target
 # in the Makefile. Use bin-official_images to build only binary CDs. The
