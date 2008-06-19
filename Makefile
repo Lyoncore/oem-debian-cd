@@ -616,9 +616,9 @@ ifneq ($(CDIMAGE_ADDON),1)
 		echo 'multiverse' >> $(BDIR)/CD$$DISK/.disk/base_components; \
 	    fi; \
 	    if [ "$CDIMAGE_DVD" = 1 ]; then \
-	    	echo 'dvd' > $(BDIR)/CD$$DISK/.disk/cd_type; \
+	    	echo 'dvd/single' > $(BDIR)/CD$$DISK/.disk/cd_type; \
 	    else \
-	        echo 'full_cd' > $(BDIR)/CD$$DISK/.disk/cd_type; \
+	        echo 'full_cd/single' > $(BDIR)/CD$$DISK/.disk/cd_type; \
 	    fi; \
 	    if [ -n "$(UDEB_INCLUDE)" ] ; then \
 		if [ -r "$(UDEB_INCLUDE)" ] ; then \
