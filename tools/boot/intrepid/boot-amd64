@@ -272,14 +272,6 @@ label install
 EOF
     fi
     cat >> boot$N/isolinux/text.cfg <<EOF
-label linux
-  menu hide
-  kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
-label cdrom
-  menu hide
-  kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 label expert
   menu hide
   kernel /install/vmlinuz
