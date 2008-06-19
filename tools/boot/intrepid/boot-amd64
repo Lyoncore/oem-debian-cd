@@ -211,6 +211,7 @@ fi
 cat > boot$N/isolinux/text.cfg <<EOF
 default $DEFAULT_LABEL
 EOF
+> boot$N/isolinux/adtext.cfg
 if [ "$GFXBOOT" ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 gfxboot bootlogo
@@ -271,7 +272,7 @@ label install
   append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 EOF
     fi
-    cat >> boot$N/isolinux/text.cfg <<EOF
+    cat >> boot$N/isolinux/adtext.cfg <<EOF
 label expert
   menu hide
   kernel /install/vmlinuz
@@ -341,6 +342,8 @@ label check
   menu label ^Check CD for defects
   kernel /install/vmlinuz
   append $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu initrd=/install/initrd.gz quiet --
+EOF
+    cat >> boot$N/isolinux/adtext.cfg <<EOF
 label rescue
   menu label ^Rescue a broken system
   kernel /install/vmlinuz
