@@ -1,3 +1,5 @@
+# Install the Ubuntu Server seed.
+tasksel	tasksel/first	multiselect ubuntu-server
 # Always install the server kernel.
 d-i	base-installer/kernel/override-image	string linux-server
 # Only install basic language packs. Let tasksel ask about tasks.
