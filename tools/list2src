@@ -22,6 +22,11 @@ my $forcenonusoncd1 = $ENV{'FORCENONUSONCD1'} || 0;
 my $contrib = $ENV{'CONTRIB'} || 0;
 my $complete = $ENV{'COMPLETE'} || 0;
 my $local = $ENV{'LOCAL'} || 0;
+my $universe = $ENV{'UNIVERSE'} || 0;
+my $multiverse = $ENV{'MULTIVERSE'} || 0;
+my $restricted = $ENV{'RESTRICTED'} || 0;
+my $updates = $ENV{'UPDATES'} || 0;
+my $security = $ENV{'SECURITY'} || 0;
 
 my $bdir = "$ENV{'TDIR'}/$ENV{'CODENAME'}-$ENV{'FULLARCH'}";
 my $sdir = "$ENV{'TDIR'}/$ENV{'CODENAME'}-src";
@@ -50,11 +55,23 @@ my %excluded;
 my @nonuslist=();
 my %includesrc;
 
-# Get the information from the good Sources.gz files
-my @SOURCES = ("$mirror/dists/$codename/main/source/Sources.gz");
+my @sections = ( "main" );
+push @sections, "universe" if $universe;
+push @sections, "multiverse" if $multiverse;
+push @sections, "restricted" if $restricted;
+push @sections, "contrib" if $contrib;
 
-if ($contrib) {
-     push @SOURCES, "$mirror/dists/$codename/contrib/source/Sources.gz";
+my @distributions = ( $codename );
+push @distributions, "${codename}-updates" if $updates;
+push @distributions, "${codename}-security" if $security;
+
+# Get the information from the good Sources.gz files
+my @SOURCES = ();
+
+foreach my $dist ( @distributions ) {
+   foreach my $section ( @sections ) {
+      push @SOURCES, "$mirror/dists/$dist/$section/source/Sources.gz";
+   }
 }
 
 if ($nonus) {
