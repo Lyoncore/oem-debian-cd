@@ -136,6 +136,7 @@ if [ ! "$DI_WWW_HOME" ]; then
 else
     wget "$DI_WWW_HOME/udeb.list"
 fi
+check_kernel_sync udeb.list
 
 if [ ! "$DI_WWW_HOME" ];then
     DI_DIR="$DI_PATH/current/images/powerpc64/cdrom"

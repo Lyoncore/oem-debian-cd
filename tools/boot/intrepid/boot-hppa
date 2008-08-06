@@ -47,7 +47,9 @@ else
 	mkdir "$DI_DIR"
 	wget -r -nd --no-parent -P "$DI_DIR" "$DI_WWW_HOME"
 fi
-	
+
+check_kernel_sync "$DI_DIR/udeb.list"
+
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	cp "$DI_DIR"/vmlinux-*-hppa32 "$CDROOT/install/vmlinux-hppa32"
 	cp "$DI_DIR"/vmlinux-*-hppa64 "$CDROOT/install/vmlinux-hppa64"

@@ -70,6 +70,8 @@ for image in $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
 done
 
 if [ "$NN" = "1" ]; then
+    check_kernel_sync udeb.list
+
     echo "Using elilo boot-disks image on CD$N"
     mkdir -p boot$N/install
     ELILODEB="$($BASEDIR/tools/apt-selection cache show elilo | \
