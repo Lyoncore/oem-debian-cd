@@ -1,5 +1,5 @@
 # Install the Ubuntu Server seed.
-tasksel	tasksel/first	multiselect ubuntu-server
+tasksel	tasksel/first	multiselect server
 # Only install basic language packs. Let tasksel ask about tasks.
 d-i	pkgsel/language-pack-patterns	string
 # No language support packages.
