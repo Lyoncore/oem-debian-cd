@@ -318,7 +318,7 @@ EOF
     else
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label minimal=Install a minimal system
-replace minimal=file=/cdrom/preseed/server-minimal.seed
+replace minimal=file=/cdrom/preseed/ubuntu-server-minimal.seed
 applies minimal=install
 EOF
     fi
