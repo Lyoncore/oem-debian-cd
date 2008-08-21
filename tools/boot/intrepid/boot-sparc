@@ -69,7 +69,7 @@ cat $BASEDIR/data/$CODENAME/sparc/ubuntu.txt$SILO_SUFFIX \
 # uncompress it before hand.
 
 if [ ! "$DI_WWW_HOME" ];then
-	DI_DIR="$DI_PATH/current/images/cdrom/2.6"
+	DI_DIR="$DI_PATH/current/images/cdrom"
 else
 	DI_DIR="."
 	wget "$DI_WWW_HOME" -O di.dir
