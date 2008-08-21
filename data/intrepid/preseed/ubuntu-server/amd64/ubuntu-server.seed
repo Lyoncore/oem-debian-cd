@@ -2,6 +2,7 @@
 d-i	base-installer/kernel/override-image	string linux-server
 # Install the Ubuntu Server seed.
 tasksel	tasksel/first	multiselect server
+tasksel	tasksel/first	seen false
 # Only install basic language packs. Let tasksel ask about tasks.
 d-i	pkgsel/language-pack-patterns	string
 # No language support packages.
