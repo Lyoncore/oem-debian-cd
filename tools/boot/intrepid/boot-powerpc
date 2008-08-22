@@ -153,7 +153,7 @@ if [ ! "$DI_WWW_HOME" ]; then
 else
   wget "$DI_WWW_HOME/udeb.list"
 fi
-check_kernel_sync udeb.list
+(cd $CDDIR/..; check_kernel_sync udeb.list)
 
 for subarch in powerpc powerpc64
 do
