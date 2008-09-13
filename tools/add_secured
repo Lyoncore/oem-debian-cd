@@ -156,4 +156,10 @@ fi # if secured
 # Only keep Packages.gz; it's a waste of space to keep Packages too. We
 # delete these here rather than earlier because (for now) debootstrap *does*
 # need Packages to be mentioned in the Release file.
-find dists/$CODENAME/ -name Packages -print0 | xargs -0r rm -f
+case $CODENAME in
+    warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy)
+	;;
+    *)
+	find dists/$CODENAME/ -name Packages -print0 | xargs -0r rm -f
+	;;
+esac
