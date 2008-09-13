@@ -282,7 +282,7 @@ $(ADIR):
 
 ## CLEANINGS ##
 
-# CLeans the current arch tree (but not packages selection info)
+# Cleans the current arch tree (but not packages selection info)
 clean: ok bin-clean src-clean
 bin-clean:
 	$(Q)rm -rf $(BDIR)/CD[1234567890]*
