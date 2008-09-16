@@ -2,6 +2,6 @@
 d-i	netcfg/get_hostname	string edubuntu
 d-i	netcfg/get_hostname	seen false
 # Install the Edubuntu desktop.
-tasksel	tasksel/first	multiselect edubuntu-desktop
+tasksel	tasksel/first	multiselect edubuntu-desktop-addon
 # Install both GNOME and KDE translation packages.
 d-i	pkgsel/language-pack-patterns	string language-pack-gnome-$LL language-pack-kde-$LL kde-i18n-$LL
