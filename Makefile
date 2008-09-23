@@ -615,7 +615,7 @@ ifneq ($(CDIMAGE_ADDON),1)
 	    if [ "$$MULTIVERSE" = 1 ]; then \
 		echo 'multiverse' >> $(BDIR)/CD$$DISK/.disk/base_components; \
 	    fi; \
-	    if [ "$CDIMAGE_DVD" = 1 ]; then \
+	    if [ "$$CDIMAGE_DVD" = 1 ]; then \
 	    	echo 'dvd/single' > $(BDIR)/CD$$DISK/.disk/cd_type; \
 	    else \
 	        echo 'full_cd/single' > $(BDIR)/CD$$DISK/.disk/cd_type; \
