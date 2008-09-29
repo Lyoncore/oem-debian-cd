@@ -161,5 +161,6 @@ case $CODENAME in
 	;;
     *)
 	find dists/$CODENAME/ -name Packages -print0 | xargs -0r rm -f
+	sed -r -i '/^[ \t]+.*Packages$/d' dists/$CODENAME/Release
 	;;
 esac
