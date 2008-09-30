@@ -19,6 +19,17 @@ sign_release () {
     fi
 }
 
+# Only keep Packages.gz; it's a waste of space to keep Packages too
+case $CODENAME in
+    warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy)
+	;;
+    *)
+	find dists/$CODENAME/ -name Packages -print0 | xargs -0r rm -f
+	sed -r -i '/^[ \t]+.*Packages$/d' dists/$CODENAME/Release
+	;;
+esac
+
+# sign
 if [ -e "dists/$CODENAME/Release" ]; then 
     # Add the MD5Sum field again
     echo "MD5Sum:" >> dists/$CODENAME/Release
@@ -153,14 +164,3 @@ fi
 
 fi # if secured
 
-# Only keep Packages.gz; it's a waste of space to keep Packages too. We
-# delete these here rather than earlier because (for now) debootstrap *does*
-# need Packages to be mentioned in the Release file.
-case $CODENAME in
-    warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy)
-	;;
-    *)
-	find dists/$CODENAME/ -name Packages -print0 | xargs -0r rm -f
-	sed -r -i '/^[ \t]+.*Packages$/d' dists/$CODENAME/Release
-	;;
-esac
