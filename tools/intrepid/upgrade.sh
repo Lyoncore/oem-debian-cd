@@ -11,6 +11,8 @@ if [ -d "$SOURCEDIR" ]; then
     mkdir -p "$TARGETDIR"
     # copy upgrade tarball + signature
     cp -a "$SOURCEDIR/$CODENAME"* "$TARGETDIR"
+    # create a dummy Packages file (LP: #276372)
+    touch "$TARGETDIR/Packages"
     # extract the cdromupgrade script from the archive and put it
     # onto the top-level of the CD
     tar -C "$DIR" -x -z -f "$TARGETDIR/$CODENAME.tar.gz" ./cdromupgrade
