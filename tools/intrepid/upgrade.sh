@@ -10,8 +10,9 @@ TARGETDIR="$DIR/dists/$CODENAME/main/dist-upgrader/binary-all"
 if [ -d "$SOURCEDIR" ]; then
     mkdir -p "$TARGETDIR"
     # copy upgrade tarball + signature
-    cp -a "$SOURCEDIR/$CODENAME"* "$TARGETDIR"
+    cp -av "$SOURCEDIR/$CODENAME"* "$TARGETDIR"
     # create a dummy Packages file (LP: #276372)
+    echo "Creating dummy: $TARGETDIR/Packages"
     touch "$TARGETDIR/Packages"
     # extract the cdromupgrade script from the archive and put it
     # onto the top-level of the CD
