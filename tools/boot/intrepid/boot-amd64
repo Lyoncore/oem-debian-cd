@@ -322,6 +322,9 @@ EOF
 label minimal=Install a minimal system
 replace minimal=file=/cdrom/preseed/ubuntu-server-minimal.seed
 applies minimal=install
+label minimalvm=Install a minimal virtual machine
+replace minimalvm=file=/cdrom/preseed/ubuntu-server-minimalvm.seed
+applies minimalvm=install
 EOF
     fi
 fi
