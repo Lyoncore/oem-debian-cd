@@ -162,6 +162,10 @@ case $CODENAME in
 	;;
     *)
 	find dists/$CODENAME/ -name Packages -print0 | xargs -0r rm -f
+        # create a dummy Packages file on the alternate CD (LP: #276372)
+	if [ -d "dists/$CODENAME/main/dist-upgrader/binary-all" ]; then
+	    touch "dists/$CODENAME/main/dist-upgrader/binary-all/Packages"
+	fi
 	;;
 esac
 
