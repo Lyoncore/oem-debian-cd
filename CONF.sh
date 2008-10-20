@@ -124,7 +124,7 @@ case $DIST in
     export CODENAME=intrepid
     export CAPCODENAME='Intrepid Ibex'
     export DEBVERSION=8.10
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Release Candidate"
     ;;
 esac
 
