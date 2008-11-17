@@ -197,7 +197,15 @@ else
      ifeq ($(PROJECT),ubuntu-server)
  CDBASE = $(CODENAME)-live-$(FULLARCH)
      else
+      ifeq ($(PROJECT),ubuntu-mid)
+ CDBASE = $(CODENAME)-live-$(FULLARCH)
+      else
+       ifeq ($(PROJECT),ubuntu-umpc)
+ CDBASE = $(CODENAME)-live-$(FULLARCH)
+       else
  CDBASE = $(CODENAME)-desktop-$(FULLARCH)
+       endif
+      endif
      endif
     endif
    endif
@@ -980,6 +988,10 @@ bin-images: ok bin-md5list $(OUT)
 		opts=`cat $(BDIR)/$$n.mkisofs_opts`; \
 		volid=`cat $(BDIR)/$$n.volid`; \
 		rm -f $(OUT)/$(call CDBASE,$$n).raw; \
+		if [ "$(CDIMAGE_VFAT)" = "1" ]; then \
+			tools/make-vfat-img -d CD$$n \
+			 -o $(OUT)/$(call CDBASE,$$n).raw; \
+		else \ 
 		if [ "$(DOJIGDO)" = "0" ]; then \
 			$(verbose) $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o $(OUT)/$(call CDBASE,$$n).raw $$opts CD$$n; \
@@ -1008,6 +1020,7 @@ bin-images: ok bin-md5list $(OUT)
 				`echo "$(JIGDOTEMPLATEURL)" | sed -e 's|%ARCH%|$(FULLARCH)|g'`"$(call CDBASE,$$n).template" \
 				$(BINDISKINFOND) \
 				$(JIGDOFALLBACKURLS) ; \
+		fi; \
 		fi; \
 	done
 ifeq ($(CDIMAGE_LIVE),1)
@@ -1073,8 +1086,12 @@ bin-image: ok bin-md5list $(OUT)
 	set -e; cd $(BDIR); opts=`cat $(CD).mkisofs_opts`; \
 	 volid=`cat $(CD).volid`; \
 	 rm -f $(OUT)/$(call CDBASE,$(CD)).raw; \
+	 if [ "$(CDIMAGE_VFAT)" = "1" ]; then
+	 tools/make-vfat-img -d CD$(CD) -o $(OUT)/$(call CDBASE,$(CD)).raw; \
+	 else \
 	 $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 	  -o $(OUT)/$(call CDBASE,$(CD)).raw $$opts CD$(CD); \
+	 fi; \
          if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) ]; then \
                 $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) $(CD) $(BDIR)/CD$(CD) \
                  $(OUT)/$(call CDBASE,$(CD)).raw; \

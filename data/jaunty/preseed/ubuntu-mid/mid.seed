@@ -1,0 +1,9 @@
+d-i     passwd/user-fullname    string  Ubuntu MID User
+d-i     passwd/username         string ubuntu
+d-i     passwd/allow-password-empty boolean true
+d-i     passwd/user-password    password
+d-i     passwd/user-password-again      password
+d-i     netcfg/get_hostname     string  ubuntu
+d-i     mirror/http/hostname    string  ports.ubuntu.com
+d-i     mirror/http/directory   string  /ubuntu-ports
+d-i     console-setup/layout    string  us

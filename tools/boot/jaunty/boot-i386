@@ -381,4 +381,9 @@ else
     fi
 fi
 
+if [ "$CDIMAGE_VFAT" = "1" ]; then
+	mv boot$N/isolinux boot$N/syslinux
+	mv boot$N/syslinux/isolinux.cfg boot$N/syslinux/syslinux.cfg
+fi
+
 # th,th, thats all
