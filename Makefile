@@ -991,7 +991,7 @@ bin-images: ok bin-md5list $(OUT)
 		if [ "$(CDIMAGE_VFAT)" = "1" ]; then \
 			tools/make-vfat-img -d CD$$n \
 			 -o $(OUT)/$(call CDBASE,$$n).raw; \
-		else \ 
+		else \
 		if [ "$(DOJIGDO)" = "0" ]; then \
 			$(verbose) $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o $(OUT)/$(call CDBASE,$$n).raw $$opts CD$$n; \
