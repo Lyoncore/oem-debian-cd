@@ -141,6 +141,7 @@ add_live_filesystem=$(BASEDIR)/tools/add_live_filesystem
 add_winfoss=$(BASEDIR)/tools/add_winfoss
 find_newest_installer=$(BASEDIR)/tools/find-newest-installer
 verbose=$(BASEDIR)/tools/verbose_command
+make_vfat_img=$(BASEDIR)/tools/make-vfat-img
 
 BDIR=$(TDIR)/$(CODENAME)-$(FULLARCH)
 ADIR=$(APTTMP)/$(CODENAME)-$(FULLARCH)
@@ -989,7 +990,7 @@ bin-images: ok bin-md5list $(OUT)
 		volid=`cat $(BDIR)/$$n.volid`; \
 		rm -f $(OUT)/$(call CDBASE,$$n).raw; \
 		if [ "$(CDIMAGE_VFAT)" = "1" ]; then \
-			tools/make-vfat-img -d CD$$n \
+			$(make_vfat_img) -d CD$$n \
 			 -o $(OUT)/$(call CDBASE,$$n).raw; \
 		else \
 		if [ "$(DOJIGDO)" = "0" ]; then \
@@ -1087,7 +1088,7 @@ bin-image: ok bin-md5list $(OUT)
 	 volid=`cat $(CD).volid`; \
 	 rm -f $(OUT)/$(call CDBASE,$(CD)).raw; \
 	 if [ "$(CDIMAGE_VFAT)" = "1" ]; then
-	 tools/make-vfat-img -d CD$(CD) -o $(OUT)/$(call CDBASE,$(CD)).raw; \
+	 $(make_vfat_img) -d CD$(CD) -o $(OUT)/$(call CDBASE,$(CD)).raw; \
 	 else \
 	 $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 	  -o $(OUT)/$(call CDBASE,$(CD)).raw $$opts CD$(CD); \
