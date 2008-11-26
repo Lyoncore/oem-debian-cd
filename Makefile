@@ -990,6 +990,7 @@ bin-images: ok bin-md5list $(OUT)
 		volid=`cat $(BDIR)/$$n.volid`; \
 		rm -f $(OUT)/$(call CDBASE,$$n).raw; \
 		if [ "$(CDIMAGE_VFAT)" = "1" ]; then \
+			cp -a boot$$n/* CD$$n; \
 			$(make_vfat_img) -d CD$$n \
 			 -o $(OUT)/$(call CDBASE,$$n).raw; \
 		else \
@@ -1022,6 +1023,13 @@ bin-images: ok bin-md5list $(OUT)
 				$(BINDISKINFOND) \
 				$(JIGDOFALLBACKURLS) ; \
 		fi; \
+		fi; \
+		if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) ]; then \
+			$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) $$n $(BDIR)/CD$$n \
+			$(OUT)/$(call CDBASE,$$n).raw; \
+		elif [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
+			$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) $$n $(BDIR)/CD$$n \
+			$(OUT)/$(call CDBASE,$$n).raw; \
 		fi; \
 	done
 ifeq ($(CDIMAGE_LIVE),1)
@@ -1088,6 +1096,7 @@ bin-image: ok bin-md5list $(OUT)
 	 volid=`cat $(CD).volid`; \
 	 rm -f $(OUT)/$(call CDBASE,$(CD)).raw; \
 	 if [ "$(CDIMAGE_VFAT)" = "1" ]; then
+	 cp -a boot$(CD)/* CD$(CD); \
 	 $(make_vfat_img) -d CD$(CD) -o $(OUT)/$(call CDBASE,$(CD)).raw; \
 	 else \
 	 $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
