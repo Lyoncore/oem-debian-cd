@@ -19,10 +19,10 @@ fi
 
 size=$(((($(du -sk $dir | cut -d'	' -f1) + ($size * 1024)) / 32) * 32)) 
 /sbin/mkdosfs -C $outfile $size
-for dir in $(find $dir -mindepth 1 -type d | cut -d/ -f2-); do
-	mmd -i $outfile $dir
+for indir in $(find $dir -mindepth 1 -type d | cut -d/ -f2-); do
+	mmd -i $outfile $indir
 done
 for file in $(find $dir -type f | cut -d/ -f2-); do
-	mcopy -i $outfile $file ::$file
+	mcopy -i $outfile $dir/$file ::$file
 done
 
