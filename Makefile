@@ -199,10 +199,10 @@ else
  CDBASE = $(CODENAME)-live-$(FULLARCH)
      else
       ifeq ($(PROJECT),ubuntu-mid)
- CDBASE = $(CODENAME)-live-$(FULLARCH)
+ CDBASE = $(CODENAME)-mid-$(FULLARCH)
       else
        ifeq ($(PROJECT),ubuntu-umpc)
- CDBASE = $(CODENAME)-live-$(FULLARCH)
+ CDBASE = $(CODENAME)-umpc-$(FULLARCH)
        else
  CDBASE = $(CODENAME)-desktop-$(FULLARCH)
        endif
