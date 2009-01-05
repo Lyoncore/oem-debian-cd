@@ -101,7 +101,7 @@ EOF
 workstation='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS file=/cdrom/preseed/workstation.seed quiet --'
 EOF
     fi
-    if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
+    if [ "$PROJECT" != edubuntu ]; then
 	cat >> etc/kboot.conf <<EOF
 oem='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED oem-config/enable=true quiet --'
 EOF

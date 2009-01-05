@@ -118,7 +118,7 @@ BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
      if [ "$PROJECT" = edubuntu ]; then
          cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.workstation
      fi
-     if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
+     if [ "$PROJECT" != edubuntu ]; then
          cat $BASEDIR/data/$CODENAME/yaboot/yaboot.conf.oem
      fi
  fi
