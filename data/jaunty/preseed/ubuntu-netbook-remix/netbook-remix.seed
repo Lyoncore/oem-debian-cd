@@ -1,0 +1,2 @@
+tasksel tasksel/first multiselect mobile-netbook-remix
+d-i passwd/auto-login boolean true
