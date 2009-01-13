@@ -1,2 +1,0 @@
-tasksel tasksel/first multiselect mobile-mobile
-d-i passwd/auto-login boolean true
