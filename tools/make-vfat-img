@@ -12,7 +12,7 @@ while getopts d:s:o: opt; do
 		o) outfile="$OPTARG";;
 	esac
 done
-if [ -z "$dir" -o -z "$outfile" ]; then
+if [ -z "$dir" ] || [ -z "$outfile" ]; then
 	echo "Usage: $0 -d <DIR> -s <SIZE> -o <OUTFILE>"
 	exit 1
 fi
