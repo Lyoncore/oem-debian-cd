@@ -666,11 +666,11 @@ endif
 else
 ifeq ($(CDIMAGE_LIVE),1)
 	@# Ubuntu live CDs are installable too
-	touch $(BDIR)/CD$$DISK/.disk/base_installable
+	touch $(BDIR)/CD1/.disk/base_installable
 	if [ "$$CDIMAGE_DVD" = 1 ]; then \
-	    echo 'dvd/single' > $(BDIR)/CD$$DISK/.disk/cd_type; \
+	    echo 'dvd/single' > $(BDIR)/CD1/.disk/cd_type; \
 	else \
-	    echo 'full_cd/single' > $(BDIR)/CD$$DISK/.disk/cd_type; \
+	    echo 'full_cd/single' > $(BDIR)/CD1/.disk/cd_type; \
 	fi
 endif
 endif
