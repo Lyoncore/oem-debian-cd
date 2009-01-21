@@ -317,6 +317,23 @@ if [ ! -d "$BDIR/indices" ]; then
 	touch $BDIR/indices/override.$CODENAME.$SECT
 	touch $BDIR/indices/override.$CODENAME.extra.$SECT
 	touch $BDIR/indices/override.$CODENAME.$SECT.src
+	# We will only use the override files for the release pocket, so
+	# merge in overrides from any update pockets we're using.
+	if [ -n "$SECURITY" ]; then
+	    cat $BDIR/indices/override.$CODENAME-security.$SECT >> $BDIR/indices/override.$CODENAME.$SECT
+	    cat $BDIR/indices/override.$CODENAME-security.extra.$SECT >> $BDIR/indices/override.$CODENAME.extra.$SECT
+	    cat $BDIR/indices/override.$CODENAME-security.$SECT.src >> $BDIR/indices/override.$CODENAME.$SECT.src
+	fi
+	if [ "${UPDATES:-0}" != "0" ]; then
+	    cat $BDIR/indices/override.$CODENAME-updates.$SECT >> $BDIR/indices/override.$CODENAME.$SECT
+	    cat $BDIR/indices/override.$CODENAME-updates.extra.$SECT >> $BDIR/indices/override.$CODENAME.extra.$SECT
+	    cat $BDIR/indices/override.$CODENAME-updates.$SECT.src >> $BDIR/indices/override.$CODENAME.$SECT.src
+	fi
+	if [ "${PROPOSED:-0}" != "0" ]; then
+	    cat $BDIR/indices/override.$CODENAME-proposed.$SECT >> $BDIR/indices/override.$CODENAME.$SECT
+	    cat $BDIR/indices/override.$CODENAME-proposed.extra.$SECT >> $BDIR/indices/override.$CODENAME.extra.$SECT
+	    cat $BDIR/indices/override.$CODENAME-proposed.$SECT.src >> $BDIR/indices/override.$CODENAME.$SECT.src
+	fi
 	# TODO: evil hack that relies on cdimage/bin/germinate-to-tasks
 	grep -vw Task "$BDIR/indices/override.$CODENAME.extra.$SECT" > "$BDIR/indices/override.$CODENAME.extra.$SECT.new"
 	mv "$BDIR/indices/override.$CODENAME.extra.$SECT.new" "$BDIR/indices/override.$CODENAME.extra.$SECT"
