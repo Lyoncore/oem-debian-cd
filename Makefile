@@ -1182,13 +1182,13 @@ mirrorcheck-source: ok
 		$(grab_md5) $(NONUS) source $(CODENAME) $(SDIR)/md5-check; \
 	fi
 	if [ -n "$(SECURITY)" ]; then \
-		$(grab_md5) $(SECURITY) source $(CODENAME)-security $(BDIR)/md5-check; \
+		$(grab_md5) $(SECURITY) source $(CODENAME)-security $(SDIR)/md5-check; \
 	fi
 	if [ "$(UPDATES)" = 1 ]; then \
-		$(grab_md5) $(MIRROR) source $(CODENAME)-updates $(BDIR)/md5-check; \
+		$(grab_md5) $(MIRROR) source $(CODENAME)-updates $(SDIR)/md5-check; \
 	fi
 	if [ "$(PROPOSED)" = 1 ]; then \
-		$(grab_md5) $(MIRROR) source $(CODENAME)-proposed $(BDIR)/md5-check; \
+		$(grab_md5) $(MIRROR) source $(CODENAME)-proposed $(SDIR)/md5-check; \
 	fi
 
 update-popcon:
