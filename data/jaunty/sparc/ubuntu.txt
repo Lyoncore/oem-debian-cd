@@ -7,8 +7,8 @@ to repair the system on your hard disk if that ever becomes necessary.
 
 WARNING: You should completely back up all of your hard disks before
   proceeding. The installation procedure can completely and irreversibly
-  erase them! If you haven't made backups yet, remove the rescue CD from
-  the drive and press L1-A to get back to the OpenBoot prompt.
+  erase them! If you haven't made backups yet, remove the rescue disc
+  from the drive and press L1-A to get back to the OpenBoot prompt.
 
 Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
 applicable law.

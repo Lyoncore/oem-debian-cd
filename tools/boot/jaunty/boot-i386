@@ -257,7 +257,7 @@ EOF
 label xforcevesa=Safe graphics mode
 append xforcevesa=xforcevesa
 applies xforcevesa=live live-install
-label driverupdates=Use driver update CD
+label driverupdates=Use driver update disc
 append driverupdates=debian-installer/driver-update=true
 applies xforcevesa=live live-install
 EOF
@@ -349,14 +349,14 @@ fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/text.cfg <<EOF
 label check
-  menu label ^Check CD for defects
+  menu label ^Check disc for defects
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS boot=casper integrity-check initrd=/casper/initrd.gz quiet splash --
 EOF
 elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> boot$N/isolinux/text.cfg <<EOF
 label check
-  menu label ^Check CD for defects
+  menu label ^Check disc for defects
   kernel /install/vmlinuz
   append $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu initrd=/install/initrd.gz quiet --
 EOF
