@@ -26,7 +26,7 @@ image=/linux
 
 image=/linux
     label=Check
-    description="Check CD for defects"
+    description="Check disc for defects"
     initrd=/initrd.gz
     root=/dev/ram
     append="boot=casper integrity-check quiet splash --"
