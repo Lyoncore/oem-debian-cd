@@ -125,6 +125,10 @@ EOF
 elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> etc/kboot.conf <<EOF
 check='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu quiet --'
+EOF
+fi
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+    cat >> etc/kboot.conf <<EOF
 rescue='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS rescue/enable=true --'
 EOF
 fi
