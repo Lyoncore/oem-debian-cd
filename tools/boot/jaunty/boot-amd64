@@ -358,6 +358,8 @@ label check
   kernel /install/vmlinuz
   append $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu initrd=/install/initrd.gz quiet --
 EOF
+fi
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> boot$N/isolinux/adtext.cfg <<EOF
 label rescue
   menu label ^Rescue a broken system
