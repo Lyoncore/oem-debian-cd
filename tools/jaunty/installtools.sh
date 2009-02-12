@@ -60,4 +60,16 @@ if [ "$CDIMAGE_DVD" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
             cp -a "$file" $DIR/preseed/
         done
     done
+    # we normally preseed tasksel to install the desktop task, but this is
+    # inappropriate on DVDs where much more choice is available
+    if [ -e "$DIR/preseed/$PROJECT.seed" ]; then
+        perl -ne '
+            if (/^#/) { $out .= $_ }
+            elsif (m[^tasksel\s+tasksel/first\s]) { $out = "" }
+            else { print $out; print; $out = "" }' \
+                "$DIR/preseed/$PROJECT.seed"
+        if [ ! -s "$DIR/preseed/$PROJECT.seed" ]; then
+            rm -f "$DIR/preseed/$PROJECT.seed"
+        fi
+    fi
 fi
