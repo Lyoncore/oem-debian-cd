@@ -1,3 +1,6 @@
+# Suggest LVM by default.
+d-i	partman-auto/init_automatically_partition	string some_device_lvm
+d-i	partman-auto/init_automatically_partition	seen false
 # Always install the server kernel.
 d-i	base-installer/kernel/override-image	string linux-server
 # Install the Ubuntu Server seed.
