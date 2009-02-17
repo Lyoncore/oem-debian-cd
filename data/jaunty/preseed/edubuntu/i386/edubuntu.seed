@@ -5,6 +5,7 @@ d-i	netcfg/get_hostname	seen false
 # (https://launchpad.net/distros/ubuntu/+source/fuse/+bug/68344).
 d-i	base-installer/kernel/override-image	string linux-386
 # Build an LTSP client chroot.
+d-i	anna/choose_modules	string ltsp-client-builder
 d-i	ltsp-client-builder/run	boolean true
 # Install the Edubuntu desktop and server.
 tasksel	tasksel/first	multiselect ubuntu-desktop, edubuntu-desktop-addon, edubuntu-server
