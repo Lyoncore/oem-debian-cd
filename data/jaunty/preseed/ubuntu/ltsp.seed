@@ -1,4 +1,5 @@
 # Build an LTSP client chroot.
+d-i	anna/choose_modules	string ltsp-client-builder
 d-i	ltsp-client-builder/run	boolean true
 # Install the Ubuntu desktop and LTSP server.
 tasksel	tasksel/first	multiselect ubuntu-desktop

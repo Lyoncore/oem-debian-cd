@@ -2,6 +2,7 @@
 d-i	netcfg/get_hostname	string edubuntu
 d-i	netcfg/get_hostname	seen false
 # Build an LTSP client chroot.
+d-i	anna/choose_modules	string ltsp-client-builder
 d-i	ltsp-client-builder/run	boolean true
 # Install the Edubuntu desktop and server.
 tasksel	tasksel/first	multiselect ubuntu-desktop, edubuntu-desktop-addon, edubuntu-server
