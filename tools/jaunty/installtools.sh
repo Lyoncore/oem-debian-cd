@@ -63,7 +63,7 @@ if [ "$CDIMAGE_DVD" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
     # we normally preseed tasksel to install the desktop task, but this is
     # inappropriate on DVDs where much more choice is available
     if [ -e "$DIR/preseed/$PROJECT.seed" ]; then
-        perl -ne '
+        perl -ni -e '
             if (/^#/) { $out .= $_ }
             elsif (m[^tasksel\s+tasksel/first\s]) { $out = "" }
             else { print $out; print; $out = "" }' \
