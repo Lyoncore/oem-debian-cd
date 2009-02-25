@@ -235,14 +235,14 @@ esac
 # Where to find the security patches.  This directory should be the
 # top directory of a security.debian.org mirror.
 case $DIST in
-  warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy)
+  warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy|intrepid)
     export SECURITY="$MIRROR"
     ;;
 esac
 
 # Use post-release updates?
 case $DIST in
-  warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy)
+  warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy|intrepid)
     export UPDATES=1
     ;;
 esac
