@@ -9,3 +9,5 @@ d-i	pkgsel/install-language-support	boolean false
 d-i	clock-setup/utc-auto	boolean true
 # Install the debconf oem-config frontend (if in OEM mode).
 d-i	oem-config-udeb/frontend	string debconf
+# Add the network and tasks oem-config steps by default.
+oem-config	oem-config/steps	multiselect language, timezone, keyboard, user, network, tasks
