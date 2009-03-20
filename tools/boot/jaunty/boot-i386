@@ -75,7 +75,7 @@ for image in $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
 done
 
 if [ "$NN" = "1" ]; then
-    check_kernel_sync udeb.list
+    check_kernel_sync udeb.list generic
 
     echo "Using ISOLINUX boot-disks image on CD$N"
     mkdir -p boot$N/isolinux

@@ -62,7 +62,25 @@ default_preseed() {
 
 check_kernel_sync() {
     [ "$CDIMAGE_INSTALL_BASE" = 1 ] || return 0
-    for abi in $(sed -n 's/^kernel-image-\([^ ]*\)-di .*/\1/p' "$1"); do
+    local udeb_list="$1"
+    shift
+    for abi in $(sed -n 's/^kernel-image-\([^ ]*\)-di .*/\1/p' "$udeb_list"); do
+	# If further parameters were passed in addition to the udeb list,
+	# then they represent a list of ABI suffixes we're interested in.
+	if [ "$#" -gt 0 ]; then
+	    local allowed=
+	    for allow_abi; do
+		case $abi in
+		    *-$allow_abi)
+			allowed=1
+			break
+			;;
+		esac
+	    done
+	    if [ -z "$allowed" ]; then
+		continue
+	    fi
+	fi
 	if ! grep -q -- "-$abi-di\$" list; then
 	    echo "debian-installer has kernel ABI $abi, but no corresponding udebs are on the CD!" >&2
 	    exit 1
