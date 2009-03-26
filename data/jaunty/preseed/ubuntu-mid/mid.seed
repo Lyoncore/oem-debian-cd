@@ -6,5 +6,5 @@ d-i	passwd/user-password-again	password
 d-i	netcfg/get_hostname	string ubuntu
 d-i	mirror/http/hostname	string ports.ubuntu.com
 d-i	mirror/http/directory	string /ubuntu-ports
-d-i	console-setup/layout	string us
+d-i	console-setup/layoutcode	string us
 d-i	user-setup/encrypt-home	boolean false
