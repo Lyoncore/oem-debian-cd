@@ -21,9 +21,7 @@ if [ $N != 1 ] && [ $N != 1_NONUS ] && [ -z "$CDIMAGE_ADDON" ]; then
 	exit 0
 fi
 # We only want to do this for vfat images
-if [ "$CDIMAGE_VFAT" != "1" ]; then
-	exit 0
+if [ "$IMAGE_FORMAT" = "vfat" ]; then
+	syslinux -d syslinux $CDIMAGE
 fi
-
-syslinux -d syslinux $CDIMAGE
 
