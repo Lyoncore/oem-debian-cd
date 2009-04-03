@@ -312,6 +312,13 @@ export NORECOMMENDS=1
 # package on the CD.  The default is 'true'.
 export NOSUGGESTS=1
 
+# Image format:
+# vfat = Output an image in VFAT format (.img)
+# iso  = Output an image in ISO 9660 format (.iso)
+if [ -z "$IMAGE_FORMAT" ]; then
+  export IMAGE_FORMAT=iso
+fi
+
 # Produce jigdo files:
 # 0/unset = Don't do jigdo at all, produce only the full iso image.
 # 1 = Produce both the iso image and jigdo stuff.
