@@ -272,6 +272,17 @@ instead of MIRROR when looking for local packages.
 Additional targets
 ==================
 
+Image format
+------------
+
+You may want to generate images in ISO 9660 or VFAT formats.
+
+Set the IMAGE_FORMAT variable in CONF.sh.  You can choose "iso" for generation
+of .iso (default), or "vfat" for generation of .img.
+
+Note that the optional jigdo format generation is currently only possible for
+ISO images.
+
 Jigdo
 -----
 You may also want to make the CD images available in jigdo format.
