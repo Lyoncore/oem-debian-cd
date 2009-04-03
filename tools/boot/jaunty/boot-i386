@@ -390,7 +390,7 @@ else
     fi
 fi
 
-if [ "$CDIMAGE_VFAT" = "1" ]; then
+if [ "$IMAGE_FORMAT" = "vfat" ]; then
 	mv boot$N/isolinux boot$N/syslinux
 	mv boot$N/syslinux/isolinux.cfg boot$N/syslinux/syslinux.cfg
 fi
