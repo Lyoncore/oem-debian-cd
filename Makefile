@@ -1004,7 +1004,9 @@ bin-images: ok bin-md5list $(OUT)
 		volid=`cat $(BDIR)/$$n.volid`; \
 		rm -f $(OUT)/$(call CDBASE,$$n).raw; \
 		if [ "$(IMAGE_FORMAT)" = "vfat" ]; then \
-			cp -a boot$$n/* CD$$n; \
+			if [ -d boot$$n/ ]; then \
+				cp -a boot$$n/* CD$$n; \
+			fi; \
 			$(make_vfat_img) -d CD$$n \
 			 -o $(OUT)/$(call CDBASE,$$n).raw; \
 		elif [ "$(IMAGE_FORMAT)" = "iso" ]; then \
@@ -1110,7 +1112,9 @@ bin-image: ok bin-md5list $(OUT)
 	 volid=`cat $(CD).volid`; \
 	 rm -f $(OUT)/$(call CDBASE,$(CD)).raw; \
 	 if [ "$(IMAGE_FORMAT)" = "vfat" ]; then \
-	 cp -a boot$(CD)/* CD$(CD); \
+	 if [ -d boot$(CD)/ ]; then \
+	   cp -a boot$(CD)/* CD$(CD); \
+	 fi; \
 	 $(make_vfat_img) -d CD$(CD) -o $(OUT)/$(call CDBASE,$(CD)).raw; \
 	 elif [ "$(IMAGE_FORMAT)" = "iso" ]; then \
 	 $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
