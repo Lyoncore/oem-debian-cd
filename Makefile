@@ -116,7 +116,6 @@ ifndef UDEB_INCLUDE
 UDEB_INCLUDE=$(BASEDIR)/data/$(DI_CODENAME)/$(ARCH)_udeb_include
 endif
 
-
 ## Internal variables  
 apt=$(BASEDIR)/tools/apt-selection
 list2cds=$(BASEDIR)/tools/list2cds
@@ -153,6 +152,11 @@ FIRSTDISKS=CD1 CD1_NONUS
 forcenonusoncd1=1
 else
 forcenonusoncd1=0
+endif
+
+# we don't know how to generate ISOs for armel/iMX51; force vfat images
+ifeq ($(ARCH),armel)
+IMAGE_FORMAT := vfat
 endif
 
 # CDBASE = $(CODENAME)-$(FULLARCH)-$(1)
