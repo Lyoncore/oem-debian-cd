@@ -5,6 +5,10 @@
 #
 # $1 is the CD number
 # $2 is the temporary CD build dir
+#
+# TODO
+# - hardcodes flavour
+# - alternate CD support is untested and might be broken
 
 . $BASEDIR/tools/boot/$DI_CODENAME/common.sh
 
@@ -27,10 +31,43 @@ default_preseed
 
 cd $CDDIR/..
 
-echo -n "-J -joliet-long " > $N.mkisofs_opts
+#
+# This script is called with $1 (now $N) as the CD to.
+# make bootable.  N may be in the form "n" or "n_NONUS"
+# There may be more than 4 disks...support extras.
 
-"$BASEDIR/tools/sorting_weights" "$N"
-echo -n "-sort $(pwd)/$N.weights " >> $N.mkisofs_opts
+# Strip NONUS part of disk number
+# NN will be 1...N so it can be used as an index
+#
+NN=`echo $N | sed -e 's/_NONUS//'`
 
-echo "armel booting disabled for now"
-exit 0
+if [ "$CDIMAGE_ADDON" ]; then
+    # second disk, at least in spirit
+    NN=2
+fi
+
+if [ "$IMAGE_FORMAT" = iso ]; then
+    echo -n "-J -joliet-long " > $N.mkisofs_opts
+
+    "$BASEDIR/tools/sorting_weights" "$N"
+    echo -n "-sort $(pwd)/$N.weights " >> $N.mkisofs_opts
+fi
+
+if [ "$IMAGE_FORMAT" != vfat ]; then
+    echo "armel booting for image format '$IMAGE_FORMAT' disabled for now"
+    exit 0
+fi
+
+# XXX hardcodes SUBARCH / FLAVOUR
+FLAVOUR=imx51
+
+if [ "$NN" = "1" ]; then
+    check_kernel_sync udeb.list
+
+    if [ "$CDIMAGE_LIVE" = 1 ]; then
+        mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
+        mv $CDDIR/casper/filesystem.initrd-$FLAVOUR $CDDIR/casper/initrd.gz
+    fi
+fi
+
+# th,th, thats all
