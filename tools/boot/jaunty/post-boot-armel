@@ -1,0 +1,264 @@
+#!/bin/bash
+#
+# post-boot-armel
+#
+# Do post-image-building tasks for armel, to make vfat images bootable; this
+# script encapsulates the VFAT image in a PC partition image, with
+# unpartitioned data holding boot data; this is very board specific and targets
+# the iMX51 Babbage board
+#
+# $1 is the CD number
+# $2 is the temporary CD build dir
+# $3 is the image file
+#
+# Copyright (c) 2009 Canonical
+# Authors: Oliver Grawert <ogra@canonical.com>
+#          Loïc Minier <loic.minier@canonical.com>
+#
+# TODO
+# - alternate CD support is untested
+# - (robustness) use -m flag of parted (needs a newer parted)
+# - trim the extra kernel cmdline args
+# - use the proper offset for redboot in FIS
+# - create a partition to protect the FIS
+# - set more fconfig settings: boot_script: TRUE, bootp: FALSE,
+#   boot_script_timeout: 3
+
+. "$BASEDIR/tools/boot/$DI_CODENAME/common.sh"
+
+# parted is in /sbin
+PATH="$PATH:/sbin"
+
+set -e
+
+N="$1"
+CDROOT="$2"
+IMAGE="$3"
+
+log() {
+    echo "$*" >&2
+}
+
+die() {
+    log "$@"
+    exit 1
+}
+
+# Only disk 1* bootable
+if [ "$N" != 1 ] && [ "$N" != 1_NONUS ] && [ -z "$CDIMAGE_ADDON" ]; then
+    exit 0
+fi
+
+# We only want to do this for vfat images
+if [ "$IMAGE_FORMAT" != "vfat" ]; then
+    exit 0
+fi
+
+cd "$CDROOT/.."
+
+# this script creates an image to write to a SD card with a PC partition table;
+# the first partition is sub-partitioned as a RedBoot Flash Image System (FIS);
+# the second partition is the vfat passed as $3 ($IMAGE) and contains the
+# root fs.
+# the FIS directory has entries for RedBoot, RedBoot's Flash config (fconfig),
+# directory itself, the kernel, and the initramfs
+
+# the PC partitions have addresses which are constrained by what can be
+# expressed in CHS / LBA; non-CHS aligned values scare fdisk, but parted is
+# fine with pure LBA addresses on 512 bytes boundaries, so we use that
+
+# concerning the FIS image, it theoritically starts at logical sector 0, but
+# the ROM will skip 0x400 bytes over the PC partition table to read RedBoot; in
+# the default RedBoot config, it needs to be aligned to 0x20000 boundaries.
+
+file_length() {
+    stat -c %s "$1"
+}
+
+MIB="$((1024 * 1024))"
+IMAGE_SIZE="$(file_length "$IMAGE")"
+
+# pick an arbitrary large enough size multiple of 512 and of 0x20000
+FIS_SIZE="$((16 * $MIB))"
+
+# total size in MiB = FIS size + VFAT image size rounded to the next MiB
+IMG_SIZE_MIB="$((($FIS_SIZE + $IMAGE_SIZE + $MIB - 1) / $MIB))"
+
+# rename the VFAT image out of the way for the disk image
+mv -f "$IMAGE" "$IMAGE.vfat"
+
+# create the blank disk image (and this is a sparse file)
+dd if=/dev/zero of="$IMAGE" bs="$MIB" count=0 seek="$IMG_SIZE_MIB" 2>/dev/null
+
+# create partition table
+log "initializing disk label (MBR and partition table)..."
+parted -s "$IMAGE" mklabel msdos
+
+# create first partition, leaving a $FIS_SIZE hole at the beginning of the disk
+# XXX ideally we'd create a "non-FS data" partition of $FIS_SIZE length at the
+# beginning of the disk to protect the FIS zone; however parted doesn't support
+# setting arbitrary partition type numbers and we want to avoid mixing fdisk as
+# it breaks with non-CHS compliant values
+log "creating partition..."
+# last disk byte, with a "B" char at the end of the output
+# nicer version using parted -m:
+#DISK_END_B="$(LANG=C parted -m -s "$IMAGE" unit B print | tail -1 | cut -d : -f 2)"
+DISK_END_B="$(LANG=C parted -s "$IMAGE" unit B print | sed -rn 's/^Disk [^:]+: ([0-9]+B)$/\1/p')"
+parted -s "$IMAGE" mkpart primary fat32 "${FIS_SIZE}B" "$DISK_END_B"
+
+# verify sizes
+# nicer version using parted -m:
+#PART="$(LANG=C parted -m -s "$IMAGE" unit B print | tail -1)"
+#PART_START_B="$(echo "$PART" | cut -d : -f 2)"
+#PART_LEN_B="$(echo "$PART" | cut -d : -f 4)"
+PART="$(LANG=C parted -s "$IMAGE" unit B print | grep '^ 1 ')"
+PART_START_B="$(echo "$PART" | awk '{ print $2 }')"
+PART_LEN_B="$(echo "$PART" | awk '{ print $4 }')"
+if [ "${PART_START_B%B}" -lt "$FIS_SIZE" ]; then
+    die "VFAT partition start is at $PART_START_B and doesn't leave enough room for FIS ${FIS_SIZE}B"
+fi
+if [ "${PART_LEN_B%B}" -lt "$IMAGE_SIZE" ]; then
+    die "VFAT partition length is $PART_LEN_B and doesn't leave enough room for VFAT ${IMAGE_SIZE}B"
+fi
+
+log "writing vfat contents..."
+dd conv=notrunc bs="${PART_START_B%B}" if="$IMAGE.vfat" of="$IMAGE" seek=1 2>/dev/null
+
+# VFAT isn't needed anymore
+rm -f "$IMAGE.vfat"
+
+log "extracting RedBoot..."
+FLAVOUR=imx51
+BOARD=babbage
+REDBOOT_PKG="redboot-$FLAVOUR-$BOARD"
+REDBOOT_DEB="$("$BASEDIR/tools/apt-selection" cache show "$REDBOOT_PKG" | sed -n 's/^Filename: //p')"
+REDBOOT_DATA="usr/lib/redboot/$FLAVOUR-${BOARD}_redboot.bin"
+CONFIG_DATA="usr/lib/redboot/$FLAVOUR-${BOARD}_fconfig.bin"
+ar p "$MIRROR/$REDBOOT_DEB" data.tar.gz | tar zxf - -C . "./$REDBOOT_DATA" "./$CONFIG_DATA"
+
+hex2dec() {
+    printf "%d\n" "$1"
+}
+
+# the FIS config depends of the target board; offsets are converted to decimal
+# for dd and "test"
+FIS_DIR_OFFSET="$(hex2dec 0x40000)"
+FIS_DIR_LENGTH="$(hex2dec 0x1F000)"
+FIS_DIR_ADDR="$(hex2dec 0x40000)"
+REDBOOT_FIS_OFFSET="$(hex2dec 0x400)"
+REDBOOT_FIS_LENGTH="$(hex2dec 0x40000)"
+CONFIG_FIS_OFFSET="$(hex2dec 0x5F000)"
+CONFIG_FIS_LENGTH="$(hex2dec 0x1000)"
+CONFIG_FIS_ADDR="$(hex2dec 0x5F000)"
+KERNEL_FIS_OFFSET="$(hex2dec 0x60000)"
+KERNEL_FIS_LENGTH="$(hex2dec 0x500000)"
+KERNEL_FIS_ENTRY="$(hex2dec 0x100000)"
+KERNEL_FIS_ADDR="$(hex2dec 0x100000)"
+INITRD_FIS_OFFSET="$(hex2dec 0x560000)"
+INITRD_FIS_LENGTH="$(hex2dec 0x940000)"
+INITRD_FIS_ENTRY="$(hex2dec 0xFFFFFFFF)"
+INITRD_FIS_ADDR="$(hex2dec 0x1000000)"
+
+# wrapper to call the FIS command-line tool
+fis_do() {
+    fis -d "$IMAGE" -o "$FIS_DIR_OFFSET" -s "$FIS_DIR_LENGTH" "$@"
+}
+
+# helper to write a file's data to the FIS at given offset; also checks the
+# file is smaller than length before writing
+# NB: this actually uses $offset memory, so don't use too large offsets
+fis_write() {
+    local file="$1"
+    local offset="$2"
+    local max_length="$3"
+
+    if [ "$(file_length "$1")" -gt "$max_length" ]; then
+        die "File $file is larger than maximum allowed size of $max_length"
+    fi
+
+    dd conv=notrunc bs="$offset" if="$file" of="$IMAGE" seek=1 2>/dev/null
+}
+
+log "initializing fis directory..."
+fis_do init
+
+log "  'RedBoot'"
+# XXX should use REDBOOT_FIS_OFFSET, but don't want to change that now
+fis_do create "RedBoot" \
+    -f 0 \
+    -l "$REDBOOT_FIS_LENGTH" \
+    -c "$REDBOOT_DATA"
+fis_write "$REDBOOT_DATA" "$REDBOOT_FIS_OFFSET" "$REDBOOT_FIS_LENGTH"
+
+log "  'FIS directory'"
+fis_do create "FIS directory" \
+    -f "$FIS_DIR_OFFSET" \
+    -l "$FIS_DIR_LENGTH" \
+    -r "$FIS_DIR_ADDR"
+
+log "writing bootloader configuration..."
+CMDLINE="\"console=ttymxc0,115200 console=tty0 file=/cdrom/preseed/ubuntu.seed $EXTRA_ARGS\""
+SCRIPT="fis load initrd"
+SCRIPT="$SCRIPT\\fis load kernel"
+SCRIPT="$SCRIPT\\exec -r $INITRD_FIS_ADDR -s $INITRD_FIS_LENGTH -c $CMDLINE"
+# modified bootloader config
+CONFIG_DATA_MODIFIED="fconfig.bin"
+cp "$CONFIG_DATA" "$CONFIG_DATA_MODIFIED"
+fconfig -w -d "$CONFIG_DATA_MODIFIED" -n boot_script_data -x "$SCRIPT" >/dev/null 2>&1
+
+log "  'RedBoot config'"
+fis_do create "RedBoot config" \
+    -f "$CONFIG_FIS_OFFSET" \
+    -l "$CONFIG_FIS_LENGTH" \
+    -r "$CONFIG_FIS_ADDR" \
+    -c "$CONFIG_DATA_MODIFIED"
+fis_write "$CONFIG_DATA_MODIFIED" "$CONFIG_FIS_OFFSET" "$CONFIG_FIS_LENGTH"
+
+# purge extracted RedBoot and RedBoot config data
+rm -rf usr
+
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    # XXX these are the target extra cmdline args
+    #EXTRA_ARGS="boot=casper splash"
+    EXTRA_ARGS="boot=casper LIVEMEDIA=/dev/mmcblk0p1 --"
+    KERNEL_FIS_DATA="$CDROOT/casper/vmlinuz"
+    INITRD_FIS_DATA="$CDROOT/casper/initrd.gz"
+else
+    EXTRA_ARGS=""
+    KERNEL_FIS_DATA="$CDROOT/install/vmlinuz"
+    INITRD_FIS_DATA="$CDROOT/install/initrd.gz"
+fi
+
+log "  'kernel'"
+fis_do create "kernel" \
+    -f "$KERNEL_FIS_OFFSET" \
+    -l "$KERNEL_FIS_LENGTH" \
+    -e "$KERNEL_FIS_ENTRY" \
+    -r "$KERNEL_FIS_ADDR" \
+    -c "$KERNEL_FIS_DATA"
+fis_write "$KERNEL_FIS_DATA" "$KERNEL_FIS_OFFSET" "$KERNEL_FIS_LENGTH"
+
+# pad initrd
+INITRD_FIS_DATA_LENGTH="$(file_length "$INITRD_FIS_DATA")"
+PADDED_INITRD_FIS_DATA="$INITRD_FIS_DATA.padded"
+if [ "$INITRD_FIS_DATA_LENGTH" -gt "$INITRD_FIS_LENGTH" ]; then
+    die "Initrd $INITRD_FIS_DATA too big for FIS initrd partition length ($INITRD_FIS_LENGTH)"
+fi
+PAD="$(expr "$INITRD_FIS_LENGTH" - "$INITRD_FIS_DATA_LENGTH")"
+(
+    cat "$INITRD_FIS_DATA"
+    # pad with zeroes; this uses $PAD mem, not very elegant
+    dd if=/dev/zero bs="$PAD" count=1 2>/dev/null
+) | dd of="$PADDED_INITRD_FIS_DATA" bs=4k 2>/dev/null
+
+log "  'initrd'"
+fis_do create "initrd" \
+    -f "$INITRD_FIS_OFFSET" \
+    -l "$INITRD_FIS_LENGTH" \
+    -e "$INITRD_FIS_ENTRY" \
+    -r "$INITRD_FIS_ADDR" \
+    -c "$PADDED_INITRD_FIS_DATA"
+fis_write "$PADDED_INITRD_FIS_DATA" "$INITRD_FIS_OFFSET" "$INITRD_FIS_LENGTH"
+rm -f "$PADDED_INITRD_FIS_DATA"
+
+# th,th, thats all
