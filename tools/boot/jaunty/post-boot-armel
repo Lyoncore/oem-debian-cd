@@ -197,14 +197,25 @@ fis_do create "FIS directory" \
     -r "$FIS_DIR_ADDR"
 
 log "writing bootloader configuration..."
+# modified bootloader config
+CONFIG_DATA_MODIFIED="fconfig.bin"
+cp "$CONFIG_DATA" "$CONFIG_DATA_MODIFIED"
+# set a config var to a value
+fconfig_set() {
+    fconfig -w -d "$CONFIG_DATA_MODIFIED" -n "$1" -x "$2" >/dev/null 2>&1
+}
+# launch boot script on boot
+fconfig_set boot_script TRUE
+# after 3 seconds
+fconfig_set boot_script_timeout 3
+# actual boot script
 CMDLINE="\"console=ttymxc0,115200 console=tty0 file=/cdrom/preseed/ubuntu.seed $EXTRA_ARGS\""
 SCRIPT="fis load initrd"
 SCRIPT="$SCRIPT\\fis load kernel"
 SCRIPT="$SCRIPT\\exec -r $INITRD_FIS_ADDR -s $INITRD_FIS_LENGTH -c $CMDLINE"
-# modified bootloader config
-CONFIG_DATA_MODIFIED="fconfig.bin"
-cp "$CONFIG_DATA" "$CONFIG_DATA_MODIFIED"
-fconfig -w -d "$CONFIG_DATA_MODIFIED" -n boot_script_data -x "$SCRIPT" >/dev/null 2>&1
+fconfig_set boot_script_data "$SCRIPT"
+# disable DHCP on boot
+fconfig_set bootp FALSE
 
 log "  'RedBoot config'"
 fis_do create "RedBoot config" \
