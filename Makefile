@@ -1099,9 +1099,14 @@ src-images: ok src-md5list $(OUT)
 pi-makelist:
 	$(Q)set -e; \
 	 cd $(OUT); for file in `find * -name \*.raw`; do \
-		$(BASEDIR)/tools/pi-makelist \
-			$$file > $${file%%.raw}.list; \
-	done
+	     if [ "$(IMAGE_FORMAT)" = "vfat" ]; then \
+	         $(BASEDIR)/tools/pi-makelist-vfat \
+	             $$file > $${file%%.raw}.list; \
+	     elif [ "$(IMAGE_FORMAT)" = "iso" ]; then \
+	         $(BASEDIR)/tools/pi-makelist \
+	             $$file > $${file%%.raw}.list; \
+	     fi \
+	 done
 
 # Generate only one image number $(CD)
 image: bin-image
