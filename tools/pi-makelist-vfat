@@ -1,0 +1,36 @@
+#!/bin/sh
+
+set -e
+
+if [ $# != 1 ]; then
+    cat << EOF
+Usage: pi-makelist-vfat image.img >image.list
+
+Outputs list of files in a VFAT or in the VFAT of the first partition
+EOF
+    exit 1
+fi
+IMG="$1"
+
+MTOOLSRC=""
+cleanup() {
+    if [ -n "$MTOOLSRC" ]; then
+        rm -f "$MTOOLSRC"
+    fi
+}
+trap "cleanup" 0 1 2 3 9 11 13 15
+export MTOOLSRC=`tempfile --prefix pimkl --mode 644`
+
+# will try both of C: and D:
+cat >$MTOOLSRC <<EOF
+drive c:
+  file="$IMG"
+
+drive d:
+  file="$IMG"
+  partition=1
+EOF
+
+ARGS="-/ -f -a -b"
+
+(mdir c: $ARGS || mdir d: $ARGS) 2>/dev/null | sed '/\/$/ d; s/^[CD]://'
