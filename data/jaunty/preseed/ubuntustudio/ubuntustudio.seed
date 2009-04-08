@@ -2,3 +2,5 @@
 tasksel	tasksel/limit-tasks	string minimal, standard, ubuntustudio-audio, ubuntustudio-audio-plugins, ubuntustudio-desktop, ubuntustudio-graphics, ubuntustudio-video
 # Language support is expected to be missing.
 d-i	pkgsel/install-language-support	boolean false
+# Add the initial user to the audio group as well as the usual ones.
+d-i	passwd/user-default-groups	string adm audio cdrom dialout lpadmin plugdev sambashare
