@@ -158,7 +158,15 @@ ar p "$MIRROR/$REDBOOT_DEB" data.tar.gz | tar zxf - -C . "./$REDBOOT_DATA" "./$C
 FIS_DIR_OFFSET="$(hex2dec 0x40000)"
 FIS_DIR_LENGTH="$(hex2dec 0x1F000)"
 FIS_DIR_ADDR="$(hex2dec 0x40000)"
-REDBOOT_FIS_OFFSET="$(hex2dec 0x400)"
+# where to actually write RedBoot
+REDBOOT_OFFSET="$(hex2dec 0x400)"
+# the address to write in the FIS entry; we could theoritically write 0x400
+# here and decrease the entry length by the same amount, but eCos/RedBoot don't
+# like writing at addresses not aligned to 0x20000, so avoid that; it's not
+# clear whether the ROM loads 0x0 - 0x400 in memory, or whether the romupdate
+# command is clever enough to avoid this issue on write, but it's not a problem
+# because the romupdate command is a no-op when booting from SD
+REDBOOT_FIS_OFFSET="$(hex2dec 0x0)"
 REDBOOT_FIS_LENGTH="$(hex2dec 0x40000)"
 CONFIG_FIS_OFFSET="$(hex2dec 0x5F000)"
 CONFIG_FIS_LENGTH="$(hex2dec 0x1000)"
@@ -200,7 +208,7 @@ fis_do create "RedBoot" \
     -f "$REDBOOT_FIS_OFFSET" \
     -l "$REDBOOT_FIS_LENGTH" \
     -c "$REDBOOT_DATA"
-fis_write "$REDBOOT_DATA" "$REDBOOT_FIS_OFFSET" "$REDBOOT_FIS_LENGTH"
+fis_write "$REDBOOT_DATA" "$REDBOOT_OFFSET" "$REDBOOT_FIS_LENGTH"
 
 log "  'FIS directory'"
 fis_do create "FIS directory" \
