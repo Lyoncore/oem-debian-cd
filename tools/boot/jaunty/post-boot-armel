@@ -17,11 +17,8 @@
 #
 # TODO
 # - (robustness) use -m flag of parted (needs a newer parted)
-# - trim the extra kernel cmdline args
 # - use the proper offset for redboot in FIS
 # - create a partition to protect the FIS
-# - set more fconfig settings: boot_script: TRUE, bootp: FALSE,
-#   boot_script_timeout: 3
 
 . "$BASEDIR/tools/boot/$DI_CODENAME/common.sh"
 
@@ -196,8 +193,7 @@ fis_do create "FIS directory" \
     -r "$FIS_DIR_ADDR"
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    # XXX these are the target extra cmdline args
-    #EXTRA_ARGS="boot=casper splash"
+    # XXX should also have "splash", but doesn't work right now; LP: #358362
     EXTRA_ARGS="boot=casper --"
     KERNEL_FIS_DATA="$CDROOT/casper/vmlinuz"
     INITRD_FIS_DATA="$CDROOT/casper/initrd.gz"
