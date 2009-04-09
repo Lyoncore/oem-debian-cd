@@ -16,7 +16,6 @@
 #          Loïc Minier <loic.minier@canonical.com>
 #
 # TODO
-# - alternate CD support is untested
 # - (robustness) use -m flag of parted (needs a newer parted)
 # - trim the extra kernel cmdline args
 # - use the proper offset for redboot in FIS
