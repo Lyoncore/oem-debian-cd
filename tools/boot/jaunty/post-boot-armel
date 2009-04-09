@@ -16,7 +16,8 @@
 #          Loïc Minier <loic.minier@canonical.com>
 #
 # TODO
-# - (robustness) use -m flag of parted (needs a newer parted)
+# - use safer -m flag of parted (needs a newer parted)
+# - add splash to cmdline (doesn't work right now; LP: #358362)
 
 . "$BASEDIR/tools/boot/$DI_CODENAME/common.sh"
 
