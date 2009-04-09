@@ -198,7 +198,7 @@ fis_do create "FIS directory" \
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     # XXX these are the target extra cmdline args
     #EXTRA_ARGS="boot=casper splash"
-    EXTRA_ARGS="boot=casper LIVEMEDIA=/dev/mmcblk0p1 --"
+    EXTRA_ARGS="boot=casper --"
     KERNEL_FIS_DATA="$CDROOT/casper/vmlinuz"
     INITRD_FIS_DATA="$CDROOT/casper/initrd.gz"
 else
