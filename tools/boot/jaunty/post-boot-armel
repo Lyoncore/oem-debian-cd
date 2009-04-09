@@ -213,7 +213,7 @@ CONFIG_DATA_MODIFIED="fconfig.bin"
 cp "$CONFIG_DATA" "$CONFIG_DATA_MODIFIED"
 # set a config var to a value
 fconfig_set() {
-    fconfig -w -d "$CONFIG_DATA_MODIFIED" -n "$1" -x "$2" >/dev/null 2>&1
+    fconfig -s -w -d "$CONFIG_DATA_MODIFIED" -n "$1" -x "$2"
 }
 # launch boot script on boot
 fconfig_set boot_script TRUE
