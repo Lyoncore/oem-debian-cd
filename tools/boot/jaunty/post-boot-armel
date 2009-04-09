@@ -17,7 +17,6 @@
 #
 # TODO
 # - (robustness) use -m flag of parted (needs a newer parted)
-# - use the proper offset for redboot in FIS
 # - create a partition to protect the FIS
 
 . "$BASEDIR/tools/boot/$DI_CODENAME/common.sh"
@@ -179,9 +178,8 @@ log "initializing fis directory..."
 fis_do init
 
 log "  'RedBoot'"
-# XXX should use REDBOOT_FIS_OFFSET, but don't want to change that now
 fis_do create "RedBoot" \
-    -f 0 \
+    -f "$REDBOOT_FIS_OFFSET" \
     -l "$REDBOOT_FIS_LENGTH" \
     -c "$REDBOOT_DATA"
 fis_write "$REDBOOT_DATA" "$REDBOOT_FIS_OFFSET" "$REDBOOT_FIS_LENGTH"
