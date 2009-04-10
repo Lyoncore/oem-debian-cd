@@ -40,7 +40,7 @@ die() {
 }
 
 # Only disk 1* bootable
-if [ "$N" != 1 ] && [ "$N" != 1_NONUS ] && [ -z "$CDIMAGE_ADDON" ]; then
+if ([ "$N" != 1 ] && [ "$N" != 1_NONUS ]) || [ "$CDIMAGE_ADDON" ]; then
     exit 0
 fi
 
