@@ -118,7 +118,7 @@ get_part_data() {
 }
 
 PART1_END_B="`(set -- $(get_part_data 1); echo "$2")`"
-if [ "${PART1_END_B%B}" -lt "$FIS_SIZE" ]; then
+if [ "$((${PART1_END_B%B} + 1))" -lt "$FIS_SIZE" ]; then
     die "FIS partition ends at $PART1_END_B and doesn't leave enough room for FIS ${FIS_SIZE}B"
 fi
 
