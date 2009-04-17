@@ -6,7 +6,7 @@ if [ $# != 1 ]; then
     cat << EOF
 Usage: pi-makelist-vfat image.img >image.list
 
-Outputs list of files in a VFAT or in the VFAT of the first partition
+Outputs list of files in a VFAT or in the VFAT of the second partition
 EOF
     exit 1
 fi
@@ -28,7 +28,7 @@ drive c:
 
 drive d:
   file="$IMG"
-  partition=1
+  partition=2
 EOF
 
 ARGS="-/ -f -a -b"
