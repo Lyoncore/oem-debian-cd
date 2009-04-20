@@ -133,6 +133,7 @@ set_mkisofs_opts=$(BASEDIR)/tools/set_mkisofs_opts
 strip_nonus_bin=$(BASEDIR)/tools/strip-nonUS-bin
 add_secured=$(BASEDIR)/tools/add_secured
 md5sum=/usr/bin/md5sum
+sha1sum=/usr/bin/sha1sum
 fastsums=$(BASEDIR)/tools/fast_sums
 jigdo_cleanup=$(BASEDIR)/tools/jigdo_cleanup
 grab_md5=$(BASEDIR)/tools/grab_md5
@@ -1145,8 +1146,9 @@ src-image: ok src-md5list $(OUT)
 
 #Calculate the md5sums for the images (if available), or get from templates
 imagesums:
-	$(Q)cd $(OUT); :> MD5SUMS; for file in `find * -name \*.raw`; do \
+	$(Q)cd $(OUT); :> MD5SUMS; :> SHA1SUMS; for file in `find * -name \*.raw`; do \
 		$(md5sum) "$$file" >>MD5SUMS; \
+		$(sha1sum) "$$file" >>SHA1SUMS; \
 	done; \
 	for file in `find * -name \*.template`; do \
 		if [ "`tail --bytes=33 "$$file" | head --bytes=1 | od -tx1 -An | sed -e 's/ //g'`" != 05 ]; then \
