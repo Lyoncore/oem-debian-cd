@@ -248,11 +248,15 @@ label live
   menu label ^Try $HUMANPROJECT without any change to your computer
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz quiet splash --
+EOF
+    if [ "$PROJECT" != ubuntu-mid ]; then
+	cat >> boot$N/isolinux/text.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=/casper/initrd.gz quiet splash --
 EOF
+    fi
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label xforcevesa=Safe graphics mode
 append xforcevesa=xforcevesa
