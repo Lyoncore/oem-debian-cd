@@ -65,7 +65,7 @@ if [ "$CDIMAGE_DVD" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
     if [ -e "$DIR/preseed/$PROJECT.seed" ]; then
         perl -ni -e '
             if (/^#/) { $out .= $_ }
-            elsif (m[^tasksel\s+tasksel/first\s]) { $out = "" }
+            elsif (m[^tasksel\s+tasksel/first\s]) { print $out; print; print "tasksel\ttasksel/first\tseen false\n"; $out = "" }
             else { print $out; print; $out = "" }' \
                 "$DIR/preseed/$PROJECT.seed"
         if [ ! -s "$DIR/preseed/$PROJECT.seed" ]; then
