@@ -133,6 +133,13 @@ case $DIST in
     export DEBVERSION=9.04
     export OFFICIAL="Release"
     ;;
+  karmic)
+    export PREV_CODENAME=jaunty
+    export CODENAME=karmic
+    export CAPCODENAME='Karmic Koala'
+    export DEBVERSION=9.10
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
