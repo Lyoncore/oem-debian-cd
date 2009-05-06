@@ -61,7 +61,7 @@ if [ -z "$CAPPROJECT" ]; then
 fi
 
 if [ -z "$DIST" ]; then
-  DIST=jaunty
+  DIST=karmic
 fi
 
 # The debian-cd dir
