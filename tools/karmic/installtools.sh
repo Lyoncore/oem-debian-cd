@@ -49,6 +49,14 @@ for preseed_dir in \
     [ -d "$preseed_dir" ] || continue
     for file in $preseed_dir/*.seed; do
         cp -a "$file" $DIR/preseed/
+        if grep -qv 'pkgsel/install-language-support.*false' "$DIR/preseed/$file"; then
+            cat >> "$DIR/preseed/$file" <<EOF
+# Workaround for Karmic Alpha 1: language-support-* is likely to be
+# uninstallable due to openoffice.org-l10n-* problems, so don't try to
+# install it.
+d-i	pkgsel/install-language-support	boolean false
+EOF
+        fi
     done
 done
 if [ "$CDIMAGE_DVD" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
