@@ -220,7 +220,17 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     # XXX should also have "splash", but doesn't work right now; LP: #358362
     EXTRA_ARGS="boot=casper --"
     KERNEL_FIS_DATA="$CDROOT/casper/vmlinuz"
-    INITRD_FIS_DATA="$CDROOT/casper/initrd.gz"
+    INITRD_FIS_DATA=
+    for ext in gz bz2 lz; do
+	if [ -e "$CDROOT/casper/initrd.$ext" ]; then
+	    INITRD_FIS_DATA="$CDROOT/casper/initrd.$ext"
+	    break
+	fi
+    done
+    if [ -z "$INITRD_FIS_DATA" ]; then
+	echo "Can't find casper initrd!" >&2
+	exit 1
+    fi
 else
     EXTRA_ARGS=""
     KERNEL_FIS_DATA="$CDROOT/install/vmlinuz"

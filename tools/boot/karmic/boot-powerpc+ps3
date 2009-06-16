@@ -40,6 +40,38 @@ echo -n "-cache-inodes -J -l" > $N.mkisofs_opts
 "$BASEDIR/tools/sorting_weights" "$N"
 echo -n " -sort $(pwd)/$N.weights " >> $N.mkisofs_opts
 
+cd $INSTALLDIR
+
+if [ ! "$DI_WWW_HOME" ]; then
+    cp -a "$DI_PATH/current/images/udeb.list" .
+else
+    wget "$DI_WWW_HOME/udeb.list"
+fi
+(cd $CDDIR/..; check_kernel_sync udeb.list)
+
+if [ ! "$DI_WWW_HOME" ];then
+    DI_DIR="$DI_PATH/current/images/powerpc64/cdrom"
+else
+    DI_DIR="di_stuff"
+    for image in initrd.gz vmlinux; do
+	dir="$(dirname "$image")"
+	mkdir -p "$DI_DIR/$dir"
+	wget "$DI_WWW_HOME/powerpc64/cdrom/$image" -O "$DI_DIR/$image"
+    done
+fi
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+    cp -dR --preserve=mode,timestamps "$DI_DIR"/* .
+    rm -rf di_stuff
+    # Remove special initrds we don't want.
+    rm -f vmlinuz-*.initrd
+fi
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    mkdir -p "$CDDIR/casper"
+    mv "$CDDIR/casper/filesystem.kernel-powerpc64-smp" "$CDDIR/casper/vmlinux"
+    CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-powerpc64-smp")"
+    mv "$CDDIR/casper/filesystem.initrd-powerpc64-smp" "$CDDIR$CASPER_INITRD"
+fi
+
 cd $CDDIR
 mkdir -p PS3/otheros
 if [ -z "$KBOOT_DEBUG" ]; then
@@ -78,12 +110,12 @@ fi
 echo 'default=install' >> etc/kboot.conf
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> etc/kboot.conf <<EOF
-install='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet splash only-ubiquity --'
-install_nosplash='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet only-ubiquity --'
-install_driverupdates='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true quiet splash only-ubiquity --'
-live='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet splash --'
-live_nosplash='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet --'
-driverupdates='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true quiet splash --'
+install='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet splash only-ubiquity --'
+install_nosplash='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet only-ubiquity --'
+install_driverupdates='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true quiet splash only-ubiquity --'
+live='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet splash --'
+live_nosplash='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet --'
+driverupdates='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true quiet splash --'
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
@@ -120,7 +152,7 @@ EOF
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> etc/kboot.conf <<EOF
-check='/casper/vmlinux initrd=/casper/initrd.gz $KERNEL_PARAMS boot=casper integrity-check quiet splash --'
+check='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS boot=casper integrity-check quiet splash --'
 EOF
 elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> etc/kboot.conf <<EOF
@@ -131,37 +163,6 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> etc/kboot.conf <<EOF
 rescue='/install/vmlinux initrd=/install/initrd.gz $KERNEL_PARAMS rescue/enable=true --'
 EOF
-fi
-
-cd $INSTALLDIR
-
-if [ ! "$DI_WWW_HOME" ]; then
-    cp -a "$DI_PATH/current/images/udeb.list" .
-else
-    wget "$DI_WWW_HOME/udeb.list"
-fi
-(cd $CDDIR/..; check_kernel_sync udeb.list)
-
-if [ ! "$DI_WWW_HOME" ];then
-    DI_DIR="$DI_PATH/current/images/powerpc64/cdrom"
-else
-    DI_DIR="di_stuff"
-    for image in initrd.gz vmlinux; do
-	dir="$(dirname "$image")"
-	mkdir -p "$DI_DIR/$dir"
-	wget "$DI_WWW_HOME/powerpc64/cdrom/$image" -O "$DI_DIR/$image"
-    done
-fi
-if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-    cp -dR --preserve=mode,timestamps "$DI_DIR"/* .
-    rm -rf di_stuff
-    # Remove special initrds we don't want.
-    rm -f vmlinuz-*.initrd
-fi
-if [ "$CDIMAGE_LIVE" = 1 ]; then
-    mkdir -p "$CDDIR/casper"
-    mv "$CDDIR/casper/filesystem.kernel-powerpc64-smp" "$CDDIR/casper/vmlinux"
-    mv "$CDDIR/casper/filesystem.initrd-powerpc64-smp" "$CDDIR/casper/initrd.gz"
 fi
 
 exit 0

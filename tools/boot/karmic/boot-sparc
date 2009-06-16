@@ -48,23 +48,6 @@ silo_deb="$($BASEDIR/tools/apt-selection cache show silo | \
 (ar p "$MIRROR/$silo_deb" data.tar.gz | \
 	tar zxf - -C $inst/ ./boot/{isofs,second}.b)
 
-if [ "$CDIMAGE_INSTALL" = 1 ]; then
-	SILO_SUFFIX=
-else
-	SILO_SUFFIX=.live
-fi
-
-# Some custom etc files
-cat $BASEDIR/data/$CODENAME/sparc/silo.conf$SILO_SUFFIX \
- | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
- > $inst/boot/silo.conf
-BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
-cat $BASEDIR/data/$CODENAME/sparc/ubuntu.txt$SILO_SUFFIX \
- | sed "s/\${MEDIA_TYPE}/CDROM/" \
- | sed "s/\${DEBIAN_VERSION}/${CODENAME}/g" \
- | sed "s/\${BUILD_DATE}/${BUILD_DATE}/g" \
- > $inst/boot/ubuntu.txt
-
 # Sparc64 kernel is so big, that uncompressing it corrupts SILO memory, so
 # uncompress it before hand.
 
@@ -82,6 +65,25 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
 	# TODO: does putting boot images in /casper/ actually work on sparc?
-	mv "$CDDIR/casper/filesystem.initrd-sparc64" "$CDDIR/casper/initrd.gz"
+	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-sparc64")"
+	mv "$CDDIR/casper/filesystem.initrd-sparc64" "$CDDIR$CASPER_INITRD"
 	zcat "$CDDIR/casper/filesystem.kernel-sparc64" > "$CDDIR/casper/sparc64"
 fi
+
+if [ "$CDIMAGE_INSTALL" = 1 ]; then
+	SILO_SUFFIX=
+else
+	SILO_SUFFIX=.live
+fi
+
+# Some custom etc files
+cat $BASEDIR/data/$CODENAME/sparc/silo.conf$SILO_SUFFIX \
+ | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
+ | if [ "$CDIMAGE_LIVE" = 1 ]; then sed "s,\${CASPER_INITRD},${CASPER_INITRD},g"; fi \
+ > $inst/boot/silo.conf
+BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
+cat $BASEDIR/data/$CODENAME/sparc/ubuntu.txt$SILO_SUFFIX \
+ | sed "s/\${MEDIA_TYPE}/CDROM/" \
+ | sed "s/\${DEBIAN_VERSION}/${CODENAME}/g" \
+ | sed "s/\${BUILD_DATE}/${BUILD_DATE}/g" \
+ > $inst/boot/ubuntu.txt

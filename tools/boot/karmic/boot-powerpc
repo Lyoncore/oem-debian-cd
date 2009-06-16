@@ -82,6 +82,57 @@ else
  cp -f $YABOOT_DEBUG yaboot
 fi
 
+if [ ! "$DI_WWW_HOME" ]; then
+  cp -a "$DI_PATH/current/images/udeb.list" .
+else
+  wget "$DI_WWW_HOME/udeb.list"
+fi
+(cd $CDDIR/..; check_kernel_sync udeb.list)
+
+for subarch in powerpc powerpc64
+do
+  if [ ! "$DI_WWW_HOME" ];then
+	DI_DIR="$DI_PATH/current/images/$subarch/cdrom"
+  else
+	DI_DIR="di_stuff"
+	for image in initrd.gz vmlinux; do
+		dir="$(dirname "$image")"
+		mkdir -p "$DI_DIR/$dir"
+		wget "$DI_WWW_HOME/$subarch/cdrom/$image" -O "$DI_DIR/$image"
+	done
+  fi
+  if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+    cp -dR --preserve=mode,timestamps "$DI_DIR" "$subarch"
+    rm -rf di_stuff
+    # Remove special initrds we don't want. OldWorld isn't supported due to
+    # the lack of boot support, and space restrictions are too tight to
+    # support CHRP (including Pegasos) and PReP except on DVDs.
+    rm -f "$subarch/vmlinuz-coff.initrd"
+    if [ "$CDIMAGE_DVD" != 1 ]; then
+      rm -f "$subarch/vmlinuz-chrp.initrd"
+      rm -f "$subarch/vmlinuz-prep.initrd" "$subarch/vmlinuz-ppcbug.initrd"
+    fi
+  fi
+  if [ "$CDIMAGE_LIVE" = 1 ]; then
+    case $subarch in
+      powerpc)
+        casper_subarch=powerpc
+        casper_initrd_var=CASPER_POWERPC_INITRD
+        ;;
+      powerpc64)
+        casper_subarch=powerpc64-smp
+        casper_initrd_var=CASPER_POWERPC64_INITRD
+        ;;
+    esac
+    mkdir -p "$CDDIR/casper/$subarch"
+    mv "$CDDIR/casper/filesystem.kernel-$casper_subarch" \
+       "$CDDIR/casper/$subarch/vmlinux"
+    eval "$casper_initrd_var=/casper/$subarch/initrd$(initrd_suffix "$CDDIR/casper/filesystem.kernel-$casper_subarch")"
+    eval mv "$CDDIR/casper/filesystem.initrd-$casper_subarch" \
+            "$CDDIR\$$casper_initrd_var"
+  fi
+done
+
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     timeout='timeout=300'
 else
@@ -139,6 +190,8 @@ BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
  | sed "s/CODENAME/${CODENAME}/g" \
  | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
  | sed "s,\${TIMEOUT},${timeout},g" \
+ | sed "s,\${CASPER_POWERPC_INITRD},${CASPER_POWERPC_INITRD},g" \
+ | sed "s,\${CASPER_POWERPC64_INITRD},${CASPER_POWERPC64_INITRD},g" \
  > yaboot.conf
 cp $BASEDIR/data/$CODENAME/yaboot/ofboot.b ofboot.b
 
@@ -150,54 +203,6 @@ mkdir "$CDDIR/ppc"
     sed "s/\${HUMANPROJECT}/$HUMANPROJECT/g" \
   | sed "s/\${CODENAME}/$CODENAME/g" \
   > "$CDDIR/ppc/bootinfo.txt"
-
-if [ ! "$DI_WWW_HOME" ]; then
-  cp -a "$DI_PATH/current/images/udeb.list" .
-else
-  wget "$DI_WWW_HOME/udeb.list"
-fi
-(cd $CDDIR/..; check_kernel_sync udeb.list)
-
-for subarch in powerpc powerpc64
-do
-  if [ ! "$DI_WWW_HOME" ];then
-	DI_DIR="$DI_PATH/current/images/$subarch/cdrom"
-  else
-	DI_DIR="di_stuff"
-	for image in initrd.gz vmlinux; do
-		dir="$(dirname "$image")"
-		mkdir -p "$DI_DIR/$dir"
-		wget "$DI_WWW_HOME/$subarch/cdrom/$image" -O "$DI_DIR/$image"
-	done
-  fi
-  if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-    cp -dR --preserve=mode,timestamps "$DI_DIR" "$subarch"
-    rm -rf di_stuff
-    # Remove special initrds we don't want. OldWorld isn't supported due to
-    # the lack of boot support, and space restrictions are too tight to
-    # support CHRP (including Pegasos) and PReP except on DVDs.
-    rm -f "$subarch/vmlinuz-coff.initrd"
-    if [ "$CDIMAGE_DVD" != 1 ]; then
-      rm -f "$subarch/vmlinuz-chrp.initrd"
-      rm -f "$subarch/vmlinuz-prep.initrd" "$subarch/vmlinuz-ppcbug.initrd"
-    fi
-  fi
-  if [ "$CDIMAGE_LIVE" = 1 ]; then
-    case $subarch in
-      powerpc)
-        casper_subarch=powerpc
-        ;;
-      powerpc64)
-        casper_subarch=powerpc64-smp
-        ;;
-    esac
-    mkdir -p "$CDDIR/casper/$subarch"
-    mv "$CDDIR/casper/filesystem.kernel-$casper_subarch" \
-       "$CDDIR/casper/$subarch/vmlinux"
-    mv "$CDDIR/casper/filesystem.initrd-$casper_subarch" \
-       "$CDDIR/casper/$subarch/initrd.gz"
-  fi
-done
 
 # Copy pegasos forth script, since pegasos machines don't support yaboot yet.
 cat $BASEDIR/data/$DI_CODENAME/pegasos/pegasos \
