@@ -106,7 +106,8 @@ if [ "$NN" = "1" ]; then
 		KERNELARCH="lpia"
 	fi
 	mv $CDDIR/casper/filesystem.kernel-$KERNELARCH $CDDIR/casper/vmlinuz
-	mv $CDDIR/casper/filesystem.initrd-$KERNELARCH $CDDIR/casper/initrd.gz
+	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$KERNELARCH")"
+	mv $CDDIR/casper/filesystem.initrd-$KERNELARCH "$CDDIR$CASPER_INITRD"
     fi
     echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " > $N.mkisofs_opts
 else
@@ -249,14 +250,14 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 label live
   menu label ^Try $HUMANPROJECT without any change to your computer
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=/casper/initrd.gz quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=$CASPER_INITRD quiet splash --
 EOF
     if [ "$PROJECT" != ubuntu-mid ]; then
 	cat >> boot$N/isolinux/text.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=/casper/initrd.gz quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=$CASPER_INITRD quiet splash --
 EOF
     fi
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
@@ -357,7 +358,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 label check
   menu label ^Check disc for defects
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS boot=casper integrity-check initrd=/casper/initrd.gz quiet splash --
+  append $KERNEL_PARAMS boot=casper integrity-check initrd=$CASPER_INITRD quiet splash --
 EOF
 elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> boot$N/isolinux/text.cfg <<EOF

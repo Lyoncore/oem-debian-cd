@@ -88,5 +88,19 @@ check_kernel_sync() {
     done
 }
 
+initrd_suffix() {
+    if zcat -t "$1" 2>/dev/null; then
+	echo .gz
+    elif bzcat -t "$1" 2>/dev/null; then
+	echo .bz2
+    elif lzcat -t "$1" 2>/dev/null; then
+	# .lzma would be more conventional, but we use .lz to avoid creating
+	# trouble for boot loaders that might need to read from 8.3
+	# filesystems without implementing support for long file names (e.g.
+	# syslinux on FAT USB sticks).
+	echo .lz
+    fi
+}
+
 HUMANPROJECT="$(echo "$CAPPROJECT" | sed 's/-/ /g')"
 

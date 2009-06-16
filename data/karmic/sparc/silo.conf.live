@@ -2,7 +2,7 @@ partition=1
 timeout=600
 message=/boot/ubuntu.txt
 default=live
-initrd=/casper/initrd.gz
+initrd=${CASPER_INITRD}
 initrd-size=1048576
 root=/dev/ram
 

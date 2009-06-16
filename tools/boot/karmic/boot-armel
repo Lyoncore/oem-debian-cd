@@ -93,7 +93,8 @@ if [ "$NN" = "1" ]; then
 
     if [ "$CDIMAGE_LIVE" = 1 ]; then
         mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
-        mv $CDDIR/casper/filesystem.initrd-$FLAVOUR $CDDIR/casper/initrd.gz
+        CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
+        mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
     fi
 fi
 

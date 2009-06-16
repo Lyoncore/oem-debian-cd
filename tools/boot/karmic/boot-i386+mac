@@ -87,7 +87,8 @@ if [ "$NN" = "1" ]; then
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	mv $CDDIR/casper/filesystem.kernel-386 $CDDIR/casper/vmlinuz
-	mv $CDDIR/casper/filesystem.initrd-386 $CDDIR/casper/initrd.gz
+	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-386")"
+	mv $CDDIR/casper/filesystem.initrd-386 "$CDDIR$CASPER_INITRD"
     fi
     echo -n "-cache-inodes -J -l " > $N.mkisofs_opts
     # HFS hybrid filesystem for booting on Intel-based Macs
