@@ -73,3 +73,12 @@ if [ "$CDIMAGE_DVD" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
         fi
     fi
 fi
+# On live CDs, remove preseed/early_command settings that use the debconf
+# confmodule. Live CDs implement preseed/early_command in casper which
+# doesn't have the confmodule available.
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    for file in $DIR/preseed/*.seed; do
+        [ -f "$file" ] || continue
+        sed -i '/preseed\/early_command.*confmodule/d' "$file"
+    done
+fi
