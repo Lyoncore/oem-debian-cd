@@ -20,13 +20,17 @@ done
 ln "$LIVEIMAGES/$FULLARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
 ln "$LIVEIMAGES/$FULLARCH.manifest-desktop" "$BDIR/CD1/casper/filesystem.manifest-desktop" || true
 
+lzcat_sane () {
+	lzcat -S '' "$@"
+}
+
 initrd_decompressor () {
 	if zcat -t "$1" >/dev/null 2>&1; then
 		echo zcat
 	elif bzcat -t "$1" >/dev/null 2>&1; then
 		echo bzcat
-	elif lzcat -t "$1" >/dev/null 2>&1; then
-		echo lzcat
+	elif lzcat_sane -t "$1" >/dev/null 2>&1; then
+		echo lzcat_sane
 	fi
 }
 
