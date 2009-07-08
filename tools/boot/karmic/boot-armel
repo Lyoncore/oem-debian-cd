@@ -61,10 +61,24 @@ fi
 # XXX hardcodes SUBARCH / FLAVOUR
 FLAVOUR=imx51
 
-# XXX hardcodes linux version until debian-installer is changed
-BOOT_IMAGES="udeb.list $FLAVOUR/cdrom/initrd.gz $FLAVOUR/cdrom/vmlinuz-2.6.31-2-$FLAVOUR"
+BOOT_IMAGES="udeb.list $FLAVOUR/cdrom/initrd.gz"
 DISK_IMAGES=""
 TAR_IMAGES=""
+
+# XXX kernel needs to be fixed so that we stop needing this cruft
+if [ "$DI_WWW_HOME" ]; then
+    echo "boot-armel does not support DI_WWW_HOME mode at the moment" >&2
+    exit 1
+fi
+BOOT_IMAGE_KERNEL=
+for vmlinuz in "$DI_PATH/current/images/$FLAVOUR/cdrom/vmlinuz"-*-"$FLAVOUR"; do
+    BOOT_IMAGE_KERNEL="$FLAVOUR/cdrom/$(basename "$vmlinuz")"
+done
+if [ -z "$BOOT_IMAGE_KERNEL" ]; then
+    echo "no kernel found in $DI_PATH/current/images/$FLAVOUR/cdrom/!" >&2
+    exit 1
+fi
+BOOT_IMAGES="$BOOT_IMAGES $BOOT_IMAGE_KERNEL"
 
 #### the snippet below was copied from the i386 version
 # Download boot images
@@ -80,8 +94,7 @@ for image in $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
     fi
 done
 
-# XXX hardcodes linux version until debian-installer is changed
-mv $FLAVOUR/cdrom/vmlinuz-2.6.31-2-$FLAVOUR $FLAVOUR/cdrom/vmlinuz
+mv $BOOT_IMAGE_KERNEL $FLAVOUR/cdrom/vmlinuz
 
 if [ "$NN" = "1" ]; then
     check_kernel_sync udeb.list
