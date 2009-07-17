@@ -10,16 +10,6 @@
 # file in your shell
 
 
-ifeq ($(PROJECT),edubuntu)
-ifneq (,$(findstring $(CODENAME),warty hoary breezy dapper edgy))
-MULTIPLE_DISKS := no
-else
-MULTIPLE_DISKS := yes
-endif
-else
-MULTIPLE_DISKS := no
-endif
-
 ## DEFAULT VALUES
 ifdef SUBARCH
 export FULLARCH=$(ARCH)+$(SUBARCH)
@@ -43,7 +33,7 @@ ifndef CAPCODENAME
 CAPCODENAME:=$(shell perl -e "print ucfirst("$(CODENAME)")")
 endif
 ifndef BINDISKINFO
-ifeq ($(MULTIPLE_DISKS),yes)
+ifneq ($(MAXCDS),1)
 export BINDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(FULLARCH) Binary-$$num ($$DATE)"
 else
 export BINDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(FULLARCH) ($$DATE)"
@@ -54,7 +44,7 @@ export SRCDISKINFO="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL)
 endif
 # ND=No-Date versions for README
 ifndef BINDISKINFOND
-ifeq ($(MULTIPLE_DISKS),yes)
+ifneq ($(MAXCDS),1)
 export BINDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(FULLARCH) Binary-$$num"
 else
 export BINDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIAL) $(FULLARCH)"
@@ -65,13 +55,13 @@ export SRCDISKINFOND="$(CAPPROJECT) $(DEBVERSION) \"$(CAPCODENAME)\" - $(OFFICIA
 endif
 ifndef BINVOLID
 ifeq ($(ARCH),powerpc)
-ifeq ($(MULTIPLE_DISKS),yes)
+ifneq ($(MAXCDS),1)
 BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc Bin-$$num"
 else
 BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc"
 endif
 else
-ifeq ($(MULTIPLE_DISKS),yes)
+ifneq ($(MAXCDS),1)
 BINVOLID="$(CAPPROJECT) $(DEBVERSION) $(ARCH) Bin-$$num"
 else
 BINVOLID="$(CAPPROJECT) $(DEBVERSION) $(ARCH)"
