@@ -149,7 +149,7 @@ FLAVOUR=imx51
 BOARD=babbage
 REDBOOT_PKG="redboot-$FLAVOUR-$BOARD"
 REDBOOT_DEB="$("$BASEDIR/tools/apt-selection" cache show "$REDBOOT_PKG" | sed -n 's/^Filename: //p')"
-REDBOOT_DATA="usr/lib/redboot/$FLAVOUR-${BOARD}_redboot.bin"
+REDBOOT_DATA="usr/lib/redboot/$FLAVOUR-${BOARD}-TO2_redboot.bin"
 CONFIG_DATA="usr/lib/redboot/$FLAVOUR-${BOARD}_fconfig.bin"
 ar p "$MIRROR/$REDBOOT_DEB" data.tar.gz | tar zxf - -C . "./$REDBOOT_DATA" "./$CONFIG_DATA"
 
