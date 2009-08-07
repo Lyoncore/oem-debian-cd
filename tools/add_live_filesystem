@@ -10,6 +10,9 @@ elif [ -e "$LIVEIMAGES/$FULLARCH.squashfs" ]; then
 else
 	echo "No filesystem for $FULLARCH!" >&2
 fi
+if [ -e "$LIVEIMAGES/$FULLARCH.usb-creator.exe" ]; then
+	ln "$LIVEIMAGES/$FULLARCH.usb-creator.exe" "$BDIR/CD1/usb-creator.exe"
+fi
 for item in kernel initrd; do
 	for path in "$LIVEIMAGES/$FULLARCH.$item"-*; do
 		if [ -f "$path" ]; then
