@@ -59,9 +59,11 @@ if [ "$IMAGE_FORMAT" != vfat ]; then
 fi
 
 # XXX hardcodes SUBARCH / FLAVOUR
-FLAVOUR=imx51
+SUBARCH=imx51
+FLAVOUR=babbage
+DI_FLAVOUR=imx51
 
-BOOT_IMAGES="udeb.list $FLAVOUR/cdrom/initrd.gz"
+BOOT_IMAGES="udeb.list $SUBARCH/cdrom/initrd.gz"
 DISK_IMAGES=""
 TAR_IMAGES=""
 
@@ -71,11 +73,11 @@ if [ "$DI_WWW_HOME" ]; then
     exit 1
 fi
 BOOT_IMAGE_KERNEL=
-for vmlinuz in "$DI_PATH/current/images/$FLAVOUR/cdrom/vmlinuz"-*-"$FLAVOUR"; do
-    BOOT_IMAGE_KERNEL="$FLAVOUR/cdrom/$(basename "$vmlinuz")"
+for vmlinuz in "$DI_PATH/current/images/$SUBARCH/cdrom/vmlinuz"-*-"$DI_FLAVOUR"; do
+    BOOT_IMAGE_KERNEL="$SUBARCH/cdrom/$(basename "$vmlinuz")"
 done
 if [ -z "$BOOT_IMAGE_KERNEL" ]; then
-    echo "no kernel found in $DI_PATH/current/images/$FLAVOUR/cdrom/!" >&2
+    echo "no kernel found in $DI_PATH/current/images/$SUBARCH/cdrom/!" >&2
     exit 1
 fi
 BOOT_IMAGES="$BOOT_IMAGES $BOOT_IMAGE_KERNEL"
@@ -94,14 +96,14 @@ for image in $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
     fi
 done
 
-mv $BOOT_IMAGE_KERNEL $FLAVOUR/cdrom/vmlinuz
+mv $BOOT_IMAGE_KERNEL $SUBARCH/cdrom/vmlinuz
 
 if [ "$NN" = "1" ]; then
     check_kernel_sync udeb.list
 
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-        cp -lf $FLAVOUR/cdrom/vmlinuz $CDDIR/install/
-        cp -lf $FLAVOUR/cdrom/initrd.gz $CDDIR/install/
+        cp -lf $SUBARCH/cdrom/vmlinuz $CDDIR/install/
+        cp -lf $SUBARCH/cdrom/initrd.gz $CDDIR/install/
     fi
 
     if [ "$CDIMAGE_LIVE" = 1 ]; then
