@@ -221,9 +221,9 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     EXTRA_ARGS="boot=casper --"
     KERNEL_FIS_DATA="$CDROOT/casper/vmlinuz"
     INITRD_FIS_DATA=
-    for ext in gz bz2 lz; do
-	if [ -e "$CDROOT/casper/initrd.$ext" ]; then
-	    INITRD_FIS_DATA="$CDROOT/casper/initrd.$ext"
+    for ext in .gz .bz2 .lz ""; do
+	if [ -e "$CDROOT/casper/initrd$ext" ]; then
+	    INITRD_FIS_DATA="$CDROOT/casper/initrd$ext"
 	    break
 	fi
     done
