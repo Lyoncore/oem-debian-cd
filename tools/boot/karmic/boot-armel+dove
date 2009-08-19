@@ -1,0 +1,144 @@
+#!/bin/bash
+#
+# Do install stuff for armel, including making bootable CDs
+# Works with debian-installer
+#
+# $1 is the CD number
+# $2 is the temporary CD build dir
+#
+# TODO
+# - hardcodes flavour
+# - hardcodes linux version until debian-installer is changed
+
+. $BASEDIR/tools/boot/$DI_CODENAME/common.sh
+
+set -e
+
+N=$1
+CDDIR=$2
+BOOTDIR=
+if [ "$DI_WWW_HOME" = "default" ];then
+   DI_WWW_HOME="http://people.debian.org/~joeyh/d-i/images/daily"
+fi
+if [ ! "$DI_DIST" ]; then
+   export DI_DIST="$DI_CODENAME"
+fi
+if [ -z "$DI_PATH" ]; then
+   DI_PATH="$($BASEDIR/tools/find-newest-installer)"
+fi
+
+default_preseed
+
+cd $CDDIR/..
+
+#
+# This script is called with $1 (now $N) as the CD to.
+# make bootable.  N may be in the form "n" or "n_NONUS"
+# There may be more than 4 disks...support extras.
+
+# Strip NONUS part of disk number
+# NN will be 1...N so it can be used as an index
+#
+NN=`echo $N | sed -e 's/_NONUS//'`
+
+if [ "$CDIMAGE_ADDON" ]; then
+    # second disk, at least in spirit
+    NN=2
+fi
+
+if [ "$IMAGE_FORMAT" = iso ]; then
+    echo -n "-J -joliet-long " > $N.mkisofs_opts
+
+    "$BASEDIR/tools/sorting_weights" "$N"
+    echo -n "-sort $(pwd)/$N.weights " >> $N.mkisofs_opts
+fi
+
+if [ "$IMAGE_FORMAT" != vfat ]; then
+    echo "armel booting for image format '$IMAGE_FORMAT' disabled for now"
+    exit 0
+fi
+
+# XXX hardcodes SUBARCH / FLAVOUR
+SUBARCH=dove
+FLAVOUR=dove
+DI_FLAVOUR=dove
+
+BOOT_IMAGES="udeb.list $SUBARCH/cdrom/initrd.gz"
+DISK_IMAGES=""
+TAR_IMAGES=""
+
+# XXX kernel needs to be fixed so that we stop needing this cruft
+if [ "$DI_WWW_HOME" ]; then
+    echo "boot-armel does not support DI_WWW_HOME mode at the moment" >&2
+    exit 1
+fi
+BOOT_IMAGE_KERNEL=
+for vmlinuz in "$DI_PATH/current/images/$SUBARCH/cdrom/vmlinuz"-*-"$DI_FLAVOUR"; do
+    BOOT_IMAGE_KERNEL="$SUBARCH/cdrom/$(basename "$vmlinuz")"
+done
+if [ -z "$BOOT_IMAGE_KERNEL" ]; then
+    echo "no kernel found in $DI_PATH/current/images/$SUBARCH/cdrom/!" >&2
+    exit 1
+fi
+BOOT_IMAGES="$BOOT_IMAGES $BOOT_IMAGE_KERNEL"
+
+#### the snippet below was copied from the i386 version
+# Download boot images
+for image in $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
+    if [ ! -e "$image" ]; then
+	dir=$(dirname $image)
+	mkdir -p $dir
+	if [ ! "$DI_WWW_HOME" ];then
+		cp "$DI_PATH/current/images/$image" "$image"
+	else
+		wget "$DI_WWW_HOME/$image" -O "$image"
+	fi
+    fi
+done
+
+mv $BOOT_IMAGE_KERNEL $SUBARCH/cdrom/vmlinuz
+
+if [ "$NN" = "1" ]; then
+    check_kernel_sync udeb.list
+
+    if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+	# I don't expect this boot script to work out of the box just yet ...
+	cat >> boot.script <<EOF
+echo "Loading Ubuntu Alternate Installer ..."
+usb start
+fatload usb 0:1 0x00200000 /cdrom/uImage
+fatload usb 0:1 0x01100000 /cdrom/uRamdisk
+setenv bootargs console=ttyS0,115200 console=tty1,115200 file=/cdrom/preseed/ubuntu.seed video=dovefb:lcd0:1280x768-24@60 clcd.lcd0_enable=1
+bootm 0x00200000 0x01100000
+EOF
+
+	mkimage -A arm -T script -C none -n 'Ubuntu Boot Script' -d boot.script $CDDIR/boot.scr
+
+	# Discussion with kernel team and ogra has that the kernel will have a uImage
+	# and update-initramfs will create a uRamdisk, thus we simply copy these to
+	# the saner filenames
+
+	cp -lf $SUBARCH/cdrom/vmlinuz $CDDIR/install/uImage
+	cp -lf $SUBARCH/cdrom/initrd.gz $CDDIR/install/uRamdisk
+fi
+
+    if [ "$CDIMAGE_LIVE" = 1 ]; then
+	# I don't expect this boot script to work out of the box just yet ...
+	cat >> boot.script <<EOF
+echo "Loading Ubuntu LiveCD ..."
+usb start
+fatload usb 0:1 0x00200000 /casper/uImage
+fatload usb 0:1 0x01100000 /casper/uRamdisk
+setenv bootargs console=ttyS0,115200 console=tty1,115200 file=/cdrom/preseed/ubuntu.seed video=dovefb:lcd0:1280x768-24@60 clcd.lcd0_enable=1 casper
+bootm 0x00200000 0x01100000
+EOF
+	mkimage -A arm -T script -C none -n 'Ubuntu Boot Script' -d boot.script $CDDIR/boot.scr
+	
+	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/uImage
+	CASPER_INITRD="/casper/uRamdisk"
+	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
+    fi
+fi
+
+rm boot.script
+# th,th, thats all
