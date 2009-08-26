@@ -60,7 +60,7 @@ fi
 
 # XXX hardcodes SUBARCH / FLAVOUR
 SUBARCH=imx51
-FLAVOUR=babbage
+FLAVOUR=imx51
 DI_FLAVOUR=imx51
 
 BOOT_IMAGES="udeb.list $SUBARCH/cdrom/initrd.gz"
