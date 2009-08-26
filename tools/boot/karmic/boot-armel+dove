@@ -116,7 +116,7 @@ gen_boot_script() {
 echo "Loading $display_name..."
 fatload usb 0:1 $kernel_addr $kernel_path
 fatload usb 0:1 $ramdisk_addr $ramdisk_path
-setenv bootargs console=ttyS0,115200 console=tty0,115200 file=/cdrom/preseed/ubuntu.seed video=dovefb:lcd0:1280x768-24@60 clcd.lcd0_enable=1$cmdline_append
+setenv bootargs console=ttyS0,115200 console=tty0 file=/cdrom/preseed/ubuntu.seed video=dovefb:lcd0:1280x768-24@60 clcd.lcd0_enable=1$cmdline_append
 bootm $kernel_addr $ramdisk_addr
 EOF
 	mkimage -A arm -T script -C none -n 'Ubuntu boot script' -d "$script_text_file" "$uboot_script_image"
