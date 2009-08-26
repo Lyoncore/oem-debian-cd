@@ -97,7 +97,7 @@ done
 mv $BOOT_IMAGE_KERNEL $SUBARCH/cdrom/vmlinuz
 
 if [ "$NN" = "1" ]; then
-    check_kernel_sync udeb.list
+    check_kernel_sync udeb.list $FLAVOUR
 
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
         cp -lf $SUBARCH/cdrom/vmlinuz $CDDIR/install/
