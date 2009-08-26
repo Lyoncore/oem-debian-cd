@@ -124,7 +124,7 @@ EOF
 }
 
 if [ "$NN" = "1" ]; then
-    check_kernel_sync udeb.list
+    check_kernel_sync udeb.list $FLAVOUR
 
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	output_boot_script \
