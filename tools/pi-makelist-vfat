@@ -33,4 +33,17 @@ EOF
 
 ARGS="-/ -f -a -b"
 
-(mdir c: $ARGS || mdir d: $ARGS) 2>/dev/null | sed '/\/$/ d; s/^[CD]://'
+drive=""
+for d in c: d:; do
+    if mdir "$d" $ARGS >/dev/null 2>&1; then
+        drive="$d"
+        break
+    fi
+done
+
+if [ -z "$drive" ]; then
+    echo "$0: Couldn't list any drive" >&2
+    exit 1
+fi
+
+mdir "$drive" $ARGS | sed '/\/$/ d; s/^[CD]://'
