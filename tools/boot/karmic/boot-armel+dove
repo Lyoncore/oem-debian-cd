@@ -96,7 +96,7 @@ done
 
 mv $BOOT_IMAGE_KERNEL $SUBARCH/cdrom/vmlinuz
 
-gen_boot_script() {
+output_boot_script() {
     kernel_addr="0x00200000"
     ramdisk_addr="0x01100000"
 
