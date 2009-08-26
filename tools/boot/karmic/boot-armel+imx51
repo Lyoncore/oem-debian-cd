@@ -8,7 +8,6 @@
 #
 # TODO
 # - hardcodes flavour
-# - hardcodes linux version until debian-installer is changed
 
 . $BASEDIR/tools/boot/$DI_CODENAME/common.sh
 
