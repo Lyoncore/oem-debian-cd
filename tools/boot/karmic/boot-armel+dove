@@ -96,21 +96,42 @@ done
 
 mv $BOOT_IMAGE_KERNEL $SUBARCH/cdrom/vmlinuz
 
+gen_boot_script() {
+    kernel_addr="0x00200000"
+    ramdisk_addr="0x01100000"
+
+    if [ $# != 5 ]; then
+        echo "Internal error when calling gen_boot_script; got $# args" >&2
+        exit 1
+    fi
+    script_text_file="$1"
+    uboot_script_image="$2"
+    display_name="$3"
+    kernel_path="$4"
+    ramdisk_path="$5"
+    cmdline_append="$6"
+
+    rm -f "$script_text_file"
+    cat >"$script_text_file" <<EOF
+echo "Loading $display_name..."
+fatload usb 0:1 $kernel_addr $kernel_path
+fatload usb 0:1 $ramdisk_addr $ramdisk_path
+setenv bootargs console=ttyS0,115200 console=tty1,115200 file=/cdrom/preseed/ubuntu.seed video=dovefb:lcd0:1280x768-24@60 clcd.lcd0_enable=1$cmdline_append
+bootm $kernel_addr $ramdisk_addr
+EOF
+	mkimage -A arm -T script -C none -n 'Ubuntu boot script' -d "$script_text_file" "$uboot_script_image"
+	rm -vf "$script_text_file"
+}
+
 if [ "$NN" = "1" ]; then
     check_kernel_sync udeb.list
 
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-	# I don't expect this boot script to work out of the box just yet ...
-	cat >>$CDDIR/boot.script <<EOF
-echo "Loading Ubuntu Alternate Installer ..."
-fatload usb 0:1 0x00200000 /cdrom/uImage
-fatload usb 0:1 0x01100000 /cdrom/uRamdisk
-setenv bootargs console=ttyS0,115200 console=tty1,115200 file=/cdrom/preseed/ubuntu.seed video=dovefb:lcd0:1280x768-24@60 clcd.lcd0_enable=1
-bootm 0x00200000 0x01100000
-EOF
-
-	mkimage -A arm -T script -C none -n 'Ubuntu Boot Script' -d $CDDIR/boot.script $CDDIR/boot.scr
-	rm -vf $CDDIR/boot.script
+	output_boot_script \
+	     "$CDDIR/boot.script" "$CDDIR/boot.scr" \
+	     "Ubuntu Alternate Installer" \
+	     "/cdrom/uImage" "/cdrom/uRamdisk" \
+	     ""
 
 	# Discussion with kernel team and ogra has that the kernel will have a uImage
 	# and update-initramfs will create a uRamdisk, thus we simply copy these to
@@ -121,16 +142,11 @@ EOF
     fi
 
     if [ "$CDIMAGE_LIVE" = 1 ]; then
-	# I don't expect this boot script to work out of the box just yet ...
-	cat >>$CDDIR/boot.script <<EOF
-echo "Loading Ubuntu LiveCD ..."
-fatload usb 0:1 0x00200000 /casper/uImage
-fatload usb 0:1 0x01100000 /casper/uRamdisk
-setenv bootargs console=ttyS0,115200 console=tty1,115200 file=/cdrom/preseed/ubuntu.seed video=dovefb:lcd0:1280x768-24@60 clcd.lcd0_enable=1 casper
-bootm 0x00200000 0x01100000
-EOF
-	mkimage -A arm -T script -C none -n 'Ubuntu Boot Script' -d boot.script $CDDIR/boot.scr
-	rm -vf $CDDIR/boot.script
+	output_boot_script \
+	     "$CDDIR/boot.script" "$CDDIR/boot.scr" \
+	     "Ubuntu Ubuntu LiveCD" \
+	     "/casper/uImage" "/casper/uRamdisk" \
+	     "casper"
 	
 	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/uImage
 	CASPER_INITRD="/casper/uRamdisk"
