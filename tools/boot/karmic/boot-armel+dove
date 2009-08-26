@@ -118,7 +118,7 @@ EOF
 
 	cp -lf $SUBARCH/cdrom/vmlinuz $CDDIR/install/uImage
 	cp -lf $SUBARCH/cdrom/initrd.gz $CDDIR/install/uRamdisk
-fi
+    fi
 
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	# I don't expect this boot script to work out of the box just yet ...
