@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Do install stuff for armel, including making bootable CDs
+# Do install stuff for armel+dove, including making bootable CDs
 # Works with debian-installer
 #
 # $1 is the CD number

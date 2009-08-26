@@ -1,11 +1,10 @@
 #!/bin/bash
 #
-# post-boot-armel+dove
-#
-# Do post-image-building tasks for armel, to make vfat images bootable; this
-# script encapsulates the VFAT image in a PC partition image, with
+# Do post-image-building tasks for armel+dove, to make vfat images bootable;
+# this script encapsulates the VFAT image in a PC partition image, with
 # unpartitioned data holding boot data; this is very board specific and targets
-# the Marvell Dove Y0 board
+# the Marvell Dove reference boards (e.g. Y0/Y1) but might work on other Dove
+# boards
 #
 # $1 is the CD number
 # $2 is the temporary CD build dir
