@@ -100,8 +100,8 @@ output_boot_script() {
     kernel_addr="0x00200000"
     ramdisk_addr="0x01100000"
 
-    if [ $# != 5 ]; then
-        echo "Internal error when calling gen_boot_script; got $# args" >&2
+    if [ $# != 6 ]; then
+        echo "Internal error when calling output_boot_script; got $# args" >&2
         exit 1
     fi
     script_text_file="$1"
