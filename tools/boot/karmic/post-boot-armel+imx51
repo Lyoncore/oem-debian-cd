@@ -1,11 +1,9 @@
 #!/bin/bash
 #
-# post-boot-armel
-#
-# Do post-image-building tasks for armel, to make vfat images bootable; this
-# script encapsulates the VFAT image in a PC partition image, with
+# Do post-image-building tasks for armel+imx51, to make vfat images bootable;
+# this script encapsulates the VFAT image in a PC partition image, with
 # unpartitioned data holding boot data; this is very board specific and targets
-# the iMX51 Babbage board
+# the iMX51 Babbage boards but might work on other iMX51 boards
 #
 # $1 is the CD number
 # $2 is the temporary CD build dir
