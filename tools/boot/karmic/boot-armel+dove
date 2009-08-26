@@ -101,7 +101,7 @@ if [ "$NN" = "1" ]; then
 
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	# I don't expect this boot script to work out of the box just yet ...
-	cat >> boot.script <<EOF
+	cat >>$CDDIR/boot.script <<EOF
 echo "Loading Ubuntu Alternate Installer ..."
 fatload usb 0:1 0x00200000 /cdrom/uImage
 fatload usb 0:1 0x01100000 /cdrom/uRamdisk
@@ -109,7 +109,8 @@ setenv bootargs console=ttyS0,115200 console=tty1,115200 file=/cdrom/preseed/ubu
 bootm 0x00200000 0x01100000
 EOF
 
-	mkimage -A arm -T script -C none -n 'Ubuntu Boot Script' -d boot.script $CDDIR/boot.scr
+	mkimage -A arm -T script -C none -n 'Ubuntu Boot Script' -d $CDDIR/boot.script $CDDIR/boot.scr
+	rm -vf $CDDIR/boot.script
 
 	# Discussion with kernel team and ogra has that the kernel will have a uImage
 	# and update-initramfs will create a uRamdisk, thus we simply copy these to
@@ -121,7 +122,7 @@ fi
 
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	# I don't expect this boot script to work out of the box just yet ...
-	cat >> boot.script <<EOF
+	cat >>$CDDIR/boot.script <<EOF
 echo "Loading Ubuntu LiveCD ..."
 fatload usb 0:1 0x00200000 /casper/uImage
 fatload usb 0:1 0x01100000 /casper/uRamdisk
@@ -129,6 +130,7 @@ setenv bootargs console=ttyS0,115200 console=tty1,115200 file=/cdrom/preseed/ubu
 bootm 0x00200000 0x01100000
 EOF
 	mkimage -A arm -T script -C none -n 'Ubuntu Boot Script' -d boot.script $CDDIR/boot.scr
+	rm -vf $CDDIR/boot.script
 	
 	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/uImage
 	CASPER_INITRD="/casper/uRamdisk"
@@ -136,5 +138,4 @@ EOF
     fi
 fi
 
-rm boot.script
 # th,th, thats all
