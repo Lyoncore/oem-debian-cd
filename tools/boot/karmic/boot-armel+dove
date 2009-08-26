@@ -146,7 +146,7 @@ if [ "$NN" = "1" ]; then
 	     "$CDDIR/boot.script" "$CDDIR/boot.scr" \
 	     "Ubuntu Ubuntu LiveCD" \
 	     "/casper/uImage" "/casper/uRamdisk" \
-	     "casper"
+	     "-- casper"
 	
 	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/uImage
 	CASPER_INITRD="/casper/uRamdisk"
