@@ -335,6 +335,14 @@ label minimalvm=Install a minimal virtual machine
 replace minimalvm=file=/cdrom/preseed/ubuntu-server-minimalvm.seed
 applies minimalvm=install
 EOF
+	# This really ought to be in gfxboot.cfg instead, but we want to
+	# make it particularly prominent.
+	cat >> boot$N/isolinux/text.cfg <<EOF
+label cloud
+  menu label Install Ubuntu ^Enterprise Cloud
+  kernel /install/vmlinuz
+  append $KERNEL_PARAMS file=/cdrom/preseed/cloud.seed initrd=/install/initrd.gz quiet --
+EOF
     fi
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubuntu ]); then
