@@ -15,7 +15,6 @@
 #
 # TODO
 # - use safer -m flag of parted (needs a newer parted)
-# - add splash to cmdline (doesn't work right now; LP: #358362)
 
 . "$BASEDIR/tools/boot/$DI_CODENAME/common.sh"
 
@@ -215,8 +214,7 @@ fis_do create "FIS directory" \
     -r "$FIS_DIR_ADDR"
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    # XXX should also have "splash", but doesn't work right now; LP: #358362
-    EXTRA_ARGS="boot=casper --"
+    EXTRA_ARGS="boot=casper quiet splash --"
     KERNEL_FIS_DATA="$CDROOT/casper/vmlinuz"
     INITRD_FIS_DATA=
     for ext in .gz .bz2 .lz ""; do
