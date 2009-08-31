@@ -137,8 +137,8 @@ if [ "$NN" = "1" ]; then
 	# and update-initramfs will create a uInitrd, thus we simply copy these to
 	# the saner filenames
 
-	cp -lf $SUBARCH/cdrom/vmlinuz $CDDIR/install/uImage
-	cp -lf $SUBARCH/cdrom/initrd.gz $CDDIR/install/uInitrd
+	cp -lf $SUBARCH/cdrom/vmlinuz   $CDDIR/cdrom/uImage
+	cp -lf $SUBARCH/cdrom/initrd.gz $CDDIR/cdrom/uInitrd
     fi
 
     if [ "$CDIMAGE_LIVE" = 1 ]; then
