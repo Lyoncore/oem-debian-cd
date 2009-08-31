@@ -130,26 +130,26 @@ if [ "$NN" = "1" ]; then
 	output_boot_script \
 	     "$CDDIR/boot.script" "$CDDIR/boot.scr" \
 	     "Ubuntu Alternate Installer" \
-	     "/cdrom/uImage" "/cdrom/uRamdisk" \
+	     "/cdrom/uImage" "/cdrom/uInitrd" \
 	     ""
 
 	# Discussion with kernel team and ogra has that the kernel will have a uImage
-	# and update-initramfs will create a uRamdisk, thus we simply copy these to
+	# and update-initramfs will create a uInitrd, thus we simply copy these to
 	# the saner filenames
 
 	cp -lf $SUBARCH/cdrom/vmlinuz $CDDIR/install/uImage
-	cp -lf $SUBARCH/cdrom/initrd.gz $CDDIR/install/uRamdisk
+	cp -lf $SUBARCH/cdrom/initrd.gz $CDDIR/install/uInitrd
     fi
 
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	output_boot_script \
 	     "$CDDIR/boot.script" "$CDDIR/boot.scr" \
 	     "Ubuntu LiveCD" \
-	     "/casper/uImage" "/casper/uRamdisk" \
+	     "/casper/uImage" "/casper/uInitrd" \
 	     " -- boot=casper"
 	
 	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/uImage
-	CASPER_INITRD="/casper/uRamdisk"
+	CASPER_INITRD="/casper/uInitrd"
 	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
     fi
 fi
