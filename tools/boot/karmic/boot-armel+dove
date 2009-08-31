@@ -144,7 +144,7 @@ if [ "$NN" = "1" ]; then
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	output_boot_script \
 	     "$CDDIR/boot.script" "$CDDIR/boot.scr" \
-	     "Ubuntu Ubuntu LiveCD" \
+	     "Ubuntu LiveCD" \
 	     "/casper/uImage" "/casper/uRamdisk" \
 	     " -- boot=casper"
 	
