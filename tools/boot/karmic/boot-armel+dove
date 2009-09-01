@@ -147,7 +147,7 @@ EOF
 	rm -vf "$uboot_input_kernel"
 
 	rm -f "$CDDIR/$uboot_initrd"
-	mkimage -A arm -O linux -T ramdisk -C gzip -a 0x0 -e 0x0 -n "Ubuntu Alternate initramfs" -d "$uboot_input_initrd" "$CDDIR/$uboot_initrd"
+	mkimage -A arm -O linux -T ramdisk -C gzip -a 0x0 -e 0x0 -n "Ubuntu Initrd" -d "$uboot_input_initrd" "$CDDIR/$uboot_initrd"
 	rm -vf "$uboot_input_initrd"
     fi
 fi
