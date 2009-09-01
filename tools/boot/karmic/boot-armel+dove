@@ -103,27 +103,24 @@ if [ "$NN" = "1" ]; then
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	do_uboot=1
 	uboot_desc="Ubuntu Alternate Installer"
-	uboot_input_kernel="/cdrom/uImage.in"
-	uboot_input_initrd="/cdrom/uInitrd.in"
+	uboot_input_kernel="$CDDIR/cdrom/uImage.in"
+	uboot_input_initrd="$CDDIR/cdrom/uInitrd.in"
 	uboot_kernel="/cdrom/uImage"
 	uboot_initrd="/cdrom/uInitrd"
 	uboot_extra_cmdline=""
 
-	cp -lf "$SUBARCH/cdrom/vmlinuz"   "$CDDIR/$uboot_input_kernel"
-	cp -lf "$SUBARCH/cdrom/initrd.gz" "$CDDIR/$uboot_input_initrd"
+	cp -lf "$SUBARCH/cdrom/vmlinuz"   "$uboot_input_kernel"
+	cp -lf "$SUBARCH/cdrom/initrd.gz" "$uboot_input_initrd"
     fi
 
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	do_uboot=1
 	uboot_desc="Ubuntu LiveCD"
-	uboot_input_kernel="/casper/uImage.in"
-	uboot_input_initrd="/casper/uInitrd.in"
+	uboot_input_kernel="$CDDIR/casper/filesystem.kernel-$FLAVOUR"
+	uboot_input_initrd="$CDDIR/casper/filesystem.initrd-$FLAVOUR"
 	uboot_kernel="/casper/uImage"
 	uboot_initrd="/casper/uInitrd"
 	uboot_extra_cmdline=" -- boot=casper"
-
-	mv "$CDDIR/casper/filesystem.kernel-$FLAVOUR" "$CDDIR/$uboot_input_kernel"
-	mv "$CDDIR/casper/filesystem.initrd-$FLAVOUR" "$CDDIR/$uboot_input_initrd"
     fi
 
     if [ "$do_uboot" ]; then
@@ -143,13 +140,13 @@ EOF
 	mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text" "$uboot_script_image"
 	rm -vf "$uboot_script_text"
 
-	rm -f "$uboot_input_kernel"
+	rm -f "$CDDIR/$uboot_kernel"
 	# do a copy for now
-	cp "$CDDIR/$uboot_input_kernel" "$CDDIR/$uboot_kernel"
+	cp "$uboot_input_kernel" "$CDDIR/$uboot_kernel"
 	#mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n "Ubuntu Kernel" -d "$uboot_input_kernel" "$CDDIR/$uboot_kernel"
 	rm -vf "$uboot_input_kernel"
 
-	rm -f "$uboot_input_initrd"
+	rm -f "$CDDIR/$uboot_initrd"
 	mkimage -A arm -O linux -T ramdisk -C gzip -a 0x0 -e 0x0 -n "Ubuntu Alternate initramfs" -d "$uboot_input_initrd" "$CDDIR/$uboot_initrd"
 	rm -vf "$uboot_input_initrd"
     fi
