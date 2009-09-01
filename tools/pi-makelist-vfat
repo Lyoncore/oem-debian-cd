@@ -28,13 +28,17 @@ drive c:
 
 drive d:
   file="$IMG"
+  partition=1
+
+drive e:
+  file="$IMG"
   partition=2
 EOF
 
 ARGS="-/ -f -a -b"
 
 drive=""
-for d in c: d:; do
+for d in "c:" "d:" "e:"; do
     if mdir "$d" $ARGS >/dev/null 2>&1; then
         drive="$d"
         break
