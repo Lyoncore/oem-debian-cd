@@ -142,8 +142,7 @@ EOF
 
 	rm -f "$CDDIR/$uboot_kernel"
 	# do a copy for now
-	cp "$uboot_input_kernel" "$CDDIR/$uboot_kernel"
-	#mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n "Ubuntu Kernel" -d "$uboot_input_kernel" "$CDDIR/$uboot_kernel"
+	mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n "Ubuntu Kernel" -d "$uboot_input_kernel" "$CDDIR/$uboot_kernel"
 	rm -vf "$uboot_input_kernel"
 
 	rm -f "$CDDIR/$uboot_initrd"
