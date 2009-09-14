@@ -63,12 +63,11 @@ file_length() {
     stat -c %s "$1"
 }
 
-MIB="$((1024 * 1024))"
 IMAGE_SIZE="$(file_length "$IMAGE")"
 
-# total size in MiB = 512 B for MBR + partition table + VFAT image size,
-# rounded to the next MiB
-IMG_SIZE_MIB="$(((512 + $IMAGE_SIZE + $MIB - 1) / $MIB))"
+# round size to next block; note we add 512 for MBR + partition table; also
+# note we assume blocks of 512 B
+IMG_SIZE_BLOCKS="$(((512 + $IMAGE_SIZE + 512 - 1) / 512))"
 
 # rename the VFAT image out of the way for the disk image
 mv -f "$IMAGE" "$IMAGE.vfat"
@@ -78,7 +77,7 @@ hex2dec() {
 }
 
 # create the blank disk image (and this is a sparse file)
-dd if=/dev/zero of="$IMAGE" bs="$MIB" count=0 seek="$IMG_SIZE_MIB" 2>/dev/null
+dd if=/dev/zero of="$IMAGE" bs=512 count=0 seek="$IMG_SIZE_BLOCKS" 2>/dev/null
 
 # create partition table
 log "initializing disk label (MBR and partition table)..."
