@@ -67,13 +67,15 @@ file_length() {
     stat -c %s "$1"
 }
 
+# used to round disk image size to next MiB
 MIB="$((1024 * 1024))"
 IMAGE_SIZE="$(file_length "$IMAGE")"
 
-# pick an arbitrary large enough size multiple of 512 and of 0x20000
+# pick an arbitrary large enough size multiple of 512 (sector size) and of
+# 0x20000 (flash block size)
 FIS_SIZE="$((16 * $MIB))"
 
-# total size in MiB = FIS size + VFAT image size rounded to the next MiB
+# total size in MiB = FIS size + VFAT image size, rounded to the next MiB
 IMG_SIZE_MIB="$((($FIS_SIZE + $IMAGE_SIZE + $MIB - 1) / $MIB))"
 
 # rename the VFAT image out of the way for the disk image
@@ -93,8 +95,9 @@ parted -s "$IMAGE" mklabel msdos
 # create first partition for the FIS
 log "creating FIS partition..."
 # 512 bytes is the smallest offset where the partition can start; note that the
-# FIS starts on the first sector (LBA address 0 or offset 0)
-parted -s "$IMAGE" mkpart primary fat32 "512B" "${FIS_SIZE}B"
+# FIS starts on the first sector (LBA address 0 or offset 0); also note that
+# parted END address is inclusive, so we substract 1 from FIS_SIZE
+parted -s "$IMAGE" mkpart primary fat32 "512B" "$(($FIS_SIZE - 1))B"
 
 # hackish way to set partition type to "Non-FS data" (0xda); neither parted
 # not fdisk work well in all cases here; fdisk will complain about lack of
