@@ -50,4 +50,4 @@ if [ -z "$drive" ]; then
     exit 1
 fi
 
-mdir "$drive" $ARGS | sed '/\/$/ d; s/^[CD]://'
+mdir "$drive" $ARGS | sed '/\/$/ d; s/^[CDE]://'
