@@ -66,8 +66,9 @@ file_length() {
 MIB="$((1024 * 1024))"
 IMAGE_SIZE="$(file_length "$IMAGE")"
 
-# total size in MiB = VFAT image size rounded to the next MiB
-IMG_SIZE_MIB="$((($IMAGE_SIZE + $MIB - 1) / $MIB))"
+# total size in MiB = 512 B for MBR + partition table + VFAT image size,
+# rounded to the next MiB
+IMG_SIZE_MIB="$(((512 + $IMAGE_SIZE + $MIB - 1) / $MIB))"
 
 # rename the VFAT image out of the way for the disk image
 mv -f "$IMAGE" "$IMAGE.vfat"
