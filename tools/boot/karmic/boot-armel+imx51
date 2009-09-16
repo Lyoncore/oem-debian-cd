@@ -90,7 +90,10 @@ for image in $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
     fi
 done
 
-mv $BOOT_IMAGE_KERNEL $SUBARCH/cdrom/vmlinuz
+if [ "$BOOT_IMAGE_KERNEL" != "$SUBARCH/cdrom/vmlinuz" ]; then
+    mv "$BOOT_IMAGE_KERNEL" "$SUBARCH/cdrom/vmlinuz"
+fi
+
 
 if [ "$NN" = "1" ]; then
     check_kernel_sync udeb.list $FLAVOUR
