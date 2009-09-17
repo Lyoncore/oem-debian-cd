@@ -107,6 +107,7 @@ if [ "$NN" = "1" ]; then
 	uboot_initrd="/cdrom/uInitrd"
 	uboot_extra_cmdline=""
 
+	mkdir -p "`dirname "$uboot_input_kernel"`"
 	cp -lf "$SUBARCH/cdrom/vmlinuz"   "$uboot_input_kernel"
 	cp -lf "$SUBARCH/cdrom/initrd.gz" "$uboot_input_initrd"
     fi
