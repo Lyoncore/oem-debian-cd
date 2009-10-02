@@ -138,7 +138,7 @@ case $DIST in
     export CODENAME=karmic
     export CAPCODENAME='Karmic Koala'
     export DEBVERSION=9.10
-    export OFFICIAL="Beta"
+    export OFFICIAL="Alpha"
     ;;
 esac
 
