@@ -229,7 +229,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 	exit 1
     fi
 else
-    EXTRA_ARGS=""
+    EXTRA_ARGS="cdrom-detect/try-usb=true"
     KERNEL_FIS_DATA="$CDROOT/install/vmlinuz"
     INITRD_FIS_DATA="$CDROOT/install/initrd.gz"
 fi
