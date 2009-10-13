@@ -1,3 +1,5 @@
+# Don't install kernel headers.
+d-i	base-installer/kernel/headers	boolean false
 # Don't even install the standard task.
 tasksel	tasksel/skip-tasks	string standard
 # Only install basic language packs. Let tasksel ask about tasks.
