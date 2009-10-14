@@ -129,7 +129,7 @@ if [ -e "$MIRROR/dists/$DI_CODENAME/main/debian-installer" ]; then
     apt-ftparchive --no-contents generate $PREFIX.generate-binary-debian-installer
 fi
 
-if [ "$CDIMAGE_LIVE" = 1 ]; then
+if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
     for index in $(find "$BDIR"/CD* -name Packages); do
 	if [ ! -s "$index" ]; then
 	    rm -f "$index"*
