@@ -134,7 +134,7 @@ if [ "$NN" = "1" ]; then
 if test -n \${fs} && test -n \${interface} && test -n \${device}; then
 	\${fs}load \${interface} \${device} $uboot_kernel_addr /casper/uImage
 	\${fs}load \${interface} \${device} $uboot_ramdisk_addr /casper/uInitrd
-	setenv bootargs mem=512M quiet splash file=/cdrom/preseed/ubuntu.seed$uboot_extra_cmdline
+	setenv bootargs quiet splash file=/cdrom/preseed/ubuntu.seed$uboot_extra_cmdline
 	bootm $uboot_kernel_addr $uboot_ramdisk_addr
 fi
 
