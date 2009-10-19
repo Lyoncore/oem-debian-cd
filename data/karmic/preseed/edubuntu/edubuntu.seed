@@ -1,13 +1,13 @@
 # Adjust the default hostname.
 d-i	netcfg/get_hostname	string edubuntu
 d-i	netcfg/get_hostname	seen false
-# Build an LTSP client chroot.
-d-i	anna/choose_modules	string ltsp-client-builder
-d-i	ltsp-client-builder/run	boolean true
-# Install the Edubuntu desktop and server.
-tasksel	tasksel/first	multiselect ubuntu-desktop, edubuntu-desktop-gnome, edubuntu-server
+# Install the Edubuntu desktop.
+tasksel	tasksel/first	multiselect ubuntu-desktop, edubuntu-desktop-gnome
 d-i	preseed/early_command	string . /usr/share/debconf/confmodule; db_get debconf/priority; case $RET in low|medium) db_fset tasksel/first seen false ;; esac
 # Install both GNOME and KDE translation packages.
 d-i	pkgsel/language-pack-patterns	string language-pack-gnome-$LL language-pack-kde-$LL kde-i18n-$LL
-# Build a client chroot.
-d-i	preseed/late_command	string chroot /target /usr/sbin/ltsp-update-sshkeys
+# On live DVDs, don't spend huge amounts of time removing substantial
+# application packages pulled in by language packs. Given that we clearly
+# have the space to include them on the DVD, they're useful and we might as
+# well keep them installed.
+ubiquity	ubiquity/keep-installed	string icedtea6-plugin openoffice.org
