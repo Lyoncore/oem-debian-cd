@@ -307,7 +307,7 @@ applies server=install
 EOF
     fi
 fi
-if [ "$PROJECT" != edubuntu ]; then
+if [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-moblin-remix ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label oem=OEM install (for manufacturers)
 append oem=oem-config/enable=true
