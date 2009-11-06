@@ -140,6 +140,13 @@ case $DIST in
     export DEBVERSION=9.10
     export OFFICIAL="Release"
     ;;
+  lucid)
+    export PREV_CODENAME=karmic
+    export CODENAME=lucid
+    export CAPCODENAME='Lucid Lynx'
+    export DEBVERSION=10.04
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
