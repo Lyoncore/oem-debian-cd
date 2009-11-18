@@ -7,6 +7,9 @@ if [ -e "$LIVEIMAGES/$FULLARCH.cloop" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.cloop" "$BDIR/CD1/casper/filesystem.cloop"
 elif [ -e "$LIVEIMAGES/$FULLARCH.squashfs" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.squashfs" "$BDIR/CD1/casper/filesystem.squashfs"
+	if [ -e "$LIVEIMAGES/$FULLARCH.size" ]; then
+		ln "$LIVEIMAGES/$FULLARCH.size" "$BDIR/CD1/casper/filesystem.size"
+	fi
 else
 	echo "No filesystem for $FULLARCH!" >&2
 fi
