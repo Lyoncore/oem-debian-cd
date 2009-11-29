@@ -1,4 +1,4 @@
-# Install the Kubuntu Netbook Edition desktop.
+# Install the Kubuntu Netbook Remix desktop.
 tasksel	tasksel/first	multiselect kubuntu-netbook
 d-i	preseed/early_command	string . /usr/share/debconf/confmodule; db_get debconf/priority; case $RET in low|medium) db_fset tasksel/first seen false ;; esac
 # Install KDE translation packages.
