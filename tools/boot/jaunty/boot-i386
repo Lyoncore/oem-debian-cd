@@ -265,7 +265,7 @@ append xforcevesa=xforcevesa
 applies xforcevesa=live live-install
 label driverupdates=Use driver update disc
 append driverupdates=debian-installer/driver-update=true
-applies xforcevesa=live live-install
+applies driverupdates=live live-install
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
