@@ -215,7 +215,7 @@ fis_do create "FIS directory" \
     -r "$FIS_DIR_ADDR"
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    EXTRA_ARGS="boot=casper quiet splash --"
+    EXTRA_ARGS="boot=casper apparmor=0 quiet splash --"
     KERNEL_FIS_DATA="$CDROOT/casper/vmlinuz"
     INITRD_FIS_DATA=
     for ext in .gz .bz2 .lz ""; do

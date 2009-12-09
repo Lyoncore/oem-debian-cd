@@ -249,14 +249,14 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 label live
   menu label ^Try $HUMANPROJECT without any change to your computer
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=$CASPER_INITRD quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper apparmor=0 initrd=$CASPER_INITRD quiet splash --
 EOF
     if [ "$PROJECT" != ubuntu-mid ]; then
 	cat >> boot$N/isolinux/text.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=$CASPER_INITRD quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper apparmor=0 only-ubiquity initrd=$CASPER_INITRD quiet splash --
 EOF
     fi
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
