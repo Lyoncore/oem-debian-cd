@@ -71,7 +71,7 @@ IMAGE_SIZE="$(file_length "$IMAGE")"
 
 # pick an arbitrary large enough size multiple of 512 (sector size) and of
 # 0x20000 (flash block size)
-FIS_SIZE="$((32 * 1024 * 1024))"
+FIS_SIZE="$((16 * 1024 * 1024))"
 
 # round size to next block; note we assume blocks of 512 B
 IMG_SIZE_BLOCKS="$((($FIS_SIZE + $IMAGE_SIZE + 512 - 1) / 512))"
