@@ -42,8 +42,8 @@ default_preseed() {
 	ubuntu-mid)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/mid.seed'
 	    ;;
-	ubuntu-netbook-remix)
-	    DEFAULT_PRESEED='file=/cdrom/preseed/netbook-remix.seed'
+	ubuntu-netbook)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-netbook.seed'
 	    ;;
 	jeos)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/jeos.seed'

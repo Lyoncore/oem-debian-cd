@@ -226,7 +226,7 @@ gfxboot bootlogo
 EOF
 fi
 if [ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-server ] || \
-   [ "$PROJECT" = ubuntu-mid ] || [ "$PROJECT" = ubuntu-netbook-remix ] || \
+   [ "$PROJECT" = ubuntu-mid ] || [ "$PROJECT" = ubuntu-netbook ] || \
    [ "$PROJECT" = ubuntu-moblin-remix ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 background=0xB6875A
