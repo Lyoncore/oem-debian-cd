@@ -196,8 +196,8 @@ else
       ifeq ($(PROJECT),ubuntu-mid)
  CDBASE = $(CODENAME)-mid-$(FULLARCH)
       else
-       ifeq ($(PROJECT),ubuntu-netbook-remix)
- CDBASE = $(CODENAME)-netbook-remix-$(FULLARCH)
+       ifeq ($(PROJECT),ubuntu-netbook)
+ CDBASE = $(CODENAME)-netbook-$(FULLARCH)
        else
         ifeq ($(PROJECT),kubuntu-netbook)
  CDBASE = $(CODENAME)-netbook-$(FULLARCH)
