@@ -247,7 +247,7 @@ EOF
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/text.cfg <<EOF
 label live
-  menu label ^Try $HUMANPROJECT without any change to your computer
+  menu label ^Try $HUMANPROJECT without installing
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper apparmor=0 initrd=$CASPER_INITRD quiet splash --
 EOF
