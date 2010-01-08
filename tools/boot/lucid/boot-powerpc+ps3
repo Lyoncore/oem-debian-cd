@@ -110,12 +110,12 @@ fi
 echo 'default=install' >> etc/kboot.conf
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> etc/kboot.conf <<EOF
-install='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet splash apparmor=0 only-ubiquity --'
-install_nosplash='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet apparmor=0 only-ubiquity --'
-install_driverupdates='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true quiet splash apparmor=0 only-ubiquity --'
-live='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet splash apparmor=0 --'
-live_nosplash='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet apparmor=0 --'
-driverupdates='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true quiet splash apparmor=0 --'
+install='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet splash only-ubiquity --'
+install_nosplash='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet only-ubiquity --'
+install_driverupdates='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true quiet splash only-ubiquity --'
+live='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet splash --'
+live_nosplash='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper quiet --'
+driverupdates='/casper/vmlinux initrd=$CASPER_INITRD $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper debian-installer/driver-update=true quiet splash --'
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
