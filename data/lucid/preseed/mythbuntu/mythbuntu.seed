@@ -3,3 +3,6 @@
 d-i	pkgsel/install-language-support	boolean false
 # No XFCE translation packages yet.
 d-i	pkgsel/language-pack-patterns	string
+
+#Default to auto login enabled.
+d-i	passwd/auto-login	boolean	true
