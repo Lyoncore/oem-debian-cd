@@ -25,7 +25,17 @@ if [ -f "$LIVEIMAGES/$ARCH.wubi.exe" ]; then
 	cp -a "$LIVEIMAGES/$ARCH.wubi.exe" "$BDIR/CD1/wubi.exe"
 fi
 
+if [ -f "$LIVEIMAGES/$ARCH.umenu.exe" ]; then
+	# umenu always goes on CD1.
+	cp -a "$LIVEIMAGES/$ARCH.umenu.exe" "$BDIR/CD1/umenu.exe"
+fi
+
 if [ -f "$LIVEIMAGES/$ARCH.wubi-cdboot.exe" ]; then
 	# Wubi (for CD booting only) always goes on CD1.
 	cp -a "$LIVEIMAGES/$ARCH.wubi-cdboot.exe" "$BDIR/CD1/wubi-cdboot.exe"
+fi
+
+if [ -f "$LIVEIMAGES/$ARCH.autorun.inf" ]; then
+	# autorun.inf always goes on CD1.
+	cp -a "$LIVEIMAGES/$ARCH.autorun.inf" "$BDIR/CD1/autorun.inf"
 fi
