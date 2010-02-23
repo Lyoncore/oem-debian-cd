@@ -1,3 +1,5 @@
+# Install nouveau backports, for the desktop.
+d-i	base-installer/kernel/backports-modules	string nouveau
 # Disable the restricted component. (It should be missing from the CDs
 # anyway, but let's make sure.)
 d-i	apt-setup/restricted	boolean false

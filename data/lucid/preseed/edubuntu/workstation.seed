@@ -1,6 +1,8 @@
 # Adjust the default hostname.
 d-i	netcfg/get_hostname	string edubuntu
 d-i	netcfg/get_hostname	seen false
+# Install nouveau backports, for the desktop.
+d-i	base-installer/kernel/backports-modules	string nouveau
 # Install the Edubuntu desktop.
 tasksel	tasksel/first	multiselect ubuntu-desktop, edubuntu-desktop-gnome
 d-i	preseed/early_command	string . /usr/share/debconf/confmodule; db_get debconf/priority; case $RET in low|medium) db_fset tasksel/first seen false ;; esac
