@@ -128,6 +128,12 @@ echo -n "-sort $(pwd)/$N.weights " >> $N.mkisofs_opts
 if [ "$NN" = "1" ]; then
 
 
+HIDDEN_TIMEOUT=
+if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ] && \
+   ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-netbook ]); then
+    HIDDEN_TIMEOUT=1
+fi
+
 # populate the install directory as well
 for disk in $DISK_IMAGES; do
 	dir=$(dirname $disk)
@@ -171,6 +177,9 @@ fi
 if [ "$SPLASHPNG" ] && [ -e "$SPLASHPNG" ]; then
     cp -p "$SPLASHPNG" boot$N/isolinux/splash.png
 fi
+if [ "$HIDDEN_TIMEOUT" ]; then
+    cp -p "$BASEDIR/data/$DI_CODENAME/access.pcx" boot$N/isolinux/access.pcx
+fi
 # Remove elilo configuration; only for Macs.
 rm -f boot$N/isolinux/elilo*
 rm -f boot$N/isolinux/*.msg*
@@ -201,7 +210,9 @@ if [ "$DI_VERSION" ]; then
 	"boot$N"/isolinux/*.txt "boot$N"/isolinux/*.hlp
 fi
 
-if [ "$CDIMAGE_LIVE" = 1 ]; then
+if [ "$HIDDEN_TIMEOUT" ]; then
+    timeout=50
+elif [ "$CDIMAGE_LIVE" = 1 ]; then
     timeout=300
 else
     timeout=0
@@ -228,6 +239,11 @@ if [ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-server ] || \
     [ "$PROJECT" = ubuntu-moblin-remix ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 background=0xB6875A
+EOF
+fi
+if [ "$HIDDEN_TIMEOUT" ]; then
+    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+hidden-timeout=1
 EOF
 fi
 if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-netbook ]; then
