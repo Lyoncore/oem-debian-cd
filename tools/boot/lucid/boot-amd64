@@ -132,6 +132,7 @@ HIDDEN_TIMEOUT=
 if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ] && \
    ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-netbook ]); then
     HIDDEN_TIMEOUT=1
+    ACCESSPCX=access-new.pcx
 fi
 
 # populate the install directory as well
@@ -177,8 +178,8 @@ fi
 if [ "$SPLASHPNG" ] && [ -e "$SPLASHPNG" ]; then
     cp -p "$SPLASHPNG" boot$N/isolinux/splash.png
 fi
-if [ "$HIDDEN_TIMEOUT" ]; then
-    cp -p "$BASEDIR/data/$DI_CODENAME/access.pcx" boot$N/isolinux/access.pcx
+if [ "$HIDDEN_TIMEOUT" ] && [ "$ACCESSPCX" ]; then
+    cp -p "$BASEDIR/data/$DI_CODENAME/$ACCESSPCX" boot$N/isolinux/access.pcx
 fi
 # Remove elilo configuration; only for Macs.
 rm -f boot$N/isolinux/elilo*
@@ -238,7 +239,9 @@ if [ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-server ] || \
    [ "$PROJECT" = ubuntu-mid ] || [ "$PROJECT" = ubuntu-netbook ] || \
     [ "$PROJECT" = ubuntu-moblin-remix ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-background=0xB6875A
+foreground=0xFFFFFF
+background=0x958490
+screen-colour=0x270A1E
 EOF
 fi
 if [ "$HIDDEN_TIMEOUT" ]; then
