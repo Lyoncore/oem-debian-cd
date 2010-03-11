@@ -1,5 +1,3 @@
-# Install nouveau backports, for the desktop.
-d-i	base-installer/kernel/backports-modules	string nouveau
 # Only show Ubuntu Studio tasks.
 tasksel	tasksel/limit-tasks	string minimal, standard, ubuntustudio-audio, ubuntustudio-audio-plugins, ubuntustudio-desktop, ubuntustudio-graphics, ubuntustudio-video
 # Language support is expected to be missing.
