@@ -9,7 +9,5 @@ d-i	pkgsel/include/install-recommends	boolean true
 d-i	pkgsel/include	string ltsp-server-standalone openssh-server
 # No XFCE translation packages yet.
 d-i	pkgsel/language-pack-patterns	string
-# Language support is expected to be missing.
-d-i	pkgsel/install-language-support	boolean false
 # Build a client chroot.
 d-i	preseed/late_command	string chroot /target /usr/sbin/ltsp-update-sshkeys
