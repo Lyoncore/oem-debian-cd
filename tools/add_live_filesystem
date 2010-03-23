@@ -31,7 +31,7 @@ if [ "$PROJECT" = edubuntu ] && [ "$CDIMAGE_DVD" = 1 ]; then
 		amd64|i386)
 			mkdir -p "$BDIR/CD1/ltsp"
 			# LTSP is i386 for both architectures
-			ln "$LIVEIMAGES/$FULLARCH.squashfs" "$BDIR/CD1/ltsp/i386.img"
+			ln "$LIVEIMAGES/$FULLARCH.ltsp-squashfs" "$BDIR/CD1/ltsp/i386.img"
 			;;
 	esac
 fi
