@@ -26,6 +26,16 @@ done
 ln "$LIVEIMAGES/$FULLARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
 ln "$LIVEIMAGES/$FULLARCH.manifest-desktop" "$BDIR/CD1/casper/filesystem.manifest-desktop" || true
 
+if [ "$PROJECT" = edubuntu ] && [ "$CDIMAGE_DVD" = 1 ]; then
+	case $ARCH in
+		amd64|i386)
+			mkdir -p "$BDIR/CD1/ltsp"
+			# LTSP is i386 for both architectures
+			ln "$LIVEIMAGES/$FULLARCH.squashfs" "$BDIR/CD1/ltsp/i386.img"
+			;;
+	esac
+fi
+
 lzcat_sane () {
 	lzcat -S '' "$@"
 }
