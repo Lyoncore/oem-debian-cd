@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Do install stuff for armel+dove, including making bootable CDs
+# Do install stuff for armel+omap, including making bootable CDs
 # Works with debian-installer
 #
 # $1 is the CD number
@@ -58,8 +58,8 @@ if [ "$IMAGE_FORMAT" != vfat ]; then
 fi
 
 # XXX hardcodes SUBARCH / FLAVOUR
-SUBARCH=dove
-FLAVOUR=dove
+SUBARCH=omap
+FLAVOUR=omap
 
 BOOT_IMAGES="udeb.list $SUBARCH/cdrom/initrd.gz"
 DISK_IMAGES=""
