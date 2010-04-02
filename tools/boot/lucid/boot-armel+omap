@@ -105,7 +105,7 @@ if [ "$NN" = "1" ]; then
 	uboot_input_initrd="$CDDIR/cdrom/uInitrd.in"
 	uboot_kernel="/cdrom/uImage"
 	uboot_initrd="/cdrom/uInitrd"
-	uboot_extra_cmdline=""
+	uboot_extra_cmdline=" cdrom-detect/try-usb=true"
 
 	mkdir -p "`dirname "$uboot_input_kernel"`"
 	cp -lf "$SUBARCH/cdrom/vmlinuz"   "$uboot_input_kernel"
@@ -144,7 +144,7 @@ EOF
 	rm -vf "$uboot_input_kernel"
 
 	rm -f "$CDDIR/$uboot_initrd"
-	mkimage -A arm -O linux -T ramdisk -C gzip -a 0x0 -e 0x0 -n "Ubuntu Initrd" -d "$uboot_input_initrd" "$CDDIR/$uboot_initrd"
+	mkimage -A arm -O linux -T ramdisk -C none -a 0x0 -e 0x0 -n "Ubuntu Initrd" -d "$uboot_input_initrd" "$CDDIR/$uboot_initrd"
 	rm -vf "$uboot_input_initrd"
     fi
 fi
