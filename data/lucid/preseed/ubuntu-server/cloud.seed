@@ -9,3 +9,5 @@ d-i	pkgsel/language-pack-patterns	string
 d-i	pkgsel/install-language-support	boolean false
 # Only ask the UTC question if there are other operating systems installed.
 d-i	clock-setup/utc-auto	boolean true
+# No boot splash screen.
+d-i	debian-installer/splash	boolean false

@@ -258,9 +258,6 @@ elif [ "$PROJECT" = xubuntu ]; then
 access-options=v2 v3 m2
 EOF
 fi
-if [ "$PROJECT" = ubuntu-server ]; then
-    KERNEL_PARAMS="${KERNEL_PARAMS:+$KERNEL_PARAMS }nosplash"
-fi
 cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label normal=Normal
 append normal=
