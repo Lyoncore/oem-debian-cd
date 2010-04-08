@@ -247,7 +247,7 @@ fconfig_set boot_script TRUE
 # after 3 seconds
 fconfig_set boot_script_timeout 3
 # actual boot script
-CMDLINE="\"console=ttymxc0,115200 console=tty0 file=/cdrom/preseed/ubuntu.seed $EXTRA_ARGS\""
+CMDLINE="\"console=ttymxc0,115200 console=tty0 $DEFAULT_PRESEED $EXTRA_ARGS\""
 SCRIPT="fis load initrd\\"
 SCRIPT="${SCRIPT}fis load kernel\\"
 SCRIPT="${SCRIPT}exec -r $INITRD_FIS_ADDR -s $INITRD_FIS_LENGTH -c $CMDLINE\\"
