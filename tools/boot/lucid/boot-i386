@@ -129,10 +129,12 @@ if [ "$NN" = "1" ]; then
 
 
 HIDDEN_TIMEOUT=
-if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ] && \
-   ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-netbook ] || \
-    [ "$PROJECT" = mythbuntu ]); then
-    HIDDEN_TIMEOUT=1
+if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
+    if [ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-netbook ]; then
+	HIDDEN_TIMEOUT=2
+    elif [ "$PROJECT" = mythbuntu ]; then
+	HIDDEN_TIMEOUT=1
+    fi
     ACCESSPCX=access-new.pcx
 fi
 
@@ -179,6 +181,9 @@ if [ "$SPLASHPNG" ] && [ -e "$SPLASHPNG" ]; then
 fi
 if [ "$HIDDEN_TIMEOUT" ] && [ "$ACCESSPCX" ]; then
     cp -p "$BASEDIR/data/$DI_CODENAME/$ACCESSPCX" boot$N/isolinux/access.pcx
+fi
+if [ "$HIDDEN_TIMEOUT" = 2 ]; then
+    cp -p "$BASEDIR/data/$DI_CODENAME/blank.pcx" boot$N/isolinux/blank.pcx
 fi
 # Remove elilo configuration; only for Macs.
 rm -f boot$N/isolinux/elilo*
@@ -251,7 +256,7 @@ EOF
 fi
 if [ "$HIDDEN_TIMEOUT" ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-hidden-timeout=1
+hidden-timeout=$HIDDEN_TIMEOUT
 EOF
 fi
 if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-netbook ]; then
