@@ -144,7 +144,7 @@ case $DIST in
     export PREV_CODENAME=karmic
     export CODENAME=lucid
     export CAPCODENAME='Lucid Lynx'
-    export DEBVERSION=10.04
+    export DEBVERSION="10.04 LTS"
     export OFFICIAL="Release Candidate"
     ;;
 esac
