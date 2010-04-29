@@ -73,7 +73,7 @@ case $PROJECT in
 			warty|hoary|breezy|dapper|edgy)
 				;;
 			*)
-				RELEASE_NOTES="http://www.ubuntu.com/getubuntu/releasenotes?os=$PROJECT&ver=$DEBVERSION&lang=\${LANG}"
+				RELEASE_NOTES="http://www.ubuntu.com/getubuntu/releasenotes?os=$PROJECT&ver=${DEBVERSION%% *}&lang=\${LANG}"
 				;;
 		esac
 		;;
