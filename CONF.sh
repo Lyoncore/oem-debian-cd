@@ -256,7 +256,7 @@ esac
 
 # Use post-release updates?
 case $DIST in
-  warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy|intrepid|jaunty|karmic)
+  warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy|intrepid|jaunty|karmic|lucid)
     export UPDATES=1
     ;;
 esac
