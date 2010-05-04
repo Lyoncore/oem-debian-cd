@@ -152,6 +152,13 @@ case $DIST in
     esac
     export OFFICIAL="Release"
     ;;
+  maverick)
+    export PREV_CODENAME=lucid
+    export CODENAME=maverick
+    export CAPCODENAME='Maverick Meerkat'
+    export DEBVERSION=10.10
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
