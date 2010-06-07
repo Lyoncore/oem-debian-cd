@@ -154,6 +154,9 @@ endif
 ifeq ($(CDIMAGE_DVD),1)
 CDBASE = $(CODENAME)-dvd-$(FULLARCH)
 else
+ifeq ($(CDIMAGE_PREINSTALLED),1)
+CDBASE = $(CODENAME)-preinstalled-$(FULLARCH)
+else 
  ifeq ($(CDIMAGE_ADDON),1)
   CDBASE = $(CODENAME)-addon-$(FULLARCH)
  else
@@ -215,6 +218,7 @@ else
    endif
   endif
  endif
+endif
 endif
 CDSRCBASE = $(CODENAME)-src-$(1)
 
@@ -1052,6 +1056,22 @@ ifeq ($(CDIMAGE_LIVE),1)
 	-cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
 endif
 
+bin-preinstalled_images: ok $(OUT)
+	@echo "Post-processing pre-installed images ...";
+	$(Q)set -x; \
+	mkdir -p $(BDIR)/CD1; \
+	if [ ! -e "$(PREINSTALLEDIMAGES)/$(FULLARCH).$(IMAGE_FORMAT)" ]; then \
+		echo "No filesystem for $(FULLARCH)!" >&2; \
+		exit 1;	\
+	fi;
+	ln $(PREINSTALLEDIMAGES)/$(FULLARCH).$(IMAGE_FORMAT) $(OUT)/$(call CDBASE,1).raw; 
+	if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) ]; then \
+		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) 1 $(BDIR)/CD1 \
+		$(OUT)/$(call CDBASE,1).raw; \
+	elif [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
+		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) 1 $(BDIR)/CD1 \
+		$(OUT)/$(call CDBASE,1).raw; \
+	fi; \
 
 src-images: ok src-md5list $(OUT)
 	@echo "Generating the source iso/jigdo images ..."
@@ -1097,15 +1117,17 @@ src-images: ok src-md5list $(OUT)
 # Generate the *.list files for the Pseudo Image Kit
 pi-makelist:
 	$(Q)set -e; \
-	 cd $(OUT); for file in `find * -name \*.raw`; do \
-	     if [ "$(IMAGE_FORMAT)" = "vfat" ]; then \
-	         $(BASEDIR)/tools/pi-makelist-vfat \
-	             $$file > $${file%%.raw}.list; \
-	     elif [ "$(IMAGE_FORMAT)" = "iso" ]; then \
-	         $(BASEDIR)/tools/pi-makelist \
-	             $$file > $${file%%.raw}.list; \
-	     fi \
-	 done
+	if [ "$(CDIMAGE_PREINSTALLED)" != 1 ]; then \
+	     cd $(OUT); for file in `find * -name \*.raw`; do \
+	         if [ "$(IMAGE_FORMAT)" = "vfat" ]; then \
+	             $(BASEDIR)/tools/pi-makelist-vfat \
+	                 $$file > $${file%%.raw}.list; \
+	         elif [ "$(IMAGE_FORMAT)" = "iso" ]; then \
+	             $(BASEDIR)/tools/pi-makelist \
+	                 $$file > $${file%%.raw}.list; \
+	         fi \
+	     done \
+	fi
 
 # Generate only one image number $(CD)
 image: bin-image
@@ -1225,7 +1247,12 @@ update-popcon:
 
 # Little trick to simplify things
 official_images: bin-official_images src-official_images
+
+ifeq ($(CDIMAGE_PREINSTALLED),1)
+bin-official_images: ok bin-preinstalled_images 
+else
 bin-official_images: ok bootable upgrade app-install bin-images
+endif
 src-official_images: ok src-doc src-images
 
 $(CODENAME)_status: ok init

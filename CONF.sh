@@ -213,6 +213,9 @@ export DEBOOTSTRAP=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/debootstrap
 # Where live filesystem images live
 export LIVEIMAGES=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/live
 
+# Where preinstalled filesystem images live
+export PREINSTALLEDIMAGES=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/preinstalled
+
 # Do I want to have NONFREE merged in the CD set
 # export NONFREE=1
 
@@ -341,8 +344,15 @@ export NOSUGGESTS=1
 # Image format:
 # vfat = Output an image in VFAT format (.img)
 # iso  = Output an image in ISO 9660 format (.iso)
+# ext2/ext3 = Output a image in the EXTX format (.img).
+#             Only available for preinstalled images
+
 if [ -z "$IMAGE_FORMAT" ]; then
-  export IMAGE_FORMAT=iso
+  if [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
+    export IMAGE_FORMAT=ext3
+  else
+    export IMAGE_FORMAT=iso
+  fi
 fi
 
 # Produce jigdo files:
