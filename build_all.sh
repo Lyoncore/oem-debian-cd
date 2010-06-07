@@ -92,7 +92,9 @@ do
 		echo Generating list files for images
 		make pi-makelist
 	else
-		make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
+		if [ "$CDIMAGE_PREINSTALLED" != 1 ]; then
+			make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
+		fi
 		export OUT=$TMP_OUT/$FULLARCH; mkdir -p $OUT
 		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		if [ $? -gt 0 ]; then
