@@ -274,7 +274,7 @@ case $DIST in
 esac
 
 case $DIST in
-  hardy)
+  lucid)
     export PROPOSED=1
     ;;
 esac
