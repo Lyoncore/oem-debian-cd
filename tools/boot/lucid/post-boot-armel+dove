@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/bash -x
 #
-# Do post-image-building tasks for armel+dove, to make vfat images bootable;
+# Do post-image-building tasks for armel+omap, to make vfat images bootable;
 # this script encapsulates the VFAT image in a PC partition image, with
 # unpartitioned data holding boot data; this is very board specific and targets
 # the Marvell Dove reference boards (e.g. Y0/Y1) but might work on other Dove
@@ -45,7 +45,7 @@ if ([ "$N" != 1 ] && [ "$N" != 1_NONUS ]) || [ "$CDIMAGE_ADDON" ]; then
 fi
 
 # We only want to do this for vfat images
-if [ "$IMAGE_FORMAT" != "vfat" ]; then
+if [ "$IMAGE_FORMAT" == "iso" ]; then
     exit 0
 fi
 
@@ -55,63 +55,68 @@ cd "$CDROOT/.."
 # the first partition is the vfat passed as $3 ($IMAGE) and contains the
 # root fs.
 
-# the PC partitions have addresses which are constrained by what can be
-# expressed in CHS / LBA; non-CHS aligned values scare fdisk, but parted is
-# fine with pure LBA addresses on 512 bytes boundaries, so we use that
+# OMAP3 requires very specific CHS partitioning that can't easy be done with parted
+# so we'll use sfdisk to properly make the necessary partition layout
+
+# globals (please adjust or autodetect or whatever (based on subarch))
+# note thses  paths point to manually unpacked .debs on my disk atm
 
 file_length() {
-    stat -c %s "$1"
+        stat -c %s "$1"
 }
 
-IMAGE_SIZE="$(file_length "$IMAGE")"
+PATH_TO_MLO=/usr/lib/x-loader-omap/MLO
+PATH_TO_UBOOT=/usr/lib/u-boot/u-boot-beagle.bin
+PATH_TO_UIMAGE=
+PATH_TO_INITRD=
+EXT3=$IMAGE.rootfs
+MTOOLSRC=$IMAGE.mtoolsrc
 
-# round size to next block; note we add 512 for MBR + partition table; also
-# note we assume blocks of 512 B
-IMG_SIZE_BLOCKS="$(((512 + $IMAGE_SIZE + 512 - 1) / 512))"
+# Move the ext3 filesystem out of the way
+mv $IMAGE $EXT3
 
-# rename the VFAT image out of the way for the disk image
-mv -f "$IMAGE" "$IMAGE.vfat"
+# mtools sanity checks are getting in the way, so we need to turn its brain off
+cat > $MTOOLSRC <<EOF
+mtools_skip_check=1
+EOF
 
-hex2dec() {
-    printf "%d\n" "$1"
-}
+export MTOOLSRC
 
-# create the blank disk image (and this is a sparse file)
-dd if=/dev/zero of="$IMAGE" bs=512 count=0 seek="$IMG_SIZE_BLOCKS" 2>/dev/null
+# we leave 72MB for the vfat that carries u-boot, MLO, uImage,
+# uInitrd and boot.scr
+BOOT_SIZE="$((72 * 1024 * 1024))"
 
-# create partition table
-log "initializing disk label (MBR and partition table)..."
-parted -s "$IMAGE" mklabel msdos
+IMAGE_SIZE="$(file_length "$EXT3")"
+IMG_SIZE_BLOCKS="$((($BOOT_SIZE + $IMAGE_SIZE + 512 - 1) / 512))"
 
-# outputs actual partition start offset, end offset, and length, suffixed with
-# B
-get_part_data() {
-    local n="$1"
+dd if=/dev/zero of="$IMAGE" bs=512 count=0 seek="$IMG_SIZE_BLOCKS" >/dev/null 2>&1
 
-    LANG=C parted -s "$IMAGE" unit B print | awk "/^ $n / { print \$2 \" \" \$3 \" \" \$4 }"
+TRG_SIZE="$(file_length "$IMAGE")"
+CYLINDERS=`echo $TRG_SIZE/255/63/512 | bc`
 
-    # safer version using parted -m; needs newer parted
-    #LANG=C parted -m -s "$IMAGE" unit B print | grep "^$n:" | cut -d: -f 2,3,4 --output-delimiter=" "
-}
+{
+    echo ,9,0x0C,*
+    echo ,,,-
+} | sfdisk -D -H 255 -S 63 -C $CYLINDERS $IMAGE >/dev/null 2>&1
 
-# read disk size, or rather last disk byte, with a "B" char at the end of the
-# output
-# safer version using parted -m; needs newer parted
-#DISK_END_B="$(LANG=C parted -m -s "$IMAGE" unit B print | tail -1 | cut -d : -f 2)"
-DISK_END_B="$(LANG=C parted -s "$IMAGE" unit B print | sed -rn 's/^Disk [^:]+: ([0-9]+B)$/\1/p')"
+VATSTART=$(parted $IMAGE unit B print|grep "^ 1"|awk '{print $2}')
+VATSIZE=$(LANG=C fdisk -l ${IMAGE} 2>/dev/null|grep W95 |awk '{print $5}')
 
-# create partition for the VFAT
-log "creating VFAT partition..."
-parted -s "$IMAGE" mkpart primary fat32 0 "$DISK_END_B"
+mkdosfs -C $IMAGE.vfat ${VATSIZE} >/dev/null 2>&1
+mcopy -i $IMAGE.vfat "${PATH_TO_MLO}" ::MLO
+mcopy -i $IMAGE.vfat "${PATH_TO_UBOOT}" ::u-boot.bin
+# mcopy -i $IMAGE.vfat "${PATH_TO_UIMAGE} ::uImage
+# mcopy -i $IMAGE.vfat "${PATH_TO_INITRD} ::uInitrd
 
-VFAT_LEN_B="`(set -- $(get_part_data 1); echo "$3")`"
-if [ "${VFAT_LEN_B%B}" -lt "$IMAGE_SIZE" ]; then
-    die "VFAT partition length is $VFAT_LEN_B and doesn't leave enough room for VFAT ${IMAGE_SIZE}B"
-fi
+# here we will need to create boot.scr and mcopy it too
 
-VFAT_START_B="`(set -- $(get_part_data 1); echo "$1")`"
-log "writing vfat contents..."
-dd conv=notrunc bs="${VFAT_START_B%B}" if="$IMAGE.vfat" of="$IMAGE" seek=1 2>/dev/null
+# now put the whole vfat into the first partition
+dd conv=notrunc bs="${VATSTART%B}" if=$IMAGE.vfat of="$IMAGE" seek=1 >/dev/null 2>&1
+rm $IMAGE.vfat
 
-# VFAT isn't needed anymore
-rm -f "$IMAGE.vfat"
+# put ext3 content into the second partition
+EXT3START=$(parted $IMAGE unit B print|grep "^ 2"|awk '{print $2}')
+dd conv=notrunc bs="${EXT3START%B}" if=$IMAGE.rootfs of="$IMAGE" seek=1 >/dev/null 2>&1
+
+# Cleanup
+#rm -f "$IMAGE.rootfs" "$IMAGE.vfat" "$IMAGE.mtoolsrc"
