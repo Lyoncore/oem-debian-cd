@@ -344,15 +344,16 @@ export NOSUGGESTS=1
 # Image format:
 # vfat = Output an image in VFAT format (.img)
 # iso  = Output an image in ISO 9660 format (.iso)
-# ext2/ext3 = Output a image in the EXTX format (.img).
-#             Only available for preinstalled images
 
 if [ -z "$IMAGE_FORMAT" ]; then
-  if [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
-    export IMAGE_FORMAT=ext3
-  else
-    export IMAGE_FORMAT=iso
-  fi
+  export IMAGE_FORMAT=iso
+fi
+
+# Preinstalled Image Filesystem
+# This is the expected filesystem that is downloaded from the livefs builders
+
+if [ -z "$PREINSTALLED_IMAGE_FILESYSTEM" ]; then
+  export PREINSTALLED_IMAGE_FILESYSTEM=ext3
 fi
 
 # Produce jigdo files:

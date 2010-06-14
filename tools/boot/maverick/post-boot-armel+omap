@@ -69,11 +69,14 @@ file_length() {
 FLAVOUR=omap
 SUBARCH=omap
 XLOADER_PACKAGE="x-loader-omap"
-# MIRROR line needed since x-loader is currently in universe on lucid
-export MIRROR=$BASEDIR/ftp-universe-ports
 XLOADER_DEB="$("$BASEDIR/tools/apt-selection" cache show "$XLOADER_PACKAGE" | sed -n 's/^Filename: //p')"
-REDBOOT_DATA="usrr/lib/x-loader-omap/MLO"
+XLOADER_DATA="usr/lib/x-loader-omap/MLO"
 ar p "$MIRROR/$XLOADER_DEB" data.tar.gz | tar zxf - -C . "./$XLOADER_DATA"
+
+UBOOT_PACKAGE="u-boot-omap3"
+UBOOT_DEB="$("$BASEDIR/tools/apt-selection" cache show "$UBOOT_PACKAGE" | sed -n 's/^Filename: //p')"
+UBOOT_DATA="usr/lib/u-boot/u-boot-beagle.bin"
+ar p "$MIRROR/$UBOOT_DEB" data.tar.gz | tar zxf - -C . "./$UBOOT_DATA"
 
 uboot_kernel="uImage"
 uboot_initrd="uInitrd"
@@ -103,12 +106,12 @@ fi
 
 if [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
     uboot_desc="Ubuntu Preinstalled Image"
-    uboot_input_kernel="$CDDIR/$(FULLARCH).kernel"
-    uboot_input_initrd="$CDDIR/$(FULLARCH).initrd"
+    uboot_input_kernel="$PREINSTALLEDIMAGES/$FULLARCH.kernel-$FLAVOUR"
+    uboot_input_initrd="$PREINSTALLEDIMAGES/$FULLARCH.initrd-$FLAVOUR"
 fi
 
-PATH_TO_MLO=/usr/lib/x-loader-omap/MLO
-PATH_TO_UBOOT=/usr/lib/u-boot/u-boot-beagle.bin
+PATH_TO_MLO=usr/lib/x-loader-omap/MLO
+PATH_TO_UBOOT=usr/lib/u-boot/u-boot-beagle.bin
 EXT3=$IMAGE.rootfs
 MTOOLSRC=$IMAGE.mtoolsrc
 

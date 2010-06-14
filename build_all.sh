@@ -91,10 +91,14 @@ do
 		make imagesums
 		echo Generating list files for images
 		make pi-makelist
+	elif [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
+		export OUT="$TMP_OUT/$FULLARCH"; mkdir -p $OUT
+		make bin-preinstalled_images
+
+		echo Generating MD5Sums of the images
+		make imagesums
 	else
-		if [ "$CDIMAGE_PREINSTALLED" != 1 ]; then
-			make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
-		fi
+		make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		export OUT=$TMP_OUT/$FULLARCH; mkdir -p $OUT
 		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		if [ $? -gt 0 ]; then
