@@ -96,57 +96,6 @@ fi
 
 if [ "$NN" = "1" ]; then
     check_kernel_sync udeb.list $FLAVOUR
-
-    do_uboot=0
-    if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-	do_uboot=1
-	uboot_desc="Ubuntu Alternate Installer"
-	uboot_input_kernel="$CDDIR/cdrom/uImage.in"
-	uboot_input_initrd="$CDDIR/cdrom/uInitrd.in"
-	uboot_kernel="/cdrom/uImage"
-	uboot_initrd="/cdrom/uInitrd"
-	uboot_extra_cmdline=" cdrom-detect/try-usb=true"
-
-	mkdir -p "`dirname "$uboot_input_kernel"`"
-	cp -lf "$SUBARCH/cdrom/vmlinuz"   "$uboot_input_kernel"
-	cp -lf "$SUBARCH/cdrom/initrd.gz" "$uboot_input_initrd"
-    fi
-
-    if [ "$CDIMAGE_LIVE" = 1 ]; then
-	do_uboot=1
-	uboot_desc="Ubuntu LiveCD"
-	uboot_input_kernel="$CDDIR/casper/filesystem.kernel-$FLAVOUR"
-	uboot_input_initrd="$CDDIR/casper/filesystem.initrd-$FLAVOUR"
-	uboot_kernel="/casper/uImage"
-	uboot_initrd="/casper/uInitrd"
-	uboot_extra_cmdline=" -- boot=casper only-ubiquity nocompcache"
-    fi
-
-    if [ "$do_uboot" ]; then
-	uboot_script_text="$CDDIR/boot.script"
-	uboot_script_image="$CDDIR/boot.scr"
-	uboot_kernel_addr="0x80000000"
-	uboot_ramdisk_addr="0x81600000"
-	uboot_script_addr="0x1000"
-
-	rm -f "$uboot_script_text"
-cat >"$uboot_script_text" <<EOF
-	fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
-	fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
-	setenv bootargs quiet splash vram=12M omapfb.mode=dvi:1280x720MR-16@60 $DEFAULT_PRESEED $uboot_extra_cmdline
-	bootm $uboot_kernel_addr $uboot_ramdisk_addr
-EOF
-	mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text" "$uboot_script_image"
-	rm -vf "$uboot_script_text"
-
-	rm -f "$CDDIR/$uboot_kernel"
-	mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Ubuntu Kernel" -d "$uboot_input_kernel" "$CDDIR/$uboot_kernel"
-	rm -vf "$uboot_input_kernel"
-
-	rm -f "$CDDIR/$uboot_initrd"
-	mkimage -A arm -O linux -T ramdisk -C none -a 0x0 -e 0x0 -n "Ubuntu Initrd" -d "$uboot_input_initrd" "$CDDIR/$uboot_initrd"
-	rm -vf "$uboot_input_initrd"
-    fi
 fi
 
 # th,th, thats all
