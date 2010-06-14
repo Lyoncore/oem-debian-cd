@@ -1060,11 +1060,11 @@ bin-preinstalled_images: ok $(OUT)
 	@echo "Post-processing pre-installed images ...";
 	$(Q)set -x; \
 	mkdir -p $(BDIR)/CD1; \
-	if [ ! -e "$(PREINSTALLEDIMAGES)/$(FULLARCH).$(IMAGE_FORMAT)" ]; then \
+	if [ ! -e "$(PREINSTALLEDIMAGES)/$(FULLARCH).$(PREINSTALLED_IMAGE_FILESYSTEM)" ]; then \
 		echo "No filesystem for $(FULLARCH)!" >&2; \
 		exit 1;	\
 	fi;
-	ln $(PREINSTALLEDIMAGES)/$(FULLARCH).$(IMAGE_FORMAT) $(OUT)/$(call CDBASE,1).raw; 
+	ln $(PREINSTALLEDIMAGES)/$(FULLARCH).$(PREINSTALLED_IMAGE_FILESYSTEM) $(OUT)/$(call CDBASE,1).raw; 
 	if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) ]; then \
 		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) 1 $(BDIR)/CD1 \
 		$(OUT)/$(call CDBASE,1).raw; \
@@ -1247,12 +1247,7 @@ update-popcon:
 
 # Little trick to simplify things
 official_images: bin-official_images src-official_images
-
-ifeq ($(CDIMAGE_PREINSTALLED),1)
-bin-official_images: ok bin-preinstalled_images 
-else
 bin-official_images: ok bootable upgrade app-install bin-images
-endif
 src-official_images: ok src-doc src-images
 
 $(CODENAME)_status: ok init
