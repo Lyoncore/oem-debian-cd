@@ -344,7 +344,6 @@ export NOSUGGESTS=1
 # Image format:
 # vfat = Output an image in VFAT format (.img)
 # iso  = Output an image in ISO 9660 format (.iso)
-
 if [ -z "$IMAGE_FORMAT" ]; then
   export IMAGE_FORMAT=iso
 fi
