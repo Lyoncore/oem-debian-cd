@@ -97,7 +97,30 @@ fi
 if [ "$NN" = "1" ]; then
     check_kernel_sync udeb.list $FLAVOUR
 
-    default_uboot_input_files
+    do_uboot=0
+    if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+	do_uboot=1
+	uboot_desc="Ubuntu Alternate Installer"
+	uboot_input_kernel="$CDDIR/cdrom/uImage.in"
+	uboot_input_initrd="$CDDIR/cdrom/uInitrd.in"
+	uboot_kernel="/cdrom/uImage"
+	uboot_initrd="/cdrom/uInitrd"
+	uboot_extra_cmdline=" cdrom-detect/try-usb=true"
+
+	mkdir -p "`dirname "$uboot_input_kernel"`"
+	cp -lf "$SUBARCH/cdrom/vmlinuz"   "$uboot_input_kernel"
+	cp -lf "$SUBARCH/cdrom/initrd.gz" "$uboot_input_initrd"
+    fi
+
+    if [ "$CDIMAGE_LIVE" = 1 ]; then
+	do_uboot=1
+	uboot_desc="Ubuntu LiveCD"
+	uboot_input_kernel="$CDDIR/casper/filesystem.kernel-$FLAVOUR"
+	uboot_input_initrd="$CDDIR/casper/filesystem.initrd-$FLAVOUR"
+	uboot_kernel="/casper/uImage"
+	uboot_initrd="/casper/uInitrd"
+	uboot_extra_cmdline=" -- boot=casper"
+    fi
 
     if [ "$do_uboot" ]; then
 	uboot_script_text="$CDDIR/boot.script"
