@@ -118,5 +118,9 @@ do
 		echo Generating list files for images
 		make pi-makelist
 	fi
+	if [ "$CDIMAGE_COMPRESS" = 1 ]; then
+		echo Compressing CD images
+		make bin-compress_images
+	fi
 	echo "--------------- `date` ---------------"
 done

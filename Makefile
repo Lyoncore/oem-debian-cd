@@ -1073,6 +1073,16 @@ bin-preinstalled_images: ok $(OUT)
 		$(OUT)/$(call CDBASE,1).raw; \
 	fi; \
 
+# FIXME: This only works with CD1, and not with addon CDs.
+bin-compress_images: ok $(OUT)
+	@if [ ! -e "$(OUT)/$(call CDBASE,1).raw" ]; then \
+		echo "No image for $(FULLARCH)!" >&2; \
+		exit 1; \
+	fi;
+	@file -b $(OUT)/$(call CDBASE,1).raw > $(OUT)/$(call CDBASE,1).type
+	@bzip2 -9 $(OUT)/$(call CDBASE,1).raw;
+	@mv $(OUT)/$(call CDBASE,1).raw.bz2 $(OUT)/$(call CDBASE,1).raw; 
+
 src-images: ok src-md5list $(OUT)
 	@echo "Generating the source iso/jigdo images ..."
 	$(Q)set -e; set -x; \
