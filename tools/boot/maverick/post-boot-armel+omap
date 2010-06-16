@@ -84,7 +84,7 @@ elif [ "$FULLARCH" = "armel+omap4" ]; then
 
     uboot_package="u-boot-omap4"
     uboot_deb="$("$BASEDIR/tools/apt-selection" cache show "$uboot_package" | sed -n 's/^Filename: //p')"
-    path_to_uboot="usr/lib/u-boot/u-boot-beagle.bin"
+    path_to_uboot="usr/lib/u-boot/u-boot-omap4.bin"
     ar p "$MIRROR/$uboot_deb" data.tar.gz | tar zxf - -C . "./$path_to_uboot"
 else
     echo "Unknown OMAP subarch"
