@@ -232,10 +232,10 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 else
     DEFAULT_LABEL=install
 fi
-cat > boot$N/isolinux/text.cfg <<EOF
+cat > boot$N/isolinux/txt.cfg <<EOF
 default $DEFAULT_LABEL
 EOF
-> boot$N/isolinux/adtext.cfg
+> boot$N/isolinux/adtxt.cfg
 if [ "$GFXBOOT" ]; then
     cat >> boot$N/isolinux/isolinux.cfg <<EOF
 gfxboot bootlogo
@@ -276,14 +276,14 @@ label normal=Normal
 append normal=
 EOF
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    cat >> boot$N/isolinux/text.cfg <<EOF
+    cat >> boot$N/isolinux/txt.cfg <<EOF
 label live
   menu label ^Try $HUMANPROJECT without installing
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=$CASPER_INITRD quiet splash --
 EOF
     if [ "$PROJECT" != ubuntu-mid ]; then
-	cat >> boot$N/isolinux/text.cfg <<EOF
+	cat >> boot$N/isolinux/txt.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
   kernel /casper/vmlinuz
@@ -298,21 +298,21 @@ EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
     if [ "$CDIMAGE_LIVE" != 1 ]; then
-	cat >> boot$N/isolinux/text.cfg <<EOF
+	cat >> boot$N/isolinux/txt.cfg <<EOF
 label install
   menu label ^Install $HUMANPROJECT
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 EOF
     else
-	cat >> boot$N/isolinux/text.cfg <<EOF
+	cat >> boot$N/isolinux/txt.cfg <<EOF
 label install
   menu label ^Install $HUMANPROJECT in text mode
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 EOF
     fi
-    cat >> boot$N/isolinux/adtext.cfg <<EOF
+    cat >> boot$N/isolinux/adtxt.cfg <<EOF
 label expert
   menu hide
   kernel /install/vmlinuz
@@ -366,7 +366,7 @@ applies minimalvm=install
 EOF
 	# This really ought to be in gfxboot.cfg instead, but we want to
 	# make it particularly prominent.
-	cat >> boot$N/isolinux/text.cfg <<EOF
+	cat >> boot$N/isolinux/txt.cfg <<EOF
 label cloud
   menu label Install Ubuntu ^Enterprise Cloud
   kernel /install/vmlinuz
@@ -389,14 +389,14 @@ applies ltsp=install
 EOF
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    cat >> boot$N/isolinux/text.cfg <<EOF
+    cat >> boot$N/isolinux/txt.cfg <<EOF
 label check
   menu label ^Check disc for defects
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS boot=casper integrity-check initrd=$CASPER_INITRD quiet splash --
 EOF
 elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-    cat >> boot$N/isolinux/text.cfg <<EOF
+    cat >> boot$N/isolinux/txt.cfg <<EOF
 label check
   menu label ^Check disc for defects
   kernel /install/vmlinuz
@@ -404,14 +404,14 @@ label check
 EOF
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-    cat >> boot$N/isolinux/adtext.cfg <<EOF
+    cat >> boot$N/isolinux/adtxt.cfg <<EOF
 label rescue
   menu label ^Rescue a broken system
   kernel /install/vmlinuz
   append $KERNEL_PARAMS rescue/enable=true initrd=/install/initrd.gz --
 EOF
 fi
-cat >> boot$N/isolinux/text.cfg <<EOF
+cat >> boot$N/isolinux/txt.cfg <<EOF
 label memtest
   menu label Test ^memory
   kernel /install/mt86plus
