@@ -58,7 +58,7 @@ cd "$CDDIR/.."
 # OMAP3 requires very specific CHS partitioning that can't easy be done with parted
 # so we'll use sfdisk to properly make the necessary partition layout
 
-# globals (please adjust or autodetect or whatever (based on subarch))
+# globals (please adjust or autodetect or whatever (based on SUBARCH))
 # note thses  paths point to manually unpacked .debs on my disk atm
 
 file_length() {
@@ -66,17 +66,30 @@ file_length() {
 }
 
 # This is common across all configurations
-FLAVOUR=omap
-SUBARCH=omap
-XLOADER_PACKAGE="x-loader-omap"
-XLOADER_DEB="$("$BASEDIR/tools/apt-selection" cache show "$XLOADER_PACKAGE" | sed -n 's/^Filename: //p')"
-XLOADER_DATA="usr/lib/x-loader-omap/MLO"
-ar p "$MIRROR/$XLOADER_DEB" data.tar.gz | tar zxf - -C . "./$XLOADER_DATA"
+if [ "$FULLARCH" = "armel+omap" ]; then
+    xloader_package="x-loader-omap"
+    xloader_deb="$("$BASEDIR/tools/apt-selection" cache show "$xloader_package" | sed -n 's/^Filename: //p')"
+    path_to_xloader="usr/lib/x-loader-omap/MLO"
+    ar p "$MIRROR/$xloader_deb" data.tar.gz | tar zxf - -C . "./$path_to_xloader"
 
-UBOOT_PACKAGE="u-boot-omap3"
-UBOOT_DEB="$("$BASEDIR/tools/apt-selection" cache show "$UBOOT_PACKAGE" | sed -n 's/^Filename: //p')"
-UBOOT_DATA="usr/lib/u-boot/u-boot-beagle.bin"
-ar p "$MIRROR/$UBOOT_DEB" data.tar.gz | tar zxf - -C . "./$UBOOT_DATA"
+    uboot_package="u-boot-omap3"
+    uboot_deb="$("$BASEDIR/tools/apt-selection" cache show "$uboot_package" | sed -n 's/^Filename: //p')"
+    path_to_uboot="usr/lib/u-boot/u-boot-beagle.bin"
+    ar p "$MIRROR/$uboot_deb" data.tar.gz | tar zxf - -C . "./$path_to_uboot"
+elif [ "$FULLARCH" = "armel+omap4" ]; then
+    xloader_package="x-loader-omap4"
+    xloader_deb="$("$BASEDIR/tools/apt-selection" cache show "$xloader_package" | sed -n 's/^Filename: //p')"
+    path_to_xloader="usr/lib/x-loader-omap4/MLO"
+    ar p "$MIRROR/$xloader_deb" data.tar.gz | tar zxf - -C . "./$path_to_xloader"
+
+    uboot_package="u-boot-omap4"
+    uboot_deb="$("$BASEDIR/tools/apt-selection" cache show "$uboot_package" | sed -n 's/^Filename: //p')"
+    path_to_uboot="usr/lib/u-boot/u-boot-beagle.bin"
+    ar p "$MIRROR/$uboot_deb" data.tar.gz | tar zxf - -C . "./$path_to_uboot"
+else
+    echo "Unknown OMAP subarch"
+    exit 1
+fi
 
 uboot_kernel="uImage"
 uboot_initrd="uInitrd"
@@ -99,19 +112,17 @@ fi
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     uboot_desc="Ubuntu LiveCD"
-    uboot_input_kernel="$CDDIR/casper/filesystem.kernel-$FLAVOUR"
-    uboot_input_initrd="$CDDIR/casper/filesystem.initrd-$FLAVOUR"
+    uboot_input_kernel="$CDDIR/casper/filesystem.kernel-$SUBARCH"
+    uboot_input_initrd="$CDDIR/casper/filesystem.initrd-$SUBARCH"
     uboot_extra_cmdline=" -- boot=casper only-ubiquity nocompcache"
 fi
 
 if [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
     uboot_desc="Ubuntu Preinstalled Image"
-    uboot_input_kernel="$PREINSTALLEDIMAGES/$FULLARCH.kernel-$FLAVOUR"
-    uboot_input_initrd="$PREINSTALLEDIMAGES/$FULLARCH.initrd-$FLAVOUR"
+    uboot_input_kernel="$PREINSTALLEDIMAGES/$FULLARCH.kernel-$SUBARCH"
+    uboot_input_initrd="$PREINSTALLEDIMAGES/$FULLARCH.initrd-$SUBARCH"
 fi
 
-PATH_TO_MLO=usr/lib/x-loader-omap/MLO
-PATH_TO_UBOOT=usr/lib/u-boot/u-boot-beagle.bin
 EXT3=$IMAGE.rootfs
 MTOOLSRC=$IMAGE.mtoolsrc
 
@@ -166,8 +177,8 @@ VATSTART=$(parted $IMAGE unit B print|grep "^ 1"|awk '{print $2}')
 VATSIZE=$(LANG=C fdisk -l ${IMAGE} 2>/dev/null|grep W95 |awk '{print $5}')
 
 mkdosfs -C $IMAGE.vfat ${VATSIZE} >/dev/null 2>&1
-mcopy -i $IMAGE.vfat "${PATH_TO_MLO}" ::MLO
-mcopy -i $IMAGE.vfat "${PATH_TO_UBOOT}" ::u-boot.bin
+mcopy -i $IMAGE.vfat $path_to_xloader ::MLO
+mcopy -i $IMAGE.vfat $path_to_uboot ::u-boot.bin
 mcopy -i $IMAGE.vfat $uboot_kernel ::uImage
 mcopy -i $IMAGE.vfat $uboot_initrd ::uInitrd
 mcopy -i $IMAGE.vfat $uboot_script_image ::boot.scr
