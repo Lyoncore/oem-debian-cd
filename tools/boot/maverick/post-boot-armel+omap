@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 #
 # Do post-image-building tasks for armel+omap, to make vfat images bootable;
 # this script encapsulates the VFAT image in a PC partition image, with
@@ -96,8 +96,7 @@ elif [ "$FULLARCH" = "armel+omap4" ]; then
     uboot_package="u-boot-omap4"
     path_to_uboot="usr/lib/u-boot/u-boot-omap4.bin"
 else
-    echo "Unknown OMAP subarch"
-    exit 1
+    die "Unknown OMAP subarch"
 fi
 
 log "Extracting bootloader from main archive"
@@ -157,7 +156,7 @@ cat >"$uboot_script_text" <<EOF
 EOF
 
 mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text" "$uboot_script_image"
-rm -vf "$uboot_script_text"
+rm -f "$uboot_script_text"
 
 # Move the ext3 filesystem out of the way
 mv $IMAGE $EXT3
