@@ -154,9 +154,17 @@ endif
 ifeq ($(CDIMAGE_DVD),1)
 CDBASE = $(CODENAME)-dvd-$(FULLARCH)
 else
-ifeq ($(CDIMAGE_PREINSTALLED),1)
-CDBASE = $(CODENAME)-preinstalled-$(FULLARCH)
-else 
+ ifeq ($(CDIMAGE_PREINSTALLED),1)
+  ifeq ($(PROJECT),ubuntu-netbook)
+   CDBASE = $(CODENAME)-preinstalled-netbook-$(FULLARCH)
+  else
+   ifeq ($(PROJECT),ubuntu-server)
+    CDBASE = $(CODENAME)-preinstalled-server-$(FULLARCH)
+   else
+    CDBASE = $(CODENAME)-preinstalled-desktop-$(FULLARCH)
+   endif
+  endif
+ else 
  ifeq ($(CDIMAGE_ADDON),1)
   CDBASE = $(CODENAME)-addon-$(FULLARCH)
  else
