@@ -65,31 +65,44 @@ file_length() {
     stat -c %s "$1"
 }
 
+extract_file_from_package() {
+    package=$1
+    file_to_extract=$2
+    output_file_name=$3 
+
+    deb="$("$BASEDIR/tools/apt-selection" cache show "$package" | sed -n 's/^Filename: //p')"
+    if [ "$deb" = "" ]; then
+        log "Package $package not found!" 
+        exit 1
+    fi
+
+    tmpdir=`mktemp -d`
+    ar p "$MIRROR/$deb" data.tar.gz | tar zxf - -C $tmpdir "./$file_to_extract"
+    mv $tmpdir/$file_to_extract ./$output_file_name
+    rm -rf $tmpdir
+}
+
 # This is common across all configurations
 if [ "$FULLARCH" = "armel+omap" ]; then
     xloader_package="x-loader-omap"
-    xloader_deb="$("$BASEDIR/tools/apt-selection" cache show "$xloader_package" | sed -n 's/^Filename: //p')"
     path_to_xloader="usr/lib/x-loader-omap/MLO"
-    ar p "$MIRROR/$xloader_deb" data.tar.gz | tar zxf - -C . "./$path_to_xloader"
 
     uboot_package="u-boot-omap3"
-    uboot_deb="$("$BASEDIR/tools/apt-selection" cache show "$uboot_package" | sed -n 's/^Filename: //p')"
     path_to_uboot="usr/lib/u-boot/u-boot-beagle.bin"
-    ar p "$MIRROR/$uboot_deb" data.tar.gz | tar zxf - -C . "./$path_to_uboot"
 elif [ "$FULLARCH" = "armel+omap4" ]; then
     xloader_package="x-loader-omap4"
-    xloader_deb="$("$BASEDIR/tools/apt-selection" cache show "$xloader_package" | sed -n 's/^Filename: //p')"
     path_to_xloader="usr/lib/x-loader-omap4/MLO"
-    ar p "$MIRROR/$xloader_deb" data.tar.gz | tar zxf - -C . "./$path_to_xloader"
 
     uboot_package="u-boot-omap4"
-    uboot_deb="$("$BASEDIR/tools/apt-selection" cache show "$uboot_package" | sed -n 's/^Filename: //p')"
     path_to_uboot="usr/lib/u-boot/u-boot-omap4.bin"
-    ar p "$MIRROR/$uboot_deb" data.tar.gz | tar zxf - -C . "./$path_to_uboot"
 else
     echo "Unknown OMAP subarch"
     exit 1
 fi
+
+log "Extracting bootloader from main archive"
+extract_file_from_package $xloader_package $path_to_xloader "MLO"
+extract_file_from_package $uboot_package $path_to_uboot "u-boot.bin"
 
 uboot_kernel="uImage"
 uboot_initrd="uInitrd"
@@ -177,8 +190,8 @@ VATSTART=$(parted $IMAGE unit B print|grep "^ 1"|awk '{print $2}')
 VATSIZE=$(LANG=C fdisk -l ${IMAGE} 2>/dev/null|grep W95 |awk '{print $5}')
 
 mkdosfs -C $IMAGE.vfat ${VATSIZE} >/dev/null 2>&1
-mcopy -i $IMAGE.vfat $path_to_xloader ::MLO
-mcopy -i $IMAGE.vfat $path_to_uboot ::u-boot.bin
+mcopy -i $IMAGE.vfat MLO ::MLO
+mcopy -i $IMAGE.vfat u-boot.bin ::u-boot.bin
 mcopy -i $IMAGE.vfat $uboot_kernel ::uImage
 mcopy -i $IMAGE.vfat $uboot_initrd ::uInitrd
 mcopy -i $IMAGE.vfat $uboot_script_image ::boot.scr
@@ -192,4 +205,4 @@ EXT3START=$(parted $IMAGE unit B print|grep "^ 2"|awk '{print $2}')
 dd conv=notrunc bs="${EXT3START%B}" if=$IMAGE.rootfs of="$IMAGE" seek=1 >/dev/null 2>&1
 
 # Cleanup
-#rm -f "$IMAGE.rootfs" "$IMAGE.vfat" "$IMAGE.mtoolsrc"
+rm -f "$IMAGE.rootfs" "$IMAGE.vfat" "$IMAGE.mtoolsrc" MLO u-boot.bin uImage uInitrd
