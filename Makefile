@@ -154,6 +154,17 @@ endif
 ifeq ($(CDIMAGE_DVD),1)
 CDBASE = $(CODENAME)-dvd-$(FULLARCH)
 else
+ ifeq ($(CDIMAGE_PREINSTALLED),1)
+  ifeq ($(PROJECT),ubuntu-netbook)
+   CDBASE = $(CODENAME)-preinstalled-netbook-$(FULLARCH)
+  else
+   ifeq ($(PROJECT),ubuntu-server)
+    CDBASE = $(CODENAME)-preinstalled-server-$(FULLARCH)
+   else
+    CDBASE = $(CODENAME)-preinstalled-desktop-$(FULLARCH)
+   endif
+  endif
+ else 
  ifeq ($(CDIMAGE_ADDON),1)
   CDBASE = $(CODENAME)-addon-$(FULLARCH)
  else
@@ -215,6 +226,7 @@ else
    endif
   endif
  endif
+endif
 endif
 CDSRCBASE = $(CODENAME)-src-$(1)
 
@@ -1052,6 +1064,32 @@ ifeq ($(CDIMAGE_LIVE),1)
 	-cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
 endif
 
+bin-preinstalled_images: ok $(OUT)
+	@echo "Post-processing pre-installed images ...";
+	$(Q)set -x; \
+	mkdir -p $(BDIR)/CD1; \
+	if [ ! -e "$(PREINSTALLEDIMAGES)/$(FULLARCH).$(PREINSTALLED_IMAGE_FILESYSTEM)" ]; then \
+		echo "No filesystem for $(FULLARCH)!" >&2; \
+		exit 1;	\
+	fi;
+	ln $(PREINSTALLEDIMAGES)/$(FULLARCH).$(PREINSTALLED_IMAGE_FILESYSTEM) $(OUT)/$(call CDBASE,1).raw; 
+	if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) ]; then \
+		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) 1 $(BDIR)/CD1 \
+		$(OUT)/$(call CDBASE,1).raw; \
+	elif [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
+		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) 1 $(BDIR)/CD1 \
+		$(OUT)/$(call CDBASE,1).raw; \
+	fi; \
+
+# FIXME: This only works with CD1, and not with addon CDs.
+bin-compress_images: ok $(OUT)
+	@if [ ! -e "$(OUT)/$(call CDBASE,1).raw" ]; then \
+		echo "No image for $(FULLARCH)!" >&2; \
+		exit 1; \
+	fi;
+	@file -b $(OUT)/$(call CDBASE,1).raw > $(OUT)/$(call CDBASE,1).type
+	@bzip2 -9 $(OUT)/$(call CDBASE,1).raw;
+	@mv $(OUT)/$(call CDBASE,1).raw.bz2 $(OUT)/$(call CDBASE,1).raw; 
 
 src-images: ok src-md5list $(OUT)
 	@echo "Generating the source iso/jigdo images ..."
