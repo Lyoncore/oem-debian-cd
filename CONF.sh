@@ -213,6 +213,9 @@ export DEBOOTSTRAP=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/debootstrap
 # Where live filesystem images live
 export LIVEIMAGES=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/live
 
+# Where preinstalled filesystem images live
+export PREINSTALLEDIMAGES=$CDIMAGE_ROOT/scratch/$PROJECT/$IMAGE_TYPE/preinstalled
+
 # Do I want to have NONFREE merged in the CD set
 # export NONFREE=1
 
@@ -343,6 +346,13 @@ export NOSUGGESTS=1
 # iso  = Output an image in ISO 9660 format (.iso)
 if [ -z "$IMAGE_FORMAT" ]; then
   export IMAGE_FORMAT=iso
+fi
+
+# Preinstalled Image Filesystem
+# This is the expected filesystem that is downloaded from the livefs builders
+
+if [ -z "$PREINSTALLED_IMAGE_FILESYSTEM" ]; then
+  export PREINSTALLED_IMAGE_FILESYSTEM=ext3
 fi
 
 # Produce jigdo files:

@@ -91,6 +91,12 @@ do
 		make imagesums
 		echo Generating list files for images
 		make pi-makelist
+	elif [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
+		export OUT="$TMP_OUT/$FULLARCH"; mkdir -p $OUT
+		make bin-preinstalled_images
+
+		echo Generating MD5Sums of the images
+		make imagesums
 	else
 		make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		export OUT=$TMP_OUT/$FULLARCH; mkdir -p $OUT
@@ -111,6 +117,10 @@ do
 		make imagesums
 		echo Generating list files for images
 		make pi-makelist
+	fi
+	if [ "$CDIMAGE_COMPRESS" = 1 ]; then
+		echo Compressing CD images
+		make bin-compress_images
 	fi
 	echo "--------------- `date` ---------------"
 done
