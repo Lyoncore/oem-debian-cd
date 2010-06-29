@@ -1072,7 +1072,7 @@ bin-preinstalled_images: ok $(OUT)
 		echo "No filesystem for $(FULLARCH)!" >&2; \
 		exit 1;	\
 	fi;
-	ln $(PREINSTALLEDIMAGES)/$(FULLARCH).$(PREINSTALLED_IMAGE_FILESYSTEM) $(OUT)/$(call CDBASE,1).raw; 
+	mv $(PREINSTALLEDIMAGES)/$(FULLARCH).$(PREINSTALLED_IMAGE_FILESYSTEM) $(OUT)/$(call CDBASE,1).raw; 
 	if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) ]; then \
 		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) 1 $(BDIR)/CD1 \
 		$(OUT)/$(call CDBASE,1).raw; \
