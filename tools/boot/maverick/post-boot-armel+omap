@@ -152,7 +152,7 @@ log "Generating boot.scr"
 cat >"$uboot_script_text" <<EOF
     fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
     fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
-    setenv bootargs quiet splash vram=12M omapfb.mode=dvi:1280x720MR-16@60 $DEFAULT_PRESEED $uboot_extra_cmdline
+    setenv bootargs vram=12M omapfb.mode=dvi:1280x720MR-16@60 $DEFAULT_PRESEED $uboot_extra_cmdline
     bootm $uboot_kernel_addr $uboot_ramdisk_addr
 EOF
 
