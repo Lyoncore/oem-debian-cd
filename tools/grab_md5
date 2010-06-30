@@ -35,11 +35,11 @@ case $ARCH in
                                     printf("%s  %12s  %s/%s/%s\n", MD5, SIZE, MIRROR, DIR, FILE);
                                 }
                             }
-            /.*/            {
-                                if (!length($0)) {
+            /^[^ ]/         {
                                     in_files = 0
-                                    next
-                                }
+                                    FILE = ""
+                                    DIR = ""
+                            }
                             }' | sort | uniq >> $OUT
         ;;
     alpha|amd64|arm|armel|hppa|i386|ia64|lpia|m68k|mips|mipsel|powerpc|s390|sparc)
