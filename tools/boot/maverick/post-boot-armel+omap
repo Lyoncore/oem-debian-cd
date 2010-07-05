@@ -89,12 +89,16 @@ if [ "$FULLARCH" = "armel+omap" ]; then
 
     uboot_package="u-boot-omap3"
     path_to_uboot="usr/lib/u-boot/u-boot-beagle.bin"
+
+    v_opts="vram=12M omapfb.mode=dvi:1280x720MR-16@60"
 elif [ "$FULLARCH" = "armel+omap4" ]; then
     xloader_package="x-loader-omap4"
     path_to_xloader="usr/lib/x-loader-omap4/MLO"
 
     uboot_package="u-boot-omap4"
     path_to_uboot="usr/lib/u-boot/u-boot-omap4.bin"
+
+    v_opts="vram=32M"
 else
     die "Unknown OMAP subarch"
 fi
@@ -152,7 +156,7 @@ log "Generating boot.scr"
 cat >"$uboot_script_text" <<EOF
     fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
     fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
-    setenv bootargs vram=12M omapfb.mode=dvi:1280x720MR-16@60 $DEFAULT_PRESEED $uboot_extra_cmdline
+    setenv bootargs $v_opts $DEFAULT_PRESEED $uboot_extra_cmdline
     bootm $uboot_kernel_addr $uboot_ramdisk_addr
 EOF
 
