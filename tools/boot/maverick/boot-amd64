@@ -79,7 +79,7 @@ if [ "$NN" = "1" ]; then
 
     echo "Using ISOLINUX boot-disks image on CD$N"
     mkdir -p boot$N/isolinux
-    SYSLINUXDEB="$($BASEDIR/tools/apt-selection cache show syslinux | \
+    SYSLINUXDEB="$($BASEDIR/tools/apt-selection cache show syslinux-common | \
 	grep ^Filename | awk '{print $2}')"
     (ar p "$MIRROR/$SYSLINUXDEB" data.tar.gz | \
 	tar zxf - -C . ./usr/lib/syslinux/isolinux.bin \
