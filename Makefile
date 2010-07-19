@@ -1088,8 +1088,8 @@ bin-compress_images: ok $(OUT)
 		exit 1; \
 	fi;
 	@file -b $(OUT)/$(call CDBASE,1).raw > $(OUT)/$(call CDBASE,1).type
-	@bzip2 -9 $(OUT)/$(call CDBASE,1).raw;
-	@mv $(OUT)/$(call CDBASE,1).raw.bz2 $(OUT)/$(call CDBASE,1).raw; 
+	@gzip -9 --rsyncable $(OUT)/$(call CDBASE,1).raw;
+	@mv $(OUT)/$(call CDBASE,1).raw.gz $(OUT)/$(call CDBASE,1).raw; 
 
 src-images: ok src-md5list $(OUT)
 	@echo "Generating the source iso/jigdo images ..."
