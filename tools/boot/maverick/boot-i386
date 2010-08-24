@@ -187,6 +187,10 @@ fi
 if [ "$HIDDEN_TIMEOUT" = 2 ]; then
     cp -p "$BASEDIR/data/$DI_CODENAME/blank.pcx" boot$N/isolinux/blank.pcx
 fi
+if [ "$PROJECT" = kubuntu ]; then
+    # No language menu.
+    echo en >boot$N/isolinux/lang
+fi
 # Remove elilo configuration; only for Macs.
 rm -f boot$N/isolinux/elilo*
 rm -f boot$N/isolinux/*.msg*
@@ -278,13 +282,20 @@ label normal=Normal
 append normal=
 EOF
 if [ "$CDIMAGE_LIVE" = 1 ]; then
+    if [ "$PROJECT" = kubuntu ]; then
+	livelabel="^Start $HUMANPROJECT"
+	liveparams=' maybe-ubiquity'
+    else
+	livelabel="^Try $HUMANPROJECT without installing"
+	liveparams=
+    fi
     cat >> boot$N/isolinux/txt.cfg <<EOF
 label live
-  menu label ^Try $HUMANPROJECT without installing
+  menu label $livelabel
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper initrd=$CASPER_INITRD quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD quiet splash --
 EOF
-    if [ "$PROJECT" != ubuntu-mid ]; then
+    if [ "$PROJECT" != ubuntu-mid ] && [ "$PROJECT" != kubuntu ]; then
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
