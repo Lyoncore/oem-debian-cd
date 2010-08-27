@@ -216,7 +216,11 @@ else
          ifeq ($(PROJECT),ubuntu-moblin-remix)
  CDBASE = $(CODENAME)-moblin-remix-$(FULLARCH)
          else
+          ifeq ($(PROJECT),kubuntu-mobile)
+ CDBASE = $(CODENAME)-mobile-$(FULLARCH)
+          else
  CDBASE = $(CODENAME)-desktop-$(FULLARCH)
+          endif
          endif
         endif
        endif
