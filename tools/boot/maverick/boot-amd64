@@ -134,7 +134,7 @@ if [ "$NN" = "1" ]; then
 		;;
 	    *)
 		isoinfo -R -i usr/lib/grub-rescue-efi-amd64/grub-rescue-cdrom.iso -x $x \
-		    >grub-efi$$x
+		    >grub-efi$x
 		;;
 	esac
     done
