@@ -157,7 +157,7 @@ case $DIST in
     export CODENAME=maverick
     export CAPCODENAME='Maverick Meerkat'
     export DEBVERSION=10.10
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Beta"
     ;;
 esac
 
