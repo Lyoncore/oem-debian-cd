@@ -1088,10 +1088,8 @@ bin-preinstalled_images: ok $(OUT)
 		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) 1 $(BDIR)/CD1 \
 		$(OUT)/$(call CDBASE,1).raw; \
 	fi
-ifeq ($(CDIMAGE_PREINSTALLED),1)
 	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
 	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
-endif
 
 # FIXME: This only works with CD1, and not with addon CDs.
 bin-compress_images: ok $(OUT)
