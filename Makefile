@@ -1072,11 +1072,6 @@ ifeq ($(CDIMAGE_LIVE),1)
 	-cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
 endif
 
-ifeq ($(CDIMAGE_PREINSTALLED),1)
-	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
-	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
-endif
-
 bin-preinstalled_images: ok $(OUT)
 	@echo "Post-processing pre-installed images ...";
 	$(Q)set -x; \
@@ -1092,7 +1087,11 @@ bin-preinstalled_images: ok $(OUT)
 	elif [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
 		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) 1 $(BDIR)/CD1 \
 		$(OUT)/$(call CDBASE,1).raw; \
-	fi; \
+	fi
+ifeq ($(CDIMAGE_PREINSTALLED),1)
+	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
+	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
+endif
 
 # FIXME: This only works with CD1, and not with addon CDs.
 bin-compress_images: ok $(OUT)
