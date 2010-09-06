@@ -14,6 +14,6 @@ d-i	debian-installer/splash	boolean false
 # Install the debconf oem-config frontend (if in OEM mode).
 d-i	oem-config-udeb/frontend	string debconf
 # Wait for two seconds in grub
-d-i grub-installer/boot_delay 2
+d-i	grub-installer/boot_delay	string 2
 # Add the network and tasks oem-config steps by default.
 oem-config	oem-config/steps	multiselect language, timezone, keyboard, user, network, tasks
