@@ -1072,6 +1072,11 @@ ifeq ($(CDIMAGE_LIVE),1)
 	-cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
 endif
 
+ifeq ($(CDIMAGE_PREINSTALLED),1)
+	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
+	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
+endif
+
 bin-preinstalled_images: ok $(OUT)
 	@echo "Post-processing pre-installed images ...";
 	$(Q)set -x; \
