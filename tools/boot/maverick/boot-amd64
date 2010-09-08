@@ -348,7 +348,7 @@ label live
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD quiet splash --
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
-menuentry "${livelabel#^}"
+menuentry "${livelabel#^}" {
 	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams quiet splash --
 	initrd	$CASPER_INITRD
 }
