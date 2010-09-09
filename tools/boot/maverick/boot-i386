@@ -212,6 +212,7 @@ rm -f boot$N/isolinux/*gtk.cfg
 rm -f boot$N/isolinux/*.txt.withgtk
 # We only support single-architecture images.
 sed -i 's|%install%|install|' boot$N/isolinux/*.cfg
+mkdir -p $CDDIR/boot/grub
 
 # Set up-to-date build dates. Kludgy because d-i sets its own version as
 # the build date.
@@ -295,12 +296,24 @@ label live
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD quiet splash --
 EOF
+    cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
+menuentry "${livelabel#^}" {
+	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=$iso_path quiet splash --
+	initrd	$CASPER_INITRD
+}
+EOF
     if [ "$PROJECT" != ubuntu-mid ] && [ "$PROJECT" != kubuntu ]; then
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=$CASPER_INITRD quiet splash --
+EOF
+	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
+menuentry "Install $HUMANPROJECT" {
+	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=$iso_path quiet splash --
+	initrd	$CASPER_INITRD
+}
 EOF
     fi
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
@@ -408,6 +421,12 @@ label check
   kernel /casper/vmlinuz
   append $KERNEL_PARAMS boot=casper integrity-check initrd=$CASPER_INITRD quiet splash --
 EOF
+    cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
+menuentry "Check disc for defects" {
+	linux	/casper/vmlinuz $KERNEL_PARAMS boot=casper integrity-check iso-scan/filename=$iso_path quiet splash --
+	initrd	$CASPER_INITRD
+}
+EOF
 elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> boot$N/isolinux/txt.cfg <<EOF
 label check
@@ -431,6 +450,11 @@ label memtest
 label hd
   menu label ^Boot from first hard disk
   localboot 0x80
+EOF
+cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
+menuentry "Test memory" {
+	linux16	/install/mt86plus
+}
 EOF
 
 fi
