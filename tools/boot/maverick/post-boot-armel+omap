@@ -100,7 +100,7 @@ elif [ "$FULLARCH" = "armel+omap4" ]; then
     path_to_uboot="usr/lib/u-boot/omap4_panda/u-boot.bin"
 
     v_opts="vram=32M"
-    board_opts="mem=463M"
+    board_opts="mem=460M@0x80000000 mem=256@0xA0000000"
 else
     die "Unknown OMAP subarch"
 fi
