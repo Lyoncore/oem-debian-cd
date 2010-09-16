@@ -349,12 +349,14 @@ label live
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "${livelabel#^}" {
+	set gfxpayload=keep
 	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams quiet splash --
 	initrd	$CASPER_INITRD
 }
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "${livelabel#^}" {
+	set gfxpayload=keep
 	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=$iso_path quiet splash --
 	initrd	$CASPER_INITRD
 }
@@ -368,6 +370,7 @@ label live-install
 EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
+	set gfxpayload=keep
 	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity quiet splash --
 	initrd	$CASPER_INITRD
 }
@@ -395,6 +398,7 @@ label install
 EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
+	set gfxpayload=keep
 	linux	/install/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED quiet --
 	initrd	/install/initrd.gz
 }
@@ -408,6 +412,7 @@ label install
 EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT in text mode" {
+	set gfxpayload=keep
 	linux	/install/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED quiet --
 	initrd	/install/initrd.gz
 }
@@ -421,6 +426,7 @@ label expert
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install in expert mode" {
+	set gfxpayload=keep
 	linux	/install/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED priority=low --
 	initrd	/install/initrd.gz
 }
@@ -479,6 +485,7 @@ label cloud
 EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install Ubuntu Enterprise Cloud" {
+	set gfxpayload=keep
 	linux	/install/vmlinuz $KERNEL_PARAMS file=/cdrom/preseed/cloud.seed quiet --
 	initrd	/install/initrd.gz
 }
@@ -508,6 +515,7 @@ label check
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Check disc for defects" {
+	set gfxpayload=keep
 	linux	/casper/vmlinuz $KERNEL_PARAMS boot=casper integrity-check quiet splash --
 	initrd	$CASPER_INITRD
 }
@@ -527,6 +535,7 @@ label check
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Check disc for defects" {
+	set gfxpayload=keep
 	linux	/install/vmlinuz $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu quiet --
 	initrd	/install/initrd.gz
 }
@@ -541,6 +550,7 @@ label rescue
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Rescue a broken system" {
+	set gfxpayload=keep
 	linux	/install/vmlinuz $KERNEL_PARAMS rescue/enable=true --
 	initrd	/install/initrd.gz
 }
