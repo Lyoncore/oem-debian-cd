@@ -2,7 +2,7 @@
 
 # Script to build everything possible : sources and binaries for all archs
 
-. CONF.sh
+. ./CONF.sh
 
 rm -rf "$TDIR"
 rm -rf "$OUT"
