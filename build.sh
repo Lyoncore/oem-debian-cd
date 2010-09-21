@@ -3,7 +3,7 @@
 # Script to build one arch
 
 if [ -z "$CF" ] ; then
-    CF=CONF.sh
+    CF=./CONF.sh
 fi
 . $CF
 
