@@ -298,7 +298,7 @@ label live
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "${livelabel#^}" {
-	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=$iso_path quiet splash --
+	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=\${iso_path} quiet splash --
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -311,7 +311,7 @@ label live-install
 EOF
 	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
-	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=$iso_path quiet splash --
+	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=\${iso_path} quiet splash --
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -423,7 +423,7 @@ label check
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Check disc for defects" {
-	linux	/casper/vmlinuz $KERNEL_PARAMS boot=casper integrity-check iso-scan/filename=$iso_path quiet splash --
+	linux	/casper/vmlinuz $KERNEL_PARAMS boot=casper integrity-check iso-scan/filename=\${iso_path} quiet splash --
 	initrd	$CASPER_INITRD
 }
 EOF
