@@ -87,8 +87,8 @@ if [ "$FULLARCH" = "armel+omap" ]; then
     xloader_package="x-loader-omap"
     path_to_xloader="usr/lib/x-loader-omap/MLO"
 
-    uboot_package="u-boot-omap3"
-    path_to_uboot="usr/lib/u-boot/u-boot-beagle.bin"
+    uboot_package="u-boot-linaro-omap3-beagle"
+    path_to_uboot="usr/lib/u-boot/omap3_beagle/u-boot.bin"
 
     v_opts="vram=12M omapfb.mode=dvi:1280x720MR-16@60"
     board_opts=""
