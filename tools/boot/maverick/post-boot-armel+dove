@@ -102,7 +102,7 @@ DISK_END_B="$(LANG=C parted -s "$IMAGE" unit B print | sed -rn 's/^Disk [^:]+: (
 
 # create partition for the VFAT
 log "creating VFAT partition..."
-parted -s "$IMAGE" mkpart primary fat32 0 "$DISK_END_B"
+parted -s "$IMAGE" mkpart primary fat32 0 "$((${DISK_END_B%B} - 1))B"
 
 VFAT_LEN_B="`(set -- $(get_part_data 1); echo "$3")`"
 if [ "${VFAT_LEN_B%B}" -lt "$IMAGE_SIZE" ]; then
