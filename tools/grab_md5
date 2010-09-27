@@ -33,6 +33,7 @@ case $ARCH in
 									SIZE = $2
                                     FILE = $3
                                     printf("%s  %12s  %s/%s/%s\n", MD5, SIZE, MIRROR, DIR, FILE);
+                                    next
                                 }
                             }
             /^[^ ]/         {
