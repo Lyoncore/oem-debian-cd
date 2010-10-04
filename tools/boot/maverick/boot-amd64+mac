@@ -216,6 +216,7 @@ rm -f boot$N/isolinux/*gtk.cfg
 rm -f boot$N/isolinux/*.txt.withgtk
 # We only support single-architecture images.
 sed -i 's|%install%|install|' boot$N/isolinux/*.cfg
+mkdir -p $CDDIR/boot/grub
 
 # Set up-to-date build dates. Kludgy because d-i sets its own version as
 # the build date.
