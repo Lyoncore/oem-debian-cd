@@ -159,6 +159,13 @@ case $DIST in
     export DEBVERSION=10.10
     export OFFICIAL="Release"
     ;;
+  natty)
+    export PREV_CODENAME=maverick
+    export CODENAME=natty
+    export CAPCODENAME='Natty Narwhal'
+    export DEBVERSION=11.04
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
