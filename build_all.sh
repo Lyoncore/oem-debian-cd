@@ -73,17 +73,22 @@ do
 	done
     FULL_SIZE=`echo "($DEFSRCSIZE - $size) * 1024 * 1024" | bc`
 	echo " ... building the images"
-	if [ "$FULLARCH" = "i386" ] && [ "$CDIMAGE_INSTALL" = 1 ] && \
+	if [ "$FULLARCH" = "i386" ] && \
+	   ([ "$CDIMAGE_INSTALL" = 1 ] || [ "$CDIMAGE_ONLYSOURCE" = 1 ]) && \
 	   [ "$CDIMAGE_DVD" != 1 ] && [ "$DIST" != warty ] && \
 	   [ "$SPECIAL" != 1 ] && [ "$CDIMAGE_NOSOURCE" != 1 ]; then
-		make list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
+		if [ "$CDIMAGE_ONLYSOURCE" != 1 ]; then
+			make list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 
-		export OUT="$TMP_OUT/$FULLARCH"; mkdir -p $OUT
-		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
-		echo Generating MD5Sums of the images
-		make imagesums
-		echo Generating list files for images
-		make pi-makelist
+			export OUT="$TMP_OUT/$FULLARCH"; mkdir -p $OUT
+			make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
+			echo Generating MD5Sums of the images
+			make imagesums
+			echo Generating list files for images
+			make pi-makelist
+		else
+			make src-list SRCSIZELIMIT=$FULL_SIZE
+		fi
 
 		export OUT="$TMP_OUT/src"; mkdir -p $OUT
 		make src-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
