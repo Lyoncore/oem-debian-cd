@@ -368,7 +368,7 @@ fi
 # 2 = Produce ONLY jigdo stuff; no iso image is created (saves lots
 #     of disk space).
 
-if [ "$CDIMAGE_INSTALL" != 1 ]; then
+if [ "$CDIMAGE_INSTALL" != 1 ] && [ "$CDIMAGE_ONLYSOURCE" != 1 ]; then
   # inappropriate
   export DOJIGDO=0
 elif [ "$DIST" = warty ]; then
