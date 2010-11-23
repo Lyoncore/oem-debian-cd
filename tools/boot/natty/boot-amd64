@@ -258,10 +258,12 @@ rm -f boot$N/isolinux/*.txt.withgtk
 # We only support single-architecture images.
 sed -i 's|%install%|install|' boot$N/isolinux/*.cfg
 # Move GRUB files to the right place.
+mkdir -p $CDDIR/efi/boot
 mkdir -p $CDDIR/boot/grub/x86_64-efi
 mv boot$N/isolinux/grub/* $CDDIR/boot/grub/
 rmdir boot$N/isolinux/grub
 sed -i '/^menuentry/Q' $CDDIR/boot/grub/grub.cfg
+cp -a grub-efi/bootx64.efi $CDDIR/efi/boot/bootx64.efi
 cp -a grub-efi/efi-small.img $CDDIR/boot/grub/efi.img
 cp -a grub-efi/boot/grub/x86_64-efi/* $CDDIR/boot/grub/x86_64-efi/
 
