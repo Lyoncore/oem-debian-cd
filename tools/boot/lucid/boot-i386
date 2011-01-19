@@ -61,6 +61,11 @@ BOOT_IMAGES="udeb.list cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz
 DISK_IMAGES=""
 TAR_IMAGES="netboot/netboot.tar.gz"
 
+if [ "$CDIMAGE_DVD" = 1 ]; then
+    BOOT_IMAGES="$BOOT_IMAGES maverick-cdrom/initrd.gz maverick-cdrom/vmlinuz"
+    TAR_IMAGE="$TAR_IMAGES maverick-netboot/netboot.tar.gz"
+fi
+
 # Download boot images
 for image in $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
     if [ ! -e "$image" ]; then
@@ -99,6 +104,11 @@ if [ "$NN" = "1" ]; then
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	cp -lf cdrom/vmlinuz $CDDIR/install/
 	cp -lf cdrom/initrd.gz $CDDIR/install/
+	if [ -d maverick-cdrom ]; then
+	    mkdir -p $CDDIR/install/maverick
+	    cp -lf maverick-cdrom/vmlinuz $CDDIR/install/maverick/
+	    cp -lr maverick-cdrom/initrd.gz $CDDIR/install/maverick/
+	fi
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	mv $CDDIR/casper/filesystem.kernel-generic $CDDIR/casper/vmlinuz
@@ -147,7 +157,7 @@ done
 
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
 	for tar in $TAR_IMAGES; do
-		dir=$(dirname $tar)
+		dir=$(dirname $tar | sed 's,^maverick-,maverick/,')
 		mkdir -p $CDDIR/install/$dir
 		tar -C $CDDIR/install/$dir -xzpf $tar
 	done
@@ -310,12 +320,28 @@ label install
   append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/initrd.gz quiet --
 EOF
     fi
+    if [ -d "$CDDIR/install/maverick" ]; then
+	cat >> boot$N/isolinux/text.cfg <<EOF
+label install-maverick
+  menu label ^Install $HUMANPROJECT (2.6.35 kernel)
+  kernel /install/maverick/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/maverick/initrd.gz quiet --
+EOF
+    fi
     cat >> boot$N/isolinux/adtext.cfg <<EOF
 label expert
   menu hide
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED priority=low initrd=/install/initrd.gz --
 EOF
+    if [ -d "$CDDIR/install/maverick" ]; then
+	cat >> boot$N/isolinux/adtext.cfg <<EOF
+label expert-maverick
+  menu hide
+  kernel /install/maverick/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED priority=low initrd=/install/maverick/initrd.gz --
+EOF
+    fi
     if [ "$PROJECT" = edubuntu ]; then
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label workstation=Install a workstation
@@ -370,6 +396,14 @@ label cloud
   kernel /install/vmlinuz
   append $KERNEL_PARAMS file=/cdrom/preseed/cloud.seed initrd=/install/initrd.gz quiet --
 EOF
+	if [ -d "$CDDIR/install/maverick" ]; then
+	    cat >> boot$N/isolinux/text.cfg <<EOF
+label cloud-maverick
+  menu label Install Ubuntu ^Enterprise Cloud (2.6.35 kernel)
+  kernel /install/maverick/vmlinuz
+  append $KERNEL_PARAMS file=/cdrom/preseed/cloud.seed initrd=/install/maverick/initrd.gz quiet --
+EOF
+	fi
     fi
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubuntu ] || [ "$PROJECT" = edubuntu ]); then
@@ -408,6 +442,14 @@ label rescue
   kernel /install/vmlinuz
   append $KERNEL_PARAMS rescue/enable=true initrd=/install/initrd.gz --
 EOF
+    if [ -d "$CDDIR/install/maverick" ]; then
+	cat >> boot$N/isolinux/adtext.cfg <<EOF
+label rescue-maverick
+  menu label ^Rescue a broken system (2.6.35 kernel)
+  kernel /install/maverick/vmlinuz
+  append $KERNEL_PARAMS rescue/enable=true initrd=/install/maverick/initrd.gz --
+EOF
+    fi
 fi
 cat >> boot$N/isolinux/text.cfg <<EOF
 label memtest
