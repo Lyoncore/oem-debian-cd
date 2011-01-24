@@ -84,8 +84,8 @@ extract_file_from_package() {
 
 # This is common across all configurations
 if [ "$FULLARCH" = "armel+omap" ]; then
-    xloader_package="x-loader-omap"
-    path_to_xloader="usr/lib/x-loader-omap/MLO"
+    xloader_package="x-loader-omap3-beagle"
+    path_to_xloader="usr/lib/x-loader/omap3530beagle/MLO"
 
     uboot_package="u-boot-linaro-omap3-beagle"
     path_to_uboot="usr/lib/u-boot/omap3_beagle/u-boot.bin"
@@ -93,8 +93,8 @@ if [ "$FULLARCH" = "armel+omap" ]; then
     v_opts="vram=12M omapfb.mode=dvi:1280x720MR-16@60"
     board_opts=""
 elif [ "$FULLARCH" = "armel+omap4" ]; then
-    xloader_package="x-loader-omap4"
-    path_to_xloader="usr/lib/x-loader-omap4/MLO"
+    xloader_package="x-loader-omap4-panda"
+    path_to_xloader="usr/lib/x-loader/omap4430panda/MLO"
 
     uboot_package="u-boot-linaro-omap4-panda"
     path_to_uboot="usr/lib/u-boot/omap4_panda/u-boot.bin"
