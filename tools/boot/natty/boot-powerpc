@@ -82,12 +82,13 @@ else
  cp -f $YABOOT_DEBUG yaboot
 fi
 
-if [ ! "$DI_WWW_HOME" ]; then
-  cp -a "$DI_PATH/current/images/udeb.list" .
-else
-  wget "$DI_WWW_HOME/udeb.list"
-fi
-(cd $CDDIR/..; check_kernel_sync udeb.list)
+(cd $CDDIR/..;
+ if [ ! "$DI_WWW_HOME" ]; then
+   cp -a "$DI_PATH/current/images/MANIFEST.udebs" .
+ else
+   wget "$DI_WWW_HOME/MANIFEST.udebs"
+ fi
+ list_kernel_abis powerpc/cdrom/initrd.gz powerpc64/cdrom/initrd.gz | check_kernel_sync)
 
 for subarch in powerpc powerpc64
 do
