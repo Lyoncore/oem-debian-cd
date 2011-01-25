@@ -60,13 +60,25 @@ default_preseed() {
     esac
 }
 
+list_kernel_abis() {
+    perl -le '
+	BEGIN { %images = map { $_ => 1 } @ARGV; $found = 0; %abis = (); }
+	while (<STDIN>) {
+	    chomp;
+	    if (/^[^[:space:]]/) {
+		$found = exists $images{$_};
+	    } elsif ($found and /^[[:space:]]+kernel-image-([^[:space:]]*)-di /) {
+		$abis{$1} = 1;
+	    }
+	}
+	END { print for sort keys %abis; }' "$@" <MANIFEST.udebs
+}
+
 check_kernel_sync() {
     [ "$CDIMAGE_INSTALL_BASE" = 1 ] || return 0
-    local udeb_list="$1"
-    shift
-    for abi in $(sed -n 's/^kernel-image-\([^ ]*\)-di .*/\1/p' "$udeb_list"); do
-	# If further parameters were passed in addition to the udeb list,
-	# then they represent a list of ABI suffixes we're interested in.
+    for abi in $(sed -n 's/^kernel-image-\([^ ]*\)-di .*/\1/p'); do
+	# If any parameters were passed, then they represent a list of ABI
+	# suffixes we're interested in.
 	if [ "$#" -gt 0 ]; then
 	    local allowed=
 	    for allow_abi; do

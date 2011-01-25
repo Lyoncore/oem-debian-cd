@@ -61,7 +61,7 @@ fi
 SUBARCH=omap
 FLAVOUR=omap
 
-BOOT_IMAGES="udeb.list $SUBARCH/cdrom/initrd.gz"
+BOOT_IMAGES="$SUBARCH/cdrom/initrd.gz"
 DISK_IMAGES=""
 TAR_IMAGES=""
 
@@ -78,7 +78,7 @@ BOOT_IMAGES="$BOOT_IMAGES $BOOT_IMAGE_KERNEL"
 
 #### the snippet below was copied from the i386 version
 # Download boot images
-for image in $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
+for image in MANIFEST.udebs $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
     if [ ! -e "$image" ]; then
 	dir=$(dirname $image)
 	mkdir -p $dir
@@ -95,7 +95,7 @@ if [ "$BOOT_IMAGE_KERNEL" != "$SUBARCH/cdrom/vmlinuz" ]; then
 fi
 
 if [ "$NN" = "1" ]; then
-    check_kernel_sync udeb.list $FLAVOUR
+    list_kernel_abis $BOOT_IMAGES | check_kernel_sync $FLAVOUR
 fi
 
 # th,th, thats all

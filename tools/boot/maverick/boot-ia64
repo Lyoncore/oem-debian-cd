@@ -35,7 +35,7 @@ if [ $N != 1 ] && [ $N != 1_NONUS ] && [ -z "$CDIMAGE_ADDON" ]; then
 fi
 
 # Download boot images
-for image in udeb.list boot.img; do
+for image in MANIFEST.udebs boot.img; do
     if [ ! -e "$image" ]; then
 	if [ ! "$DI_WWW_HOME" ];then
 		cp "$DI_PATH/current/images/cdrom/$image" . || \
@@ -50,7 +50,7 @@ for image in udeb.list boot.img; do
 done
 # TODO: copy casper's kernel and initrd into boot.img if present
 
-check_kernel_sync udeb.list
+list_kernel_abis cdrom/boot.img | check_kernel_sync
 
 install_languages $CDDIR
 

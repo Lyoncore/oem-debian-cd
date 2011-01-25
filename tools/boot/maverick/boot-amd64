@@ -57,12 +57,12 @@ KTYPE[10]=""
 
 THISTYPE=${KTYPE[$NN]}
 
-BOOT_IMAGES="udeb.list cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
+BOOT_IMAGES="cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
 DISK_IMAGES=""
 TAR_IMAGES="netboot/netboot.tar.gz"
 
 # Download boot images
-for image in $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
+for image in MANIFEST.udebs $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
     if [ ! -e "$image" ]; then
 	dir=$(dirname $image)
 	mkdir -p $dir
@@ -75,7 +75,7 @@ for image in $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
 done
 
 if [ "$NN" = "1" ]; then
-    check_kernel_sync udeb.list
+    list_kernel_abis $BOOT_IMAGES | check_kernel_sync
 
     echo "Using ISOLINUX boot-disks image on CD$N"
     mkdir -p boot$N/isolinux

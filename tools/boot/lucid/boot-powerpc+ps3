@@ -42,12 +42,13 @@ echo -n " -sort $(pwd)/$N.weights " >> $N.mkisofs_opts
 
 cd $INSTALLDIR
 
-if [ ! "$DI_WWW_HOME" ]; then
-    cp -a "$DI_PATH/current/images/udeb.list" .
-else
-    wget "$DI_WWW_HOME/udeb.list"
-fi
-(cd $CDDIR/..; check_kernel_sync udeb.list)
+(cd $CDDIR/..;
+ if [ ! "$DI_WWW_HOME" ]; then
+     cp -a "$DI_PATH/current/images/MANIFEST.udebs" .
+ else
+     wget "$DI_WWW_HOME/MANIFEST.udebs"
+ fi
+ list_kernel_abis powerpc64/cdrom/initrd.gz | check_kernel_sync)
 
 if [ ! "$DI_WWW_HOME" ];then
     DI_DIR="$DI_PATH/current/images/powerpc64/cdrom"
