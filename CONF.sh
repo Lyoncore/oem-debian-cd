@@ -285,7 +285,7 @@ esac
 
 case $DIST in
   lucid)
-    export PROPOSED=1
+    #export PROPOSED=1
     ;;
 esac
 
