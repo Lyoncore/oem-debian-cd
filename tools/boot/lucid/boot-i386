@@ -116,6 +116,10 @@ if [ "$NN" = "1" ]; then
 	mv $CDDIR/casper/filesystem.initrd-generic "$CDDIR$CASPER_INITRD"
     fi
     echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " > $N.mkisofs_opts
+    # linux-backports-modules-compat-wireless-2.6.34-2.6.32-28-generic and
+    # linux-backports-modules-compat-wireless-2.6.34-2.6.32-28-generic-pae
+    # are indistinguishable without -joliet-long.
+    echo -n "-joliet-long " > $N.mkisofs_opts
 else
     if [ -n "$THISTYPE" ]; then
 	echo "Using $THISTYPE boot-disks image on CD$N"
