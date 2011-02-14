@@ -119,7 +119,7 @@ if [ "$NN" = "1" ]; then
     # linux-backports-modules-compat-wireless-2.6.34-2.6.32-28-generic and
     # linux-backports-modules-compat-wireless-2.6.34-2.6.32-28-generic-pae
     # are indistinguishable without -joliet-long.
-    echo -n "-joliet-long " > $N.mkisofs_opts
+    echo -n "-joliet-long " >> $N.mkisofs_opts
 else
     if [ -n "$THISTYPE" ]; then
 	echo "Using $THISTYPE boot-disks image on CD$N"
