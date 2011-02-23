@@ -139,7 +139,7 @@ if [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
     uboot_desc="Ubuntu Preinstalled Image"
     uboot_input_kernel="$PREINSTALLEDIMAGES/$FULLARCH.kernel-$SUBARCH"
     uboot_input_initrd="$PREINSTALLEDIMAGES/$FULLARCH.initrd-$SUBARCH"
-    uboot_extra_cmdline=" root=/dev/mmcblk0p2 fixrtc"
+    uboot_extra_cmdline=" root=/dev/mmcblk0p2 fixrtc quiet splash"
 fi
 
 EXT3=$IMAGE.rootfs
