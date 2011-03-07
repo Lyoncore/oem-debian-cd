@@ -244,6 +244,10 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 else
     DEFAULT_LABEL=install
 fi
+APPLIES_INSTALL=install
+if [ -d "$CDDIR/install/maverick" ]; then
+    APPLIES_INSTALL="$APPLIES_INSTALL install-maverick"
+fi
 cat > boot$N/isolinux/text.cfg <<EOF
 default $DEFAULT_LABEL
 EOF
@@ -350,14 +354,14 @@ EOF
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label workstation=Install a workstation
 replace workstation=file=/cdrom/preseed/workstation.seed
-applies workstation=install
+applies workstation=$APPLIES_INSTALL
 EOF
     fi
     if [ "$CDIMAGE_DVD" = 1 ] && [ "$PROJECT" != edubuntu ] && [ "$PROJECT" != ubuntu-server ]; then
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label server=Install a server
 replace server=file=/cdrom/preseed/ubuntu-server.seed
-applies server=install
+applies server=$APPLIES_INSTALL
 EOF
     fi
 fi
@@ -368,11 +372,11 @@ append oem=oem-config/enable=true
 EOF
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-applies oem=live live-install install
+applies oem=live live-install $APPLIES_INSTALL
 EOF
     else
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-applies oem=install
+applies oem=$APPLIES_INSTALL
 EOF
     fi
 fi
@@ -381,16 +385,16 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label cli=Install a command-line system
 replace cli=file=/cdrom/preseed/cli.seed
-applies cli=install
+applies cli=$APPLIES_INSTALL
 EOF
     else
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label minimal=Install a minimal system
 replace minimal=file=/cdrom/preseed/ubuntu-server-minimal.seed
-applies minimal=install
+applies minimal=$APPLIES_INSTALL
 label minimalvm=Install a minimal virtual machine
 replace minimalvm=file=/cdrom/preseed/ubuntu-server-minimalvm.seed
-applies minimalvm=install
+applies minimalvm=$APPLIES_INSTALL
 EOF
 	# This really ought to be in gfxboot.cfg instead, but we want to
 	# make it particularly prominent.
@@ -414,14 +418,14 @@ if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubu
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label ltsp=Install an LTSP server
 replace ltsp=file=/cdrom/preseed/ltsp.seed
-applies ltsp=install
+applies ltsp=$APPLIES_INSTALL
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ] && [ "$PROJECT" = mythbuntu ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label ltsp=Install a Diskless Image Server
 replace ltsp=file=/cdrom/preseed/ltsp.seed
-applies ltsp=install
+applies ltsp=$APPLIES_INSTALL
 EOF
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
