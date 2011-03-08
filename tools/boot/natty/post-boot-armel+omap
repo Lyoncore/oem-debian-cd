@@ -17,7 +17,6 @@
 #
 # TODO
 # - use safer -m flag of parted (needs a newer parted)
-# - add splash to cmdline (doesn't work right now; LP: #358362)
 
 . "$BASEDIR/tools/boot/$DI_CODENAME/common.sh"
 
@@ -175,9 +174,15 @@ EOF
 
 export MTOOLSRC
 
-# we leave 72MB for the vfat that carries u-boot, MLO, uImage,
-# uInitrd and boot.scr
-BOOT_SIZE="$((72 * 1024 * 1024))"
+# we leave approximately 72MB for the vfat that carries u-boot, MLO, uImage,
+# uInitrd and boot.scr.
+# We want the root partition following the boot partition to be aligned at a
+# multiple of 4MB as that is shown to be better both for performance and for
+# the longevity of most SD cards.
+# So boot partition size is 72 MB minus the size of a track.
+BOOT_SIZE="$((72 * 1024 * 1024 - 512 * 63))"
+BOOT_SIZE_SECTORS="$(($BOOT_SIZE / 512))"
+ROOTFS_START_SECTOR="$(($BOOT_SIZE_SECTORS + 63))"
 
 IMAGE_SIZE="$(file_length "$EXT3")"
 IMG_SIZE_BLOCKS="$((($BOOT_SIZE + $IMAGE_SIZE + 512 - 1) / 512))"
@@ -188,9 +193,9 @@ TRG_SIZE="$(file_length "$IMAGE")"
 CYLINDERS=`echo $TRG_SIZE/255/63/512 | bc`
 
 {
-    echo ,9,0x0C,*
-    echo ,,,-
-} | sfdisk -D -H 255 -S 63 -C $CYLINDERS $IMAGE >/dev/null 2>&1
+    echo 63,$BOOT_SIZE_SECTORS,C,*
+    echo $ROOTFS_START_SECTOR,+
+} | sfdisk -D -H 255 -S 63 -C $CYLINDERS -uS --force $IMAGE
 
 VATSTART=$(parted $IMAGE unit B print|grep "^ 1"|awk '{print $2}')
 VATSIZE=$(LANG=C fdisk -l ${IMAGE} 2>/dev/null|grep W95 |awk '{print $5}')
