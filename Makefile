@@ -161,13 +161,14 @@ else
    ifeq ($(PROJECT),ubuntu-headless)
     CDBASE = $(CODENAME)-preinstalled-headless-$(FULLARCH)
    else
-   ifeq ($(PROJECT),ubuntu-server)
-    CDBASE = $(CODENAME)-preinstalled-server-$(FULLARCH)
-   else
-    ifeq ($(PROJECT),kubuntu-mobile)
-     CDBASE = $(CODENAME)-preinstalled-mobile-$(FULLARCH)
+    ifeq ($(PROJECT),ubuntu-server)
+     CDBASE = $(CODENAME)-preinstalled-server-$(FULLARCH)
     else
-     CDBASE = $(CODENAME)-preinstalled-desktop-$(FULLARCH)
+     ifeq ($(PROJECT),kubuntu-mobile)
+      CDBASE = $(CODENAME)-preinstalled-mobile-$(FULLARCH)
+     else
+      CDBASE = $(CODENAME)-preinstalled-desktop-$(FULLARCH)
+     endif
     endif
    endif
   endif
