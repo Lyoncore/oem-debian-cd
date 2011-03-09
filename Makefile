@@ -158,6 +158,9 @@ else
   ifeq ($(PROJECT),ubuntu-netbook)
    CDBASE = $(CODENAME)-preinstalled-netbook-$(FULLARCH)
   else
+   ifeq ($(PROJECT),ubuntu-headless)
+    CDBASE = $(CODENAME)-preinstalled-headless-$(FULLARCH)
+   else
    ifeq ($(PROJECT),ubuntu-server)
     CDBASE = $(CODENAME)-preinstalled-server-$(FULLARCH)
    else
