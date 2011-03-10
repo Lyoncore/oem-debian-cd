@@ -105,6 +105,10 @@ else
     die "Unknown OMAP subarch"
 fi
 
+if [ "$PROJECT" = "ubuntu-headless" ]; then
+    flavour_opts="console=ttyO2,115200n8"
+fi
+
 log "Extracting bootloader from main archive"
 extract_file_from_package $xloader_package $path_to_xloader "MLO"
 extract_file_from_package $uboot_package $path_to_uboot "u-boot.bin"
@@ -158,7 +162,7 @@ log "Generating boot.scr"
 cat >"$uboot_script_text" <<EOF
     fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
     fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
-    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline
+    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline $flavour_opts
     bootm $uboot_kernel_addr $uboot_ramdisk_addr
 EOF
 
