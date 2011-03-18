@@ -107,7 +107,7 @@ else
 fi
 
 if [ "$PROJECT" = "ubuntu-headless" ]; then
-    flavour_opts="console=ttyO2,115200n8"
+    flavour_opts="debian-installer/framebuffer=false console=ttyO2,115200n8"
 fi
 
 log "Extracting bootloader from main archive"
