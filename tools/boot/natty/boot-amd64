@@ -322,10 +322,11 @@ hidden-timeout=$HIDDEN_TIMEOUT
 EOF
 fi
 # access-options default: v1 v2 v3 brltty m1 m2
-# d-i only supports brltty right now.
+# d-i only supports v1 and brltty right now.
 if [ "$CDIMAGE_LIVE" != 1 ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-access-options=brltty
+access-options=v1 brltty
+access-options-v1=access=v1 FRONTEND_BACKGROUND=dark
 EOF
 elif [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-netbook ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
