@@ -272,14 +272,20 @@ if [ "$HIDDEN_TIMEOUT" ]; then
 hidden-timeout=$HIDDEN_TIMEOUT
 EOF
 fi
-if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-netbook ]; then
+# access-options default: v1 v2 v3 brltty m1 m2
+# d-i only supports brltty right now.
+if [ "$CDIMAGE_LIVE" != 1 ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-access-options=v1 v2 m1
+access-options=brltty
+EOF
+elif [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-netbook ]; then
+    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+access-options=v1 v2 brltty m1
 EOF
 elif [ "$PROJECT" = xubuntu ]; then
     # v1 and m1 don't have the necessary sed calls for Xubuntu yet.
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-access-options=v2 v3 m2
+access-options=v2 v3 brltty m2
 EOF
 fi
 cat >> boot$N/isolinux/gfxboot.cfg <<EOF
