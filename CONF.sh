@@ -164,7 +164,7 @@ case $DIST in
     export CODENAME=natty
     export CAPCODENAME='Natty Narwhal'
     export DEBVERSION=11.04
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Beta 1"
     ;;
 esac
 
