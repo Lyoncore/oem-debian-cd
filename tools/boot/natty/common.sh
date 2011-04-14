@@ -58,6 +58,13 @@ default_preseed() {
 	    DEFAULT_PRESEED=
 	    ;;
     esac
+    if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+	case $PROJECT in
+	    ubuntu|ubuntu-*)
+		DEFAULT_PRESEED="${DEFAULT_PRESEED:+$DEFAULT_PRESEED }FRONTEND_BACKGROUND=original"
+		;;
+	esac
+    fi
 }
 
 list_kernel_abis() {
