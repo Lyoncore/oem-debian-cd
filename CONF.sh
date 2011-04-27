@@ -277,11 +277,7 @@ case $DIST in
 esac
 
 # Use post-release updates?
-case $DIST in
-  warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy|intrepid|jaunty|karmic|lucid)
-    export UPDATES=1
-    ;;
-esac
+export UPDATES=1
 
 case $DIST in
   lucid)
