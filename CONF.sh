@@ -166,6 +166,13 @@ case $DIST in
     export DEBVERSION=11.04
     export OFFICIAL="Release"
     ;;
+  oneiric)
+    export PREV_CODENAME=natty
+    export CODENAME=oneiric
+    export CAPCODENAME='Oneiric Ocelot'
+    export DEBVERSION=11.10
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
