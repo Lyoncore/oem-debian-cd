@@ -97,48 +97,6 @@ if [ "$NN" = "1" ]; then
 	GFXBOOT=1
     fi
 
-    # Extract GRUB EFI files.
-    # Cloned-and-hacked from debian-installer/build/config/x86.cfg for now.
-    mkdir -p grub-efi
-    GRUB_RESCUE_EFI_AMD64_DEB="$($BASEDIR/tools/apt-selection cache show grub-rescue-efi-amd64 | \
-	grep ^Filename | awk '{print $2}')"
-    (ar p "$MIRROR/$GRUB_RESCUE_EFI_AMD64_DEB" data.tar.gz | \
-	tar xzf - -C . ./usr/lib/grub-rescue-efi-amd64/grub-rescue-cdrom.iso)
-    # Repack efi.img more efficiently
-    isoinfo -R -i usr/lib/grub-rescue-efi-amd64/grub-rescue-cdrom.iso \
-	-x /efi.img >grub-efi/efi.img
-    mcopy -i grub-efi/efi.img ::efi/boot/bootx64.efi grub-efi/bootx64.efi
-    # 24KiB headroom seems to be enough; (x+31)/32*32 rounds up to
-    # multiple of 32
-    mkfs.msdos -C grub-efi/efi-small.img \
-	$(( ($(stat -c %s grub-efi/bootx64.efi) / 1024 + 55) / 32 * 32 ))
-    mmd -i grub-efi/efi-small.img ::efi
-    mmd -i grub-efi/efi-small.img ::efi/boot
-    mcopy -i grub-efi/efi-small.img grub-efi/bootx64.efi ::efi/boot/bootx64.efi
-    # Extract GRUB modules, except for those already built in.
-    # TODO: This is based on reading grub-mkrescue and moddep.lst, and
-    # is thus unstable; the exclusions really belong in grub-mkrescue
-    # instead.
-    mkdir -p grub-efi/boot/grub/x86_64-efi
-    for x in $(isoinfo -R -i usr/lib/grub-rescue-efi-amd64/grub-rescue-cdrom.iso -f | \
-	       grep ^/boot/grub/x86_64-efi/); do
-	case $(basename $x) in
-	    configfile.mod|extcmd.mod|fshelp.mod|iso9660.mod|memdisk.mod|normal.mod|search.mod|search_fs_file.mod|search_fs_uuid.mod|search_label.mod|tar.mod)
-		# included in bootx64.efi
-		;;
-	    affs.mod|afs.mod|afs_be.mod|befs.mod|befs_be.mod|minix.mod|nilfs2.mod|sfs.mod|zfs.mod|zfsinfo.mod)
-		# unnecessary filesystem modules
-		;;
-	    example_functional_test.mod|functional_test.mod|hello.mod)
-		# other cruft
-		;;
-	    *)
-		isoinfo -R -i usr/lib/grub-rescue-efi-amd64/grub-rescue-cdrom.iso -x $x \
-		    >grub-efi$x
-		;;
-	esac
-    done
-
     rm -rf usr
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 	cp -lf cdrom/vmlinuz $CDDIR/install/
@@ -259,13 +217,11 @@ rm -f boot$N/isolinux/*.txt.withgtk
 sed -i 's|%install%|install|' boot$N/isolinux/*.cfg
 # Move GRUB files to the right place.
 mkdir -p $CDDIR/efi/boot
-mkdir -p $CDDIR/boot/grub/x86_64-efi
+mcopy -i boot$N/isolinux/grub/efi.img ::efi/boot/bootx64.efi $CDDIR/efi/boot/bootx64.efi
+mkdir -p $CDDIR/boot/grub
 mv boot$N/isolinux/grub/* $CDDIR/boot/grub/
 rmdir boot$N/isolinux/grub
 sed -i '/^menuentry/Q' $CDDIR/boot/grub/grub.cfg
-cp -a grub-efi/bootx64.efi $CDDIR/efi/boot/bootx64.efi
-cp -a grub-efi/efi-small.img $CDDIR/boot/grub/efi.img
-cp -a grub-efi/boot/grub/x86_64-efi/* $CDDIR/boot/grub/x86_64-efi/
 
 # Set up-to-date build dates. Kludgy because d-i sets its own version as
 # the build date.
