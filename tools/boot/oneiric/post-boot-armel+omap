@@ -179,22 +179,33 @@ EOF
 
 export MTOOLSRC
 
-# we leave 72MB for the vfat that carries u-boot, MLO, uImage,
-# uInitrd and boot.scr
-BOOT_SIZE="$((72 * 1024 * 1024))"
+#define sectors per track and number of heads. These need to be in sync
+#with the partition table altering code in the jasper initramfs script.
 
+SPT=32
+HEADS=128
+
+# we leave 72MB for the vfat that carries u-boot, MLO, uImage,
+# uInitrd and boot.scr. The actual partition size is slightly
+# less than 72M as the first track is unused.
+# The root partition starts exactly at 72MB so at a 4MB boundary
+
+BOOT_SIZE="$((72 * 1024 * 1024 - $SPT * 512))"
+BOOT_SIZE_SECTORS="$(($BOOT_SIZE / 512))"
+ROOT_START_SECTOR=$(($SPT + $BOOT_SIZE_SECTORS))
 IMAGE_SIZE="$(file_length "$EXT3")"
 IMG_SIZE_BLOCKS="$((($BOOT_SIZE + $IMAGE_SIZE + 512 - 1) / 512))"
 
 dd if=/dev/zero of="$IMAGE" bs=512 count=0 seek="$IMG_SIZE_BLOCKS" >/dev/null 2>&1
 
 TRG_SIZE="$(file_length "$IMAGE")"
-CYLINDERS=`echo $TRG_SIZE/255/63/512 | bc`
+CYLINDERS="$((($TRG_SIZE/$HEADS/$SPT + 512 -1 )/512))"
 
+#Use sectors as unit, to better control placement of partitions
 {
-    echo ,9,0x0C,*
-    echo ,,,-
-} | sfdisk -D -H 255 -S 63 -C $CYLINDERS $IMAGE >/dev/null 2>&1
+    echo $SPT,$BOOT_SIZE_SECTORS,0x0C,*
+    echo $ROOT_START_SECTOR,,,-
+} | sfdisk -L -D -H $HEADS -S $SPT -C $CYLINDERS -uS --force $IMAGE
 
 VATSTART=$(parted $IMAGE unit B print|grep "^ 1"|awk '{print $2}')
 VATSIZE=$(LANG=C fdisk -l ${IMAGE} 2>/dev/null|grep W95 |awk '{print $5}')
