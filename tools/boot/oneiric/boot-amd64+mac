@@ -92,16 +92,14 @@ if [ "$NN" = "1" ]; then
     list_kernel_abis $BOOT_IMAGES | check_kernel_sync
 
     echo "Using ISOLINUX boot-disks image on CD$N"
-    mkdir -p boot$N/isolinux
+    mkdir -p $CDDIR/../syslinux boot$N/isolinux
     SYSLINUXDEB="$($BASEDIR/tools/apt-selection cache show syslinux-common | \
 	grep ^Filename | awk '{print $2}')"
     (ar p "$MIRROR/$SYSLINUXDEB" data.tar.gz | \
-	tar zxf - -C . ./usr/lib/syslinux/isolinux.bin \
-	    ./usr/lib/syslinux/vesamenu.c32 \
-	    ./usr/lib/syslinux/gfxboot.c32)
-    mv usr/lib/syslinux/isolinux.bin boot$N/isolinux/
-    mv usr/lib/syslinux/vesamenu.c32 boot$N/isolinux/
-    mv usr/lib/syslinux/gfxboot.c32 boot$N/isolinux/
+	tar zxf - -C $CDDIR/../syslinux ./usr/lib)
+    cp -f $CDDIR/../syslinux/usr/lib/syslinux/isolinux.bin boot$N/isolinux/
+    cp -f $CDDIR/../syslinux/usr/lib/syslinux/vesamenu.c32 boot$N/isolinux/
+    cp -f $CDDIR/../syslinux/usr/lib/syslinux/gfxboot.c32 boot$N/isolinux/
 
     GFXBOOT=
     if THEMEDEB="$($BASEDIR/tools/apt-selection cache show gfxboot-theme-ubuntu)"; then
