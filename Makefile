@@ -141,6 +141,7 @@ add_winfoss=$(BASEDIR)/tools/add_winfoss
 find_newest_installer=$(BASEDIR)/tools/find-newest-installer
 verbose=$(BASEDIR)/tools/verbose_command
 make_vfat_img=$(BASEDIR)/tools/make-vfat-img
+hardlink=$(BASEDIR)/tools/hardlink
 
 BDIR=$(TDIR)/$(CODENAME)-$(FULLARCH)
 ADIR=$(APTTMP)/$(CODENAME)-$(FULLARCH)
@@ -965,6 +966,7 @@ $(BDIR)/CD1/md5sum.txt:
 	else \
 	 $(fastsums) $(BDIR); \
 	fi
+	$(hardlink) $(BDIR)
 src-md5list: ok sources src-secured $(SDIR)/CD1/md5sum.txt
 $(SDIR)/CD1/md5sum.txt:
 	@echo "Generating md5sum of files from all the source CDs ..."
@@ -983,6 +985,7 @@ $(SDIR)/CD1/md5sum.txt:
 	else \
 	 $(fastsums) $(SDIR); \
 	fi
+	$(hardlink) $(SDIR)
 
 
 # Generate $CODENAME-secured tree with Packages and Release(.gpg) files
