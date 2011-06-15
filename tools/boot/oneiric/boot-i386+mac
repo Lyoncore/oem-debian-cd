@@ -37,6 +37,18 @@ cd $CDDIR/..
 #
 NN=`echo $N | sed -e 's/_NONUS//'`
 
+> $N.mkisofs_opts
+
+case "$MKISOFS" in
+    *xorriso*)
+        echo -n "-isohybrid-mbr syslinux/usr/lib/syslinux/isohdpfx.bin " >> $N.mkisofs_opts
+        echo -n "-partition_offset 16 " >> $N.mkisofs_opts
+        # uncomment to add a small FAT partition on the media
+        # /sbin/mkfs.msdos -n Bla -C test.fat 8192
+        # echo -n "-append_partition 2 0x01 test.fat " >> $N.mkisofs_opts
+        ;;
+esac
+
 # List of boot image for each CD
 KTYPE[1]="" #elilo multiboot in fact
 KTYPE[2]="cdrom"
@@ -90,7 +102,7 @@ if [ "$NN" = "1" ]; then
 	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-386")"
 	mv $CDDIR/casper/filesystem.initrd-386 "$CDDIR$CASPER_INITRD"
     fi
-    echo -n "-cache-inodes -J -l " > $N.mkisofs_opts
+    echo -n "-cache-inodes -J -l " >> $N.mkisofs_opts
     # HFS hybrid filesystem for booting on Intel-based Macs
     echo -n "--netatalk -hfs -probe -map $BASEDIR/data/hfs.map " >> $N.mkisofs_opts
     echo -n "-part -no-desktop -hfs-bless CD$N/install -hfs-bless-file CD$N/install/elilo.efi -hfs-volid ${CAPPROJECT}_i386_${CODENAME} " >> $N.mkisofs_opts
@@ -110,8 +122,14 @@ if [ "$NN" = "1" ]; then
     fi
 fi
 
-"$BASEDIR/tools/sorting_weights" "$N"
-echo -n "-sort $(pwd)/$N.weights " >> $N.mkisofs_opts
+case "$MKISOFS" in
+    *xorriso*)
+	;;
+    *)
+	"$BASEDIR/tools/sorting_weights" "$N"
+	echo -n "-sort $(pwd)/$N.weights " >> $N.mkisofs_opts
+	;;
+esac
 
 #install_languages $CDDIR
 
