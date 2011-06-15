@@ -44,6 +44,18 @@ if [ "$CDIMAGE_ADDON" ]; then
     NN=2
 fi
 
+> $N.mkisofs_opts
+
+case "$MKISOFS" in
+    *xorriso*)
+        echo -n "-isohybrid-mbr syslinux/usr/lib/syslinux/isohdpfx.bin " >> $N.mkisofs_opts
+        echo -n "-partition_offset 16 " >> $N.mkisofs_opts
+        # uncomment to add a small FAT partition on the media
+        # /sbin/mkfs.msdos -n Bla -C test.fat 8192
+        # echo -n "-append_partition 2 0x01 test.fat " >> $N.mkisofs_opts
+        ;;
+esac
+
 # List of boot image for each CD
 KTYPE[1]="" #isolinux multiboot in fact
 KTYPE[2]=""
@@ -109,16 +121,16 @@ if [ "$NN" = "1" ]; then
 	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-generic")"
 	mv $CDDIR/casper/filesystem.initrd-generic "$CDDIR$CASPER_INITRD"
     fi
-    echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " > $N.mkisofs_opts
+    echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " >> $N.mkisofs_opts
 else
     if [ -n "$THISTYPE" ]; then
 	echo "Using $THISTYPE boot-disks image on CD$N"
 	mkdir -p boot$N/boot
 	cp $THISTYPE/boot.img boot$N/boot/
-	echo -n "-cache-inodes -J -l -b boot/boot.img "  > $N.mkisofs_opts
+	echo -n "-cache-inodes -J -l -b boot/boot.img " >> $N.mkisofs_opts
     else
 	mkdir boot$N
-	echo -n "-cache-inodes -J -l " > $N.mkisofs_opts
+	echo -n "-cache-inodes -J -l " >> $N.mkisofs_opts
     fi
 fi
 
