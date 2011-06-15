@@ -84,6 +84,12 @@ done
 if [ "$NN" = "1" ]; then
     list_kernel_abis $BOOT_IMAGES | check_kernel_sync
 
+    mkdir -p $CDDIR/../syslinux
+    SYSLINUXDEB="$($BASEDIR/tools/apt-selection cache show syslinux-common | \
+	grep ^Filename | awk '{print $2}')"
+    (ar p "$MIRROR/$SYSLINUXDEB" data.tar.gz | \
+	tar zxf - -C $CDDIR/../syslinux ./usr/lib)
+
     echo "Using elilo boot-disks image on CD$N"
     mkdir -p boot$N/install
     ELILODEB="$($BASEDIR/tools/apt-selection cache show elilo | \
