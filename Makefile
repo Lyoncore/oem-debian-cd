@@ -56,20 +56,20 @@ endif
 ifndef BINVOLID
 ifeq ($(ARCH),powerpc)
 ifneq ($(MAXCDS),1)
-BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc Bin-$$num"
+BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc $$num"
 else
 BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc"
 endif
 else
 ifneq ($(MAXCDS),1)
-BINVOLID="$(CAPPROJECT) $(DEBVERSION) $(ARCH) Bin-$$num"
+BINVOLID="$(CAPPROJECT) $(DEBVERSION) $(ARCH) $$num"
 else
 BINVOLID="$(CAPPROJECT) $(DEBVERSION) $(ARCH)"
 endif
 endif
 endif
 ifndef SRCVOLID
-SRCVOLID="$(CAPPROJECT) $(DEBVERSION) Src-$$num"
+SRCVOLID="$(CAPPROJECT) $(DEBVERSION) Source $$num"
 endif
 ifndef MKISOFS
 export MKISOFS=/usr/bin/mkisofs
@@ -104,6 +104,16 @@ endif
 # Default udeb_include files.
 ifndef UDEB_INCLUDE
 UDEB_INCLUDE=$(BASEDIR)/data/$(DI_CODENAME)/$(ARCH)_udeb_include
+endif
+
+UNDER_ARCHES=$(shell echo $(ARCHES) | sed 's/\ /_/g')
+ARCH_MKISOFS = ${${UNDER_ARCHES}_MKISOFS}
+ARCH_MKISOFS_OPTS = ${${UNDER_ARCHES}_MKISOFS_OPTS}
+ifneq (${ARCH_MKISOFS},)
+    MKISOFS = ${ARCH_MKISOFS}
+endif
+ifneq (${ARCH_MKISOFS_OPTS},)
+    MKISOFS_OPTS = ${ARCH_MKISOFS_OPTS}
 endif
 
 ## Internal variables  
@@ -1036,6 +1046,7 @@ bin-images: ok bin-md5list $(OUT)
 		if [ "$(DOJIGDO)" = "0" ]; then \
 			$(verbose) $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o $(OUT)/$(call CDBASE,$$n).raw $$opts CD$$n; \
+			chmod +r $(OUT)/$(call CDBASE,$$n).raw; \
 		elif [ "$(DOJIGDO)" = "1" ]; then \
 			$(verbose) $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o $(OUT)/$(call CDBASE,$$n).raw \
@@ -1045,6 +1056,7 @@ bin-images: ok bin-md5list $(OUT)
 			  -jigdo-exclude boot$$n \
 			  -md5-list $(BDIR)/md5-check \
 			  $(JIGDO_OPTS) $$opts CD$$n; \
+			chmod +r $(OUT)/$(call CDBASE,$$n).raw; \
 		elif [ "$(DOJIGDO)" = "2" ]; then \
 			$(verbose) $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o /dev/null -v \
@@ -1120,6 +1132,7 @@ src-images: ok src-md5list $(OUT)
 		if [ "$(DOJIGDO)" = "0" ]; then \
 			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o $(OUT)/$(call CDSRCBASE,$$n).raw $$opts CD$$n ; \
+			chmod +r $(OUT)/$(call CDSRCBASE,$$n).raw; \
 		elif [ "$(DOJIGDO)" = "1" ]; then \
 			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o $(OUT)/$(call CDSRCBASE,$$n).raw \
@@ -1128,6 +1141,7 @@ src-images: ok src-md5list $(OUT)
 			  -jigdo-map Debian=$(MIRROR)/ \
 			  -md5-list $(SDIR)/md5-check \
 			  $(JIGDO_OPTS) $$opts CD$$n ; \
+			chmod +r $(OUT)/$(call CDSRCBASE,$$n).raw; \
 		elif [ "$(DOJIGDO)" = "2" ]; then \
 			$(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 			  -o /dev/null \
@@ -1175,6 +1189,7 @@ bin-image: ok bin-md5list $(OUT)
 	 elif [ "$(IMAGE_FORMAT)" = "iso" ]; then \
 	 $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
 	  -o $(OUT)/$(call CDBASE,$(CD)).raw $$opts CD$(CD); \
+	 chmod +r $(OUT)/$(call CDBASE,$(CD)).raw; \
 	 fi; \
          if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) ]; then \
                 $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) $(CD) $(BDIR)/CD$(CD) \
@@ -1191,7 +1206,8 @@ src-image: ok src-md5list $(OUT)
 	 volid=`cat $(CD).volid`; \
 	 rm -f $(OUT)/$(call CDSRCBASE,$(CD)).raw; \
          $(MKISOFS) $(MKISOFS_OPTS) -V "$$volid" \
-	  -o $(OUT)/$(call CDSRCBASE,$(CD)).raw $$opts CD$(CD)
+	  -o $(OUT)/$(call CDSRCBASE,$(CD)).raw $$opts CD$(CD); \
+	 chmod +r $(OUT)/$(call CDSRCBASE,$(CD)).raw
 
 
 #Calculate the md5sums for the images (if available), or get from templates
