@@ -51,11 +51,11 @@ default_preseed() {
 	mythbuntu)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/mythbuntu.seed'
 	    ;;
-	ubuntu-moblin-remix)
-	    DEFAULT_PRESEED='file=/cdrom/preseed/moblin-remix.seed'
-	    ;;
 	lubuntu)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/lubuntu.seed'
+	    ;;
+	ubuntu-moblin-remix)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/moblin-remix.seed'
 	    ;;
 	*)
 	    DEFAULT_PRESEED=
