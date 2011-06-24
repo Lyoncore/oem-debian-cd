@@ -17,7 +17,8 @@ my $prev_file = '';
 foreach (@md5sums) {
 	chomp;
 	my ($md5, $file) = split;
-	if ($md5 eq $prev_md5 and not -l "$dir/$file") {
+	if ($md5 eq $prev_md5 and
+	    not -l "$dir/$prev_file" and not -l "$dir/$file") {
 		print "Linking $dir/$prev_file to $dir/$file\n";
 		unlink ("$dir/$file") || die "Can't unlink $dir/$file: $!\n";
 		link ("$dir/$prev_file", "$dir/$file")
