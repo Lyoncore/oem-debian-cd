@@ -54,6 +54,9 @@ default_preseed() {
 	ubuntu-moblin-remix)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/moblin-remix.seed'
 	    ;;
+	lubuntu)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/lubuntu.seed'
+	    ;;
 	*)
 	    DEFAULT_PRESEED=
 	    ;;
