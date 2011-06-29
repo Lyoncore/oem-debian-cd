@@ -105,7 +105,7 @@ else
     die "Unknown OMAP subarch"
 fi
 
-if [ "$PROJECT" = "ubuntu-headless" ]; then
+if [ "$PROJECT" = "ubuntu-headless" ] || [ "$PROJECT" = "ubuntu-server" ]; then
     flavour_opts="debian-installer/framebuffer=false console=ttyO2,115200n8"
 fi
 
