@@ -24,7 +24,11 @@ for item in kernel initrd; do
 	done
 done
 ln "$LIVEIMAGES/$FULLARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
-ln "$LIVEIMAGES/$FULLARCH.manifest-desktop" "$BDIR/CD1/casper/filesystem.manifest-desktop" || true
+if [ -e "$BDIR/CD1/casper/filesystem.manifest-remove" ]; then
+	ln "$LIVEIMAGES/$FULLARCH.manifest-remove" "$BDIR/CD1/casper/filesystem.manifest-remove" || true
+else
+	ln "$LIVEIMAGES/$FULLARCH.manifest-desktop" "$BDIR/CD1/casper/filesystem.manifest-desktop" || true
+fi
 
 if [ "$PROJECT" = edubuntu ] && [ "$CDIMAGE_DVD" = 1 ]; then
 	case $ARCH in
