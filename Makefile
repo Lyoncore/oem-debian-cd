@@ -1093,7 +1093,11 @@ bin-images: ok bin-md5list $(OUT)
 	done
 ifeq ($(CDIMAGE_LIVE),1)
 	-cp -a $(LIVEIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
-	-cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
+	-if [ -e $(LIVEIMAGES)/$(FULLARCH).manifest-remove ]; then \
+		cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-remove $(OUT)/$(call CDBASE,$$n).manifest-remove; \
+	else \
+		cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop; \
+	fi
 endif
 
 bin-preinstalled_images: ok $(OUT)
@@ -1113,7 +1117,11 @@ bin-preinstalled_images: ok $(OUT)
 		$(OUT)/$(call CDBASE,1).raw; \
 	fi
 	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
-	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop
+	-if [ -e $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-remove ]; then \
+		cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-remove $(OUT)/$(call CDBASE,$$n).manifest-remove; \
+	else \
+		cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop; \
+	fi
 
 # FIXME: This only works with CD1, and not with addon CDs.
 bin-compress_images: ok $(OUT)
