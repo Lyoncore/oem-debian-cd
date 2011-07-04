@@ -24,7 +24,7 @@ for item in kernel initrd; do
 	done
 done
 ln "$LIVEIMAGES/$FULLARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
-if [ -e "$BDIR/CD1/casper/filesystem.manifest-remove" ]; then
+if [ -e "$LIVEIMAGES/$FULLARCH.manifest-remove" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.manifest-remove" "$BDIR/CD1/casper/filesystem.manifest-remove" || true
 else
 	ln "$LIVEIMAGES/$FULLARCH.manifest-desktop" "$BDIR/CD1/casper/filesystem.manifest-desktop" || true
