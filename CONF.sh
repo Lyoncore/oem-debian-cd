@@ -144,7 +144,7 @@ case $DIST in
     export PREV_CODENAME=karmic
     export CODENAME=lucid
     export CAPCODENAME='Lucid Lynx'
-    export DEBVERSION=10.04.2
+    export DEBVERSION=10.04.3
     case $PROJECT in
       ubuntu|ubuntu-server|kubuntu)
 	DEBVERSION="$DEBVERSION LTS"
@@ -288,7 +288,7 @@ export UPDATES=1
 
 case $DIST in
   lucid)
-    #export PROPOSED=1
+    export PROPOSED=1
     ;;
 esac
 
