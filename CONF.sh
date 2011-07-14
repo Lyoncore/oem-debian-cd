@@ -314,6 +314,8 @@ esac
 # USB stick. xorriso 0.6.5 and later has working support for this.
 case $DIST in
   warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy|intrepid|jaunty|karmic|lucid|maverick|natty)
+    ;;
+  *)
     export i386_MKISOFS="xorriso"
     export i386_MKISOFS_OPTS="-as mkisofs -r -checksum_algorithm_iso md5,sha1"
     export amd64_MKISOFS="xorriso"
