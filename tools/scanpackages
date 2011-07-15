@@ -98,7 +98,8 @@ for SECT in $SECTIONS; do
 	       dists/$CODENAME/$SECT/binary-$ONE_ARCH/
 	    if [ "$ONE_ARCH" != "$ARCH" ]; then
 		touch dists/$CODENAME/$SECT/binary-$ONE_ARCH/Packages
-		gzip -9n dists/$CODENAME/$SECT/binary-$ONE_ARCH/Packages
+		gzip -9cn dists/$CODENAME/$SECT/binary-$ONE_ARCH/Packages \
+		    > dists/$CODENAME/$SECT/binary-$ONE_ARCH/Packages.gz
 	    fi
 	fi
 	if [ -n "$NONUS" -a -e "$NONUS/dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Release" ]; then
@@ -106,7 +107,8 @@ for SECT in $SECTIONS; do
 	       dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/
 	    if [ "$ONE_ARCH" != "$ARCH" ]; then
 		touch dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Packages
-		gzip -9n dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Packages
+		gzip -9cn dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Packages \
+		    > dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Packages.gz
 	    fi
 	fi
     done
@@ -119,7 +121,8 @@ if [ -n "$LOCALDEBS" -a -n "$LOCAL" ]; then
 		dists/$CODENAME/local/binary-$ONE_ARCH/
 	   if [ "$ONE_ARCH" != "$ARCH" ]; then
 	       touch dists/$CODENAME/local/binary-$ONE_ARCH/Packages
-	       gzip -9n dists/$CODENAME/local/binary-$ONE_ARCH/Packages
+	       gzip -9cn dists/$CODENAME/local/binary-$ONE_ARCH/Packages \
+		   > dists/$CODENAME/local/binary-$ONE_ARCH/Packages.gz
 	   fi
 	fi
     done
