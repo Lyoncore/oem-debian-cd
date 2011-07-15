@@ -34,26 +34,43 @@ if [ ! -d .disk ] ; then
     mkdir .disk
 fi
 
-mkdir -p dists/$CODENAME/main/binary-$ARCH
+ALL_ARCHES="$ARCH"
+if [ -e "$BASEDIR/data/$CODENAME/multiarch/$ARCH" ]; then
+  ALL_ARCHES="$ALL_ARCHES $(cat "$BASEDIR/data/$CODENAME/multiarch/$ARCH")"
+fi
+
+for ONE_ARCH in $ALL_ARCHES; do
+    mkdir -p dists/$CODENAME/main/binary-$ONE_ARCH
+done
 mkdir -p dists/$CODENAME/main/source
 if [ "${CONTRIB:-0}" != 0 ]; then
-    mkdir -p dists/$CODENAME/contrib/binary-$ARCH
+    for ONE_ARCH in $ALL_ARCHES; do
+	mkdir -p dists/$CODENAME/contrib/binary-$ONE_ARCH
+    done
     mkdir -p dists/$CODENAME/contrib/source
 fi
 if [ "${NONFREE:-0}" != "0" ]; then
-    mkdir -p dists/$CODENAME/non-free/binary-$ARCH
+    for ONE_ARCH in $ALL_ARCHES; do
+	mkdir -p dists/$CODENAME/non-free/binary-$ONE_ARCH
+    done
     mkdir -p dists/$CODENAME/non-free/source
 fi
 if [ "${RESTRICTED:-0}" != "0" ]; then
-    mkdir -p dists/$CODENAME/restricted/binary-$ARCH
+    for ONE_ARCH in $ALL_ARCHES; do
+	mkdir -p dists/$CODENAME/restricted/binary-$ONE_ARCH
+    done
     mkdir -p dists/$CODENAME/restricted/source
 fi
 if [ "${UNIVERSE:-0}" != "0" ]; then
-    mkdir -p dists/$CODENAME/universe/binary-$ARCH
+    for ONE_ARCH in $ALL_ARCHES; do
+	mkdir -p dists/$CODENAME/universe/binary-$ONE_ARCH
+    done
     mkdir -p dists/$CODENAME/universe/source
 fi
 if [ "${MULTIVERSE:-0}" != "0" ]; then
-    mkdir -p dists/$CODENAME/multiverse/binary-$ARCH
+    for ONE_ARCH in $ALL_ARCHES; do
+	mkdir -p dists/$CODENAME/multiverse/binary-$ONE_ARCH
+    done
     mkdir -p dists/$CODENAME/multiverse/source
 fi
 
@@ -73,31 +90,45 @@ if [ "${UNIVERSE:-0}" != "0" ] && \
 fi
     
 if [ -n "$NONUS" ]; then
-    mkdir -p dists/$CODENAME/non-US/main/binary-$ARCH
+    for ONE_ARCH in $ALL_ARCHES; do
+	mkdir -p dists/$CODENAME/non-US/main/binary-$ONE_ARCH
+    done
     mkdir -p dists/$CODENAME/non-US/main/source
     if [ "${CONTRIB:-0}" != "0" ]; then
-        mkdir -p dists/$CODENAME/non-US/contrib/binary-$ARCH
+	for ONE_ARCH in $ALL_ARCHES; do
+	    mkdir -p dists/$CODENAME/non-US/contrib/binary-$ONE_ARCH
+	done
         mkdir -p dists/$CODENAME/non-US/contrib/source
     fi
     if [ "${NONFREE:-0}" != "0" ]; then
-	    mkdir -p dists/$CODENAME/non-US/non-free/binary-$ARCH
+	    for ONE_ARCH in $ALL_ARCHES; do
+		mkdir -p dists/$CODENAME/non-US/non-free/binary-$ONE_ARCH
+	    done
 	    mkdir -p dists/$CODENAME/non-US/non-free/source
     fi
     if [ "${RESTRICTED:-0}" != "0" ]; then
-	    mkdir -p dists/$CODENAME/non-US/restricted/binary-$ARCH
+	    for ONE_ARCH in $ALL_ARCHES; do
+		mkdir -p dists/$CODENAME/non-US/restricted/binary-$ONE_ARCH
+	    done
 	    mkdir -p dists/$CODENAME/non-US/restricted/source
     fi
     if [ "${UNIVERSE:-0}" != "0" ]; then
-	    mkdir -p dists/$CODENAME/non-US/universe/binary-$ARCH
+	    for ONE_ARCH in $ALL_ARCHES; do
+		mkdir -p dists/$CODENAME/non-US/universe/binary-$ONE_ARCH
+	    done
 	    mkdir -p dists/$CODENAME/non-US/universe/source
     fi
     if [ "${MULTIVERSE:-0}" != "0" ]; then
-	    mkdir -p dists/$CODENAME/non-US/multiverse/binary-$ARCH
+	    for ONE_ARCH in $ALL_ARCHES; do
+		mkdir -p dists/$CODENAME/non-US/multiverse/binary-$ONE_ARCH
+	    done
 	    mkdir -p dists/$CODENAME/non-US/multiverse/source
     fi
 fi
 
 if [ -n "$LOCAL" ]; then
-    mkdir -p dists/$CODENAME/local/binary-$ARCH
+    for ONE_ARCH in $ALL_ARCHES; do
+	mkdir -p dists/$CODENAME/local/binary-$ONE_ARCH
+    done
     mkdir -p dists/$CODENAME/local/source
 fi
