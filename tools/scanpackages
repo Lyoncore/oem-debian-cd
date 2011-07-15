@@ -96,10 +96,18 @@ for SECT in $SECTIONS; do
 	if [ -e "$MIRROR/dists/$CODENAME/$SECT/binary-$ONE_ARCH/Release" ]; then
 	    cp $MIRROR/dists/$CODENAME/$SECT/binary-$ONE_ARCH/Release \
 	       dists/$CODENAME/$SECT/binary-$ONE_ARCH/
+	    if [ "$ONE_ARCH" != "$ARCH" ]; then
+		touch dists/$CODENAME/$SECT/binary-$ONE_ARCH/Packages
+		gzip -9n dists/$CODENAME/$SECT/binary-$ONE_ARCH/Packages
+	    fi
 	fi
 	if [ -n "$NONUS" -a -e "$NONUS/dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Release" ]; then
 	    cp $NONUS/dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Release \
 	       dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/
+	    if [ "$ONE_ARCH" != "$ARCH" ]; then
+		touch dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Packages
+		gzip -9n dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Packages
+	    fi
 	fi
     done
 done
@@ -109,6 +117,10 @@ if [ -n "$LOCALDEBS" -a -n "$LOCAL" ]; then
 	if [ -e $LOCALDEBS/dists/$CODENAME/local/binary-$ONE_ARCH/Release ]; then
 	   cp $LOCALDEBS/dists/$CODENAME/local/binary-$ONE_ARCH/Release \
 		dists/$CODENAME/local/binary-$ONE_ARCH/
+	   if [ "$ONE_ARCH" != "$ARCH" ]; then
+	       touch dists/$CODENAME/local/binary-$ONE_ARCH/Packages
+	       gzip -9n dists/$CODENAME/local/binary-$ONE_ARCH/Packages
+	   fi
 	fi
     done
 fi
@@ -228,7 +240,7 @@ TreeDefault::Contents " ";
 Tree "dists/$CODENAME" {
     FileList "$PREFIX.filelist_\$(SECTION)";
     Sections "$SECTIONS";
-    Architectures "$ALL_ARCHES";
+    Architectures "$ARCH";
     
     BinOverride "override.$CODENAME.\$(SECTION)";
     ExtraOverride "override.$CODENAME.extra.\$(SECTION)";
@@ -245,7 +257,7 @@ TreeDefault::Contents " ";
 Tree "dists/$CODENAME/non-US" {
     FileList "$PREFIX.filelist_non-US_\$(SECTION)";
     Sections "`echo $SECTIONSNONUS | sed -e 's#non-US/##g'`";
-    Architectures "$ALL_ARCHES";
+    Architectures "$ARCH";
     
     BinOverride "override.$CODENAME.\$(SECTION)";
     ExtraOverride "override.$CODENAME.extra.\$(SECTION)";
