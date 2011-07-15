@@ -42,6 +42,10 @@ if [ -n "$LOCAL" ]; then
   SECTIONS="$SECTIONS local"
 fi
 
+ALL_ARCHES="$ARCH"
+if [ -e "$BASEDIR/data/$CODENAME/multiarch/$ARCH" ]; then
+  ALL_ARCHES="$ALL_ARCHES $(cat "$BASEDIR/data/$CODENAME/multiarch/$ARCH")"
+fi
 
 
 cd "$2"
@@ -57,7 +61,7 @@ if [ "$1" = "install" ]; then
 if [ -e "$MIRROR/dists/$CODENAME/Release" ]; then
     # Strip the MD5Sum, SHA1, and SHA256 fields
     # Update some other information as well
-    sed -e "s/^Architectures: .*$/Architectures: $ARCH/" \
+    sed -e "s/^Architectures: .*$/Architectures: $ALL_ARCHES/" \
     $MIRROR/dists/$CODENAME/Release | \
     sed -e "s|^Components: .*$|Components: $COMPONENTS|" | \
     perl -ne 'if (/^(MD5Sum|SHA1|SHA256):/i) { $f=1; next } 
@@ -72,7 +76,7 @@ if [ -n "$NONUS" ]; then
 if [ -e "$NONUS/dists/$CODENAME/non-US/Release" ]; then
     # Strip the MD5Sum, SHA1, and SHA256 fields
     # Update some other information as well
-    sed -e "/^ /d" -e "s/^Architectures: .*$/Architectures: $ARCH/" \
+    sed -e "/^ /d" -e "s/^Architectures: .*$/Architectures: $ALL_ARCHES/" \
     $NONUS/dists/$CODENAME/non-US/Release | \
     sed -e "s|^Components: .*$|Components: $SECTIONSNONUS|" | \
     perl -ne 'if (/^(MD5Sum|SHA1|SHA256):/i) { $f=1; next } 
@@ -88,21 +92,25 @@ fi
 # Copying release files
 for SECT in $SECTIONS; do
     # Install the release files
-    if [ -e "$MIRROR/dists/$CODENAME/$SECT/binary-$ARCH/Release" ]; then
-	cp $MIRROR/dists/$CODENAME/$SECT/binary-$ARCH/Release \
-	   dists/$CODENAME/$SECT/binary-$ARCH/
-    fi
-    if [ -n "$NONUS" -a -e "$NONUS/dists/$CODENAME/non-US/$SECT/binary-$ARCH/Release" ]; then
-	cp $NONUS/dists/$CODENAME/non-US/$SECT/binary-$ARCH/Release \
-	   dists/$CODENAME/non-US/$SECT/binary-$ARCH/
-    fi
+    for ONE_ARCH in $ALL_ARCHES; do
+	if [ -e "$MIRROR/dists/$CODENAME/$SECT/binary-$ONE_ARCH/Release" ]; then
+	    cp $MIRROR/dists/$CODENAME/$SECT/binary-$ONE_ARCH/Release \
+	       dists/$CODENAME/$SECT/binary-$ONE_ARCH/
+	fi
+	if [ -n "$NONUS" -a -e "$NONUS/dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Release" ]; then
+	    cp $NONUS/dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/Release \
+	       dists/$CODENAME/non-US/$SECT/binary-$ONE_ARCH/
+	fi
+    done
 done
 
 if [ -n "$LOCALDEBS" -a -n "$LOCAL" ]; then
-    if [ -e $LOCALDEBS/dists/$CODENAME/local/binary-$ARCH/Release ]; then
-       cp $LOCALDEBS/dists/$CODENAME/local/binary-$ARCH/Release \
-	    dists/$CODENAME/local/binary-$ARCH/
-    fi
+    for ONE_ARCH in $ALL_ARCHES; do
+	if [ -e $LOCALDEBS/dists/$CODENAME/local/binary-$ONE_ARCH/Release ]; then
+	   cp $LOCALDEBS/dists/$CODENAME/local/binary-$ONE_ARCH/Release \
+		dists/$CODENAME/local/binary-$ONE_ARCH/
+	fi
+    done
 fi
 
 if [ -e "$MIRROR/dists/$DI_CODENAME/main/debian-installer/binary-$ARCH/Release" ]; then
@@ -188,9 +196,11 @@ for SECT in $SECTIONS; do
 	find pool/unstable/$SECT | sort >>$PREFIX.filelist_$OUTSECT
     fi
     for DIST in $DISTS; do
-	if [ -d "dists/$DIST/$SECT/binary-$ARCH" ]; then
-	    find dists/$DIST/$SECT/binary-$ARCH | sort >>$PREFIX.filelist_$OUTSECT
-	fi
+	for ONE_ARCH in $ALL_ARCHES; do
+	    if [ -d "dists/$DIST/$SECT/binary-$ONE_ARCH" ]; then
+		find dists/$DIST/$SECT/binary-$ONE_ARCH | sort >>$PREFIX.filelist_$OUTSECT
+	    fi
+	done
     done
     if [ -n "$NONUS" ]; then
 	touch $PREFIX.filelist_non-US_$OUTSECT
@@ -198,10 +208,12 @@ for SECT in $SECTIONS; do
 	    find pool/non-US/$SECT | sort >>$PREFIX.filelist_non-US_$OUTSECT
 	fi
 	for DIST in $DISTSNONUS; do
-	    if [ -d "dists/$DIST/non-US/$SECT/binary-$ARCH" ]; then
-		find dists/$DIST/non-US/$SECT/binary-$ARCH \
-		    | sort >>$PREFIX.filelist_non-US_$OUTSECT
-	    fi
+	    for ONE_ARCH in $ALL_ARCHES; do
+		if [ -d "dists/$DIST/non-US/$SECT/binary-$ONE_ARCH" ]; then
+		    find dists/$DIST/non-US/$SECT/binary-$ONE_ARCH \
+			| sort >>$PREFIX.filelist_non-US_$OUTSECT
+		fi
+	    done
 	done
     fi
 done
@@ -216,7 +228,7 @@ TreeDefault::Contents " ";
 Tree "dists/$CODENAME" {
     FileList "$PREFIX.filelist_\$(SECTION)";
     Sections "$SECTIONS";
-    Architectures "$ARCH";
+    Architectures "$ALL_ARCHES";
     
     BinOverride "override.$CODENAME.\$(SECTION)";
     ExtraOverride "override.$CODENAME.extra.\$(SECTION)";
@@ -233,7 +245,7 @@ TreeDefault::Contents " ";
 Tree "dists/$CODENAME/non-US" {
     FileList "$PREFIX.filelist_non-US_\$(SECTION)";
     Sections "`echo $SECTIONSNONUS | sed -e 's#non-US/##g'`";
-    Architectures "$ARCH";
+    Architectures "$ALL_ARCHES";
     
     BinOverride "override.$CODENAME.\$(SECTION)";
     ExtraOverride "override.$CODENAME.extra.\$(SECTION)";

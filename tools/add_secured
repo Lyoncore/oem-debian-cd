@@ -107,6 +107,13 @@ fi
 
 if [ -n "$SECURED" ]; then
 
+BINARY_ARCHES="binary-$ARCH/"
+if [ -e "$BASEDIR/data/$CODENAME/multiarch/$ARCH" ]; then
+    for ONE_ARCH in $(cat "$BASEDIR/data/$CODENAME/multiarch/$ARCH"); do
+	BINARY_ARCHES="$BINARY_ARCHES|binary-$ONE_ARCH/"
+    done
+fi
+
 test -d "dists/$CODENAME-secured" || mkdir dists/$CODENAME-secured
 if [ -e "$MIRROR/dists/$CODENAME/Release" ]; then
     # Copy Release and Release.gpg files
@@ -118,7 +125,7 @@ if [ -e "$MIRROR/dists/$CODENAME/Release" ]; then
     :> dists/$CODENAME/.aptignr
     # Include files listed in Release that corresponds to our arch
     grep "^ " dists/$CODENAME-secured/Release | \
-    egrep "binary-$ARCH/|source/" | \
+    egrep "$BINARY_ARCHES|source/" | \
     (while read m s file; do \
         dir="dists/$CODENAME-secured/`dirname $file`"; \
 	test -d "$dir" || mkdir -p $dir; \
@@ -141,7 +148,7 @@ if [ -n "$NONUS" -a -e "$NONUS/dists/$CODENAME/non-US/Release" ]; then
     fi
     # Include files listed in Release that corresponds to our arch
     grep "^ " dists/$CODENAME-secured/non-US/Release | \
-    egrep "binary-$ARCH/|source/" | \
+    egrep "$BINARY_ARCHES|source/" | \
     (while read m s file; do \
         dir="dists/$CODENAME-secured/non-US/`dirname $file`"; \
 	test -d "$dir" || mkdir -p $dir; \
