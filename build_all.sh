@@ -100,6 +100,7 @@ do
 		export OUT="$TMP_OUT/$FULLARCH"; mkdir -p $OUT
 		if [ "$SUBARCH" = "ac100" ]; then
 			export PREINSTALLED_IMAGE_FILESYSTEM="rootfs.tar.gz"
+			export CDIMAGE_COMPRESS=""
 		fi
 		make bin-preinstalled_images
 
