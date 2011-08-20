@@ -1107,9 +1107,9 @@ bin-preinstalled_images: ok $(OUT)
 	if [ ! -e "$(PREINSTALLEDIMAGES)/$(FULLARCH).$(PREINSTALLED_IMAGE_FILESYSTEM)" ]; then \
 		echo "No filesystem for $(FULLARCH)!" >&2; \
 		exit 1;	\
-	fi;
+	fi; \
 	if [ "$(PREINSTALLED_IMAGE_FILESYSTEM)" = "rootfs.tar.gz" ]; then \
-		echo "tar archive" > $(OUT)/$(call CDBASE,1).type \
+		echo "tar archive" > $(OUT)/$(call CDBASE,1).type; \
 	fi; \
 	mv $(PREINSTALLEDIMAGES)/$(FULLARCH).$(PREINSTALLED_IMAGE_FILESYSTEM) $(OUT)/$(call CDBASE,1).raw; \
 	if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) ]; then \
@@ -1118,7 +1118,7 @@ bin-preinstalled_images: ok $(OUT)
 	elif [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
 		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) 1 $(BDIR)/CD1 \
 		$(OUT)/$(call CDBASE,1).raw; \
-	fi \
+	fi; \
 	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
 	-if [ -e $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-remove ]; then \
 		cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-remove $(OUT)/$(call CDBASE,$$n).manifest-remove; \
