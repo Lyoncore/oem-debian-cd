@@ -1118,7 +1118,7 @@ bin-preinstalled_images: ok $(OUT)
 	elif [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) ]; then \
 		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(ARCH) 1 $(BDIR)/CD1 \
 		$(OUT)/$(call CDBASE,1).raw; \
-	fi; \
+	fi; 
 	-cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
 	-if [ -e $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-remove ]; then \
 		cp -a $(PREINSTALLEDIMAGES)/$(FULLARCH).manifest-remove $(OUT)/$(call CDBASE,$$n).manifest-remove; \
