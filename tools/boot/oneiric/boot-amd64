@@ -98,6 +98,7 @@ if [ "$NN" = "1" ]; then
     cp -f $CDDIR/../syslinux/usr/lib/syslinux/isolinux.bin boot$N/isolinux/
     cp -f $CDDIR/../syslinux/usr/lib/syslinux/vesamenu.c32 boot$N/isolinux/
     cp -f $CDDIR/../syslinux/usr/lib/syslinux/gfxboot.c32 boot$N/isolinux/
+    cp -f $CDDIR/../syslinux/usr/lib/syslinux/chain.c32 boot$N/isolinux/
 
     GFXBOOT=
     if THEMEDEB="$($BASEDIR/tools/apt-selection cache show gfxboot-theme-ubuntu)"; then
