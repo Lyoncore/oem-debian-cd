@@ -58,6 +58,8 @@ extract_file_from_package() {
     file_to_extract=$2
     output_file_name=$3
 
+    export UNIVERSE=1
+
     deb="$("$BASEDIR/tools/apt-selection" cache show "$package" | sed -n 's/^Filename: //p')"
     if [ "$deb" = "" ]; then
         log "Package $package not found!"
