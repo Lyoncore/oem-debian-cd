@@ -1105,8 +1105,8 @@ bin-preinstalled_images: ok $(OUT)
 	$(Q)set -x; \
 	mkdir -p $(BDIR)/CD1; \
         if [ "$(SUBARCH)" = "ac100" ]; then \
-                export PREINSTALLED_IMAGE_FILESYSTEM="rootfs.tar.gz" \
-                export CDIMAGE_COMPRESS="" \
+                export PREINSTALLED_IMAGE_FILESYSTEM="rootfs.tar.gz"; \
+                export CDIMAGE_COMPRESS=""; \
         fi; \
 	if [ ! -e "$(PREINSTALLEDIMAGES)/$(FULLARCH).$(PREINSTALLED_IMAGE_FILESYSTEM)" ]; then \
 		echo "No filesystem for $(FULLARCH)!" >&2; \
