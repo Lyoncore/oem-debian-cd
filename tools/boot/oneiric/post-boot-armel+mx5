@@ -92,6 +92,11 @@ uboot_initrd_addr="0x72000000"
 uboot_script_text="$CDDIR/boot.txt"
 uboot_script_image="$CDDIR/boot.scr"
 
+# FIXME due to the fact that our kernel doesnt use the actual subarch name
+# we need to hardcode the flavour name here (find-live-filesystem has the
+# other half of this hack)
+FLAVOUR=linaro-lt-mx5
+
 if [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
     uboot_input_kernel="$PREINSTALLEDIMAGES/$FULLARCH.kernel-$FLAVOUR"
     uboot_input_initrd="$PREINSTALLEDIMAGES/$FULLARCH.initrd-$FLAVOUR"
