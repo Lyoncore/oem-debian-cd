@@ -93,8 +93,8 @@ uboot_script_text="$CDDIR/boot.txt"
 uboot_script_image="$CDDIR/boot.scr"
 
 if [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
-    uboot_input_kernel="$PREINSTALLEDIMAGES/$FULLARCH.kernel-$SUBARCH"
-    uboot_input_initrd="$PREINSTALLEDIMAGES/$FULLARCH.initrd-$SUBARCH"
+    uboot_input_kernel="$PREINSTALLEDIMAGES/$FULLARCH.kernel-$FLAVOUR"
+    uboot_input_initrd="$PREINSTALLEDIMAGES/$FULLARCH.initrd-$FLAVOUR"
     #uboot_extra_cmdline=" root=/dev/mmcblk0p3 quiet splash"
     uboot_extra_cmdline=" root=/dev/mmcblk0p3"
 else
