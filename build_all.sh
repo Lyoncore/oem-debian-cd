@@ -124,12 +124,8 @@ do
 		make pi-makelist
 	fi
 	if [ "$CDIMAGE_COMPRESS" = 1 ]; then
-		if [ "$PREINSTALLED_IMAGE_FILESYSTEM" = "rootfs.tar.gz" ];then 
-			continue
-		else
-			echo Compressing CD images
-			make bin-compress_images
-		fi
+		echo Compressing CD images
+		make bin-compress_images
 	fi
 	echo "--------------- `date` ---------------"
 done
