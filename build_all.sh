@@ -98,9 +98,6 @@ do
 		make pi-makelist
 	elif [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
 		export OUT="$TMP_OUT/$FULLARCH"; mkdir -p $OUT
-		#if [ "$SUBARCH" = "ac100" ]; then 
-		#        CDIMAGE_COMPRESS=""
-		#fi
 		make bin-preinstalled_images
 
 		echo Generating MD5Sums of the images
@@ -127,8 +124,12 @@ do
 		make pi-makelist
 	fi
 	if [ "$CDIMAGE_COMPRESS" = 1 ]; then
-		echo Compressing CD images
-		make bin-compress_images
+		if [ "$PREINSTALLED_IMAGE_FILESYSTEM" = "rootfs.tar.gz" ];then 
+			continue
+		else
+			echo Compressing CD images
+			make bin-compress_images
+		fi
 	fi
 	echo "--------------- `date` ---------------"
 done
