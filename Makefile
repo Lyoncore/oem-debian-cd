@@ -1112,9 +1112,6 @@ bin-preinstalled_images: ok $(OUT)
 		echo "No filesystem for $(FULLARCH)!" >&2; \
 		exit 1;	\
 	fi; \
-	if [ "$(PREINSTALLED_IMAGE_FILESYSTEM)" = "rootfs.tar.gz" ]; then \
-		echo "tar archive" > $(OUT)/$(call CDBASE,1).type; \
-	fi; \
 	mv $(PREINSTALLEDIMAGES)/$(FULLARCH).$(PREINSTALLED_IMAGE_FILESYSTEM) $(OUT)/$(call CDBASE,1).raw; \
 	if [ -f $(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) ]; then \
 		$(BASEDIR)/tools/boot/$(DI_CODENAME)/post-boot-$(FULLARCH) 1 $(BDIR)/CD1 \
@@ -1141,6 +1138,9 @@ bin-compress_images: ok $(OUT)
 		set -e; \
 		gzip -9 --rsyncable $(OUT)/$(call CDBASE,1).raw; \
 		mv $(OUT)/$(call CDBASE,1).raw.gz $(OUT)/$(call CDBASE,1).raw; \
+	fi;
+	@if [ "$(PREINSTALLED_IMAGE_FILESYSTEM)" = "rootfs.tar.gz" ]; then \
+		echo "tar archive" > $(OUT)/$(call CDBASE,1).type; \
 	fi;
 
 src-images: ok src-md5list $(OUT)
