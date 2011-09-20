@@ -211,7 +211,7 @@ CYLINDERS="$((($TRG_SIZE/$HEADS/$SPT + 512 -1 )/512))"
 VATSTART=$(parted $IMAGE unit B print|grep "^ 1"|awk '{print $2}')
 VATSIZE=$(LANG=C fdisk -l ${IMAGE} 2>/dev/null|grep W95 |awk '{print $5}')
 
-mkdosfs -F 32 -n "SERVICEV001" -C $IMAGE.vfat ${VATSIZE} >/dev/null 2>&1
+mkdosfs -F 32 -C $IMAGE.vfat ${VATSIZE} >/dev/null 2>&1
 mcopy -i $IMAGE.vfat MLO ::MLO
 mcopy -i $IMAGE.vfat u-boot.bin ::u-boot.bin
 mcopy -i $IMAGE.vfat $uboot_kernel ::uImage
