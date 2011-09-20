@@ -377,7 +377,7 @@ fi
 # This is the expected filesystem that is downloaded from the livefs builders
 
 if [ -z "$PREINSTALLED_IMAGE_FILESYSTEM" ]; then
-  export PREINSTALLED_IMAGE_FILESYSTEM=ext3
+  export PREINSTALLED_IMAGE_FILESYSTEM=ext4
 fi
 
 # Produce jigdo files:
