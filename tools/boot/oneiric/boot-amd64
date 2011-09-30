@@ -464,6 +464,14 @@ label minimalvm=Install a minimal virtual machine
 replace minimalvm=file=/cdrom/preseed/ubuntu-server-minimalvm.seed
 applies minimalvm=install
 EOF
+        # This really ought to be in gfxboot.cfg instead, but we want to
+        # make it particularly prominent.
+        cat >> boot$N/isolinux/txt.cfg <<EOF
+label cloud
+  menu label ^Enlist system with Ubuntu Orchestra Server
+  kernel /install/vmlinuz
+  append $KERNEL_PARAMS anna/choose_modules=cobbler-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
+EOF
     fi
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubuntu ] || [ "$PROJECT" = edubuntu ]); then
