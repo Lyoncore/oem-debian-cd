@@ -420,7 +420,7 @@ EOF
 label cloud
   menu label ^Enlist system with Ubuntu Orchestra Server
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS anna/choose_modules=cobbler-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
+  append $KERNEL_PARAMS modules=cobbler-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
 EOF
     fi
 fi
