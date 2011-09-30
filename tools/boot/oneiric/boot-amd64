@@ -472,6 +472,13 @@ label cloud
   kernel /install/vmlinuz
   append $KERNEL_PARAMS anna/choose_modules=cobbler-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
 EOF
+	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Enlist system with Ubuntu Orchestra Server" {
+	set gfxpayload=keep
+	linux	/install/vmlinuz $KERNEL_PARAMS anna/choose_modules=cobbler-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
+	initrd	/install/initrd.gz
+}
+EOF
     fi
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubuntu ] || [ "$PROJECT" = edubuntu ]); then
