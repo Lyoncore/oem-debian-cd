@@ -150,6 +150,8 @@ HEADS=128
 # - a 52 MiB VFAT partition holding the kernel and initrd which are read by u-boot
 # - the EXT3 formatted root partition
 
+LEAD_IN=512
+
 RESERVED_START_SECTOR=1
 RESERVED_SIZE=$((4 * 1024 * 1024 - 512))
 RESERVED_SIZE_SECTORS=$((RESERVED_SIZE / 512))
@@ -160,7 +162,7 @@ BOOT_SIZE_SECTORS="$(($BOOT_SIZE / 512))"
 
 ROOT_START_SECTOR=$(($BOOT_START_SECTOR + $BOOT_SIZE_SECTORS))
 IMAGE_SIZE="$(file_length "$EXT3")"
-IMG_SIZE_SECTORS="$((($RESERVED_SIZE + $BOOT_SIZE + $IMAGE_SIZE + 512 - 1) / 512))"
+IMG_SIZE_SECTORS="$((($LEAD_IN + $RESERVED_SIZE + $BOOT_SIZE + $IMAGE_SIZE + 512 - 1) / 512))"
 
 #Create zero-filled file of the required size
 
