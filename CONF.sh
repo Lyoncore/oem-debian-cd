@@ -171,7 +171,7 @@ case $DIST in
     export CODENAME=oneiric
     export CAPCODENAME='Oneiric Ocelot'
     export DEBVERSION=11.10
-    export OFFICIAL="Beta"
+    export OFFICIAL="Release"
     ;;
 esac
 
