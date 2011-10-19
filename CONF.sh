@@ -173,6 +173,18 @@ case $DIST in
     export DEBVERSION=11.10
     export OFFICIAL="Release"
     ;;
+  precise)
+    export PREV_CODENAME=oneiric
+    export CODENAME=precise
+    export CAPCODENAME='Precise Pangolin'
+    export DEBVERSION=12.04
+    case $PROJECT in
+      ubuntu|ubuntu-server|kubuntu)
+	DEBVERSION="$DEBVERSION LTS"
+	;;
+    esac
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
