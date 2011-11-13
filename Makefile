@@ -1095,7 +1095,7 @@ ifeq ($(CDIMAGE_LIVE),1)
 	-cp -a $(LIVEIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
 	-if [ -e $(LIVEIMAGES)/$(FULLARCH).manifest-remove ]; then \
 		cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-remove $(OUT)/$(call CDBASE,$$n).manifest-remove; \
-	else \
+	elif [ -e $(LIVEIMAGES)/$(FULLARCH).manifest-desktop ]; then \
 		cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop; \
 	fi
 endif
