@@ -26,7 +26,7 @@ done
 ln "$LIVEIMAGES/$FULLARCH.manifest" "$BDIR/CD1/casper/filesystem.manifest" || true
 if [ -e "$LIVEIMAGES/$FULLARCH.manifest-remove" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.manifest-remove" "$BDIR/CD1/casper/filesystem.manifest-remove" || true
-else
+elif [ -e "$LIVEIMAGES/$FULLARCH.manifest-desktop" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.manifest-desktop" "$BDIR/CD1/casper/filesystem.manifest-desktop" || true
 fi
 
