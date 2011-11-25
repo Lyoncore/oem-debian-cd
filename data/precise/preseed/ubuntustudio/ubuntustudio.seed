@@ -3,4 +3,4 @@ tasksel	tasksel/limit-tasks	string minimal, standard, ubuntustudio-generation, u
 # Add the initial user to the audio group as well as the usual ones, since
 # realtime audio for jack is not PolicyKit aware yet, and users cannot run
 # jack with realtime priority without being in this group.
-d-i	passwd/user-default-groups	string adm audio cdrom dialout lpadmin plugdev sambashare
+d-i	passwd/user-default-groups	string adm audio cdrom dip lpadmin plugdev sambashare
