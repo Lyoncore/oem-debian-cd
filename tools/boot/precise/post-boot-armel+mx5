@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Do post-image-building tasks for armel+mx5, to make vfat images bootable;
+# Do post-image-building tasks for arm+mx5, to make vfat images bootable;
 # this script encapsulates the VFAT image in a PC partition image, with
 # unpartitioned data holding boot data; this is very board specific and targets
 # the iMX53 QuickStart boards
