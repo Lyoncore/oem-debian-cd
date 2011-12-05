@@ -155,8 +155,8 @@ else
 forcenonusoncd1=0
 endif
 
-# we don't know how to generate ISOs for armel/iMX51; force vfat images
-ifeq ($(ARCH),armel)
+# we don't know how to generate ISOs for arm; force vfat images
+ifneq (,$(findstring $(ARCH),armel armhf))
 IMAGE_FORMAT := vfat
 endif
 

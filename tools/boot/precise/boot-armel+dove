@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Do install stuff for armel+dove, including making bootable CDs
+# Do install stuff for arm+dove, including making bootable CDs
 # Works with debian-installer
 #
 # $1 is the CD number
@@ -53,7 +53,7 @@ if [ "$IMAGE_FORMAT" = iso ]; then
 fi
 
 if [ "$IMAGE_FORMAT" != vfat ]; then
-    echo "armel booting for image format '$IMAGE_FORMAT' disabled for now"
+    echo "arm booting for image format '$IMAGE_FORMAT' disabled for now"
     exit 0
 fi
 
@@ -66,7 +66,7 @@ DISK_IMAGES=""
 TAR_IMAGES=""
 
 if [ "$DI_WWW_HOME" ]; then
-    echo "boot-armel does not support DI_WWW_HOME mode at the moment" >&2
+    echo "boot-arm does not support DI_WWW_HOME mode at the moment" >&2
     exit 1
 fi
 BOOT_IMAGE_KERNEL=`cd "$DI_PATH/current/images" && ls $SUBARCH/cdrom/vmlinuz*`
