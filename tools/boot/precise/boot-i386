@@ -87,7 +87,7 @@ for image in MANIFEST.udebs $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
 done
 
 if [ "$NN" = "1" ]; then
-    list_kernel_abis $BOOT_IMAGES | check_kernel_sync generic
+    list_kernel_abis $BOOT_IMAGES | check_kernel_sync generic-pae
 
     echo "Using ISOLINUX boot-disks image on CD$N"
     mkdir -p $CDDIR/../syslinux boot$N/isolinux
