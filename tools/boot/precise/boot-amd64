@@ -157,11 +157,14 @@ if [ "$NN" = "1" ]; then
 
 HIDDEN_TIMEOUT=
 if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
-    if [ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-netbook ]; then
-	HIDDEN_TIMEOUT=2
-    elif [ "$PROJECT" = mythbuntu ]; then
-	HIDDEN_TIMEOUT=1
-    fi
+    case $PROJECT in
+	ubuntu|ubuntu-netbook)
+	    HIDDEN_TIMEOUT=2
+	    ;;
+	mythbuntu)
+	    HIDDEN_TIMEOUT=1
+	    ;;
+    esac
     ACCESSPCX=access-new.pcx
 fi
 
