@@ -174,7 +174,7 @@ case $DIST in
     export OFFICIAL="Release"
     ;;
   precise)
-    export PREV_CODENAME=oneiric
+    export PREV_CODENAME=lucid # need to support upgrades from previous LTS
     export CODENAME=precise
     export CAPCODENAME='Precise Pangolin'
     export DEBVERSION=12.04
