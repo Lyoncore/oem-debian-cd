@@ -17,7 +17,7 @@ if [ -d "$SOURCEDIR" ]; then
 fi
 
 # now check if any prerequisites need to go onto the CD
-PACKAGESGZ="$MIRROR/dists/$PREV_CODENAME-updates/main/debian-installer/binary-$ARCH/Packages.gz"
+PACKAGESGZ="$MIRROR/dists/$PREV_CODENAME-updates/main/binary-$ARCH/Packages.gz"
 ARCH_TARGETDIR="$DIR/dists/$CODENAME/main/dist-upgrader/binary-$ARCH"
 mkdir -p "$ARCH_TARGETDIR"
 for pkg in $(zcat "$PACKAGESGZ" | grep-dctrl -PensFilename '^(release-upgrader-|libapt-inst1|libapt-pkg4)'); do
