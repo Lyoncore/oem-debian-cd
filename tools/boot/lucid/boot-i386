@@ -63,7 +63,7 @@ TAR_IMAGES="netboot/netboot.tar.gz"
 
 if [ "$CDIMAGE_DVD" = 1 ]; then
     BOOT_IMAGES="$BOOT_IMAGES maverick-cdrom/initrd.gz maverick-cdrom/vmlinuz natty-cdrom/initrd.gz natty-cdrom/vmlinuz oneiric-cdrom/initrd.gz oneiric-cdrom/vmlinuz"
-    TAR_IMAGE="$TAR_IMAGES maverick-netboot/netboot.tar.gz natty-netboot/netboot.tar.gz oneiric-netboot/netboot.tar.gz"
+    TAR_IMAGES="$TAR_IMAGES maverick-netboot/netboot.tar.gz natty-netboot/netboot.tar.gz oneiric-netboot/netboot.tar.gz"
 fi
 
 # Download boot images
