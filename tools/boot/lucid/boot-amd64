@@ -371,8 +371,15 @@ EOF
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label server=Install a server
 replace server=file=/cdrom/preseed/ubuntu-server.seed
-applies server=$APPLIES_INSTALL
+applies server=install
 EOF
+	for backport in $BACKPORT_KERNELS; do
+	    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+label server-$backport=Install a server
+replace server-$backport=file=/cdrom/preseed/$backport-ubuntu-server.seed
+applies server-$backport=install-$backport
+EOF
+	done
     fi
 fi
 if [ "$PROJECT" != edubuntu ]; then
@@ -401,11 +408,21 @@ EOF
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label minimal=Install a minimal system
 replace minimal=file=/cdrom/preseed/ubuntu-server-minimal.seed
-applies minimal=$APPLIES_INSTALL
+applies minimal=install
 label minimalvm=Install a minimal virtual machine
 replace minimalvm=file=/cdrom/preseed/ubuntu-server-minimalvm.seed
-applies minimalvm=$APPLIES_INSTALL
+applies minimalvm=install
 EOF
+	for backport in $BACKPORT_KERNELS; do
+	    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+label minimal-$backport=Install a minimal system
+replace minimal-$backport=file=/cdrom/preseed/$backport-ubuntu-server-minimal.seed
+applies minimal-$backport=install-$backport
+label minimalvm-$backport=Install a minimal virtual machine
+replace minimalvm-$backport=file=/cdrom/preseed/$backport-ubuntu-server-minimalvm.seed
+applies minimalvm-$backport=install-$backport
+EOF
+	done
 	# This really ought to be in gfxboot.cfg instead, but we want to
 	# make it particularly prominent.
 	cat >> boot$N/isolinux/text.cfg <<EOF
@@ -420,7 +437,7 @@ EOF
 label cloud-$backport
   menu label Install Ubuntu ^Enterprise Cloud ($(backport_kernel_version "$backport") kernel)
   kernel /install/$backport/vmlinuz
-  append $KERNEL_PARAMS file=/cdrom/preseed/cloud.seed initrd=/install/$backport/initrd.gz quiet --
+  append $KERNEL_PARAMS file=/cdrom/preseed/$backport-cloud.seed initrd=/install/$backport/initrd.gz quiet --
 EOF
 	    fi
 	done
