@@ -62,8 +62,8 @@ DISK_IMAGES=""
 TAR_IMAGES="netboot/netboot.tar.gz"
 
 if [ "$CDIMAGE_DVD" = 1 ]; then
-    BOOT_IMAGES="$BOOT_IMAGES maverick-cdrom/initrd.gz maverick-cdrom/vmlinuz"
-    TAR_IMAGE="$TAR_IMAGES maverick-netboot/netboot.tar.gz"
+    BOOT_IMAGES="$BOOT_IMAGES maverick-cdrom/initrd.gz maverick-cdrom/vmlinuz natty-cdrom/initrd.gz natty-cdrom/vmlinuz oneiric-cdrom/initrd.gz oneiric-cdrom/vmlinuz"
+    TAR_IMAGE="$TAR_IMAGES maverick-netboot/netboot.tar.gz natty-netboot/netboot.tar.gz oneiric-netboot/netboot.tar.gz"
 fi
 
 # Download boot images
@@ -108,6 +108,16 @@ if [ "$NN" = "1" ]; then
 	    mkdir -p $CDDIR/install/maverick
 	    cp -lf maverick-cdrom/vmlinuz $CDDIR/install/maverick/
 	    cp -lr maverick-cdrom/initrd.gz $CDDIR/install/maverick/
+	fi
+	if [ -d natty-cdrom ]; then
+	    mkdir -p $CDDIR/install/natty
+	    cp -lf natty-cdrom/vmlinuz $CDDIR/install/natty/
+	    cp -lr natty-cdrom/initrd.gz $CDDIR/install/natty/
+	fi
+	if [ -d oneiric-cdrom ]; then
+	    mkdir -p $CDDIR/install/oneiric
+	    cp -lf oneiric-cdrom/vmlinuz $CDDIR/install/oneiric/
+	    cp -lr oneiric-cdrom/initrd.gz $CDDIR/install/oneiric/
 	fi
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
@@ -161,7 +171,7 @@ done
 
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
 	for tar in $TAR_IMAGES; do
-		dir=$(dirname $tar | sed 's,^maverick-,maverick/,')
+		dir=$(dirname $tar | sed 's,^maverick-,maverick/,; s,^natty-,natty/,; s,^oneiric-,oneiric/,')
 		mkdir -p $CDDIR/install/$dir
 		tar -C $CDDIR/install/$dir -xzpf $tar
 	done
@@ -247,6 +257,12 @@ fi
 APPLIES_INSTALL=install
 if [ -d "$CDDIR/install/maverick" ]; then
     APPLIES_INSTALL="$APPLIES_INSTALL install-maverick"
+fi
+if [ -d "$CDDIR/install/natty" ]; then
+    APPLIES_INSTALL="$APPLIES_INSTALL install-natty"
+fi
+if [ -d "$CDDIR/install/oneiric" ]; then
+    APPLIES_INSTALL="$APPLIES_INSTALL install-oneiric"
 fi
 cat > boot$N/isolinux/text.cfg <<EOF
 default $DEFAULT_LABEL
@@ -336,6 +352,22 @@ label install-maverick
   append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/maverick/initrd.gz quiet --
 EOF
     fi
+    if [ -d "$CDDIR/install/natty" ]; then
+	cat >> boot$N/isolinux/text.cfg <<EOF
+label install-natty
+  menu label ^Install $HUMANPROJECT (2.6.38 kernel)
+  kernel /install/natty/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/natty/initrd.gz quiet --
+EOF
+    fi
+    if [ -d "$CDDIR/install/oneiric" ]; then
+	cat >> boot$N/isolinux/text.cfg <<EOF
+label install-oneiric
+  menu label ^Install $HUMANPROJECT (3.0 kernel)
+  kernel /install/oneiric/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED initrd=/install/oneiric/initrd.gz quiet --
+EOF
+    fi
     cat >> boot$N/isolinux/adtext.cfg <<EOF
 label expert
   menu hide
@@ -348,6 +380,22 @@ label expert-maverick
   menu hide
   kernel /install/maverick/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED priority=low initrd=/install/maverick/initrd.gz --
+EOF
+    fi
+    if [ -d "$CDDIR/install/natty" ]; then
+	cat >> boot$N/isolinux/adtext.cfg <<EOF
+label expert-natty
+  menu hide
+  kernel /install/natty/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED priority=low initrd=/install/natty/initrd.gz --
+EOF
+    fi
+    if [ -d "$CDDIR/install/oneiric" ]; then
+	cat >> boot$N/isolinux/adtext.cfg <<EOF
+label expert-oneiric
+  menu hide
+  kernel /install/oneiric/vmlinuz
+  append $KERNEL_PARAMS $DEFAULT_PRESEED priority=low initrd=/install/oneiric/initrd.gz --
 EOF
     fi
     if [ "$PROJECT" = edubuntu ]; then
@@ -412,6 +460,22 @@ label cloud-maverick
   append $KERNEL_PARAMS file=/cdrom/preseed/cloud.seed initrd=/install/maverick/initrd.gz quiet --
 EOF
 	fi
+	if [ -d "$CDDIR/install/natty" ]; then
+	    cat >> boot$N/isolinux/text.cfg <<EOF
+label cloud-natty
+  menu label Install Ubuntu ^Enterprise Cloud (2.6.38 kernel)
+  kernel /install/natty/vmlinuz
+  append $KERNEL_PARAMS file=/cdrom/preseed/cloud.seed initrd=/install/natty/initrd.gz quiet --
+EOF
+	fi
+	if [ -d "$CDDIR/install/oneiric" ]; then
+	    cat >> boot$N/isolinux/text.cfg <<EOF
+label cloud-oneiric
+  menu label Install Ubuntu ^Enterprise Cloud (3.0 kernel)
+  kernel /install/oneiric/vmlinuz
+  append $KERNEL_PARAMS file=/cdrom/preseed/cloud.seed initrd=/install/oneiric/initrd.gz quiet --
+EOF
+	fi
     fi
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubuntu ] || [ "$PROJECT" = edubuntu ]); then
@@ -456,6 +520,22 @@ label rescue-maverick
   menu label ^Rescue a broken system (2.6.35 kernel)
   kernel /install/maverick/vmlinuz
   append $KERNEL_PARAMS rescue/enable=true initrd=/install/maverick/initrd.gz --
+EOF
+    fi
+    if [ -d "$CDDIR/install/natty" ]; then
+	cat >> boot$N/isolinux/adtext.cfg <<EOF
+label rescue-natty
+  menu label ^Rescue a broken system (2.6.38 kernel)
+  kernel /install/natty/vmlinuz
+  append $KERNEL_PARAMS rescue/enable=true initrd=/install/natty/initrd.gz --
+EOF
+    fi
+    if [ -d "$CDDIR/install/oneiric" ]; then
+	cat >> boot$N/isolinux/adtext.cfg <<EOF
+label rescue-oneiric
+  menu label ^Rescue a broken system (3.0 kernel)
+  kernel /install/oneiric/vmlinuz
+  append $KERNEL_PARAMS rescue/enable=true initrd=/install/oneiric/initrd.gz --
 EOF
     fi
 fi
