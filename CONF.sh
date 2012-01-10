@@ -150,6 +150,7 @@ case $DIST in
 	DEBVERSION="$DEBVERSION LTS"
 	;;
     esac
+    export BACKPORT_KERNELS="maverick natty oneiric"
     export OFFICIAL="Release"
     ;;
   maverick)
