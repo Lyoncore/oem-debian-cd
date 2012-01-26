@@ -84,11 +84,12 @@ extract_file_from_package() {
 
 # This is common across all configurations
 if [ "${FULLARCH##*+}" = "omap" ]; then
-    xloader_package="x-loader-omap3-beagle"
-    path_to_xloader="usr/lib/x-loader/omap3530beagle/MLO"
+    path_to_xloader="usr/lib/u-boot/omap3_beagle/MLO"
 
     uboot_package="u-boot-linaro-omap3-beagle"
     path_to_uboot="usr/lib/u-boot/omap3_beagle/u-boot.bin"
+
+    xloader_package=$uboot_package
 
     v_opts="vram=12M omapfb.mode=dvi:1280x720MR-16@60"
     board_opts='mpurate=${mpurate}'
