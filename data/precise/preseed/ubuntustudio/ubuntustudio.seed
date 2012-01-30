@@ -4,3 +4,5 @@ tasksel	tasksel/limit-tasks	string minimal, standard, ubuntustudio-generation, u
 # realtime audio for jack is not PolicyKit aware yet, and users cannot run
 # jack with realtime priority without being in this group.
 d-i	passwd/user-default-groups	string adm audio cdrom dip lpadmin plugdev sambashare
+# Enable real-time process priority in jackd.
+jackd2	jackd/tweak_rt_limits	boolean true
