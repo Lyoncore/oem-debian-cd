@@ -36,7 +36,7 @@ if ([ "$N" != 1 ] && [ "$N" != 1_NONUS ]) || [ "$CDIMAGE_ADDON" ]; then
     exit 0
 fi
 
-if [ "$IMAGE_FORMAT" == "iso" ]; then
+if [ "$IMAGE_FORMAT" = "iso" ]; then
     exit 0
 fi
 
