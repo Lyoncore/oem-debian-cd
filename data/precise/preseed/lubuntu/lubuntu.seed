@@ -1,3 +1,5 @@
+# The Lubuntu seeds assume that installation of Recommends is disabled.
+d-i	base-installer/install-recommends	boolean true
 # Enable extras.ubuntu.com.
 d-i	apt-setup/extras	boolean true
 # Install the Lubuntu desktop.
