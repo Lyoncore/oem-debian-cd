@@ -165,7 +165,16 @@ if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
 	    HIDDEN_TIMEOUT=1
 	    ;;
     esac
-    ACCESSPCX=access-new.pcx
+    if [ -e "$BASEDIR/data/$DI_CODENAME/$PROJECT-access.pcx" ]; then
+	ACCESSPCX="$PROJECT-access.pcx"
+    else
+	ACCESSPCX=access-new.pcx
+    fi
+    if [ -e "$BASEDIR/data/$DI_CODENAME/$PROJECT-blank.pcx" ]; then
+	BLANKPCX="$PROJECT-blank.pcx"
+    else
+	BLANKPCX=blank.pcx
+    fi
 fi
 
 # populate the install directory as well
@@ -215,7 +224,7 @@ if [ "$HIDDEN_TIMEOUT" ] && [ "$ACCESSPCX" ]; then
     cp -p "$BASEDIR/data/$DI_CODENAME/$ACCESSPCX" boot$N/isolinux/access.pcx
 fi
 if [ "$HIDDEN_TIMEOUT" = 2 ]; then
-    cp -p "$BASEDIR/data/$DI_CODENAME/blank.pcx" boot$N/isolinux/blank.pcx
+    cp -p "$BASEDIR/data/$DI_CODENAME/$BLANKPCX" boot$N/isolinux/blank.pcx
 fi
 if [ "$PROJECT" = kubuntu ]; then
     # No language menu.
