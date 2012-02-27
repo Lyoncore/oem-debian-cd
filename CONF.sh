@@ -184,7 +184,7 @@ case $DIST in
 	DEBVERSION="$DEBVERSION LTS"
 	;;
     esac
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Beta"
     ;;
 esac
 
@@ -329,9 +329,9 @@ case $DIST in
   warty|hoary|breezy|dapper|edgy|feisty|gutsy|hardy|intrepid|jaunty|karmic|lucid|maverick|natty)
     ;;
   *)
-    export i386_MKISOFS="xorriso"
+    export i386_MKISOFS="/home/cdimage/xorriso/xorriso-local"
     export i386_MKISOFS_OPTS="-as mkisofs -r -checksum_algorithm_iso md5,sha1"
-    export amd64_MKISOFS="xorriso"
+    export amd64_MKISOFS="/home/cdimage/xorriso/xorriso-local"
     export amd64_MKISOFS_OPTS="-as mkisofs -r -checksum_algorithm_iso md5,sha1"
     ;;
 esac
