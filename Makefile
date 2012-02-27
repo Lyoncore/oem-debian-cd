@@ -734,14 +734,7 @@ endif
 	done
 ifeq ($(CDIMAGE_LIVE),1)
 	$(Q)$(add_live_filesystem)
-ifneq ($(PROJECT),edubuntu)
 	$(Q)$(add_winfoss)
-endif
-endif
-ifeq ($(PROJECT),edubuntu)
-ifeq ($(CDIMAGE_INSTALL),1)
-	$(Q)$(add_winfoss)
-endif
 endif
 	$(Q)touch $(BDIR)/packages-stamp
 
