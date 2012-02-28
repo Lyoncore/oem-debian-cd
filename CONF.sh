@@ -180,7 +180,7 @@ case $DIST in
     export CAPCODENAME='Precise Pangolin'
     export DEBVERSION=12.04
     case $PROJECT in
-      ubuntu|ubuntu-server|kubuntu)
+      ubuntu|ubuntu-server|kubuntu|edubuntu*|xubuntu)
 	DEBVERSION="$DEBVERSION LTS"
 	;;
     esac
