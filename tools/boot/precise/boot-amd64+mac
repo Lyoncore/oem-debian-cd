@@ -433,9 +433,9 @@ EOF
         # make it particularly prominent.
         cat >> boot$N/isolinux/txt.cfg <<EOF
 label cloud
-  menu label ^Enlist system with Ubuntu Orchestra Server
+  menu label ^Enlist system with Ubuntu MaaS Server
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS modules=cobbler-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
+  append $KERNEL_PARAMS modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
 EOF
     fi
 fi
