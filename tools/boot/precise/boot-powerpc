@@ -190,6 +190,7 @@ BUILD_DATE="${CDIMAGE_DATE:-$(date +%Y%m%d)}"
  fi) \
  | sed "s/CODENAME/${CODENAME}/g" \
  | sed "s,\${DEFAULT_PRESEED},${DEFAULT_PRESEED},g" \
+ | sed "s,\${FRONTEND_BACKGROUND},${FRONTEND_BACKGROUND},g" \
  | sed "s,\${TIMEOUT},${timeout},g" \
  | sed "s,\${CASPER_POWERPC_INITRD},${CASPER_POWERPC_INITRD},g" \
  | sed "s,\${CASPER_POWERPC64_INITRD},${CASPER_POWERPC64_INITRD},g" \

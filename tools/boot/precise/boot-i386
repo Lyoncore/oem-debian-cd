@@ -432,7 +432,7 @@ EOF
 label cloud
   menu label ^Enlist system with Ubuntu MaaS Server
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
+  append $KERNEL_PARAMS $FRONTEND_BACKGROUND modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
 EOF
     fi
 fi
@@ -468,7 +468,7 @@ elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 label check
   menu label ^Check disc for defects
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu vga=788 initrd=/install/initrd.gz quiet --
+  append $KERNEL_PARAMS $FRONTEND_BACKGROUND MENU=/bin/cdrom-checker-menu vga=788 initrd=/install/initrd.gz quiet --
 EOF
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
@@ -476,7 +476,7 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 label rescue
   menu label ^Rescue a broken system
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS rescue/enable=true vga=788 initrd=/install/initrd.gz --
+  append $KERNEL_PARAMS $FRONTEND_BACKGROUND rescue/enable=true vga=788 initrd=/install/initrd.gz --
 EOF
 fi
 cat >> boot$N/isolinux/txt.cfg <<EOF
