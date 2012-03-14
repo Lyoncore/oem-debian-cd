@@ -154,7 +154,7 @@ fi
 
 if [ "$PROJECT" != ubuntu-moblin-remix ] && \
    [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
-    for index in $(find "$BDIR"/CD* -name Packages -not -path '*/main/binary-*/Packages'); do
+    for index in $(find "$BDIR"/CD* -path '*/debian-installer/binary-*/Packages'); do
 	if [ ! -s "$index" ]; then
 	    rm -f "$index"*
 	    rm -f "${index%/*}/Release"
