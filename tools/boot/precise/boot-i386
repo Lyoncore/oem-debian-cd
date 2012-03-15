@@ -69,9 +69,20 @@ KTYPE[10]=""
 
 THISTYPE=${KTYPE[$NN]}
 
-BOOT_IMAGES="cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
-DISK_IMAGES=""
-TAR_IMAGES="netboot/netboot.tar.gz"
+case $PROJECT in
+    xubuntu)
+	BOOT_IMAGES="cdrom/non-pae/initrd.gz cdrom/non-pae/vmlinuz cdrom/non-pae/debian-cd_info.tar.gz"
+	DISK_IMAGES=""
+	TAR_IMAGES="netboot/non-pae/netboot.tar.gz"
+	FLAVOUR=generic
+	;;
+    *)
+	BOOT_IMAGES="cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
+	DISK_IMAGES=""
+	TAR_IMAGES="netboot/netboot.tar.gz"
+	FLAVOUR=generic-pae
+	;;
+esac
 
 # Download boot images
 for image in MANIFEST.udebs $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
@@ -87,7 +98,7 @@ for image in MANIFEST.udebs $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
 done
 
 if [ "$NN" = "1" ]; then
-    list_kernel_abis $BOOT_IMAGES | check_kernel_sync generic-pae
+    list_kernel_abis $BOOT_IMAGES | check_kernel_sync $FLAVOUR
 
     echo "Using ISOLINUX boot-disks image on CD$N"
     mkdir -p $CDDIR/../syslinux boot$N/isolinux
@@ -114,9 +125,9 @@ if [ "$NN" = "1" ]; then
 	cp -lf cdrom/initrd.gz $CDDIR/install/
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
-	mv $CDDIR/casper/filesystem.kernel-generic-pae $CDDIR/casper/vmlinuz
-	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-generic-pae")"
-	mv $CDDIR/casper/filesystem.initrd-generic-pae "$CDDIR$CASPER_INITRD"
+	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
+	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
+	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
     fi
     echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " >> $N.mkisofs_opts
 else
