@@ -70,7 +70,7 @@ KTYPE[10]=""
 THISTYPE=${KTYPE[$NN]}
 
 case $PROJECT in
-    xubuntu)
+    xubuntu|lubuntu)
 	BOOT_IMAGES="cdrom/non-pae/initrd.gz cdrom/non-pae/vmlinuz cdrom/non-pae/debian-cd_info.tar.gz"
 	DISK_IMAGES=""
 	TAR_IMAGES="netboot/non-pae/netboot.tar.gz"
@@ -83,7 +83,7 @@ case $PROJECT in
 esac
 
 case $PROJECT in
-    xubuntu)
+    xubuntu|lubuntu)
 	FLAVOUR=generic
 	;;
     ubuntustudio)
