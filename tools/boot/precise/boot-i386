@@ -74,11 +74,13 @@ case $PROJECT in
 	BOOT_IMAGES="cdrom/non-pae/initrd.gz cdrom/non-pae/vmlinuz cdrom/non-pae/debian-cd_info.tar.gz"
 	DISK_IMAGES=""
 	TAR_IMAGES="netboot/non-pae/netboot.tar.gz"
+	CDROM_PATH=cdrom/non-pae
 	;;
     *)
 	BOOT_IMAGES="cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
 	DISK_IMAGES=""
 	TAR_IMAGES="netboot/netboot.tar.gz"
+	CDROM_PATH=cdrom
 	;;
 esac
 
@@ -135,8 +137,8 @@ if [ "$NN" = "1" ]; then
 
     rm -rf usr
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-	cp -lf cdrom/vmlinuz $CDDIR/install/
-	cp -lf cdrom/initrd.gz $CDDIR/install/
+	cp -lf $CDROM_PATH/vmlinuz $CDDIR/install/
+	cp -lf $CDROM_PATH/initrd.gz $CDDIR/install/
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
@@ -224,7 +226,7 @@ ar p "$MIRROR/$MEMTEST86DEB" data.tar.gz | \
 mv $CDDIR/install/boot/memtest86+.bin $CDDIR/install/mt86plus
 rm -rf $CDDIR/install/boot
 # Isolinux help files come from d-i.
-cat cdrom/debian-cd_info.tar.gz | (cd boot$N/isolinux/; tar zx)
+cat $CDROM_PATH/debian-cd_info.tar.gz | (cd boot$N/isolinux/; tar zx)
 # Override splash screen.
 if [ "$SPLASHRLE" ] && [ -e "$SPLASHRLE" ]; then
     cp -p "$SPLASHRLE" boot$N/isolinux/splash.rle
