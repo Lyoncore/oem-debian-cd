@@ -117,7 +117,7 @@ do
   if [ "$CDIMAGE_LIVE" = 1 ]; then
     case $subarch in
       powerpc)
-        casper_subarch=powerpc
+        casper_subarch=powerpc-smp
         casper_initrd_var=CASPER_POWERPC_INITRD
         ;;
       powerpc64)
