@@ -133,6 +133,7 @@ strip_nonus_bin=$(BASEDIR)/tools/strip-nonUS-bin
 add_secured=$(BASEDIR)/tools/add_secured
 md5sum=/usr/bin/md5sum
 sha1sum=/usr/bin/sha1sum
+sha256sum=/usr/bin/sha256sum
 fastsums=$(BASEDIR)/tools/fast_sums
 jigdo_cleanup=$(BASEDIR)/tools/jigdo_cleanup
 grab_md5=$(BASEDIR)/tools/grab_md5
@@ -1234,6 +1235,7 @@ imagesums:
 	$(Q)cd $(OUT); :> MD5SUMS; :> SHA1SUMS; for file in `find * -name \*.raw`; do \
 		$(md5sum) "$$file" >>MD5SUMS; \
 		$(sha1sum) "$$file" >>SHA1SUMS; \
+		$(sha256sum) "$$file" >>SHA256SUMS; \
 	done; \
 	for file in `find * -name \*.template`; do \
 		if [ "`tail --bytes=33 "$$file" | head --bytes=1 | od -tx1 -An | sed -e 's/ //g'`" != 05 ]; then \
