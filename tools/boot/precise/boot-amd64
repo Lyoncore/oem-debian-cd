@@ -493,12 +493,12 @@ EOF
         # make it particularly prominent.
         cat >> boot$N/isolinux/txt.cfg <<EOF
 label cloud
-  menu label ^Enlist system with Ubuntu MaaS Server
+  menu label ^Enlist system with Ubuntu MAAS Server
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $FRONTEND_BACKGROUND modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
 EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
-menuentry "Enlist system with Ubuntu MaaS Server" {
+menuentry "Enlist system with Ubuntu MAAS Server" {
 	set gfxpayload=keep
 	linux	/install/vmlinuz $KERNEL_PARAMS modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
 	initrd	/install/initrd.gz
