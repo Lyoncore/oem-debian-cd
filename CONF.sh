@@ -184,7 +184,7 @@ case $DIST in
 	DEBVERSION="$DEBVERSION LTS"
 	;;
     esac
-    export OFFICIAL="Beta-2"
+    export OFFICIAL="Beta"
     ;;
 esac
 
