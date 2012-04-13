@@ -102,7 +102,7 @@ elif [ "${FULLARCH##*+}" = "omap4" ]; then
     xloader_package=$uboot_package
 
     board_opts="mem=456M@0x80000000 mem=512M@0xA0000000"
-    v_opts="vram=32M"
+    v_opts="vram=40M"
 else
     die "Unknown OMAP subarch"
 fi
