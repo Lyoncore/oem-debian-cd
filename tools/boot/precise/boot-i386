@@ -457,7 +457,7 @@ EOF
 	# make it particularly prominent.
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label cloud
-  menu label ^Ubuntu MAAS Installation or Enlistment
+  menu label ^Multiple server install with MAAS
   kernel /install/vmlinuz
   append $KERNEL_PARAMS $FRONTEND_BACKGROUND modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
 EOF
