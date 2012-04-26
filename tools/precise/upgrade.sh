@@ -20,7 +20,7 @@ fi
 PACKAGESGZ="$MIRROR/dists/$PREV_CODENAME-updates/main/binary-$ARCH/Packages.gz"
 ARCH_TARGETDIR="$DIR/dists/$CODENAME/main/dist-upgrader/binary-$ARCH"
 mkdir -p "$ARCH_TARGETDIR"
-for pkg in $(zcat "$PACKAGESGZ" | grep-dctrl -PensFilename '^(release-upgrader-|libapt-inst1|libapt-pkg4)'); do
+for pkg in $(zcat "$PACKAGESGZ" | grep-dctrl -PensFilename '^(release-upgrader-python-apt|libapt-inst1|libapt-pkg4)'); do
     echo "Adding: $pkg"
     cp -a "$MIRROR/$pkg" "$ARCH_TARGETDIR"
 done
