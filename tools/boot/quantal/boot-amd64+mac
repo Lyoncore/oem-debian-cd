@@ -296,7 +296,7 @@ EOF
 fi
 if [ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-server ] || \
    [ "$PROJECT" = ubuntu-mid ] || [ "$PROJECT" = ubuntu-netbook ] || \
-   [ "$PROJECT" = ubuntu-moblin-remix ] || [ "$PROJECT" = mythbuntu ]; then
+   [ "$PROJECT" = mythbuntu ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 foreground=0xFFFFFF
 background=0x958490

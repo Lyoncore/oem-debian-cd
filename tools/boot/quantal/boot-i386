@@ -306,7 +306,7 @@ EOF
 fi
 if [ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-server ] || \
    [ "$PROJECT" = ubuntu-mid ] || [ "$PROJECT" = ubuntu-netbook ] || \
-   [ "$PROJECT" = ubuntu-moblin-remix ] || [ "$PROJECT" = mythbuntu ]; then
+   [ "$PROJECT" = mythbuntu ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 foreground=0xFFFFFF
 background=0x958490
@@ -422,20 +422,18 @@ applies server=install
 EOF
     fi
 fi
-if [ "$PROJECT" != ubuntu-moblin-remix ]; then
-    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label oem=OEM install (for manufacturers)
 append oem=oem-config/enable=true
 EOF
-    if [ "$CDIMAGE_LIVE" = 1 ]; then
-	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 applies oem=live live-install install
 EOF
-    else
-	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+else
+    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 applies oem=install
 EOF
-    fi
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     if [ "$PROJECT" != ubuntu-server ]; then
