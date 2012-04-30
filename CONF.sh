@@ -186,6 +186,13 @@ case $DIST in
     esac
     export OFFICIAL="Release"
     ;;
+  quantal)
+    export PREV_CODENAME=precise
+    export CODENAME=quantal
+    export CAPCODENAME='Quantal Quetzal'
+    export DEBVERSION=12.10
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
