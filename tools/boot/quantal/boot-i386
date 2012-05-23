@@ -92,11 +92,11 @@ case $PROJECT in
 	if [ "$CDIMAGE_LIVE" ]; then
 	    FLAVOUR=lowlatency-pae
 	else
-	    FLAVOUR=generic-pae
+	    FLAVOUR=generic
 	fi
 	;;
     *)
-	FLAVOUR=generic-pae
+	FLAVOUR=generic
 	;;
 esac
 
