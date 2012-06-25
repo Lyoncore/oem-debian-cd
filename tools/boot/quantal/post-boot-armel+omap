@@ -91,7 +91,7 @@ if [ "${FULLARCH##*+}" = "omap" ]; then
 
     xloader_package=$uboot_package
 
-    v_opts="vram=12M omapfb.mode=dvi:1280x720MR-16@60"
+    v_opts=""
     board_opts='mpurate=${mpurate}'
 elif [ "${FULLARCH##*+}" = "omap4" ]; then
     path_to_xloader="usr/lib/u-boot/omap4_panda/MLO"
