@@ -79,7 +79,7 @@ case $PROJECT in
 	;;
     ubuntustudio)
 	if [ "$CDIMAGE_LIVE" ]; then
-	    FLAVOUR=lowlatency-pae
+	    FLAVOUR=lowlatency
 	else
 	    FLAVOUR=generic
 	fi
