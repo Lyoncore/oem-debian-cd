@@ -74,8 +74,8 @@ cd $INSTALLDIR
 if [ -z "$YABOOT_DEBUG" ]; then
     YADEB="$($BASEDIR/tools/apt-selection cache show yaboot | \
 	   grep ^Filename | awk '{print $2}')"
-    (ar p "${MIRROR}/${YADEB}" data.tar.gz | \
-	tar zxf - -C . ./usr/lib/yaboot/yaboot)
+    (dpkg --fsys-tarfile "${MIRROR}/${YADEB}" | \
+	tar xf - -C . ./usr/lib/yaboot/yaboot)
     mv usr/lib/yaboot/yaboot .
     rm -rf usr
 else

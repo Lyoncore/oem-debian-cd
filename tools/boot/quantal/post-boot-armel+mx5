@@ -67,7 +67,7 @@ extract_file_from_package() {
     fi
 
     tmpdir=`mktemp -d`
-    ar p "$MIRROR/$deb" data.tar.gz | tar zxf - -C $tmpdir "./$file_to_extract"
+    dpkg --fsys-tarfile "$MIRROR/$deb" | tar xf - -C $tmpdir "./$file_to_extract"
     mv $tmpdir/$file_to_extract ./$output_file_name
     rm -rf $tmpdir
 }

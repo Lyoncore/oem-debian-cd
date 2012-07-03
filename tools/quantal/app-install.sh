@@ -16,7 +16,7 @@ if [ "$PROJECT" = edubuntu ]; then
     mkdir -p "$DIR/app-install/edubuntu/"
     TMP_EDU="$DIR/app-install/edubuntu/"
 
-    ar p "$MIRROR/$EDU_APP_INSTALL_DATA_DEB" data.tar.gz | tar -xzf - -C "$TMP_EDU"
+    dpkg -x "$MIRROR/$EDU_APP_INSTALL_DATA_DEB" "$TMP_EDU"
 fi
 
 APP_INSTALL_DATA_DEB="$($BASEDIR/tools/apt-selection cache \
@@ -27,7 +27,7 @@ APP_INSTALL_DATA_DEB="$($BASEDIR/tools/apt-selection cache \
 mkdir -p "$DIR/app-install/channels" "$DIR/app-install/desktop" \
 	 "$DIR/app-install/icons" "$DIR/app-install/tmp"
 TMP="$DIR/app-install/tmp"
-ar p "$MIRROR/$APP_INSTALL_DATA_DEB" data.tar.gz | tar -xzf - -C "$TMP"
+dpkg -x "$MIRROR/$APP_INSTALL_DATA_DEB" "$TMP"
 
 find "$TMP/usr/share/app-install/desktop" \
     -name \*.desktop -print0 | \
