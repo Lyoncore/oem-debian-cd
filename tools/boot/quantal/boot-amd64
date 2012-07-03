@@ -106,8 +106,8 @@ if [ "$NN" = "1" ]; then
     mkdir -p $CDDIR/../syslinux boot$N/isolinux
     SYSLINUXDEB="$($BASEDIR/tools/apt-selection cache show syslinux-common | \
 	grep ^Filename | awk '{print $2}')"
-    (ar p "$MIRROR/$SYSLINUXDEB" data.tar.gz | \
-	tar zxf - -C $CDDIR/../syslinux ./usr/lib)
+    (dpkg --fsys-tarfile "$MIRROR/$SYSLINUXDEB" | \
+	tar xf - -C $CDDIR/../syslinux ./usr/lib)
     cp -f $CDDIR/../syslinux/usr/lib/syslinux/isolinux.bin boot$N/isolinux/
     cp -f $CDDIR/../syslinux/usr/lib/syslinux/vesamenu.c32 boot$N/isolinux/
     cp -f $CDDIR/../syslinux/usr/lib/syslinux/gfxboot.c32 boot$N/isolinux/
@@ -116,7 +116,7 @@ if [ "$NN" = "1" ]; then
     GFXBOOT=
     if THEMEDEB="$($BASEDIR/tools/apt-selection cache show gfxboot-theme-ubuntu)"; then
 	THEMEDEB="$(echo "$THEMEDEB" | grep ^Filename | awk '{print $2}')"
-	ar p "$MIRROR/$THEMEDEB" data.tar.gz | tar zxf - -C . ./usr/share/gfxboot-theme-ubuntu/bootlogo.tar.gz
+	dpkg --fsys-tarfile "$MIRROR/$THEMEDEB" | tar xf - -C . ./usr/share/gfxboot-theme-ubuntu/bootlogo.tar.gz
 	tar zxf usr/share/gfxboot-theme-ubuntu/bootlogo.tar.gz -C boot$N/isolinux
 	GFXBOOT=1
     fi
@@ -217,8 +217,8 @@ fi
 # Extract memtest86+ from the archive
 MEMTEST86DEB="$($BASEDIR/tools/apt-selection cache show memtest86+ | \
 	grep ^Filename | awk '{print $2}')"
-ar p "$MIRROR/$MEMTEST86DEB" data.tar.gz | \
-	tar xzf - -C $CDDIR/install/ ./boot/memtest86+.bin
+dpkg --fsys-tarfile "$MIRROR/$MEMTEST86DEB" | \
+	tar xf - -C $CDDIR/install/ ./boot/memtest86+.bin
 mv $CDDIR/install/boot/memtest86+.bin $CDDIR/install/mt86plus
 rm -rf $CDDIR/install/boot
 # Isolinux help files come from d-i.

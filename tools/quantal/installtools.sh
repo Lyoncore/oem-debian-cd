@@ -27,7 +27,7 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
         fi
     elif [ "$MANUALDEB" ]; then
         mkdir -p "$DIR/$DOCDIR/install/tmp" "$DIR/$DOCDIR/install/manual"
-        ar p "$MIRROR/$MANUALDEB" data.tar.gz | tar xzf - -C "$DIR/$DOCDIR/install/tmp"
+        dpkg -x "$MIRROR/$MANUALDEB" "$DIR/$DOCDIR/install/tmp"
         mv "$DIR/$DOCDIR/install/tmp/usr/share/doc/installation-guide-$ARCH"/* "$DIR/$DOCDIR/install/manual/"
         rm -rf "$DIR/$DOCDIR/install/tmp"
         # just keep the HTML version
