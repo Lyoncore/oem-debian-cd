@@ -115,6 +115,14 @@ ifneq (${ARCH_MKISOFS_OPTS},)
     MKISOFS_OPTS = ${ARCH_MKISOFS_OPTS}
 endif
 
+ifeq ($(CDIMAGE_LIVE),1)
+LIVE_FILESYSTEM := 1
+else ifeq ($(CDIMAGE_SQUASHFS_BASE),1)
+LIVE_FILESYSTEM := 1
+else
+LIVE_FILESYSTEM :=
+endif
+
 ## Internal variables  
 apt=$(BASEDIR)/tools/apt-selection
 list2cds=$(BASEDIR)/tools/list2cds
@@ -624,6 +632,7 @@ $(BDIR)/packages-stamp:
 	@echo "Adding the selected packages to each CD :"
 ifeq ($(CDIMAGE_INSTALL_BASE),1)
 ifneq ($(CDIMAGE_ADDON),1)
+ifneq ($(CDIMAGE_SQUASHFS_BASE),1)
 	@# Check that all packages required by debootstrap are included
 	@# and create .disk/base_installable if yes
 	@# Also create .disk/base_components
@@ -701,8 +710,9 @@ ifneq ($(CDIMAGE_ADDON),1)
 	    fi; \
 	done
 endif
-else
-ifeq ($(CDIMAGE_LIVE),1)
+endif
+endif
+ifeq ($(LIVE_FILESYSTEM),1)
 	@# Ubuntu live CDs are installable too
 	touch $(BDIR)/CD1/.disk/base_installable
 	if [ "$$CDIMAGE_DVD" = 1 ]; then \
@@ -710,7 +720,6 @@ ifeq ($(CDIMAGE_LIVE),1)
 	else \
 	    echo 'full_cd/single' > $(BDIR)/CD1/.disk/cd_type; \
 	fi
-endif
 endif
 	$(Q)set -e; \
 	 for i in $(BDIR)/*.packages; do \
@@ -733,8 +742,10 @@ endif
 		dir=$(BDIR)/CD$$dir; \
 		$(scanpackages) install $$dir; \
 	done
-ifeq ($(CDIMAGE_LIVE),1)
+ifeq ($(LIVE_FILESYSTEM),1)
 	$(Q)$(add_live_filesystem)
+endif
+ifeq ($(CDIMAGE_LIVE),1)
 	$(Q)$(add_winfoss)
 endif
 	$(Q)touch $(BDIR)/packages-stamp
@@ -1085,7 +1096,7 @@ bin-images: ok bin-md5list $(OUT)
 			$(OUT)/$(call CDBASE,$$n).raw; \
 		fi; \
 	done
-ifeq ($(CDIMAGE_LIVE),1)
+ifeq ($(LIVE_FILESYSTEM),1)
 	-cp -a $(LIVEIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
 	-if [ -e $(LIVEIMAGES)/$(FULLARCH).manifest-remove ]; then \
 		cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-remove $(OUT)/$(call CDBASE,$$n).manifest-remove; \
