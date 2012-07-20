@@ -487,7 +487,7 @@ ifdef FORCENONUSONCD1
 		grep-dctrl -FSection -n -sPackage -e '^(non-US|non-us)' - | \
 		sort | uniq > $(BDIR)/$(CAPPROJECT)_$(CODENAME)_nonUS
 endif
-	$(Q)if [ -x "/usr/sbin/debootstrap" -a _$(INSTALLER_CD) != _1 ]; then \
+	$(Q)if [ -x "/usr/sbin/debootstrap" -a _$(INSTALLER_CD) != _1 -a _$(CDIMAGE_SQUASHFS_BASE) != _1 ]; then \
 		mkdir -p $(DEBOOTSTRAP)/tmp-$(ARCH) ; \
 		$(DEBOOTSTRAPROOT) /usr/sbin/debootstrap --arch $(ARCH) --print-debs $(CODENAME) $(DEBOOTSTRAP)/tmp-$(ARCH) file://$(MIRROR) $(DEBOOTSTRAP)/$(CODENAME)-$(FULLARCH) \
 		| tr ' ' '\n' >>$(BDIR)/rawlist.debootstrap; \
