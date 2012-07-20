@@ -11,7 +11,7 @@
 
 . $BASEDIR/tools/boot/$DI_CODENAME/common.sh
 
-set -e
+set -ex
 
 N=$1
 CDDIR=$2
