@@ -11,7 +11,7 @@
 
 . $BASEDIR/tools/boot/$DI_CODENAME/common.sh
 
-set -ex
+set -e
 
 N=$1
 CDDIR=$2
@@ -58,8 +58,8 @@ if [ "$IMAGE_FORMAT" != vfat ]; then
 fi
 
 # XXX hardcodes SUBARCH / FLAVOUR
-SUBARCH=omap
-FLAVOUR=omap
+SUBARCH=omap4
+FLAVOUR=omap4
 
 BOOT_IMAGES="$SUBARCH/cdrom/initrd.gz"
 DISK_IMAGES=""
