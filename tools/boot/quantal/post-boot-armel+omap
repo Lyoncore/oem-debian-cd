@@ -108,7 +108,7 @@ else
 fi
 
 if [ "$PROJECT" = "ubuntu-headless" ] || [ "$PROJECT" = "ubuntu-server" ]; then
-    flavour_opts="debian-installer/framebuffer=false console=ttyO2,115200n8"
+    serial_opts="debian-installer/framebuffer=false console=ttyO2,115200n8"
 fi
 
 log "Extracting bootloader from main archive"
@@ -122,6 +122,7 @@ uboot_ramdisk_addr="0x81600000"
 uboot_script_addr="0x1000"
 uboot_script_text="$CDDIR/boot.scr.in"
 uboot_script_image="$CDDIR/boot.scr"
+uboot_script_image_serial="$CDDIR/boot.scr-serial"
 
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     uboot_desc="Ubuntu Alternate Installer"
@@ -164,12 +165,25 @@ log "Generating boot.scr"
 cat >"$uboot_script_text" <<EOF
     fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
     fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
-    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline $flavour_opts
+    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline
     bootm $uboot_kernel_addr $uboot_ramdisk_addr
 EOF
 
 mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text" "$uboot_script_image"
 rm -f "$uboot_script_text"
+
+if [ -n "" ]; then
+	log "Generating boot.scr-serial"
+	cat >"$uboot_script_text" <<EOF
+	    fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
+	    fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
+	    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline $flavour_opts
+	    bootm $uboot_kernel_addr $uboot_ramdisk_addr
+	EOF
+
+	mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text" "$uboot_script_image_serial"
+	rm -f "$uboot_script_text"
+fi
 
 # Move the ext3 filesystem out of the way
 mv $IMAGE $EXT3
@@ -219,6 +233,9 @@ mcopy -i $IMAGE.vfat u-boot.bin ::u-boot.bin
 mcopy -i $IMAGE.vfat $uboot_kernel ::uImage
 mcopy -i $IMAGE.vfat $uboot_initrd ::uInitrd
 mcopy -i $IMAGE.vfat $uboot_script_image ::boot.scr
+if [ -e "$uboot_script_image_serial" ]; then
+	mcopy -i $IMAGE.vfat $uboot_script_image_serial ::boot.scr-serial
+fi
 
 # now put the whole vfat into the first partition
 dd conv=notrunc bs="${VATSTART%B}" if=$IMAGE.vfat of="$IMAGE" seek=1 >/dev/null 2>&1
