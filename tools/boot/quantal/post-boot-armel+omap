@@ -174,13 +174,12 @@ rm -f "$uboot_script_text"
 
 if [ -n "" ]; then
 	log "Generating boot.scr-serial"
-	cat >"$uboot_script_text" <<EOF
-	    fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
-	    fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
-	    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline $flavour_opts
-	    bootm $uboot_kernel_addr $uboot_ramdisk_addr
-	EOF
-
+cat >"$uboot_script_text" <<EOF
+    fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
+    fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
+    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline $flavour_opts
+    bootm $uboot_kernel_addr $uboot_ramdisk_addr
+EOF
 	mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text" "$uboot_script_image_serial"
 	rm -f "$uboot_script_text"
 fi
