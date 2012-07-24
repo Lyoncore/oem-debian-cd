@@ -2,8 +2,6 @@
 d-i	base-installer/kernel/headers	boolean false
 # Don't even install the standard task.
 tasksel	tasksel/skip-tasks	string standard
-# Enable package selection even with live-installer.
-d-i	pkgsel/live-enable	boolean true
 # Only install basic language packs. Let tasksel ask about tasks.
 d-i	pkgsel/language-pack-patterns	string
 # No language support packages.

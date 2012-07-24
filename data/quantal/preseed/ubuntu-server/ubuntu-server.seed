@@ -3,8 +3,6 @@ d-i	partman-auto/init_automatically_partition	string some_device_lvm
 d-i	partman-auto/init_automatically_partition	seen false
 # Install the Ubuntu Server seed.
 tasksel	tasksel/force-tasks	string server
-# Enable package selection even with live-installer.
-d-i	pkgsel/live-enable	boolean true
 # Only install basic language packs. Let tasksel ask about tasks.
 d-i	pkgsel/language-pack-patterns	string
 # No language support packages.
