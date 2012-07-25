@@ -120,7 +120,8 @@ uboot_initrd="uInitrd"
 uboot_kernel_addr="0x80000000"
 uboot_ramdisk_addr="0x81600000"
 uboot_script_addr="0x1000"
-uboot_script_text="$CDDIR/boot.scr.in"
+uboot_script_text="$CDDIR/boot.script"
+uboot_script_text_serial="$CDDIR/boot.script-serial"
 uboot_script_image="$CDDIR/boot.scr"
 uboot_script_image_serial="$CDDIR/boot.scr-serial"
 
@@ -170,18 +171,16 @@ cat >"$uboot_script_text" <<EOF
 EOF
 
 mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text" "$uboot_script_image"
-rm -f "$uboot_script_text"
 
 if [ -n "$serial_opts" ]; then
 	log "Generating boot.scr-serial"
-cat >"$uboot_script_text" <<EOF
+cat >"$uboot_script_text_serial" <<EOF
     fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
     fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
     setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline $serial_opts
     bootm $uboot_kernel_addr $uboot_ramdisk_addr
 EOF
-	mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text" "$uboot_script_image_serial"
-	rm -f "$uboot_script_text"
+	mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text_serial" "$uboot_script_image_serial"
 fi
 
 # Move the ext3 filesystem out of the way
@@ -232,8 +231,10 @@ mcopy -i $IMAGE.vfat u-boot.bin ::u-boot.bin
 mcopy -i $IMAGE.vfat $uboot_kernel ::uImage
 mcopy -i $IMAGE.vfat $uboot_initrd ::uInitrd
 mcopy -i $IMAGE.vfat $uboot_script_image ::boot.scr
+mcopy -i $IMAGE.vfat $uboot_script_text ::boot.script
 if [ -e "$uboot_script_image_serial" ]; then
 	mcopy -i $IMAGE.vfat $uboot_script_image_serial ::boot.scr-serial
+	mcopy -i $IMAGE.vfat $uboot_script_text_serial ::boot.script-serial
 fi
 
 # now put the whole vfat into the first partition
@@ -246,3 +247,5 @@ dd conv=notrunc bs="${EXT3START%B}" if=$IMAGE.rootfs of="$IMAGE" seek=1 >/dev/nu
 
 # Cleanup
 rm -f "$IMAGE.rootfs" "$IMAGE.vfat" "$IMAGE.mtoolsrc" MLO u-boot.bin uImage uInitrd
+rm -f "$uboot_script_image" "$uboot_script_image_serial"
+rm -f "$uboot_script_text" "$uboot_script_text_serial"
