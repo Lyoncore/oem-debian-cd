@@ -58,8 +58,8 @@ if [ "$IMAGE_FORMAT" != vfat ]; then
 fi
 
 # XXX hardcodes SUBARCH / FLAVOUR
-SUBARCH=omap4
-FLAVOUR=omap4
+#SUBARCH=omap4
+#FLAVOUR=omap4
 
 BOOT_IMAGES="$SUBARCH/cdrom/initrd.gz"
 DISK_IMAGES=""
