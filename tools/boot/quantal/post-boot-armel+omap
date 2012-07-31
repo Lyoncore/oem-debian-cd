@@ -120,10 +120,13 @@ uboot_initrd="uInitrd"
 uboot_kernel_addr="0x80000000"
 uboot_ramdisk_addr="0x81600000"
 uboot_script_addr="0x1000"
-uboot_script_text="$CDDIR/boot.script"
-uboot_script_text_serial="$CDDIR/boot.script-serial"
-uboot_script_image="$CDDIR/boot.scr"
-uboot_script_image_serial="$CDDIR/boot.scr-serial"
+#uboot_script_text="$CDDIR/boot.script"
+#uboot_script_text_serial="$CDDIR/boot.script-serial"
+#uboot_script_image="$CDDIR/boot.scr"
+#uboot_script_image_serial="$CDDIR/boot.scr-serial"
+uenv_script_text="$CDDIR/uEnv.txt"
+preenv_script_text="$CDDIR/preEnv.txt"
+preenv_script_text_serial="$CDDIR/preEnv.txt-serial"
 
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     uboot_desc="Ubuntu Alternate Installer"
@@ -160,28 +163,45 @@ rm -f $uboot_kernel $uboot_initrd
 mkimage -A arm -O linux -T kernel -C none -a 0x80008000 -e 0x80008000 -n "Ubuntu Kernel" -d "$uboot_input_kernel" "$uboot_kernel"
 mkimage -A arm -O linux -T ramdisk -C gzip -a 0x0 -e 0x0 -n "Ubuntu Initrd" -d "$uboot_input_initrd" "$uboot_initrd"
 
-
-# here we will need to create boot.scr and mcopy it too
-log "Generating boot.scr"
-cat >"$uboot_script_text" <<EOF
-    fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
-    fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
-    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline
-    bootm $uboot_kernel_addr $uboot_ramdisk_addr
+log "Creating default uEnv.txt"
+cat >"$uenv_script_text" <<EOF
+bootcmd=fatload mmc 0:1 0x80000000 uImage;fatload mmc 0:1 0x81600000 uInitrd; bootm 0x80000000 0x81600000
+uenvcmd=boot
 EOF
 
-mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text" "$uboot_script_image"
+log "Creating default preEnv.txt"
+cat >"$preenv_script_text" <<EOF
+bootargs=$v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline
+EOF
 
 if [ -n "$serial_opts" ]; then
-	log "Generating boot.scr-serial"
-cat >"$uboot_script_text_serial" <<EOF
-    fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
-    fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
-    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline $serial_opts
-    bootm $uboot_kernel_addr $uboot_ramdisk_addr
+	log "Serial options exist, creating default preEnv.txt-serial"
+cat >"$preenv_script_text_serial" <<EOF
+bootargs=$v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline
 EOF
-	mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text_serial" "$uboot_script_image_serial"
 fi
+
+# here we will need to create boot.scr and mcopy it too
+#log "Generating boot.scr"
+#cat >"$uboot_script_text" <<EOF
+#    fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
+#    fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
+#    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline
+#    bootm $uboot_kernel_addr $uboot_ramdisk_addr
+#EOF
+#
+#mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text" "$uboot_script_image"
+#
+#if [ -n "$serial_opts" ]; then
+#	log "Generating boot.scr-serial"
+#cat >"$uboot_script_text_serial" <<EOF
+#    fatload mmc 0:1 $uboot_kernel_addr $uboot_kernel
+#    fatload mmc 0:1 $uboot_ramdisk_addr $uboot_initrd
+#    setenv bootargs $v_opts $board_opts $DEFAULT_PRESEED $uboot_extra_cmdline $serial_opts
+#    bootm $uboot_kernel_addr $uboot_ramdisk_addr
+#EOF
+#	mkimage -A arm -T script -C none -n "Ubuntu boot script" -d "$uboot_script_text_serial" "$uboot_script_image_serial"
+#fi
 
 # Move the ext3 filesystem out of the way
 mv $IMAGE $EXT3
@@ -230,11 +250,13 @@ mcopy -i $IMAGE.vfat MLO ::MLO
 mcopy -i $IMAGE.vfat u-boot.bin ::u-boot.bin
 mcopy -i $IMAGE.vfat $uboot_kernel ::uImage
 mcopy -i $IMAGE.vfat $uboot_initrd ::uInitrd
-mcopy -i $IMAGE.vfat $uboot_script_image ::boot.scr
-mcopy -i $IMAGE.vfat $uboot_script_text ::boot.script
-if [ -e "$uboot_script_image_serial" ]; then
-	mcopy -i $IMAGE.vfat $uboot_script_image_serial ::boot.scr-serial
-	mcopy -i $IMAGE.vfat $uboot_script_text_serial ::boot.script-serial
+mcopy -i $IMAGE.vfat $uenv_script_text ::uEnv.txt
+mcopy -i $IMAGE.vfat $preenv_script_text ::preEnv.txt
+#mcopy -i $IMAGE.vfat $uboot_script_image ::boot.scr
+#mcopy -i $IMAGE.vfat $uboot_script_text ::boot.script
+if [ -e "$preenv_script_text_serial" ]; then
+	mcopy -i $IMAGE.vfat $preenv_script_text_serial ::preEnv.txt-serial
+#	mcopy -i $IMAGE.vfat $uboot_script_text_serial ::boot.script-serial
 fi
 
 # now put the whole vfat into the first partition
