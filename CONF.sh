@@ -308,7 +308,7 @@ export UPDATES=1
 
 case $DIST in
   precise)
-    export PROPOSED=1
+    #export PROPOSED=1
     ;;
 esac
 
