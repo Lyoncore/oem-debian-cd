@@ -4,10 +4,23 @@ set -e
 # Include dist-upgrader dir when available
 
 DIR="$1/CD1"
-SOURCEDIR="$MIRROR/dists/$CODENAME/main/dist-upgrader-all/current"
 TARGETDIR="$DIR/dists/$CODENAME/main/dist-upgrader/binary-all"
 
-if ls "$SOURCEDIR/$CODENAME"* >/dev/null 2>&1; then
+# Assume that -security is always pocket copied to -updates
+UPGRADER_POCKETS="$CODENAME-updates $CODENAME"
+if [ "${PROPOSED:-0}" != "0" ]; then
+    UPGRADER_POCKETS="$CODENAME-proposed $UPGRADER_POCKETS"
+fi
+
+SOURCEDIR=""
+for POCKET in $UPGRADER_POCKETS; do
+    if [ -e "$MIRROR/dists/$POCKET/main/dist-upgrader-all/current/$CODENAME.tar.gz" ]; then
+        SOURCEDIR="$MIRROR/dists/$POCKET/main/dist-upgrader-all/current"
+        break
+    fi
+done
+
+if [ -n "$SOURCEDIR" ]; then
     mkdir -p "$TARGETDIR"
     # copy upgrade tarball + signature
     cp -av "$SOURCEDIR/$CODENAME"* "$TARGETDIR"
