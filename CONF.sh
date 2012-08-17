@@ -340,6 +340,13 @@ case $DIST in
     export i386_MKISOFS_OPTS="-as mkisofs -r -checksum_algorithm_iso md5,sha1"
     export amd64_MKISOFS="xorriso"
     export amd64_MKISOFS_OPTS="-as mkisofs -r -checksum_algorithm_iso md5,sha1"
+    if [ "$DIST" = quantal ]; then
+      # temporary hack until such time as we can upgrade all builds to 1.2.4
+      new_xorriso="/home/cdimage/xorriso/xorriso-1.2.4/xorriso/xorriso"
+      if [ -x "$new_xorriso" ]; then
+	export amd64_MKISOFS="$new_xorriso"
+      fi
+    fi
     ;;
 esac
 
