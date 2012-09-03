@@ -460,6 +460,10 @@ applies server=install
 EOF
     fi
 fi
+# The GRUB versions of this only correspond to single isolinux labels,
+# because we don't yet have the necessary technology in our GRUB menu stack
+# to have a two-dimensional set of boot options, as is implemented for
+# isolinux using the gfxboot "applies" keyword.
 cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label oem=OEM install (for manufacturers)
 append oem=oem-config/enable=true
@@ -468,9 +472,23 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 applies oem=live live-install install
 EOF
+    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "OEM install (for manufacturers)" {
+	set gfxpayload=keep
+	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity quiet splash oem-config/enable=true --
+	initrd	$CASPER_INITRD
+}
+EOF
 else
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 applies oem=install
+EOF
+    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "OEM install (for manufacturers)" {
+	set gfxpayload=keep
+	linux	/install/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED quiet oem-config/enable=true --
+	initrd	/install/initrd.gz
+}
 EOF
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
