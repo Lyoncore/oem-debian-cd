@@ -905,6 +905,8 @@ endif
 
 ifneq ($(CDIMAGE_INSTALL_BASE),1)
 upgrade:
+else ifeq ($(CDIMAGE_SQUASHFS_BASE),1)
+upgrade:
 else
 upgrade: ok bin-infos $(BDIR)/upgrade-stamp
 $(BDIR)/upgrade-stamp:
