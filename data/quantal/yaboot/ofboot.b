@@ -8,7 +8,7 @@ GNU/Linux PPC bootloader
 <BOOT-SCRIPT>
 " screen" output
 load-base release-load-area
-boot cd:,\install\yaboot
+boot &device;:,\\yaboot
 </BOOT-SCRIPT>
 <OS-BADGE-ICONS>
 1010
