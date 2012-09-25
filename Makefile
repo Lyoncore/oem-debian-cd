@@ -1105,6 +1105,9 @@ ifeq ($(LIVE_FILESYSTEM),1)
 	elif [ -e $(LIVEIMAGES)/$(FULLARCH).manifest-desktop ]; then \
 		cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop; \
 	fi
+ifeq ($(CDIMAGE_SQUASHFS_BASE),1)
+	-cp -a $(LIVEIMAGES)/$(FULLARCH).squashfs $(OUT)/$(call CDBASE,$$n).squashfs
+endif
 endif
 
 ifeq ($(SUBARCH),ac100)
