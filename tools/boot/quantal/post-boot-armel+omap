@@ -92,7 +92,7 @@ if [ "${FULLARCH##*+}" = "omap" ]; then
     xloader_package=$uboot_package
 
     v_opts=""
-    board_opts='mpurate=${mpurate}'
+    board_opts=""
 elif [ "${FULLARCH##*+}" = "omap4" ]; then
     path_to_xloader="usr/lib/u-boot/omap4_panda/MLO"
 
@@ -101,8 +101,8 @@ elif [ "${FULLARCH##*+}" = "omap4" ]; then
 
     xloader_package=$uboot_package
 
-    board_opts="mem=456M@0x80000000 mem=512M@0xA0000000"
-    v_opts="vram=40M"
+    board_opts=""
+    v_opts=""
 else
     die "Unknown OMAP subarch"
 fi
@@ -139,7 +139,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     uboot_desc="Ubuntu LiveCD"
     uboot_input_kernel="$CDDIR/casper/filesystem.kernel-$SUBARCH"
     uboot_input_initrd="$CDDIR/casper/filesystem.initrd-$SUBARCH"
-    uboot_extra_cmdline=" fixrtc quiet splash -- boot=casper only-ubiquity nocompcache"
+    uboot_extra_cmdline=" fixrtc quiet splash -- boot=casper only-ubiquity"
 fi
 
 if [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
