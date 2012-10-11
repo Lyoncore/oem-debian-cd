@@ -191,7 +191,7 @@ case $DIST in
     export CODENAME=quantal
     export CAPCODENAME='Quantal Quetzal'
     export DEBVERSION=12.10
-    export OFFICIAL="Beta"
+    export OFFICIAL="Release"
     ;;
 esac
 
