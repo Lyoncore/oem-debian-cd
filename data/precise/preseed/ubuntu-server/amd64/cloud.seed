@@ -3,8 +3,6 @@ d-i	anna/choose_modules	string eucalyptus-udeb
 # Suggest LVM by default.
 d-i	partman-auto/init_automatically_partition	string some_device_lvm
 d-i	partman-auto/init_automatically_partition	seen false
-# Always install the server kernel.
-d-i	base-installer/kernel/override-image	string linux-server
 # Only install basic language packs. Let tasksel ask about tasks.
 d-i	pkgsel/language-pack-patterns	string
 # No language support packages.
