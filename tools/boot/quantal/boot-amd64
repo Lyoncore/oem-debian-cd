@@ -364,7 +364,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/txt.cfg <<EOF
 label live
   menu label $livelabel
-  kernel $CASPER_KERNEL
+  kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD quiet splash --
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
@@ -385,7 +385,7 @@ EOF
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
-  kernel $CASPER_KERNEL
+  kernel /casper/vmlinuz
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=$CASPER_INITRD quiet splash --
 EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
@@ -548,7 +548,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/txt.cfg <<EOF
 label check
   menu label ^Check disc for defects
-  kernel $CASPER_KERNEL
+  kernel /casper/vmlinuz
   append $KERNEL_PARAMS boot=casper integrity-check initrd=$CASPER_INITRD quiet splash --
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
