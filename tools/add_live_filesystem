@@ -28,11 +28,6 @@ for item in kernel initrd; do
 		fi
 	done
 done
-for path in "$LIVEIMAGES/$FULLARCH.kernel"-*.efi.signed; do
-	if [ -f "$path" ]; then
-		ln "$path" "$BDIR/CD1/$DIR/filesystem.${path#$LIVEIMAGES/$FULLARCH.}"
-	fi
-done
 ln "$LIVEIMAGES/$FULLARCH.manifest" "$BDIR/CD1/$DIR/filesystem.manifest" || true
 if [ -e "$LIVEIMAGES/$FULLARCH.manifest-remove" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.manifest-remove" "$BDIR/CD1/$DIR/filesystem.manifest-remove" || true
