@@ -38,9 +38,18 @@ fi
 if [ "$PROJECT" = edubuntu ] && [ "$CDIMAGE_DVD" = 1 ]; then
 	case $ARCH in
 		amd64|i386)
-			mkdir -p "$BDIR/CD1/ltsp"
 			# LTSP is i386 for both architectures
-			ln "$LIVEIMAGES/$FULLARCH.ltsp-squashfs" "$BDIR/CD1/ltsp/i386.img"
+			# Starting with raring (13.04), all the Edubuntu squashfses now
+			# reside under casper/
+			if [ "$DIST" = "precise" ]; then
+				mkdir -p "$BDIR/CD1/ltsp"
+				ln "$LIVEIMAGES/$FULLARCH.ltsp-squashfs" \
+					"$BDIR/CD1/ltsp/i386.img"
+			else
+				mkdir -p "$BDIR/CD1/casper"
+				ln "$LIVEIMAGES/$FULLARCH.ltsp-squashfs" \
+					"$BDIR/CD1/casper/ltsp.squashfs"
+			fi
 			;;
 	esac
 fi
