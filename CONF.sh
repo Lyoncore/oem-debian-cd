@@ -193,6 +193,13 @@ case $DIST in
     export DEBVERSION=12.10
     export OFFICIAL="Release"
     ;;
+  raring)
+    export PREV_CODENAME=quantal
+    export CODENAME=raring
+    export CAPCODENAME='Raring Ringtail'
+    export DEBVERSION=13.04
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
