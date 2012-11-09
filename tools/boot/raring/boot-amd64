@@ -126,11 +126,12 @@ if [ "$NN" = "1" ]; then
 	cp -lf cdrom/initrd.gz $CDDIR/install/
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
-	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
 	if [ -e "$CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed" ]; then
 	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed $CDDIR/casper/vmlinuz.efi.signed
+	    rm -f $CDDIR/casper/filesystem.kernel-$FLAVOUR
 	    CASPER_KERNEL=/casper/vmlinuz.efi.signed
 	else
+	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
 	    CASPER_KERNEL=/casper/vmlinuz
 	fi
 	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
