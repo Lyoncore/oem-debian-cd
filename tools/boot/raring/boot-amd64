@@ -127,9 +127,9 @@ if [ "$NN" = "1" ]; then
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	if [ -e "$CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed" ]; then
-	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed $CDDIR/casper/vmlinuz.efi.signed
+	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed $CDDIR/casper/vmlinuz.efi
 	    rm -f $CDDIR/casper/filesystem.kernel-$FLAVOUR
-	    CASPER_KERNEL=/casper/vmlinuz.efi.signed
+	    CASPER_KERNEL=/casper/vmlinuz.efi
 	else
 	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
 	    CASPER_KERNEL=/casper/vmlinuz
@@ -365,7 +365,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/txt.cfg <<EOF
 label live
   menu label $livelabel
-  kernel /casper/vmlinuz
+  kernel $CASPER_KERNEL
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD quiet splash --
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
@@ -386,7 +386,7 @@ EOF
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
-  kernel /casper/vmlinuz
+  kernel $CASPER_KERNEL
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=$CASPER_INITRD quiet splash --
 EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
@@ -549,7 +549,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/txt.cfg <<EOF
 label check
   menu label ^Check disc for defects
-  kernel /casper/vmlinuz
+  kernel $CASPER_KERNEL
   append $KERNEL_PARAMS boot=casper integrity-check initrd=$CASPER_INITRD quiet splash --
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
