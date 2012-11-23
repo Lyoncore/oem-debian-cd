@@ -47,7 +47,6 @@ fi
 case "$MKISOFS" in
     *xorriso*)
         echo -n "-isohybrid-mbr syslinux/usr/lib/syslinux/isohdpfx.bin " >> $N.mkisofs_opts
-        echo -n "-partition_offset 16 " >> $N.mkisofs_opts
         # uncomment to add a small FAT partition on the media
         # /sbin/mkfs.msdos -n Bla -C test.fat 8192
         # echo -n "-append_partition 2 0x01 test.fat " >> $N.mkisofs_opts
