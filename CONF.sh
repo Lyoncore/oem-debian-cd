@@ -184,6 +184,8 @@ case $DIST in
 	DEBVERSION="$DEBVERSION LTS"
 	;;
     esac
+    # Note that this is singular, unlike lucid; we only ship a single kernel.
+    export BACKPORT_KERNEL=quantal
     export OFFICIAL="Release"
     ;;
   quantal)
