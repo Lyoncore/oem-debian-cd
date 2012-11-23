@@ -134,7 +134,14 @@ if [ "$NN" = "1" ]; then
 	cp -lf $cdrom/initrd.gz $CDDIR/install/
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
-	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
+	if [ -e "$CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed" ]; then
+	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed $CDDIR/casper/vmlinuz.efi
+	    rm -f $CDDIR/casper/filesystem.kernel-$FLAVOUR
+	    CASPER_KERNEL=/casper/vmlinuz.efi
+	else
+	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
+	    CASPER_KERNEL=/casper/vmlinuz
+	fi
 	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
 	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
     fi
@@ -369,20 +376,20 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/txt.cfg <<EOF
 label live
   menu label $livelabel
-  kernel /casper/vmlinuz
+  kernel $CASPER_KERNEL
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD quiet splash --
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep
-	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams quiet splash --
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams quiet splash --
 	initrd	$CASPER_INITRD
 }
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep
-	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=\${iso_path} quiet splash --
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=\${iso_path} quiet splash --
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -390,19 +397,19 @@ EOF
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
-  kernel /casper/vmlinuz
+  kernel $CASPER_KERNEL
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=$CASPER_INITRD quiet splash --
 EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
 	set gfxpayload=keep
-	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity quiet splash --
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity quiet splash --
 	initrd	$CASPER_INITRD
 }
 EOF
 	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
-	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=\${iso_path} quiet splash --
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=\${iso_path} quiet splash --
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -535,19 +542,19 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/txt.cfg <<EOF
 label check
   menu label ^Check disc for defects
-  kernel /casper/vmlinuz
+  kernel $CASPER_KERNEL
   append $KERNEL_PARAMS boot=casper integrity-check initrd=$CASPER_INITRD quiet splash --
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Check disc for defects" {
 	set gfxpayload=keep
-	linux	/casper/vmlinuz $KERNEL_PARAMS boot=casper integrity-check quiet splash --
+	linux	$CASPER_KERNEL $KERNEL_PARAMS boot=casper integrity-check quiet splash --
 	initrd	$CASPER_INITRD
 }
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Check disc for defects" {
-	linux	/casper/vmlinuz $KERNEL_PARAMS boot=casper integrity-check iso-scan/filename=\${iso_path} quiet splash --
+	linux	$CASPER_KERNEL $KERNEL_PARAMS boot=casper integrity-check iso-scan/filename=\${iso_path} quiet splash --
 	initrd	$CASPER_INITRD
 }
 EOF
