@@ -71,16 +71,27 @@ THISTYPE=${KTYPE[$NN]}
 
 case $PROJECT in
     xubuntu|lubuntu)
-	BOOT_IMAGES="cdrom/non-pae/initrd.gz cdrom/non-pae/vmlinuz cdrom/non-pae/debian-cd_info.tar.gz"
+	# Always use precise kernel, since the backported one drops non-PAE
+	# support.
+	cdrom=cdrom
+	netboot=netboot
+	BOOT_IMAGES="$cdrom/non-pae/initrd.gz $cdrom/non-pae/vmlinuz $cdrom/non-pae/debian-cd_info.tar.gz"
 	DISK_IMAGES=""
-	TAR_IMAGES="netboot/non-pae/netboot.tar.gz"
-	CDROM_PATH=cdrom/non-pae
+	TAR_IMAGES="$netboot/non-pae/netboot.tar.gz"
+	CDROM_PATH=$cdrom/non-pae
 	;;
     *)
-	BOOT_IMAGES="cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
+	if [ "$BACKPORT_KERNEL" ]; then
+	    cdrom="$BACKPORT_KERNEL-cdrom"
+	    netboot="$BACKPORT_KERNEL-netboot"
+	else
+	    cdrom=cdrom
+	    netboot=netboot
+	fi
+	BOOT_IMAGES="$cdrom/initrd.gz $cdrom/vmlinuz $cdrom/debian-cd_info.tar.gz"
 	DISK_IMAGES=""
-	TAR_IMAGES="netboot/netboot.tar.gz"
-	CDROM_PATH=cdrom
+	TAR_IMAGES="$netboot/netboot.tar.gz"
+	CDROM_PATH=$cdrom
 	;;
 esac
 
@@ -206,6 +217,9 @@ done
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
 	for tar in $TAR_IMAGES; do
 		dir=$(dirname $tar)
+		if [ "$BACKPORT_KERNEL" ]; then
+			dir=$(echo $dir | sed "s/^$BACKPORT_KERNEL-//")
+		fi
 		mkdir -p $CDDIR/install/$dir
 		tar -C $CDDIR/install/$dir -xzpf $tar
 	done

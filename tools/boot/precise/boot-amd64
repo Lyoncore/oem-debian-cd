@@ -69,9 +69,17 @@ KTYPE[10]=""
 
 THISTYPE=${KTYPE[$NN]}
 
-BOOT_IMAGES="cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
+if [ "$BACKPORT_KERNEL" ]; then
+    cdrom="$BACKPORT_KERNEL-cdrom"
+    netboot="$BACKPORT_KERNEL-netboot"
+else
+    cdrom=cdrom
+    netboot=netboot
+fi
+
+BOOT_IMAGES="$cdrom/initrd.gz $cdrom/vmlinuz $cdrom/debian-cd_info.tar.gz"
 DISK_IMAGES=""
-TAR_IMAGES="netboot/netboot.tar.gz"
+TAR_IMAGES="$netboot/netboot.tar.gz"
 
 case $PROJECT in
     ubuntustudio)
@@ -123,8 +131,8 @@ if [ "$NN" = "1" ]; then
 
     rm -rf usr
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-	cp -lf cdrom/vmlinuz $CDDIR/install/
-	cp -lf cdrom/initrd.gz $CDDIR/install/
+	cp -lf $cdrom/vmlinuz $CDDIR/install/
+	cp -lf $cdrom/initrd.gz $CDDIR/install/
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
@@ -200,6 +208,9 @@ done
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
 	for tar in $TAR_IMAGES; do
 		dir=$(dirname $tar)
+		if [ "$BACKPORT_KERNEL" ]; then
+			dir=$(echo $dir | sed "s/^$BACKPORT_KERNEL-//")
+		fi
 		mkdir -p $CDDIR/install/$dir
 		tar -C $CDDIR/install/$dir -xzpf $tar
 	done
@@ -222,7 +233,7 @@ ar p "$MIRROR/$MEMTEST86DEB" data.tar.gz | \
 mv $CDDIR/install/boot/memtest86+.bin $CDDIR/install/mt86plus
 rm -rf $CDDIR/install/boot
 # Isolinux help files come from d-i.
-cat cdrom/debian-cd_info.tar.gz | (cd boot$N/isolinux/; tar zx)
+cat $cdrom/debian-cd_info.tar.gz | (cd boot$N/isolinux/; tar zx)
 # Override splash screen.
 if [ "$SPLASHRLE" ] && [ -e "$SPLASHRLE" ]; then
     cp -p "$SPLASHRLE" boot$N/isolinux/splash.rle

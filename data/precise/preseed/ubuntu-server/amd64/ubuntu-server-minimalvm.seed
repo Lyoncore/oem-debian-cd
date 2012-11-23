@@ -1,5 +1,4 @@
-# Always install the virtual kernel, with no headers.
-d-i	base-installer/kernel/override-image	string linux-virtual
+# Don't install kernel headers.
 d-i	base-installer/kernel/headers	boolean false
 # Don't even install the standard task.
 tasksel	tasksel/skip-tasks	string standard
