@@ -82,3 +82,12 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
         sed -i '/preseed\/early_command.*confmodule/d' "$file"
     done
 fi
+
+if [ "$BACKPORT_KERNEL" ]; then
+    for file in $DIR/preseed/*.seed; do
+        [ -f "$file" ] || continue
+        if ! grep -q base-installer/kernel/altmeta "$file"; then
+            echo "d-i	base-installer/kernel/altmeta	string lts-$BACKPORT_KERNEL" >>"$file"
+        fi
+    done
+fi
