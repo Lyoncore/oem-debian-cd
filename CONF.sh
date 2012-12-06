@@ -185,7 +185,11 @@ case $DIST in
 	;;
     esac
     # Note that this is singular, unlike lucid; we only ship a single kernel.
-    export BACKPORT_KERNEL=quantal
+    case $FULLARCH in
+      amd64|amd64+*|i386|i386+*)
+	export BACKPORT_KERNEL=quantal
+	;;
+    esac
     export OFFICIAL="Release"
     ;;
   quantal)
