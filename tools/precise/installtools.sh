@@ -84,10 +84,14 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 fi
 
 if [ "$BACKPORT_KERNEL" ]; then
-    for file in $DIR/preseed/*.seed; do
-        [ -f "$file" ] || continue
-        if ! grep -q base-installer/kernel/altmeta "$file"; then
-            echo "d-i	base-installer/kernel/altmeta	string lts-$BACKPORT_KERNEL" >>"$file"
-        fi
-    done
+    case $ARCH in
+        amd64|i386)
+            for file in $DIR/preseed/*.seed; do
+                [ -f "$file" ] || continue
+                if ! grep -q base-installer/kernel/altmeta "$file"; then
+                    echo "d-i	base-installer/kernel/altmeta	string lts-$BACKPORT_KERNEL" >>"$file"
+                fi
+            done
+            ;;
+    esac
 fi
