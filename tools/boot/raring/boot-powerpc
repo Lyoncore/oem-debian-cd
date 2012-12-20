@@ -88,9 +88,9 @@ fi
  else
    wget "$DI_WWW_HOME/MANIFEST.udebs"
  fi
- list_kernel_abis powerpc/cdrom/initrd.gz powerpc64/cdrom/initrd.gz | check_kernel_sync)
+ list_kernel_abis powerpc/cdrom/initrd.gz powerpc64/cdrom/initrd.gz e500/cdrom/initrd.gz e500mc/cdrom/initrd.gz | check_kernel_sync)
 
-for subarch in powerpc powerpc64
+for subarch in powerpc powerpc64 e500 e500mc
 do
   if [ ! "$DI_WWW_HOME" ];then
 	DI_DIR="$DI_PATH/current/images/$subarch/cdrom"
@@ -123,6 +123,14 @@ do
       powerpc64)
         casper_subarch=powerpc64-smp
         casper_initrd_var=CASPER_POWERPC64_INITRD
+        ;;
+      e500)
+        casper_subarch=powerpc-e500
+        casper_initrd_var=CASPER_E500_INITRD
+        ;;
+      e500mc)
+        casper_subarch=powerpc-e500mc
+        casper_initrd_var=CASPER_E500MC_INITRD
         ;;
     esac
     mkdir -p "$CDDIR/casper/$subarch"
