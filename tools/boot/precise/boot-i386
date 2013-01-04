@@ -101,13 +101,25 @@ case $PROJECT in
 	;;
     ubuntustudio)
 	if [ "$CDIMAGE_LIVE" ]; then
-	    FLAVOUR=lowlatency${BACKPORT_KERNEL:--pae}
+	    if [ "$BACKPORT_KERNEL" ]; then
+		FLAVOUR=lowlatency
+	    else
+		FLAVOUR=lowlatency-pae
+	    fi
 	else
-	    FLAVOUR=generic${BACKPORT_KERNEL:--pae}
+	    if [ "$BACKPORT_KERNEL" ]; then
+		FLAVOUR=generic
+	    else
+		FLAVOUR=generic-pae
+	    fi
 	fi
 	;;
     *)
-	FLAVOUR=generic${BACKPORT_KERNEL:--pae}
+	if [ "$BACKPORT_KERNEL" ]; then
+	    FLAVOUR=generic
+	else
+	    FLAVOUR=generic-pae
+	fi
 	;;
 esac
 
