@@ -319,12 +319,6 @@ esac
 # Use post-release updates?
 export UPDATES=1
 
-case $DIST in
-  precise)
-    #export PROPOSED=1
-    ;;
-esac
-
 # Sparc only : bootdir (location of cd.b and second.b)
 # export BOOTDIR=/boot
 
