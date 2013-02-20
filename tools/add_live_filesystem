@@ -57,7 +57,18 @@ if [ "$PROJECT" = edubuntu ] && [ "$CDIMAGE_DVD" = 1 ]; then
 fi
 
 lzcat_sane () {
-	lzcat -S '' "$@"
+	local path
+	case $1 in
+	    -*)
+		path="$2"
+		;;
+	    *)
+		path="$1"
+		;;
+	esac
+	# TODO: This only works if there is at least one dot in $1;
+	# fortunately this is currently always true.
+	lzcat -S ".${path##*.}" "$@"
 }
 
 initrd_decompressor () {

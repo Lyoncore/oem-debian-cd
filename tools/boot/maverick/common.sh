@@ -105,7 +105,9 @@ initrd_suffix() {
 	echo .gz
     elif bzcat -t "$1" >/dev/null 2>&1; then
 	echo .bz2
-    elif lzcat -S '' -t "$1" >/dev/null 2>&1; then
+    # TODO: This only works if there is at least one dot in $1; fortunately
+    # this is currently always true.
+    elif lzcat -S ".${1##*.}" -t "$1" >/dev/null 2>&1; then
 	# .lzma would be more conventional, but we use .lz to avoid creating
 	# trouble for boot loaders that might need to read from 8.3
 	# filesystems without implementing support for long file names (e.g.
