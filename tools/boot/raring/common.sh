@@ -54,6 +54,9 @@ default_preseed() {
 	lubuntu)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/lubuntu.seed'
 	    ;;
+	ubuntu-gnome)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-gnome.seed'
+	    ;;
 	*)
 	    DEFAULT_PRESEED=
 	    ;;
