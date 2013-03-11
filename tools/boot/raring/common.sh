@@ -18,7 +18,7 @@ install_languages() {
 
 default_preseed() {
     case $PROJECT in
-	ubuntu)
+	ubuntu|ubuntukylin)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu.seed'
 	    ;;
 	kubuntu)
