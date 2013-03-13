@@ -49,8 +49,9 @@ if [ "$PROJECT" = edubuntu ] && [ "$CDIMAGE_DVD" = 1 ]; then
 				mkdir -p "$BDIR/CD1/casper"
 				ln "$LIVEIMAGES/$FULLARCH.ltsp-squashfs" \
 					"$BDIR/CD1/casper/ltsp.squashfs"
-				ln "$LIVEIMAGES/$FULLARCH.server-squashfs" \
-					"$BDIR/CD1/casper/server.squashfs"
+# FIXME: Disabled edubuntu-server (LP: #1154601)
+#				ln "$LIVEIMAGES/$FULLARCH.server-squashfs" \
+#					"$BDIR/CD1/casper/server.squashfs"
 			fi
 			;;
 	esac
