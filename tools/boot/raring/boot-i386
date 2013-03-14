@@ -240,6 +240,8 @@ fi
 if [ "$PROJECT" = kubuntu ]; then
     # No language menu.
     echo en >boot$N/isolinux/lang
+elif [ "$PROJECT" = ubuntukylin ]; then
+    echo zh_CN >boot$N/isolinux/lang
 fi
 # Remove elilo configuration; only for Macs.
 rm -f boot$N/isolinux/elilo*
