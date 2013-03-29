@@ -46,7 +46,7 @@ if [ "$CDIMAGE_PREINSTALLED" != 1 ]; then
     exit 0
 fi
 
-BOOTIMG_IN=$PREINSTALLEDIMAGES/$FULLARCH.bootimg-$SUBARCH
+BOOTIMG_IN=$LIVEIMAGES/$FULLARCH.bootimg-$SUBARCH
 BOOTIMG_OUT=$(echo $IMAGENAME|sed 's/.raw/.bootimg/')
 
 log "Moving .bootimg file to ${BOOTIMG_OUT}"
