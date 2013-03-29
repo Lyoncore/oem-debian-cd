@@ -260,9 +260,6 @@ export DEBOOTSTRAP=$CDIMAGE_ROOT/scratch/$PROJECT/$DIST/$IMAGE_TYPE/debootstrap
 # Where live filesystem images live
 export LIVEIMAGES=$CDIMAGE_ROOT/scratch/$PROJECT/$DIST/$IMAGE_TYPE/live
 
-# Where preinstalled filesystem images live
-export PREINSTALLEDIMAGES=$CDIMAGE_ROOT/scratch/$PROJECT/$DIST/$IMAGE_TYPE/preinstalled
-
 # Do I want to have NONFREE merged in the CD set
 # export NONFREE=1
 
