@@ -182,7 +182,7 @@ if [ "$NN" = "1" ]; then
 HIDDEN_TIMEOUT=
 if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
     case $PROJECT in
-	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin)
+	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu)
 	    HIDDEN_TIMEOUT=2
 	    ;;
 	mythbuntu)
@@ -328,7 +328,7 @@ foreground=0xFFFFFF
 background=0x958490
 screen-colour=0x270A1E
 EOF
-elif [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-netbook ]; then
+elif [ "$PROJECT" = kubuntu ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 foreground=0xFFFFFF
 background=0x000000
@@ -347,7 +347,7 @@ if [ "$CDIMAGE_LIVE" != 1 ]; then
 access-options=v1 brltty
 access-options-v1=access=v1 FRONTEND_BACKGROUND=dark
 EOF
-elif [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-netbook ]; then
+elif [ "$PROJECT" = kubuntu ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 access-options=v1 v2 brltty m1
 EOF
