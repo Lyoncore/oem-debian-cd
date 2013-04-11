@@ -328,12 +328,6 @@ foreground=0xFFFFFF
 background=0x958490
 screen-colour=0x270A1E
 EOF
-elif [ "$PROJECT" = kubuntu ]; then
-    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-foreground=0xFFFFFF
-background=0x000000
-screen-colour=0x005082
-EOF
 fi
 if [ "$HIDDEN_TIMEOUT" ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
