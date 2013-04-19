@@ -204,7 +204,7 @@ case $DIST in
     export CODENAME=raring
     export CAPCODENAME='Raring Ringtail'
     export DEBVERSION=13.04
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Release"
     ;;
 esac
 
