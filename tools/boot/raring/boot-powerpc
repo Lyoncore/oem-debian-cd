@@ -90,7 +90,13 @@ fi
  fi
  list_kernel_abis powerpc/cdrom/initrd.gz powerpc64/cdrom/initrd.gz e500/cdrom/initrd.gz e500mc/cdrom/initrd.gz | check_kernel_sync)
 
-for subarch in powerpc powerpc64 e500 e500mc
+if [ "$CDIMAGE_LIVE" ]; then
+  all_subarches='powerpc powerpc64'
+else
+  all_subarches='powerpc powerpc64 e500 e500mc'
+fi
+
+for subarch in $all_subarches
 do
   if [ ! "$DI_WWW_HOME" ];then
 	DI_DIR="$DI_PATH/current/images/$subarch/cdrom"
