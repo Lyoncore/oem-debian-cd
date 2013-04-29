@@ -206,6 +206,13 @@ case $DIST in
     export DEBVERSION=13.04
     export OFFICIAL="Release"
     ;;
+  saucy)
+    export PREV_CODENAME=raring
+    export CODENAME=saucy
+    export CAPCODENAME='Saucy Salamander'
+    export DEBVERSION=13.10
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
