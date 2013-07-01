@@ -171,7 +171,7 @@ if [ "$NN" = "1" ]; then
 HIDDEN_TIMEOUT=
 if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
     case $PROJECT in
-	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu)
+	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|ubuntu-gnome)
 	    HIDDEN_TIMEOUT=2
 	    ;;
 	mythbuntu)
