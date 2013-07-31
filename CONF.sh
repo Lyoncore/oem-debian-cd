@@ -187,7 +187,7 @@ case $DIST in
     # Note that this is singular, unlike lucid; we only ship a single kernel.
     case $PROJECT in
       ubuntu|ubuntu-server|edubuntu*|mythbuntu)
-	export BACKPORT_KERNEL=quantal
+	export BACKPORT_KERNEL=raring
 	;;
     esac
     export OFFICIAL="Release"
