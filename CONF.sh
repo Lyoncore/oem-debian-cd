@@ -178,7 +178,7 @@ case $DIST in
     export PREV_CODENAME=lucid # need to support upgrades from previous LTS
     export CODENAME=precise
     export CAPCODENAME='Precise Pangolin'
-    export DEBVERSION=12.04.2
+    export DEBVERSION=12.04.3
     case $PROJECT in
       ubuntu|ubuntu-server|kubuntu|edubuntu*|xubuntu)
 	DEBVERSION="$DEBVERSION LTS"
