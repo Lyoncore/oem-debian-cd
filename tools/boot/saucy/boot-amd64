@@ -329,6 +329,13 @@ background=0x958490
 screen-colour=0x270A1E
 EOF
 fi
+if [ "$PROJECT" = ubuntu-gnome ]; then
+    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+foreground=0xFFFFFF
+background=0x0087ED
+screen-colour=0x2D3335
+EOF
+fi
 if [ "$HIDDEN_TIMEOUT" ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 hidden-timeout=$HIDDEN_TIMEOUT
