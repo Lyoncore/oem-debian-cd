@@ -311,8 +311,6 @@ EOF
 fi
 if [ "$PROJECT" = ubuntu-gnome ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-foreground=0xFFFFFF
-background=0x0087ED
 screen-colour=0x2D3335
 EOF
 fi
