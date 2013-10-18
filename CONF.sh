@@ -213,6 +213,18 @@ case $DIST in
     export DEBVERSION=13.10
     export OFFICIAL="Release"
     ;;
+  trusty)
+    export PREV_CODENAME=precise
+    export CODENAME=trusty
+    export CAPCODENAME='Trusty Tahr'
+    export DEBVERSION=14.04
+    case $PROJECT in
+      ubuntu|ubuntu-server|kubuntu|edubuntu*|xubuntu)
+	DEBVERSION="$DEBVERSION LTS"
+	;;
+    esac
+    export OFFICIAL="Release"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
