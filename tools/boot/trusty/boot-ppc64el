@@ -37,7 +37,7 @@ echo -n "--netatalk -hfs -probe -map $BASEDIR/data/hfs.map" \
         > $N.mkisofs_opts
 echo -n " -chrp-boot -iso-level 4" >> $N.mkisofs_opts
 # For newworld Mac booting  - Note, no spaces in volid!
-echo -n " -part -no-desktop -hfs-bless CD$N/install -hfs-volid ${CAPPROJECT}_PowerPC_${CODENAME} " \
+echo -n " -part -no-desktop -hfs-bless CD$N/install -hfs-volid ${CAPPROJECT}_PPC64EL_${CODENAME} " \
 	>> $N.mkisofs_opts
 # Recommended size for a HFS Catalog is 4 megas per giga, defaults to 4 megas
 if [ "$CDIMAGE_DVD" = 1 ]; then
