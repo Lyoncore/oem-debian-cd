@@ -217,12 +217,7 @@ case $DIST in
     export PREV_CODENAME=precise
     export CODENAME=trusty
     export CAPCODENAME='Trusty Tahr'
-    export DEBVERSION=14.04
-    case $PROJECT in
-      ubuntu|ubuntu-server|kubuntu|edubuntu*|xubuntu)
-	DEBVERSION="$DEBVERSION LTS"
-	;;
-    esac
+    export DEBVERSION="14.04 LTS"
     export OFFICIAL="Alpha"
     ;;
 esac
