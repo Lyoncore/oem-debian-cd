@@ -218,7 +218,7 @@ case $DIST in
     export CODENAME=trusty
     export CAPCODENAME='Trusty Tahr'
     export DEBVERSION="14.04 LTS"
-    export OFFICIAL="Beta"
+    export OFFICIAL="Daily"
     ;;
 esac
 
