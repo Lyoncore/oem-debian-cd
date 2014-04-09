@@ -20,24 +20,21 @@
   ." This is an Ubuntu installation ${MEDIA_TYPE},"		cr
   ." built on ${BUILD_DATE}."					cr
   ." "								cr
-  ." The default option is (1) 'install'. For maximum"		cr
-  ." control, you can use the (2) 'expert' option."		cr
+  ." The default option is (1) 'install'."			cr
   ." "								cr
   ." ************************************"			cr
   ." If in doubt, just choose (1) 'install'"			cr
   ." ************************************"			cr
   ."  "								cr
   ." 1: install"   						cr
-  ." 2: expert"   						cr
-  ." 3: return to OF prompt"					cr
+  ." 2: return to OF prompt"					cr
   ."  "								cr
 ;
 : my-boot-case ( num -- )
   ."  " cr
   case
     1 of " cd install/powerpc/vmlinuz-chrp.initrd --" endof
-    2 of " cd install/powerpc/vmlinuz-chrp.initrd priority=low --" endof
-    3 of " none" endof
+    2 of " none" endof
   endcase
   $boot
 ;
