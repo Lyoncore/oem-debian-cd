@@ -16,14 +16,6 @@ image=/install/powerpc/vmlinux
 	initrd-size=8192
 	read-only
 
-image=/install/powerpc/vmlinux
-	label=expert
-	alias=expert-powerpc
-	initrd=/install/powerpc/initrd.gz
-	append="${DEFAULT_PRESEED} priority=low --"
-	initrd-size=8192
-	read-only
-
 # PowerPC64 subarch
 image[macrisc4]=/install/powerpc64/vmlinux
 	label=install
@@ -39,13 +31,6 @@ image[macrisc4]=/install/powerpc64/vmlinux
 	initrd-size=8192
 	read-only
 
-image[macrisc4]=/install/powerpc64/vmlinux
-	label=expert
-	initrd=/install/powerpc64/initrd.gz
-	append="${DEFAULT_PRESEED} priority=low --"
-	initrd-size=8192
-	read-only
-
 image=/install/powerpc64/vmlinux
 	label=install-powerpc64
 	initrd=/install/powerpc64/initrd.gz
@@ -57,12 +42,5 @@ image=/install/powerpc64/vmlinux
 	label=install-free-powerpc64
 	initrd=/install/powerpc64/initrd.gz
 	append="${DEFAULT_PRESEED} quiet apt-setup/restricted=false apt-setup/multiverse=false --"
-	initrd-size=8192
-	read-only
-
-image=/install/powerpc64/vmlinux
-	label=expert-powerpc64
-	initrd=/install/powerpc64/initrd.gz
-	append="${DEFAULT_PRESEED} priority=low --"
 	initrd-size=8192
 	read-only

@@ -4,13 +4,11 @@ This is an Ubuntu DVD, built on ${BUILD_DATE}.
 
 The default option is 'live', to run a preinstalled
 system from the DVD. To install Ubuntu to the hard
-disk, use the 'install' option, or the 'expert'
-option for maximum control.
+disk, use the 'install' option.
 
 If the system fails to boot at all (the typical
 symptom is a white screen which doesn't go away),
-use 'live video=ofonly', 'install video=ofonly', or
-'expert video=ofonly'.
+use 'live video=ofonly' or 'install video=ofonly'.
 
 Press the tab key for a list of options, or type
 'help' for help.

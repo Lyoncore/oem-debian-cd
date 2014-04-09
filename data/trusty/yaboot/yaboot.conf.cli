@@ -16,14 +16,6 @@ image=/install/powerpc/vmlinux
 	initrd-size=8192
 	read-only
 
-image=/install/powerpc/vmlinux
-	label=cli-expert
-	alias=cli-expert-powerpc
-	initrd=/install/powerpc/initrd.gz
-	append="${FRONTEND_BACKGROUND} file=/cdrom/preseed/cli.seed priority=low --"
-	initrd-size=8192
-	read-only
-
 # PowerPC64 subarch
 image[macrisc4]=/install/powerpc64/vmlinux
 	label=cli
@@ -39,13 +31,6 @@ image[macrisc4]=/install/powerpc64/vmlinux
 	initrd-size=8192
 	read-only
 
-image[macrisc4]=/install/powerpc64/vmlinux
-	label=cli-expert
-	initrd=/install/powerpc64/initrd.gz
-	append="${FRONTEND_BACKGROUND} file=/cdrom/preseed/cli.seed priority=low --"
-	initrd-size=8192
-	read-only
-
 image=/install/powerpc64/vmlinux
 	label=cli-powerpc64
 	initrd=/install/powerpc64/initrd.gz
@@ -57,12 +42,5 @@ image=/install/powerpc64/vmlinux
 	label=cli-free-powerpc64
 	initrd=/install/powerpc64/initrd.gz
 	append="${FRONTEND_BACKGROUND} file=/cdrom/preseed/cli.seed apt-setup/restricted=false apt-setup/multiverse=false --"
-	initrd-size=8192
-	read-only
-
-image=/install/powerpc64/vmlinux
-	label=cli-expert-powerpc64
-	initrd=/install/powerpc64/initrd.gz
-	append="${FRONTEND_BACKGROUND} file=/cdrom/preseed/cli.seed priority=low --"
 	initrd-size=8192
 	read-only
