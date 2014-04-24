@@ -220,6 +220,13 @@ case $DIST in
     export DEBVERSION="14.04 LTS"
     export OFFICIAL="Release"
     ;;
+  utopic)
+    export PREV_CODENAME=trusty
+    export CODENAME=utopic
+    export CAPCODENAME='Utopic Unicorn'
+    export DEBVERSION="14.10"
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
