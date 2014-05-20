@@ -171,7 +171,7 @@ if [ "$NN" = "1" ]; then
 HIDDEN_TIMEOUT=
 if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
     case $PROJECT in
-	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|ubuntu-gnome)
+	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|ubuntu-gnome|ubuntu-desktop-next)
 	    HIDDEN_TIMEOUT=2
 	    ;;
 	mythbuntu)
@@ -302,7 +302,8 @@ EOF
 fi
 if [ "$PROJECT" = ubuntu ] || [ "$PROJECT" = ubuntu-server ] || \
    [ "$PROJECT" = ubuntu-mid ] || [ "$PROJECT" = ubuntu-netbook ] || \
-   [ "$PROJECT" = mythbuntu ] || [ "$PROJECT" = ubuntukylin ]; then
+   [ "$PROJECT" = mythbuntu ] || [ "$PROJECT" = ubuntukylin ] || \
+   [ "$PROJECT" = ubuntu-desktop-next ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 foreground=0xFFFFFF
 background=0x958490
