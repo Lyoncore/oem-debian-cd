@@ -41,7 +41,7 @@ NN=`echo $N | sed -e 's/_NONUS//'`
 
 case "$MKISOFS" in
     *xorriso*)
-        echo -n "-isohybrid-mbr syslinux/usr/lib/syslinux/isohdpfx.bin " >> $N.mkisofs_opts
+        echo -n "-isohybrid-mbr syslinux/usr/lib/ISOLINUX/isohdpfx.bin " >> $N.mkisofs_opts
         echo -n "-partition_offset 16 " >> $N.mkisofs_opts
         # uncomment to add a small FAT partition on the media
         # /sbin/mkfs.msdos -n Bla -C test.fat 8192
@@ -88,6 +88,10 @@ if [ "$NN" = "1" ]; then
     SYSLINUXDEB="$($BASEDIR/tools/apt-selection cache show syslinux-common | \
 	grep ^Filename | awk '{print $2}')"
     (dpkg --fsys-tarfile "$MIRROR/$SYSLINUXDEB" | \
+	tar xf - -C $CDDIR/../syslinux ./usr/lib)
+    ISOLINUXDEB="$($BASEDIR/tools/apt-selection cache show isolinux | \
+	grep ^Filename | awk '{print $2}')"
+    (dpkg --fsys-tarfile "$MIRROR/$ISOLINUXDEB" | \
 	tar xf - -C $CDDIR/../syslinux ./usr/lib)
 
     echo "Using elilo boot-disks image on CD$N"
