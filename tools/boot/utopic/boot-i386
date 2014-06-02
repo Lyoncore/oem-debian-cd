@@ -46,7 +46,7 @@ fi
 
 case "$MKISOFS" in
     *xorriso*)
-        echo -n "-isohybrid-mbr syslinux/usr/lib/syslinux/isohdpfx.bin " >> $N.mkisofs_opts
+        echo -n "-isohybrid-mbr syslinux/usr/lib/ISOLINUX/isohdpfx.bin " >> $N.mkisofs_opts
         echo -n "-partition_offset 16 " >> $N.mkisofs_opts
         # uncomment to add a small FAT partition on the media
         # /sbin/mkfs.msdos -n Bla -C test.fat 8192
@@ -111,15 +111,17 @@ if [ "$NN" = "1" ]; then
 	grep ^Filename | awk '{print $2}')"
     (dpkg --fsys-tarfile "$MIRROR/$SYSLINUXDEB" | \
 	tar xf - -C $CDDIR/../syslinux ./usr/lib)
-    cp -f $CDDIR/../syslinux/usr/lib/syslinux/isolinux.bin boot$N/isolinux/
-    cp -f $CDDIR/../syslinux/usr/lib/syslinux/vesamenu.c32 boot$N/isolinux/
-    if [ -e $CDDIR/../syslinux/usr/lib/syslinux/ldlinux.c32 ]; then
-	cp -f $CDDIR/../syslinux/usr/lib/syslinux/ldlinux.c32 boot$N/isolinux/
-	cp -f $CDDIR/../syslinux/usr/lib/syslinux/libcom32.c32 boot$N/isolinux/
-	cp -f $CDDIR/../syslinux/usr/lib/syslinux/libutil.c32 boot$N/isolinux/
-    fi
-    cp -f $CDDIR/../syslinux/usr/lib/syslinux/gfxboot.c32 boot$N/isolinux/
-    cp -f $CDDIR/../syslinux/usr/lib/syslinux/chain.c32 boot$N/isolinux/
+    ISOLINUXDEB="$($BASEDIR/tools/apt-selection cache show isolinux | \
+	grep ^Filename | awk '{print $2}')"
+    (dpkg --fsys-tarfile "$MIRROR/$ISOLINUXDEB" | \
+	tar xf - -C $CDDIR/../syslinux ./usr/lib)
+    cp -f $CDDIR/../syslinux/usr/lib/ISOLINUX/isolinux.bin boot$N/isolinux/
+    cp -f $CDDIR/../syslinux/usr/lib/syslinux/modules/bios/vesamenu.c32 boot$N/isolinux/
+    cp -f $CDDIR/../syslinux/usr/lib/syslinux/modules/bios/ldlinux.c32 boot$N/isolinux/
+    cp -f $CDDIR/../syslinux/usr/lib/syslinux/modules/bios/libcom32.c32 boot$N/isolinux/
+    cp -f $CDDIR/../syslinux/usr/lib/syslinux/modules/bios/libutil.c32 boot$N/isolinux/
+    cp -f $CDDIR/../syslinux/usr/lib/syslinux/modules/bios/gfxboot.c32 boot$N/isolinux/
+    cp -f $CDDIR/../syslinux/usr/lib/syslinux/modules/bios/chain.c32 boot$N/isolinux/
 
     GFXBOOT=
     if THEMEDEB="$($BASEDIR/tools/apt-selection cache show gfxboot-theme-ubuntu)"; then
