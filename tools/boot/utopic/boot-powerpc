@@ -88,12 +88,12 @@ fi
  else
    wget "$DI_WWW_HOME/MANIFEST.udebs"
  fi
- list_kernel_abis powerpc/cdrom/initrd.gz powerpc64/cdrom/initrd.gz e500/cdrom/initrd.gz e500mc/cdrom/initrd.gz | check_kernel_sync)
+ list_kernel_abis powerpc/cdrom/initrd.gz powerpc64/cdrom/initrd.gz e500mc/cdrom/initrd.gz | check_kernel_sync)
 
 if [ "$CDIMAGE_LIVE" ]; then
   all_subarches='powerpc powerpc64'
 else
-  all_subarches='powerpc powerpc64 e500 e500mc'
+  all_subarches='powerpc powerpc64 e500mc'
 fi
 
 for subarch in $all_subarches
@@ -129,10 +129,6 @@ do
       powerpc64)
         casper_subarch=powerpc64-smp
         casper_initrd_var=CASPER_POWERPC64_INITRD
-        ;;
-      e500)
-        casper_subarch=powerpc-e500
-        casper_initrd_var=CASPER_E500_INITRD
         ;;
       e500mc)
         casper_subarch=powerpc-e500mc
