@@ -523,4 +523,20 @@ else
     fi
 fi
 
+# Hack around the removal of support in gfxboot for reading from outside
+# the bootlogo archive.  This makes customisation harder and is not ideal.
+tmpdir="$(mktemp -d)"
+(cd "$tmpdir" && cpio -i) < boot$N/isolinux/bootlogo
+cp -a boot$N/isolinux/*.fnt \
+      boot$N/isolinux/*.hlp \
+      boot$N/isolinux/*.jpg \
+      boot$N/isolinux/*.pcx \
+      boot$N/isolinux/*.tr \
+      boot$N/isolinux/gfxboot.cfg \
+      boot$N/isolinux/isolinux.cfg \
+      boot$N/isolinux/langlist \
+      "$tmpdir/"
+(cd "$tmpdir" && ls -1 | cpio --quiet -o) > boot$N/isolinux/bootlogo
+rm -rf "$tmpdir"
+
 # th,th, thats all
