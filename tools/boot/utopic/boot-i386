@@ -532,4 +532,25 @@ if [ "$IMAGE_FORMAT" = "vfat" ]; then
 	mv boot$N/syslinux/isolinux.cfg boot$N/syslinux/syslinux.cfg
 fi
 
+# Hack around the removal of support in gfxboot for reading from outside
+# the bootlogo archive.  This makes customisation harder and is not ideal.
+tmpdir="$(mktemp -d)"
+if [ "$IMAGE_FORMAT" = "vfat" ]; then
+	SYSLINUX_NAME=syslinux
+else
+	SYSLINUX_NAME=isolinux
+fi
+(cd "$tmpdir" && cpio -i) < boot$N/$SYSLINUX_NAME/bootlogo
+cp -a boot$N/$SYSLINUX_NAME/*.fnt \
+      boot$N/$SYSLINUX_NAME/*.hlp \
+      boot$N/$SYSLINUX_NAME/*.jpg \
+      boot$N/$SYSLINUX_NAME/*.pcx \
+      boot$N/$SYSLINUX_NAME/*.tr \
+      boot$N/$SYSLINUX_NAME/gfxboot.cfg \
+      boot$N/$SYSLINUX_NAME/$SYSLINUX_NAME \
+      boot$N/$SYSLINUX_NAME/langlist \
+      "$tmpdir/"
+(cd "$tmpdir" && ls -1 | cpio --quiet -o) > boot$N/$SYSLINUX_NAME/bootlogo
+rm -rf "$tmpdir"
+
 # th,th, thats all
