@@ -60,6 +60,12 @@ BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc $$num"
 else
 BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc"
 endif
+else ifeq ($(ARCH),ppc64el)
+ifneq ($(MAXCDS),1)
+BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc64 $$num"
+else
+BINVOLID="$(CAPPROJECT) $(DEBVERSION) ppc64"
+endif
 else
 ifneq ($(MAXCDS),1)
 BINVOLID="$(CAPPROJECT) $(DEBVERSION) $(ARCH) $$num"
