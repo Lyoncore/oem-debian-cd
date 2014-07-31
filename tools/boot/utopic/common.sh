@@ -24,6 +24,9 @@ default_preseed() {
 	kubuntu)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/kubuntu.seed'
 	    ;;
+	kubuntu-plasma5)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/kubuntu-plasma5.seed'
+	    ;;
 	edubuntu)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/edubuntu.seed'
 	    ;;

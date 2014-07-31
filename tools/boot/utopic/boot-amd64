@@ -184,7 +184,7 @@ if [ "$NN" = "1" ]; then
 HIDDEN_TIMEOUT=
 if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
     case $PROJECT in
-	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|ubuntu-gnome|ubuntu-desktop-next)
+	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|kubuntu-plasma5|ubuntu-gnome|ubuntu-desktop-next)
 	    HIDDEN_TIMEOUT=2
 	    ;;
 	mythbuntu)
@@ -252,7 +252,7 @@ fi
 if [ "$HIDDEN_TIMEOUT" = 2 ]; then
     cp -p "$BASEDIR/data/$DI_CODENAME/$BLANKPCX" boot$N/isolinux/blank.pcx
 fi
-if [ "$PROJECT" = kubuntu ]; then
+if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ]; then
     # No language menu.
     echo en >boot$N/isolinux/lang
 elif [ "$PROJECT" = ubuntukylin ]; then
@@ -349,7 +349,7 @@ if [ "$CDIMAGE_LIVE" != 1 ]; then
 access-options=v1 brltty
 access-options-v1=access=v1 FRONTEND_BACKGROUND=dark
 EOF
-elif [ "$PROJECT" = kubuntu ]; then
+elif [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 access-options=v1 v2 brltty m1
 EOF
@@ -364,7 +364,7 @@ label normal=Normal
 append normal=
 EOF
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    if [ "$PROJECT" = kubuntu ]; then
+    if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ]; then
 	livelabel="^Start $HUMANPROJECT"
 	liveparams=' maybe-ubiquity'
     else
@@ -391,7 +391,7 @@ menuentry "${livelabel#^}" {
 	initrd	$CASPER_INITRD
 }
 EOF
-    if [ "$PROJECT" != ubuntu-mid ] && [ "$PROJECT" != kubuntu ]; then
+    if [ "$PROJECT" != ubuntu-mid ] && [ "$PROJECT" != kubuntu ] && [ "$PROJECT" != kubuntu-plasma5 ]; then
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
