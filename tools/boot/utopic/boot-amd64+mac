@@ -532,8 +532,7 @@ cp -a boot$N/isolinux/*.fnt \
       boot$N/isolinux/*.jpg \
       boot$N/isolinux/*.pcx \
       boot$N/isolinux/*.tr \
-      boot$N/isolinux/gfxboot.cfg \
-      boot$N/isolinux/isolinux.cfg \
+      boot$N/isolinux/*.cfg \
       boot$N/isolinux/langlist \
       "$tmpdir/"
 (cd "$tmpdir" && ls -1 | cpio --quiet -o) > boot$N/isolinux/bootlogo
