@@ -547,6 +547,7 @@ cp -a boot$N/$SYSLINUX_NAME/*.fnt \
       boot$N/$SYSLINUX_NAME/*.pcx \
       boot$N/$SYSLINUX_NAME/*.tr \
       boot$N/$SYSLINUX_NAME/*.cfg \
+      $(test -e boot$N/$SYSLINUX_NAME/lang || echo boot$N/$SYSLINUX_NAME/lang) \
       boot$N/$SYSLINUX_NAME/langlist \
       "$tmpdir/"
 (cd "$tmpdir" && ls -1 | cpio --quiet -o) > boot$N/$SYSLINUX_NAME/bootlogo
