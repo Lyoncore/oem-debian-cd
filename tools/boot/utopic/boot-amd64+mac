@@ -533,7 +533,7 @@ cp -a boot$N/isolinux/*.fnt \
       boot$N/isolinux/*.pcx \
       boot$N/isolinux/*.tr \
       boot$N/isolinux/*.cfg \
-      $(test -e boot$N/isolinux/lang || echo boot$N/isolinux/lang) \
+      $(test -e boot$N/isolinux/lang && echo boot$N/isolinux/lang) \
       boot$N/isolinux/langlist \
       "$tmpdir/"
 (cd "$tmpdir" && ls -1 | cpio --quiet -o) > boot$N/isolinux/bootlogo
