@@ -225,7 +225,7 @@ case $DIST in
     export CODENAME=utopic
     export CAPCODENAME='Utopic Unicorn'
     export DEBVERSION="14.10"
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Release"
     ;;
 esac
 
