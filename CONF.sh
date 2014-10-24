@@ -227,6 +227,13 @@ case $DIST in
     export DEBVERSION="14.10"
     export OFFICIAL="Release"
     ;;
+  vivid)
+    export PREV_CODENAME=utopic
+    export CODENAME=vivid
+    export CAPCODENAME='Vivid Vervet'
+    export DEBVERSION="15.04"
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
