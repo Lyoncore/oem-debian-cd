@@ -218,6 +218,7 @@ case $DIST in
     export CODENAME=trusty
     export CAPCODENAME='Trusty Tahr'
     export DEBVERSION="14.04.1 LTS"
+    export BACKPORT_KERNEL=utopic
     export OFFICIAL="Release"
     ;;
   utopic)
