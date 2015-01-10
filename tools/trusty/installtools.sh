@@ -82,3 +82,18 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
         sed -i '/preseed\/early_command.*confmodule/d' "$file"
     done
 fi
+
+if [ "$BACKPORT_KERNEL" ]; then
+    case $ARCH in
+        amd64|i386|powerpc|ppc64|ppc64el)
+            for file in $DIR/preseed/*.seed; do
+                [ -f "$file" ] || continue
+                if grep -q base-installer/kernel/override-image "$file"; then
+                    sed -i -e "s/string linux-virtual/string linux-virtual-lts-$BACKPORT_KERNEL/" "$file"
+                elif ! grep -q base-installer/kernel/altmeta "$file"; then
+                    echo "d-i  base-installer/kernel/altmeta   string lts-$BACKPORT_KERNEL" >>"$file"
+                fi
+            done
+            ;;
+    esac
+fi

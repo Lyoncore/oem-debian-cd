@@ -64,7 +64,15 @@ fi
 "$BASEDIR/tools/sorting_weights" "$N"
 echo -n " -sort $(pwd)/$N.weights " >> $N.mkisofs_opts
 
-BOOT_IMAGES="cdrom/vmlinux cdrom/initrd.gz cdrom/debian-cd_info.tar.gz"
+if [ "$BACKPORT_KERNEL" ]; then
+    cdrom="$BACKPORT_KERNEL-cdrom"
+    netboot="$BACKPORT_KERNEL-netboot"
+else
+    cdrom=cdrom
+    netboot=netboot
+fi
+
+BOOT_IMAGES="$cdrom/vmlinux $cdrom/initrd.gz $cdrom/debian-cd_info.tar.gz"
 
 (cd $CDDIR/..;
  cp -a "$DI_PATH/current/images/MANIFEST.udebs" .
@@ -72,9 +80,9 @@ BOOT_IMAGES="cdrom/vmlinux cdrom/initrd.gz cdrom/debian-cd_info.tar.gz"
 
 DI_DIR="$DI_PATH/current/images"
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-  cp -lf "$DI_DIR/cdrom/vmlinux" "$CDDIR/install/"
-  cp -lf "$DI_DIR/cdrom/initrd.gz" "$CDDIR/install/"
+  cp -lf "$DI_DIR/$cdrom/vmlinux" "$CDDIR/install/"
+  cp -lf "$DI_DIR/$cdrom/initrd.gz" "$CDDIR/install/"
 fi
-tar -C "$CDDIR" -xf "$DI_DIR/cdrom/debian-cd_info.tar.gz"
+tar -C "$CDDIR" -xf "$DI_DIR/$cdrom/debian-cd_info.tar.gz"
 
 exit 0
