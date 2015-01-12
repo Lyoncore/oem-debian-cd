@@ -102,7 +102,7 @@ fi
 # installation locale code.
 RELEASE_NOTES=
 case $PROJECT in
-	ubuntu|kubuntu|edubuntu|xubuntu|gobuntu|ubuntustudio|mythbuntu|lubuntu|ubuntu-gnome|ubuntukylin|ubuntu-desktop-next)
+	ubuntu|kubuntu|edubuntu|]xubuntu|gobuntu|ubuntustudio|mythbuntu|lubuntu|ubuntu-gnome|ubuntukylin|ubuntu-desktop-next|ubuntu-mate)
 		case $DIST in
 			warty|hoary|breezy|dapper|edgy)
 				;;

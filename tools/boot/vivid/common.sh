@@ -57,6 +57,9 @@ default_preseed() {
 	ubuntu-gnome)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-gnome.seed'
 	    ;;
+	ubuntu-mate)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-mate.seed'
+	    ;;
 	*)
 	    DEFAULT_PRESEED=
 	    ;;
