@@ -172,7 +172,7 @@ if [ "$NN" = "1" ]; then
 HIDDEN_TIMEOUT=
 if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
     case $PROJECT in
-	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|kubuntu-plasma5|ubuntu-gnome)
+	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|kubuntu-plasma5|ubuntu-gnome|ubuntu-mate)
 	    HIDDEN_TIMEOUT=2
 	    ;;
 	mythbuntu)
@@ -312,6 +312,12 @@ background=0x958490
 screen-colour=0x270A1E
 EOF
 fi
+if [ "$PROJECT" = ubuntu-mate ]; then
+    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+foreground=0xffffff
+background=0x87a556
+screen-colour=0x3c3b37
+EOF
 if [ "$HIDDEN_TIMEOUT" ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 hidden-timeout=$HIDDEN_TIMEOUT
@@ -455,7 +461,7 @@ label cloud
 EOF
     fi
 fi
-if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubuntu ] || [ "$PROJECT" = edubuntu ]); then
+if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubuntu ] || [ "$PROJECT" = edubuntu ] || [ "$PROJECT" = ubuntu-mate ]); then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label ltsp=Install an LTSP server
 replace ltsp=file=/cdrom/preseed/ltsp.seed

@@ -184,7 +184,7 @@ if [ "$NN" = "1" ]; then
 HIDDEN_TIMEOUT=
 if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
     case $PROJECT in
-	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|kubuntu-plasma5|ubuntu-gnome|ubuntu-desktop-next)
+	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|kubuntu-plasma5|ubuntu-gnome|ubuntu-desktop-next|ubuntu-mate)
 	    HIDDEN_TIMEOUT=2
 	    ;;
 	mythbuntu)
@@ -335,6 +335,13 @@ fi
 if [ "$PROJECT" = ubuntu-gnome ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 screen-colour=0x2D3335
+EOF
+fi
+if [ "$PROJECT" = ubuntu-mate ]; then
+    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+foreground=0xffffff
+background=0x87a556
+screen-colour=0x3c3b37
 EOF
 fi
 if [ "$HIDDEN_TIMEOUT" ]; then
@@ -533,7 +540,7 @@ menuentry "Multiple server install with MAAS" {
 EOF
     fi
 fi
-if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubuntu ] || [ "$PROJECT" = edubuntu ]); then
+if [ "$CDIMAGE_INSTALL" = 1 ] && ([ "$PROJECT" = ubuntu ] || [ "$PROJECT" = xubuntu ] || [ "$PROJECT" = edubuntu ] || [ "$PROJECT" = ubuntu-mate ]); then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label ltsp=Install an LTSP server
 replace ltsp=file=/cdrom/preseed/ltsp.seed
