@@ -318,6 +318,7 @@ foreground=0xffffff
 background=0x87a556
 screen-colour=0x3c3b37
 EOF
+fi
 if [ "$HIDDEN_TIMEOUT" ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 hidden-timeout=$HIDDEN_TIMEOUT
