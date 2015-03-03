@@ -362,11 +362,11 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 label live
   menu label $livelabel
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD quiet splash ---
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "${livelabel#^}" {
-	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=\${iso_path} quiet splash --
+	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=\${iso_path} quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -375,11 +375,11 @@ EOF
 label live-install
   menu label ^Install $HUMANPROJECT
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=$CASPER_INITRD quiet splash --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=$CASPER_INITRD quiet splash ---
 EOF
 	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
-	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=\${iso_path} quiet splash --
+	linux	/casper/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=\${iso_path} quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -396,21 +396,21 @@ if [ "$CDIMAGE_INSTALL" = 1 ]; then
 label install
   menu label ^Install $HUMANPROJECT
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=788 initrd=/install/initrd.gz quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=788 initrd=/install/initrd.gz quiet ---
 EOF
     else
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label install
   menu label ^Install $HUMANPROJECT in text mode
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=788 initrd=/install/initrd.gz quiet --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=788 initrd=/install/initrd.gz quiet ---
 EOF
     fi
     cat >> boot$N/isolinux/adtxt.cfg <<EOF
 label expert
   menu hide
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED priority=low vga=788 initrd=/install/initrd.gz --
+  append $KERNEL_PARAMS $DEFAULT_PRESEED priority=low vga=788 initrd=/install/initrd.gz ---
 EOF
     if [ "$PROJECT" = edubuntu ]; then
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
@@ -462,7 +462,7 @@ EOF
 label cloud
   menu label ^Multiple server install with MAAS
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $FRONTEND_BACKGROUND modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --
+  append $KERNEL_PARAMS $FRONTEND_BACKGROUND modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet ---
 EOF
     fi
 fi
@@ -485,11 +485,11 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 label check
   menu label ^Check disc for defects
   kernel /casper/vmlinuz
-  append $KERNEL_PARAMS boot=casper integrity-check initrd=$CASPER_INITRD quiet splash --
+  append $KERNEL_PARAMS boot=casper integrity-check initrd=$CASPER_INITRD quiet splash ---
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Check disc for defects" {
-	linux	/casper/vmlinuz $KERNEL_PARAMS boot=casper integrity-check iso-scan/filename=\${iso_path} quiet splash --
+	linux	/casper/vmlinuz $KERNEL_PARAMS boot=casper integrity-check iso-scan/filename=\${iso_path} quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -498,7 +498,7 @@ elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 label check
   menu label ^Check disc for defects
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $FRONTEND_BACKGROUND MENU=/bin/cdrom-checker-menu vga=788 initrd=/install/initrd.gz quiet --
+  append $KERNEL_PARAMS $FRONTEND_BACKGROUND MENU=/bin/cdrom-checker-menu vga=788 initrd=/install/initrd.gz quiet ---
 EOF
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
@@ -506,7 +506,7 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 label rescue
   menu label ^Rescue a broken system
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $FRONTEND_BACKGROUND rescue/enable=true vga=788 initrd=/install/initrd.gz --
+  append $KERNEL_PARAMS $FRONTEND_BACKGROUND rescue/enable=true vga=788 initrd=/install/initrd.gz ---
 EOF
 fi
 cat >> boot$N/isolinux/txt.cfg <<EOF
