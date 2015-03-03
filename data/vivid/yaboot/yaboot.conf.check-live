@@ -4,7 +4,7 @@ image=/casper/powerpc/vmlinux
 	label=check
 	alias=check-powerpc
 	initrd=${CASPER_POWERPC_INITRD}
-	append="boot=casper integrity-check quiet splash --"
+	append="boot=casper integrity-check quiet splash ---"
 	initrd-size=1048576
 	read-only
 
@@ -12,13 +12,13 @@ image=/casper/powerpc/vmlinux
 image[macrisc4]=/casper/powerpc64/vmlinux
 	label=check
 	initrd=${CASPER_POWERPC64_INITRD}
-	append="boot=casper integrity-check quiet splash --"
+	append="boot=casper integrity-check quiet splash ---"
 	initrd-size=1048576
 	read-only
 
 image=/casper/powerpc64/vmlinux
 	label=check-powerpc64
 	initrd=${CASPER_POWERPC64_INITRD}
-	append="boot=casper integrity-check quiet splash --"
+	append="boot=casper integrity-check quiet splash ---"
 	initrd-size=1048576
 	read-only
