@@ -233,7 +233,7 @@ case $DIST in
     export CODENAME=vivid
     export CAPCODENAME='Vivid Vervet'
     export DEBVERSION="15.04"
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Beta"
     ;;
 esac
 
