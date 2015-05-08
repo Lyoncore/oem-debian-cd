@@ -235,6 +235,13 @@ case $DIST in
     export DEBVERSION="15.04"
     export OFFICIAL="Release"
     ;;
+  wily)
+    export PREV_CODENAME=vivid
+    export CODENAME=wily
+    export CAPCODENAME='Wily Werewolf'
+    export DEBVERSION="15.10"
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
