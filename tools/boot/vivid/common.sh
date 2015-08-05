@@ -76,6 +76,14 @@ default_preseed() {
     fi
 }
 
+default_language() {
+    case $PROJECT in
+	ubuntukylin)
+	    KERNEL_PARAMS="${KERNEL_PARAMS:+$KERNEL_PARAMS }locale=zh_CN keyboard-configuration/layoutcode?=cn"
+	    ;;
+    esac
+}
+
 list_kernel_abis() {
     perl -le '
 	BEGIN { %images = map { $_ => 1 } @ARGV; $found = 0; %abis = (); }
