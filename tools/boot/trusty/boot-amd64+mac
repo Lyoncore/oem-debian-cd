@@ -26,6 +26,7 @@ if [ -z "$DI_PATH" ]; then
 fi
 
 default_preseed
+default_language
 
 cd $CDDIR/..
 
