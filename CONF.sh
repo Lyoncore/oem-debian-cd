@@ -240,7 +240,7 @@ case $DIST in
     export CODENAME=wily
     export CAPCODENAME='Wily Werewolf'
     export DEBVERSION="15.10"
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Release"
     ;;
 esac
 
