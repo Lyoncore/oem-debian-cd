@@ -242,6 +242,13 @@ case $DIST in
     export DEBVERSION="15.10"
     export OFFICIAL="Release"
     ;;
+  xenial)
+    export PREV_CODENAME=wily
+    export CODENAME=xenial
+    export CAPCODENAME='Xenial Xerus'
+    export DEBVERSION="16.04 LTS"
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
