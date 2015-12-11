@@ -55,7 +55,7 @@ mkdir -p $imagedir
 # - generic/initrd.debian      : initrd; to be used for both VM-reader
 # - generic/kernel.debian      : kernel for WM-reader
 
-images_S390="MANIFEST.udebs generic/parmfile.debian generic/initrd.debian generic/kernel.debian"
+images_S390="generic/parmfile.debian generic/initrd.debian generic/kernel.debian"
 
 for image in $images_S390; do
 	case $image in
@@ -65,14 +65,13 @@ for image in $images_S390; do
 			imagedest=root.bin ;;
 		generic/kernel.debian)
 			imagedest=linux_vm ;;
-		MANIFEST.udebs)
-			imagedest=$image ;;
 	esac
 	imagedest="$imagedir/$imagedest"
 
 	cp "$DI_DIR/$image" "$imagedest"
 done
 
+cp "$DI_DIR/MANIFEST.udebs" .
 list_kernel_abis $images_S390 | check_kernel_sync
 
 # Copy the different boot files
