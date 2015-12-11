@@ -5,11 +5,11 @@ debian-cd (2.2.23) UNRELEASED; urgency=medium
       files we generate on the CDs.
     - Download the release notes and try to fit them onto
       CD#1. Updated sarge's README.html.in to point to them
-	- Updated tools/add-bin-doc to stop warnings on this.
+      - Updated tools/add-bin-doc to stop warnings on this.
     - Added patch from Sven Luther to add a forth script to make
- 	  ppc/pegasos easier to boot.  Closes: #311925
+      ppc/pegasos easier to boot.  Closes: #311925
     - Re-add the kernel-headers packages to match kernel images (only
-	  on i386 and amd64). Closes: #249386
+      on i386 and amd64). Closes: #249386
     - Made list2cds more verbose
     - Added tools/sarge/upgrade-hppa.sh and tools/sarge/upgrade-sparc.sh
       to install the upgrade-kernel bits on CD#1
@@ -22,7 +22,9 @@ debian-cd (2.2.23) UNRELEASED; urgency=medium
       --print-installation-architecture
   * Stephen R. Marenka
     - Changed m68k boot for etch to handle etch changes in d-i.
-	
+
+ -- Steve McIntyre <93sam@debian.org>  Tue, 23 Aug 2005 00:02:40 +0100
+
 debian-cd (2.2.22) unstable; urgency=critical
 
   * Steve McIntyre
