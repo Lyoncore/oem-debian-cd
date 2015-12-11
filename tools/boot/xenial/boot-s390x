@@ -12,17 +12,30 @@
 # Released as part of the debian_cd package, not much use stand alone.
 #
 # Install stuff for booting an s390 system from VM-reader, 
-# FTP-server, CD-ROM  or emulated tape.
+# FTP-server, or CD-ROM.
 #
 # $1 is the CD number
 # $2 is the temporary CD build dir
 
-. $BASEDIR/tools/boot/$CODENAME/common.sh
+. $BASEDIR/tools/boot/$DI_CODENAME/common.sh
 
 set -e
 
 N=$1
 CDDIR=$2
+INSTALLDIR=$CDDIR/install
+if [ ! "$DI_DIST" ]; then
+   export DI_DIST="$DI_CODENAME"
+fi
+if [ -z "$DI_PATH" ]; then
+   DI_PATH="$($BASEDIR/tools/find-newest-installer)"
+fi
+if [ ! "$DI_DIR" ];then
+   DI_DIR="$DI_PATH/current/images"
+fi
+
+default_preseed
+default_language
 
 cd $CDDIR/..
 
@@ -31,15 +44,7 @@ if [ $N != "1" ] && [ $N != "1_NONUS" ] ; then
     exit 0
 fi
 
-if [ "$DI_WWW_HOME" = "default" ];then
-    # Tempting as it might be to merge these two definitions using $ARCH,
-    # do *not* do that - these defs are parsed out by other scripts that
-    # won't cope with that
-    if [ "$ARCH" = s390x ]; then
-        DI_WWW_HOME="http://d-i.debian.org/daily-images/s390x/daily"
-    fi
-    try_di_image_cache
-fi
+install_languages $CDDIR
 
 imagedir="boot$N/boot"
 mkdir -p $imagedir
@@ -47,12 +52,10 @@ mkdir -p $imagedir
 # Install the two kernel images, the ramdisk and the parameter file
 # The following files need to be included:
 # - generic/parmfile.debian    : parameter file
-# - generic/initrd.debian      : initrd; to be used for both VM-reader and tape
+# - generic/initrd.debian      : initrd; to be used for both VM-reader
 # - generic/kernel.debian      : kernel for WM-reader
-# - tape/kernel.debian         : kernel for tape
-# - tape/kernel.debian-nolabel : kernel for tape (nolabel)
 
-images_S390="generic/parmfile.debian generic/initrd.debian generic/kernel.debian"
+images_S390="MANIFEST.udebs generic/parmfile.debian generic/initrd.debian generic/kernel.debian"
 
 for image in $images_S390; do
 	case $image in
@@ -62,20 +65,15 @@ for image in $images_S390; do
 			imagedest=root.bin ;;
 		generic/kernel.debian)
 			imagedest=linux_vm ;;
+		MANIFEST.udebs)
+			imagedest=$image ;;
 	esac
 	imagedest="$imagedir/$imagedest"
 
-	if [ -n "$LOCAL"  -a -f "${LOCALDEBS:-$MIRROR}/dists/$DI_DIST/local/installer-$ARCH/current/images/$image" ]; then
-		cp "${LOCALDEBS:-$MIRROR}/dists/$DI_DIST/local/installer-$ARCH/current/images/$image" "$imagedest"
-	elif [ ! "$DI_WWW_HOME" ];then
-		if [ ! "$DI_DIR" ];then
-			DI_DIR="$MIRROR/dists/$DI_DIST/main/installer-$ARCH/current/images"
-		fi
-		cp "$DI_DIR/$image" "$imagedest"
-	else
-		wget "$DI_WWW_HOME/$image" -O "$imagedest"
-	fi
+	cp "$DI_DIR/$image" "$imagedest"
 done
+
+list_kernel_abis $images_S390 | check_kernel_sync
 
 # Copy the different boot files
 # - d390.ins    : for booting from CD-ROM or FTP-Server
@@ -88,7 +86,7 @@ perl -e "print pack('N', 0x1000000)" >"$imagedir/root.off"
 perl -e "print pack('N', -s '$imagedir/root.bin')" >"$imagedir/root.siz"
 
 # Copy the README file
-cp $BASEDIR/data/$CODENAME/$ARCH/README.boot "boot$N/"
+cp $BASEDIR/data/$DI_CODENAME/$ARCH/README.boot "boot$N/"
 
 # Include the boot$N/-tree into the iso-image
 add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-J"
