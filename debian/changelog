@@ -1,4 +1,4 @@
-debian-cd (2.2.23) unstable; UNRELEASED
+debian-cd (2.2.23) UNRELEASED; urgency=medium
 
   * Steve McIntyre
     - Added sed hack to make sarge appear as "stable" in the Release
