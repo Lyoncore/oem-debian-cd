@@ -1,0 +1,93 @@
+#!/bin/bash
+#
+# boot-s390-common
+#
+# Common code for s390 and s390x
+#
+# (C) 2001 Jochen Röhrig <jr@debian.org>
+#     2005 Frans Pop <fjp@debian.org>
+#
+# Released under the GNU general Public License.
+# See the copyright file for license details.
+# Released as part of the debian_cd package, not much use stand alone.
+#
+# Install stuff for booting an s390 system from VM-reader, 
+# FTP-server, or CD-ROM.
+#
+# $1 is the CD number
+# $2 is the temporary CD build dir
+
+. $BASEDIR/tools/boot/$DI_CODENAME/common.sh
+
+set -e
+
+N=$1
+CDDIR=$2
+INSTALLDIR=$CDDIR/install
+if [ ! "$DI_DIST" ]; then
+   export DI_DIST="$DI_CODENAME"
+fi
+if [ -z "$DI_PATH" ]; then
+   DI_PATH="$($BASEDIR/tools/find-newest-installer)"
+fi
+if [ ! "$DI_DIR" ];then
+   DI_DIR="$DI_PATH/current/images"
+fi
+
+default_preseed
+default_language
+
+cd $CDDIR/..
+
+if [ $N != "1" ] && [ $N != "1_NONUS" ] ; then
+    add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-J -joliet-long"
+    exit 0
+fi
+
+install_languages $CDDIR
+
+imagedir="boot$N/boot"
+mkdir -p $imagedir
+
+# Install the two kernel images, the ramdisk and the parameter file
+# The following files need to be included:
+# - generic/parmfile.debian    : parameter file
+# - generic/initrd.debian      : initrd; to be used for both VM-reader
+# - generic/kernel.debian      : kernel for WM-reader
+
+images_S390="MANIFEST.udebs generic/parmfile.debian generic/initrd.debian generic/kernel.debian"
+
+for image in $images_S390; do
+	case $image in
+		generic/parmfile.debian)
+			imagedest=parmfile ;;
+		generic/initrd.debian)
+			imagedest=root.bin ;;
+		generic/kernel.debian)
+			imagedest=linux_vm ;;
+		MANIFEST.udebs)
+			imagedest=$image ;;
+	esac
+	imagedest="$imagedir/$imagedest"
+
+	cp "$DI_DIR/$image" "$imagedest"
+done
+
+list_kernel_abis $images_S390 | check_kernel_sync
+
+# Copy the different boot files
+# - d390.ins    : for booting from CD-ROM or FTP-Server
+# - d390oco.ins : same, using object-code-only-modules-ramdisk (example)
+cp $BASEDIR/data/$CODENAME/$ARCH/d390* "$imagedir/"
+sed -e 's,^[^*],boot/&,g' < $BASEDIR/data/$CODENAME/$ARCH/d390.ins > "boot$N/d390.ins"
+
+# Create the files specifying offset and size of the initrd
+perl -e "print pack('N', 0x1000000)" >"$imagedir/root.off"
+perl -e "print pack('N', -s '$imagedir/root.bin')" >"$imagedir/root.siz"
+
+# Copy the README file
+cp $BASEDIR/data/$DI_CODENAME/$ARCH/README.boot "boot$N/"
+
+# Include the boot$N/-tree into the iso-image
+add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-J"
+add_mkisofs_opt $CDDIR/../$N.mkisofs_dirs "boot$N"
