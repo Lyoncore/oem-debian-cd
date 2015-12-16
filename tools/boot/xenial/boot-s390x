@@ -20,6 +20,7 @@
 . $BASEDIR/tools/boot/$DI_CODENAME/common.sh
 
 set -e
+set -x
 
 N=$1
 CDDIR=$2
@@ -89,4 +90,4 @@ cp $BASEDIR/data/$DI_CODENAME/$ARCH/README.boot "boot$N/"
 
 # Include the boot$N/-tree into the iso-image
 add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-J"
-add_mkisofs_opt $CDDIR/../$N.mkisofs_dirs "boot$N"
+add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "boot$N"
