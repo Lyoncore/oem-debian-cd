@@ -6,6 +6,7 @@
 #
 # (C) 2001 Jochen Röhrig <jr@debian.org>
 #     2005 Frans Pop <fjp@debian.org>
+#     2015 Dimitri John Ledkov <xnox@ubuntu.com> - changes for ubuntu
 #
 # Released under the GNU general Public License.
 # See the copyright file for license details.
@@ -37,37 +38,20 @@ default_language
 
 cd $CDDIR/..
 
-if [ $N != "1" ] && [ $N != "1_NONUS" ] ; then
-    add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-J -joliet-long"
-    exit 0
-fi
-
 install_languages $CDDIR
 
 imagedir="boot$N/boot"
 mkdir -p $imagedir
-
-# Install the two kernel images, the ramdisk and the parameter file
-# The following files need to be included:
-# - generic/parmfile.debian    : parameter file
-# - generic/initrd.debian      : initrd; to be used for both VM-reader
-# - generic/kernel.debian      : kernel for WM-reader
-
 DI_DIR="$DI_PATH/current/images"
-mkdir -p $CDDIR/boot
-cp -lf "$DI_DIR/generic/parmfile.debian" "$CDDIR/boot/parmfile"
-cp -lf "$DI_DIR/generic/initrd.debian" "$CDDIR/boot/root.bin"
-cp -lf "$DI_DIR/generic/kernel.debian" "$CDDIR/boot/linux_vm"
 
-mkdir -p $CDDIR/install
-cp -lf "$DI_DIR/generic/debian.exec" $CDDIR/install/
-cp -lf "$DI_DIR/generic/parmfile.debian" $CDDIR/install/
-cp -lf "$DI_DIR/generic/initrd.debian" $CDDIR/install/
-cp -lf "$DI_DIR/generic/kernel.debian" $CDDIR/install/
+cp -lf "$DI_DIR/generic/debian.exec" $imagedir
+cp -lf "$DI_DIR/generic/parmfile.debian" $imagedir
+cp -lf "$DI_DIR/generic/initrd.debian" $imagedir
+cp -lf "$DI_DIR/generic/kernel.debian" $imagedir
 
 # Create the files specifying offset and size of the initrd
-perl -e "print pack('N', 0x1000000)" >"$CDDIR/boot/root.off"
-perl -e "print pack('N', -s '$CDDIR/boot/root.bin')" >"$CDDIR/boot/root.siz"
+perl -e "print pack('N', 0x1000000)" >"$imagedir/root.off"
+perl -e "print pack('N', -s '$imagedir/root.bin')" >"$imagedir/root.siz"
 
 cp "$DI_DIR/MANIFEST.udebs" .
 list_kernel_abis $images_S390 | check_kernel_sync
