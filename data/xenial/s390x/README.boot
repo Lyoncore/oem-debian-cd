@@ -12,5 +12,5 @@ installation over SSH. The rest of the installation is done over the
 network: all installer components and Debian packages are retrieved
 from a mirror.
 
-Exporing a full .iso contents (including hidden .disk directories)
-allows one to use the .iso image as a valid mirror for installation.
+Exporting full .iso contents (including the hidden .disk directory)
+allows one to use the result as a valid mirror for installation.
