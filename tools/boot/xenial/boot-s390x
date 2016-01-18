@@ -44,25 +44,22 @@ imagedir="boot$N/boot"
 mkdir -p $imagedir
 DI_DIR="$DI_PATH/current/images"
 
-cp -lf "$DI_DIR/generic/debian.exec" $imagedir
-cp -lf "$DI_DIR/generic/parmfile.debian" $imagedir
-cp -lf "$DI_DIR/generic/initrd.debian" $imagedir
-cp -lf "$DI_DIR/generic/kernel.debian" $imagedir
+cp -lf "$DI_DIR/generic/ubuntu.exec" $imagedir
+cp -lf "$DI_DIR/generic/parmfile.ubuntu" $imagedir
+cp -lf "$DI_DIR/generic/initrd.ubuntu" $imagedir
+cp -lf "$DI_DIR/generic/kernel.ubuntu" $imagedir
 
 # Create the files specifying offset and size of the initrd
-perl -e "print pack('N', 0x1000000)" >"$imagedir/root.off"
-perl -e "print pack('N', -s '$imagedir/root.bin')" >"$imagedir/root.siz"
+perl -e "print pack('N', 0x1000000)" >"$imagedir/initrd.off"
+perl -e "print pack('N', -s '$imagedir/initrd.ubuntu')" >"$imagedir/initrd.siz"
 
 cp "$DI_DIR/MANIFEST.udebs" .
 list_kernel_abis $images_S390 | check_kernel_sync
 
 # Copy the different boot files
-# - d390.ins    : for booting from CD-ROM or FTP-Server
-cp $BASEDIR/data/$CODENAME/$ARCH/d390* "$imagedir/"
-sed -e 's,^[^*],boot/&,g' < $BASEDIR/data/$CODENAME/$ARCH/d390.ins > "boot$N/d390.ins"
-
-# Copy the README file
-cp $BASEDIR/data/$DI_CODENAME/$ARCH/README.boot "boot$N/"
+# - ubuntu.ins    : for booting from CD-ROM or FTP-Server
+# - README
+cp $BASEDIR/data/$CODENAME/$ARCH/* $imagedir
 
 # Include the boot$N/-tree into the iso-image
 add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-J"
