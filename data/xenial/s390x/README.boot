@@ -12,10 +12,5 @@ installation over SSH. The rest of the installation is done over the
 network: all installer components and Debian packages are retrieved
 from a mirror.
 
-
-Tip for users of the Hercules emulator
---------------------------------------
-If you want to ipl the installer off this CD, mount it on the host
-system (e.g. on /media/cdrom) and enter the following in the Hercules
-management console:
-   ipl /media/cdrom/boot/d390.ins
+Exporting full .iso contents (including the hidden .disk directory)
+allows one to use the result as a valid mirror for installation.
