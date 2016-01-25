@@ -77,7 +77,7 @@ printf("%s: offset 0x%x len 0x%x (%d blocks)\n",
 # limit (from include/asm-s390/setup.h)
 
 # my $initrd_offset = (($image_size >> 12) + 1) << 12;
-my $initrd_offset = 0x800000;
+my $initrd_offset = 0x1000000;
 my $boot_size = ((($initrd_offset + $initrd_size) >> 12) + 1 ) << 12;
 printf("%s: offset 0x%x len 0x%x (%d blocks)\n", 
        $initrd, $initrd_offset, $initrd_size, ($initrd_size >>12) + 1);
