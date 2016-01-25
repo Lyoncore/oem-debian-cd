@@ -49,6 +49,8 @@ cp -lf "$DI_DIR/generic/parmfile.ubuntu" $imagedir
 cp -lf "$DI_DIR/generic/initrd.ubuntu" $imagedir
 cp -lf "$DI_DIR/generic/kernel.ubuntu" $imagedir
 
+$BASEDIR/tools/gen-s390-cd-kernel.pl --initrd=$imagedir/initrd.ubuntu --kernel=$imagedir/kernel.ubuntu --outfile=$imagedir/ubuntu.ikr
+
 # Create the files specifying offset and size of the initrd
 perl -e "print pack('N', 0x1000000)" >"$imagedir/initrd.off"
 perl -e "print pack('N', -s '$imagedir/initrd.ubuntu')" >"$imagedir/initrd.siz"
@@ -60,6 +62,10 @@ list_kernel_abis $images_S390 | check_kernel_sync
 # - ubuntu.ins    : for booting from CD-ROM or FTP-Server
 # - README
 cp $BASEDIR/data/$CODENAME/$ARCH/* $imagedir
+
+add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-no-emul-boot"
+add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-b"
+add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "boot/ubuntu.ikr"
 
 # Include the boot$N/-tree into the iso-image
 add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-J"
