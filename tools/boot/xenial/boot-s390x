@@ -6,7 +6,7 @@
 #
 # (C) 2001 Jochen Röhrig <jr@debian.org>
 #     2005 Frans Pop <fjp@debian.org>
-#     2015 Dimitri John Ledkov <xnox@ubuntu.com> - changes for ubuntu
+#     2015-2016 Dimitri John Ledkov <xnox@ubuntu.com> - changes for ubuntu
 #
 # Released under the GNU general Public License.
 # See the copyright file for license details.
@@ -63,10 +63,14 @@ list_kernel_abis $images_S390 | check_kernel_sync
 # - README
 cp $BASEDIR/data/$CODENAME/$ARCH/* $imagedir
 
-add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-no-emul-boot"
-add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-b"
-add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "boot/ubuntu.ikr"
+# secondary top-level ubuntu.ins file was requested in
+# https://bugs.launchpad.net/ubuntu-cdimage/+bug/1536981/comments/6
+sed -e 's,^[^*],boot/&,g' < $imagedir/ubuntu.ins > $imagedir/../ubuntu.ins
+
+# add_mkisofs_opt is buggy, it thinks "-b" was already "specified" in
+# "-no-emul-boot"
+#
+add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-no-emul-boot -b boot/ubuntu.ikr"
 
 # Include the boot$N/-tree into the iso-image
-add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-J"
-add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "boot$N"
+add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-J boot$N"
