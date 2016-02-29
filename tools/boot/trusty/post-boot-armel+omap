@@ -139,7 +139,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     uboot_desc="Ubuntu LiveCD"
     uboot_input_kernel="$CDDIR/casper/filesystem.kernel-$SUBARCH"
     uboot_input_initrd="$CDDIR/casper/filesystem.initrd-$SUBARCH"
-    uboot_extra_cmdline=" fixrtc quiet splash -- boot=casper only-ubiquity"
+    uboot_extra_cmdline=" fixrtc quiet splash --- boot=casper only-ubiquity"
 fi
 
 if [ "$CDIMAGE_PREINSTALLED" = 1 ]; then
