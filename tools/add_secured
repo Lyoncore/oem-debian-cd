@@ -15,7 +15,7 @@ sign_release () {
 	fi
 	gpg $GPGKEYRINGOPTS --default-key "$SIGNING_KEYID" \
 	    --no-options --batch --no-tty --armour \
-	    --detach-sign < "$1" > "$1.gpg"
+	    --digest-algo SHA512 --detach-sign < "$1" > "$1.gpg"
     fi
 }
 
