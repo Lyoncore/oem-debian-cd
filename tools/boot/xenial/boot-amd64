@@ -528,14 +528,29 @@ EOF
         # make it particularly prominent.
         cat >> boot$N/isolinux/txt.cfg <<EOF
 label cloud
-  menu label ^Multiple server install with MAAS
+  menu label ^Install MAAS Region Controller
   kernel /install/vmlinuz
-  append $KERNEL_PARAMS $FRONTEND_BACKGROUND modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet ---
+  append $KERNEL_PARAMS $FRONTEND_BACKGROUND modules=maas-region-udeb vga=788 initrd=/install/initrd.gz quiet ---
 EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
-menuentry "Multiple server install with MAAS" {
+menuentry "Install MAAS Region Controller" {
 	set gfxpayload=keep
-	linux	/install/vmlinuz $KERNEL_PARAMS modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet ---
+	linux	/install/vmlinuz $KERNEL_PARAMS modules=maas-region-udeb vga=788 initrd=/install/initrd.gz quiet ---
+	initrd	/install/initrd.gz
+}
+EOF
+        # This really ought to be in gfxboot.cfg instead, but we want to
+        # make it particularly prominent.
+        cat >> boot$N/isolinux/txt.cfg <<EOF
+label cloud
+  menu label ^Install MAAS Rack Controller
+  kernel /install/vmlinuz
+  append $KERNEL_PARAMS $FRONTEND_BACKGROUND modules=maas-rack-udeb vga=788 initrd=/install/initrd.gz quiet ---
+EOF
+	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Install MAAS Rack Controller" {
+	set gfxpayload=keep
+	linux	/install/vmlinuz $KERNEL_PARAMS modules=maas-rack-udeb vga=788 initrd=/install/initrd.gz quiet ---
 	initrd	/install/initrd.gz
 }
 EOF
