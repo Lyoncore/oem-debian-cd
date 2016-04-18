@@ -1113,6 +1113,7 @@ ifeq ($(LIVE_FILESYSTEM),1)
 	fi
 ifeq ($(CDIMAGE_SQUASHFS_BASE),1)
 	-cp -a $(LIVEIMAGES)/$(FULLARCH).squashfs $(OUT)/$(call CDBASE,$$n).squashfs
+	-cp -a $(LIVEIMAGES)/$(FULLARCH).squashfs.gpg $(OUT)/$(call CDBASE,$$n).squashfs.gpg
 endif
 endif
 
