@@ -12,6 +12,12 @@ if [ -e "$LIVEIMAGES/$FULLARCH.cloop" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.cloop" "$BDIR/CD1/$DIR/filesystem.cloop"
 elif [ -e "$LIVEIMAGES/$FULLARCH.squashfs" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.squashfs" "$BDIR/CD1/$DIR/filesystem.squashfs"
+	if [ -e "$LIVEIMAGES/$FULLARCH.size" ]; then
+		ln "$LIVEIMAGES/$FULLARCH.size" "$BDIR/CD1/$DIR/filesystem.size"
+	fi
+	if [ -e "$LIVEIMAGES/$FULLARCH.squashfs.gpg" ]; then
+		ln "$LIVEIMAGES/$FULLARCH.squashfs.gpg" "$BDIR/CD1/$DIR/filesystem.squashfs.gpg"
+	fi
 else
 	echo "No filesystem for $FULLARCH!" >&2
 fi
@@ -25,12 +31,12 @@ for item in kernel initrd; do
 		fi
 	done
 done
-
-for item in size gpg manifest manifest-remove manifest-desktop; do
-	if [ -e "$LIVEIMAGES/$FULLARCH.$suffix" ]; then
-		ln "$LIVEIMAGES/$FULLARCH.$suffix" "$BDIR/CD1/$DIR/filesystem.$suffix" || true
-	fi
-done
+ln "$LIVEIMAGES/$FULLARCH.manifest" "$BDIR/CD1/$DIR/filesystem.manifest" || true
+if [ -e "$LIVEIMAGES/$FULLARCH.manifest-remove" ]; then
+	ln "$LIVEIMAGES/$FULLARCH.manifest-remove" "$BDIR/CD1/$DIR/filesystem.manifest-remove" || true
+elif [ -e "$LIVEIMAGES/$FULLARCH.manifest-desktop" ]; then
+	ln "$LIVEIMAGES/$FULLARCH.manifest-desktop" "$BDIR/CD1/$DIR/filesystem.manifest-desktop" || true
+fi
 
 if [ "$PROJECT" = edubuntu ] && [ "$CDIMAGE_DVD" = 1 ]; then
 	case $ARCH in
