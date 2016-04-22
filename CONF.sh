@@ -249,6 +249,13 @@ case $DIST in
     export DEBVERSION="16.04 LTS"
     export OFFICIAL="Release"
     ;;
+  yakkety)
+    export PREV_CODENAME=xenial
+    export CODENAME=yakkety
+    export CAPCODENAME='Yakkety Yak'
+    export DEBVERSION="16.10"
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
