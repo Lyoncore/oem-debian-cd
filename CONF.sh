@@ -217,8 +217,8 @@ case $DIST in
     export PREV_CODENAME=precise
     export CODENAME=trusty
     export CAPCODENAME='Trusty Tahr'
-    export DEBVERSION="14.04.4 LTS"
-    export BACKPORT_KERNEL=wily
+    export DEBVERSION="14.04.5 LTS"
+    export BACKPORT_KERNEL=xenial
     export OFFICIAL="Beta"
     ;;
   utopic)
