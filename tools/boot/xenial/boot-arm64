@@ -94,7 +94,7 @@ if [ "$NN" = "1" ]; then
 	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
 	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
     fi
-    echo -n "-cache-inodes -J -l -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " >> $N.mkisofs_opts
+    echo -n "-cache-inodes -J -l -c boot/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " >> $N.mkisofs_opts
     case "$MKISOFS" in
 	*xorriso*)
 	    echo -n "-eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot " >> $N.mkisofs_opts
