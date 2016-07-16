@@ -246,7 +246,7 @@ case $DIST in
     export PREV_CODENAME=wily
     export CODENAME=xenial
     export CAPCODENAME='Xenial Xerus'
-    export DEBVERSION="16.04 LTS"
+    export DEBVERSION="16.04.1 LTS"
     export OFFICIAL="Release"
     ;;
   yakkety)
