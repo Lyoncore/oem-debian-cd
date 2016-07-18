@@ -94,15 +94,8 @@ if [ "$NN" = "1" ]; then
 	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
 	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
     fi
-    echo -n "-cache-inodes -J -l -c boot/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " >> $N.mkisofs_opts
-    case "$MKISOFS" in
-	*xorriso*)
-	    echo -n "-eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot " >> $N.mkisofs_opts
-	    ;;
-	*)
-	    echo -n "-eltorito-alt-boot -efi-boot boot/grub/efi.img -no-emul-boot " >> $N.mkisofs_opts
-	    ;;
-    esac
+    echo -n "-J -l -c boot/boot.cat -boot-load-size 4 -boot-info-table " >> $N.mkisofs_opts
+    echo -n "-eltorito-alt-boot --efi-boot boot/grub/efi.img -no-emul-boot " >> $N.mkisofs_opts
 fi
 
 #install_languages $CDDIR
@@ -129,8 +122,9 @@ fi
 
 mkdir -p $CDDIR/boot
 cat cdrom/debian-cd_info.tar.gz | (cd $CDDIR/boot/; tar xz)
-mkdir -p $CDDIR/EFI/BOOT
-mcopy -i $CDDIR/boot/grub/efi.img ::EFI/BOOT/bootaa64.efi $CDDIR/EFI/BOOT/bootaa64.efi
+# If we want a copy of grub on the ISO as well, seems redundant:
+#mkdir -p $CDDIR/EFI/BOOT
+#mcopy -i $CDDIR/boot/grub/efi.img ::EFI/BOOT/bootaa64.efi $CDDIR/EFI/BOOT/bootaa64.efi
 sed -i '/^menuentry/Q' $CDDIR/boot/grub/grub.cfg
 
 if [ "$CDIMAGE_LIVE" = 1 ]; then
