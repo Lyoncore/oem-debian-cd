@@ -128,7 +128,7 @@ do
         casper_initrd_var=CASPER_POWERPC_INITRD
         ;;
       powerpc64)
-        casper_subarch=powerpc64-smp
+        casper_subarch=generic
         casper_initrd_var=CASPER_POWERPC64_INITRD
         ;;
     esac
