@@ -254,7 +254,7 @@ case $DIST in
     export CODENAME=yakkety
     export CAPCODENAME='Yakkety Yak'
     export DEBVERSION="16.10"
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Release"
     ;;
 esac
 
