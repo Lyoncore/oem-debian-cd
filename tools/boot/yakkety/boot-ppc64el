@@ -78,4 +78,47 @@ if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
 fi
 tar -C "$CDDIR" -xf "$DI_DIR/cdrom/debian-cd_info.tar.gz"
 
+# setup grub menu
+sed -i '/^menuentry/Q' $CDDIR/boot/grub/grub.cfg
+
+if [ "$CDIMAGE_INSTALL" = 1 ]; then
+cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Install $HUMANPROJECT" {
+	set gfxpayload=keep
+	linux	/install/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED quiet ---
+	initrd	/install/initrd.gz
+}
+EOF
+fi
+
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Install MAAS Region Controller" {
+	set gfxpayload=keep
+	linux	/install/vmlinuz $KERNEL_PARAMS modules=maas-region-udeb initrd=/install/initrd.gz quiet ---
+	initrd	/install/initrd.gz
+}
+
+menuentry "Install MAAS Rack Controller" {
+	set gfxpayload=keep
+	linux	/install/vmlinuz $KERNEL_PARAMS modules=maas-rack-udeb initrd=/install/initrd.gz quiet ---
+	initrd	/install/initrd.gz
+}
+EOF
+    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Check disc for defects" {
+	set gfxpayload=keep
+	linux	/install/vmlinuz $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu quiet ---
+	initrd	/install/initrd.gz
+}
+EOF
+    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Rescue a broken system" {
+	set gfxpayload=keep
+	linux	/install/vmlinuz $KERNEL_PARAMS rescue/enable=true ---
+	initrd	/install/initrd.gz
+}
+EOF
+fi
+
 exit 0
