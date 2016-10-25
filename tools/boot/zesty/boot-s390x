@@ -1,0 +1,76 @@
+#!/bin/bash
+#
+# boot-s390-common
+#
+# Common code for s390 and s390x
+#
+# (C) 2001 Jochen Röhrig <jr@debian.org>
+#     2005 Frans Pop <fjp@debian.org>
+#     2015-2016 Dimitri John Ledkov <xnox@ubuntu.com> - changes for ubuntu
+#
+# Released under the GNU general Public License.
+# See the copyright file for license details.
+# Released as part of the debian_cd package, not much use stand alone.
+#
+# Install stuff for booting an s390 system from VM-reader, 
+# FTP-server, or CD-ROM.
+#
+# $1 is the CD number
+# $2 is the temporary CD build dir
+
+. $BASEDIR/tools/boot/$DI_CODENAME/common.sh
+
+set -e
+set -x
+
+N=$1
+CDDIR=$2
+INSTALLDIR=$CDDIR/install
+if [ ! "$DI_DIST" ]; then
+   export DI_DIST="$DI_CODENAME"
+fi
+if [ -z "$DI_PATH" ]; then
+   DI_PATH="$($BASEDIR/tools/find-newest-installer)"
+fi
+
+default_preseed
+default_language
+
+cd $CDDIR/..
+
+install_languages $CDDIR
+
+imagedir="boot$N/boot"
+mkdir -p $imagedir
+DI_DIR="$DI_PATH/current/images"
+
+cp -lf "$DI_DIR/generic/ubuntu.exec" $imagedir
+cp -lf "$DI_DIR/generic/parmfile.ubuntu" $imagedir
+cp -lf "$DI_DIR/generic/initrd.ubuntu" $imagedir
+cp -lf "$DI_DIR/generic/kernel.ubuntu" $imagedir
+
+$BASEDIR/tools/gen-s390-cd-kernel.pl --initrd=$imagedir/initrd.ubuntu --kernel=$imagedir/kernel.ubuntu --outfile=$imagedir/ubuntu.ikr
+
+# Create the files specifying offset and size of the initrd
+perl -e "print pack('N', 0x1000000)" >"$imagedir/initrd.off"
+perl -e "print pack('N', -s '$imagedir/initrd.ubuntu')" >"$imagedir/initrd.siz"
+
+cp "$DI_DIR/MANIFEST.udebs" .
+list_kernel_abis $images_S390 | check_kernel_sync
+
+# Copy the different boot files
+# - ubuntu.ins    : for booting from CD-ROM or FTP-Server
+# - README
+cp $BASEDIR/data/$CODENAME/$ARCH/* $imagedir
+
+# secondary top-level ubuntu.ins file was requested in
+# https://bugs.launchpad.net/ubuntu-cdimage/+bug/1536981/comments/6
+sed -e 's,^[^*],boot/&,g' < $imagedir/ubuntu.ins > $imagedir/../ubuntu.ins
+
+# add_mkisofs_opt is buggy, it thinks "-b" was already "specified" in
+# "-no-emul-boot"
+#
+add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-no-emul-boot -b boot/ubuntu.ikr"
+
+# Include the boot$N/-tree into the iso-image
+add_mkisofs_opt $CDDIR/../$N.mkisofs_opts "-J boot$N"
