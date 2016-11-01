@@ -358,12 +358,12 @@ case $DIST in
   hoary|breezy|dapper|edgy|feisty|gutsy|hardy|intrepid|jaunty|karmic|lucid|maverick|natty|oneiric|precise|quantal|raring|saucy|trusty|utopic|vivid|wily)
     export SECRET_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/secring.gpg
     export PUBLIC_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/pubring.gpg
-    export SIGNING_KEYID=FBB75451
+    export SIGNING_KEYID=C5986B4F1257FFA86632CBA746181433FBB75451
     ;;
   *)
     export SECRET_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/secring.gpg
     export PUBLIC_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/pubring.gpg
-    export SIGNING_KEYID=EFE21092
+    export SIGNING_KEYID=843938DF228D22F7B3742BC0D94AA3F0EFE21092
     ;;
 esac
 
