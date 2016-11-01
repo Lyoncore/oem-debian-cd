@@ -355,10 +355,15 @@ fi
 
 case $DIST in
   warty) ;;
-  *)
+  hoary|breezy|dapper|edgy|feisty|gutsy|hardy|intrepid|jaunty|karmic|lucid|maverick|natty|oneiric|precise|quantal|raring|saucy|trusty|utopic|vivid|wily)
     export SECRET_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/secring.gpg
     export PUBLIC_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/pubring.gpg
     export SIGNING_KEYID=FBB75451
+    ;;
+  *)
+    export SECRET_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/secring.gpg
+    export PUBLIC_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/pubring.gpg
+    export SIGNING_KEYID=EFE21092
     ;;
 esac
 
