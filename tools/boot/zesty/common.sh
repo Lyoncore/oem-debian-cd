@@ -60,6 +60,9 @@ default_preseed() {
 	ubuntu-mate)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-mate.seed'
 	    ;;
+	ubuntu-budgie)
+	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-budgie.seed'
+	    ;;
 	*)
 	    DEFAULT_PRESEED=
 	    ;;
