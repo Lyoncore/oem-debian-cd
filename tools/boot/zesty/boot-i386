@@ -174,7 +174,7 @@ if [ "$NN" = "1" ]; then
 HIDDEN_TIMEOUT=
 if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
     case $PROJECT in
-	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|kubuntu-plasma5|ubuntu-gnome|ubuntu-desktop-next|ubuntu-mate)
+	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|kubuntu-plasma5|ubuntu-gnome|ubuntu-desktop-next|ubuntu-mate|ubuntu-budgie)
 	    HIDDEN_TIMEOUT=2
 	    ;;
 	mythbuntu)
@@ -316,6 +316,13 @@ fi
 if [ "$PROJECT" = ubuntu-gnome ]; then
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 screen-colour=0x2D3335
+EOF
+fi
+if [ "$PROJECT" = ubuntu-budgie ]; then
+    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
+foreground=0xffffff
+background=0xd3dae3
+screen-colour=0x383c4a
 EOF
 fi
 if [ "$PROJECT" = ubuntu-mate ]; then
