@@ -15,6 +15,11 @@ cd $1
 if [ ! -e ubuntu ] ; then
     ln -sf . ubuntu
 fi
+if [ "$ARCH" != "amd64" ] && [ "$ARCH" != "i386" ]; then
+  if [ ! -e ubuntu-ports ]; then
+    ln -sf . ubuntu-ports
+  fi
+fi
 
 if [ ! -d dists/$CODENAME ] ; then
     mkdir -p dists/$CODENAME
