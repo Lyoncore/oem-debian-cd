@@ -45,7 +45,8 @@ mkdir -p $imagedir
 DI_DIR="$DI_PATH/current/images"
 
 cp -lf "$DI_DIR/generic/ubuntu.exec" $imagedir
-cp -lf "$DI_DIR/generic/ubuntu.ins" $imagedir
+sed -e 's/boot from CD-ROM or FTP-Server/default kernel/' \
+    "$DI_DIR/generic/ubuntu.ins" > $imagedir/ubuntu.ins
 cp -lf "$DI_DIR/generic/parmfile.ubuntu" $imagedir
 cp -lf "$DI_DIR/generic/initrd.ubuntu" $imagedir
 cp -lf "$DI_DIR/generic/kernel.ubuntu" $imagedir
@@ -57,7 +58,8 @@ if [ -d "$DI_DIR/hwe-generic" ]
 then
     mkdir -p $hwedir
     cp -lf "$DI_DIR/hwe-generic/ubuntu.exec" $hwedir
-    cp -lf "$DI_DIR/hwe-generic/ubuntu.ins" $hwedir
+    sed -e 's/boot from CD-ROM or FTP-Server/rolling kernel/' \
+        "$DI_DIR/generic/ubuntu.ins" > $imagedir/ubuntu.ins
     cp -lf "$DI_DIR/hwe-generic/parmfile.ubuntu" $hwedir
     cp -lf "$DI_DIR/hwe-generic/initrd.ubuntu" $hwedir
     cp -lf "$DI_DIR/hwe-generic/kernel.ubuntu" $hwedir
