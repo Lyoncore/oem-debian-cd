@@ -45,15 +45,27 @@ mkdir -p $imagedir
 DI_DIR="$DI_PATH/current/images"
 
 cp -lf "$DI_DIR/generic/ubuntu.exec" $imagedir
+cp -lf "$DI_DIR/generic/ubuntu.ins" $imagedir
 cp -lf "$DI_DIR/generic/parmfile.ubuntu" $imagedir
 cp -lf "$DI_DIR/generic/initrd.ubuntu" $imagedir
 cp -lf "$DI_DIR/generic/kernel.ubuntu" $imagedir
+cp -lf "$DI_DIR/generic/initrd.off" $imagedir
+cp -lf "$DI_DIR/generic/initrd.siz" $imagedir
+
+hwedir="boot$N/boot-hwe"
+if [ -d "$DI_DIR/hwe-generic" ]
+then
+    mkdir -p $hwedir
+    cp -lf "$DI_DIR/hwe-generic/ubuntu.exec" $hwedir
+    cp -lf "$DI_DIR/hwe-generic/ubuntu.ins" $hwedir
+    cp -lf "$DI_DIR/hwe-generic/parmfile.ubuntu" $hwedir
+    cp -lf "$DI_DIR/hwe-generic/initrd.ubuntu" $hwedir
+    cp -lf "$DI_DIR/hwe-generic/kernel.ubuntu" $hwedir
+    cp -lf "$DI_DIR/hwe-generic/initrd.off" $hwedir
+    cp -lf "$DI_DIR/hwe-generic/initrd.siz" $hwedir
+fi
 
 $BASEDIR/tools/gen-s390-cd-kernel.pl --initrd=$imagedir/initrd.ubuntu --kernel=$imagedir/kernel.ubuntu --outfile=$imagedir/ubuntu.ikr
-
-# Create the files specifying offset and size of the initrd
-perl -e "print pack('N', 0x1000000)" >"$imagedir/initrd.off"
-perl -e "print pack('N', -s '$imagedir/initrd.ubuntu')" >"$imagedir/initrd.siz"
 
 cp "$DI_DIR/MANIFEST.udebs" .
 list_kernel_abis $images_S390 | check_kernel_sync
@@ -62,10 +74,18 @@ list_kernel_abis $images_S390 | check_kernel_sync
 # - ubuntu.ins    : for booting from CD-ROM or FTP-Server
 # - README
 cp $BASEDIR/data/$CODENAME/$ARCH/* $imagedir
+if [ -d $hwedir ]
+then
+    cp $BASEDIR/data/$CODENAME/$ARCH/* $hwedir
+fi
 
 # secondary top-level ubuntu.ins file was requested in
 # https://bugs.launchpad.net/ubuntu-cdimage/+bug/1536981/comments/6
 sed -e 's,^[^*],boot/&,g' < $imagedir/ubuntu.ins > $imagedir/../ubuntu.ins
+if [ -d $hwedir ]
+then
+    sed -e 's,^[^*],boot-hwe/&,g' < $hwedir/ubuntu.ins > $hwedir/../ubuntu-hwe.ins    
+fi
 
 # add_mkisofs_opt is buggy, it thinks "-b" was already "specified" in
 # "-no-emul-boot"
