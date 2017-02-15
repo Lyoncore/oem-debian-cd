@@ -65,7 +65,23 @@ fi
 "$BASEDIR/tools/sorting_weights" "$N"
 echo -n " -sort $(pwd)/$N.weights " >> $N.mkisofs_opts
 
-BOOT_IMAGES="cdrom/vmlinux cdrom/initrd.gz cdrom/debian-cd_info.tar.gz"
+PREFIX_PRESEED="$(dirname $DEFAULT_PRESEED)/"
+PREFIX_GA=""
+PREFIX_HWE=""
+KERNEL_PREFIXES="PREFIX_GA"
+if [ "$BACKPORT_KERNEL" ]; then
+    PREFIX_HWE="hwe-"
+    if [ "$PROJECT" = ubuntu-server ]; then
+        KERNEL_PREFIXES="$KERNEL_PREFIXES PREFIX_HWE"
+    fi
+fi
+
+BOOT_IMAGES=""
+TAR_IMAGES=""
+for kp in $KERNEL_PREFIXES; do
+    BOOT_IMAGES="$BOOT_IMAGES ${!kp}cdrom/vmlinux ${!kp}cdrom/initrd.gz ${!kp}cdrom/debian-cd_info.tar.gz"
+    TAR_IMAGES="$TAR_IMAGES ${!kp}netboot/netboot.tar.gz"
+done
 
 (cd $CDDIR/..;
  cp -a "$DI_PATH/current/images/MANIFEST.udebs" .
@@ -73,52 +89,79 @@ BOOT_IMAGES="cdrom/vmlinux cdrom/initrd.gz cdrom/debian-cd_info.tar.gz"
 
 DI_DIR="$DI_PATH/current/images"
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-  cp -lf "$DI_DIR/cdrom/vmlinux" "$CDDIR/install/"
-  cp -lf "$DI_DIR/cdrom/initrd.gz" "$CDDIR/install/"
+for kp in $KERNEL_PREFIXES; do
+  cp -lf "$DI_DIR/${!kp}cdrom/vmlinux" "$CDDIR/install/${!kp}vmlinux"
+  cp -lf "$DI_DIR/${!kp}cdrom/initrd.gz" "$CDDIR/install/${!kp}initrd.gz"
+done
 fi
+
+if [ "$CDIMAGE_INSTALL" = 1 ]; then
+    for tar in $TAR_IMAGES; do
+        dir=$(dirname $tar)
+        mkdir -p $CDDIR/install/$dir
+        tar -C $CDDIR/install/$dir -xzpf "$DI_DIR/$tar"
+    done
+fi
+
 tar -C "$CDDIR" -xf "$DI_DIR/cdrom/debian-cd_info.tar.gz"
 
 # setup grub menu
 sed -i '/^menuentry/Q' $CDDIR/boot/grub/grub.cfg
 
-if [ "$CDIMAGE_INSTALL" = 1 ]; then
-cat >> $CDDIR/boot/grub/grub.cfg <<EOF
-menuentry "Install $HUMANPROJECT" {
-	set gfxpayload=keep
-	linux	/install/vmlinux $KERNEL_PARAMS $DEFAULT_PRESEED quiet ---
-	initrd	/install/initrd.gz
-}
+if [ "$BACKPORT_KERNEL" ]; then
+    cat > $CDDIR/boot/grub/hwe-grub.cfg <<EOF
+submenu 'Boot and Install with the HWE kernel' {
 EOF
 fi
 
-if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+for kp in $KERNEL_PREFIXES; do
+  if [ "$CDIMAGE_INSTALL" = 1 ]; then
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "Install $HUMANPROJECT" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinux $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} quiet ---
+	initrd	/install/${!kp}initrd.gz
+}
+EOF
+  fi
+
+  if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "Install MAAS Region Controller" {
 	set gfxpayload=keep
-	linux	/install/vmlinux $KERNEL_PARAMS modules=maas-region-udeb initrd=/install/initrd.gz quiet ---
-	initrd	/install/initrd.gz
+	linux	/install/${!kp}vmlinux $KERNEL_PARAMS modules=maas-region-udeb initrd=/install/${!kp}initrd.gz quiet ---
+	initrd	/install/${!kp}initrd.gz
 }
 
 menuentry "Install MAAS Rack Controller" {
 	set gfxpayload=keep
-	linux	/install/vmlinux $KERNEL_PARAMS modules=maas-rack-udeb initrd=/install/initrd.gz quiet ---
-	initrd	/install/initrd.gz
+	linux	/install/${!kp}vmlinux $KERNEL_PARAMS modules=maas-rack-udeb initrd=/install/${!kp}initrd.gz quiet ---
+	initrd	/install/${!kp}initrd.gz
 }
 EOF
-    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "Check disc for defects" {
 	set gfxpayload=keep
-	linux	/install/vmlinux $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu quiet ---
-	initrd	/install/initrd.gz
+	linux	/install/${!kp}vmlinux $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu quiet ---
+	initrd	/install/${!kp}initrd.gz
 }
 EOF
-    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "Rescue a broken system" {
 	set gfxpayload=keep
-	linux	/install/vmlinux $KERNEL_PARAMS rescue/enable=true ---
-	initrd	/install/initrd.gz
+	linux	/install/${!kp}vmlinux $KERNEL_PARAMS rescue/enable=true ---
+	initrd	/install/${!kp}initrd.gz
 }
 EOF
+  fi
+done # KERNEL_PREFIXES
+
+if [ "$BACKPORT_KERNEL" ] && [ "$PROJECT" = ubuntu-server ]; then
+    cat >> $CDDIR/boot/grub/hwe-grub.cfg <<EOF
+}
+EOF
+    cat $CDDIR/boot/grub/hwe-grub.cfg >> $CDDIR/boot/grub/grub.cfg
 fi
+rm -f $CDDIR/boot/grub/hwe-grub.cfg
 
 exit 0
