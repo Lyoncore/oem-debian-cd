@@ -82,3 +82,22 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
         sed -i '/preseed\/early_command.*confmodule/d' "$file"
     done
 fi
+
+if [ "$BACKPORT_KERNEL" ]; then
+    (cd $DIR/preseed/ &&
+    case $ARCH in
+        amd64|i386|arm64|ppc64el|s390x)
+            for file in *.seed; do
+                [ -f "$file" ] || continue
+                cp "$file" hwe-"$file"
+                if grep -q base-installer/kernel/override-image "$file"; then
+                    sed -i -e "s/string linux-virtual/string linux-virtual-$BACKPORT_KERNEL/" hwe-"$file"
+                elif ! grep -q base-installer/kernel/altmeta "$file"; then
+                    echo "d-i  base-installer/kernel/altmeta   string $BACKPORT_KERNEL" >> hwe-"$file"
+                fi
+                [ "$PROJECT" = "ubuntu-server" ] || mv hwe-"$file" "$file"
+            done
+            ;;
+    esac
+    )
+fi

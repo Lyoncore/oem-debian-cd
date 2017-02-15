@@ -70,9 +70,24 @@ KTYPE[10]=""
 
 THISTYPE=${KTYPE[$NN]}
 
-BOOT_IMAGES="cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
+PREFIX_PRESEED="$(dirname $DEFAULT_PRESEED)/"
+PREFIX_GA=""
+PREFIX_HWE=""
+KERNEL_PREFIXES="PREFIX_GA"
+if [ "$BACKPORT_KERNEL" ]; then
+    PREFIX_HWE="hwe-"
+    if [ "$PROJECT" = ubuntu-server ]; then
+        KERNEL_PREFIXES="$KERNEL_PREFIXES PREFIX_HWE"
+    fi
+fi
+
 DISK_IMAGES=""
-TAR_IMAGES="netboot/netboot.tar.gz"
+BOOT_IMAGES=""
+TAR_IMAGES=""
+for kp in $KERNEL_PREFIXES; do
+    BOOT_IMAGES="$BOOT_IMAGES ${!kp}cdrom/initrd.gz ${!kp}cdrom/vmlinuz ${!kp}cdrom/debian-cd_info.tar.gz"
+    TAR_IMAGES="$TAR_IMAGES ${!kp}netboot/netboot.tar.gz"
+done
 
 case $PROJECT in
     xubuntu|lubuntu)
@@ -134,8 +149,10 @@ if [ "$NN" = "1" ]; then
 
     rm -rf usr
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-	cp -lf cdrom/vmlinuz $CDDIR/install/
-	cp -lf cdrom/initrd.gz $CDDIR/install/
+    for kp in $KERNEL_PREFIXES; do
+      cp -lf "${!kp}cdrom/vmlinuz" "$CDDIR/install/${!kp}vmlinuz"
+      cp -lf "${!kp}cdrom/initrd.gz" "$CDDIR/install/${!kp}initrd.gz"
+    done
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
@@ -269,6 +286,10 @@ rm -f boot$N/isolinux/*.txt.withgtk
 sed -i 's|%install%|install|' boot$N/isolinux/*.cfg
 mkdir -p $CDDIR/boot/grub
 
+if [ "$BACKPORT_KERNEL" ]; then
+    : > boot$N/isolinux/hwe-gfxboot.cfg
+fi
+
 # Set up-to-date build dates. Kludgy because d-i sets its own version as
 # the build date.
 DI_VERSION="$(perl -lne 'if (/built on ([0-9a-z]*)/) { print $1 }' \
@@ -393,12 +414,14 @@ EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
     if [ "$CDIMAGE_LIVE" != 1 ]; then
+    for kp in $KERNEL_PREFIXES; do
 	cat >> boot$N/isolinux/txt.cfg <<EOF
-label install
-  menu label ^Install $HUMANPROJECT
-  kernel /install/vmlinuz
-  append $KERNEL_PARAMS $DEFAULT_PRESEED vga=788 initrd=/install/initrd.gz quiet ---
+label ${!kp}install
+  menu label ^Install $HUMANPROJECT${!kp:+ with the HWE kernel}
+  kernel /install/${!kp}vmlinuz
+  append $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} vga=788 initrd=/install/${!kp}initrd.gz quiet ---
 EOF
+    done
     else
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label install
@@ -428,19 +451,21 @@ applies server=install
 EOF
     fi
 fi
-cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-label oem=OEM install (for manufacturers)
-append oem=oem-config/enable=true
+for kp in $KERNEL_PREFIXES; do
+cat >> boot$N/isolinux/${!kp}gfxboot.cfg <<EOF
+label ${!kp}oem=OEM install (for manufacturers)
+append ${!kp}oem=oem-config/enable=true
 EOF
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-applies oem=live live-install install
+    cat >> boot$N/isolinux/${!kp}gfxboot.cfg <<EOF
+applies ${!kp}oem=live live-install install
 EOF
 else
-    cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-applies oem=install
+    cat >> boot$N/isolinux/${!kp}gfxboot.cfg <<EOF
+applies ${!kp}oem=${!kp}install
 EOF
 fi
+done
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     if [ "$PROJECT" != ubuntu-server ]; then
 	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
@@ -449,14 +474,16 @@ replace cli=file=/cdrom/preseed/cli.seed
 applies cli=install
 EOF
     else
-	cat >> boot$N/isolinux/gfxboot.cfg <<EOF
-label minimal=Install a minimal system
-replace minimal=file=/cdrom/preseed/ubuntu-server-minimal.seed
-applies minimal=install
-label minimalvm=Install a minimal virtual machine
-replace minimalvm=file=/cdrom/preseed/ubuntu-server-minimalvm.seed
-applies minimalvm=install
+    for kp in $KERNEL_PREFIXES; do
+	cat >> boot$N/isolinux/${!kp}gfxboot.cfg <<EOF
+label ${!kp}minimal=Install a minimal system
+replace ${!kp}minimal=file=/cdrom/preseed/${!kp}ubuntu-server-minimal.seed
+applies ${!kp}minimal=${!kp}install
+label ${!kp}minimalvm=Install a minimal virtual machine
+replace ${!kp}minimalvm=file=/cdrom/preseed/${!kp}ubuntu-server-minimalvm.seed
+applies ${!kp}minimalvm=${!kp}install
 EOF
+    done
 	# This really ought to be in gfxboot.cfg instead, but we want to
 	# make it particularly prominent.
 	cat >> boot$N/isolinux/txt.cfg <<EOF
@@ -523,8 +550,12 @@ menuentry "Test memory" {
 	linux16	/install/mt86plus
 }
 EOF
-
 fi
+
+if [ "$BACKPORT_KERNEL" ] && [ "$PROJECT" = ubuntu-server ]; then
+  cat boot$N/isolinux/hwe-gfxboot.cfg >> boot$N/isolinux/gfxboot.cfg
+fi
+rm -f boot$N/isolinux/hwe-gfxboot.cfg
 
 # write final lines to mkisofs_opts
 if [ "$NN" = "1" ]; then

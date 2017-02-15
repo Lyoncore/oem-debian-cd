@@ -57,9 +57,25 @@ KTYPE[10]=""
 
 THISTYPE=${KTYPE[$NN]}
 
-BOOT_IMAGES="cdrom/initrd.gz cdrom/vmlinuz cdrom/debian-cd_info.tar.gz"
+PREFIX_PRESEED="$(dirname $DEFAULT_PRESEED)/"
+PREFIX_GA=""
+PREFIX_HWE=""
+KERNEL_PREFIXES="PREFIX_GA"
+if [ "$BACKPORT_KERNEL" ]; then
+    PREFIX_HWE="hwe-"
+    if [ "$PROJECT" = ubuntu-server ]; then
+        KERNEL_PREFIXES="$KERNEL_PREFIXES PREFIX_HWE"
+    fi
+fi
+
+BOOT_IMAGES=""
+TAR_IMAGES=""
 DISK_IMAGES=""
-TAR_IMAGES="netboot/netboot.tar.gz"
+for kp in $KERNEL_PREFIXES; do
+    BOOT_IMAGES="$BOOT_IMAGES ${!kp}cdrom/vmlinuz ${!kp}cdrom/initrd.gz ${!kp}cdrom/debian-cd_info.tar.gz"
+    TAR_IMAGES="$TAR_IMAGES ${!kp}netboot/netboot.tar.gz"
+done
+
 FLAVOUR=generic
 
 # Download boot images
@@ -79,8 +95,10 @@ if [ "$NN" = "1" ]; then
     list_kernel_abis $BOOT_IMAGES | check_kernel_sync $FLAVOUR
 
     if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-	cp -lf cdrom/vmlinuz $CDDIR/install/
-	cp -lf cdrom/initrd.gz $CDDIR/install/
+    for kp in $KERNEL_PREFIXES; do
+      cp -lf "${!kp}cdrom/vmlinuz" "$CDDIR/install/${!kp}vmlinuz"
+      cp -lf "${!kp}cdrom/initrd.gz" "$CDDIR/install/${!kp}initrd.gz"
+    done
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
 	if [ -e "$CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed" ]; then
@@ -127,6 +145,12 @@ cat cdrom/debian-cd_info.tar.gz | (cd $CDDIR/boot/; tar xz)
 #mcopy -i $CDDIR/boot/grub/efi.img ::EFI/BOOT/bootaa64.efi $CDDIR/EFI/BOOT/bootaa64.efi
 sed -i '/^menuentry/Q' $CDDIR/boot/grub/grub.cfg
 
+if [ "$BACKPORT_KERNEL" ]; then
+    cat > $CDDIR/boot/grub/hwe-grub.cfg <<EOF
+submenu 'Boot and Install with the HWE kernel' {
+EOF
+fi
+
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ]; then
 	livelabel="^Start $HUMANPROJECT"
@@ -166,15 +190,17 @@ EOF
     fi
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
-    if [ "$CDIMAGE_LIVE" != 1 ]; then
-	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+  if [ "$CDIMAGE_LIVE" != 1 ]; then
+    for kp in $KERNEL_PREFIXES; do
+	cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
 	set gfxpayload=keep
-	linux	/install/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED quiet ---
-	initrd	/install/initrd.gz
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} quiet ---
+	initrd	/install/${!kp}initrd.gz
 }
 EOF
-    else
+    done
+  else
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT in text mode" {
 	set gfxpayload=keep
@@ -182,7 +208,7 @@ menuentry "Install $HUMANPROJECT in text mode" {
 	initrd	/install/initrd.gz
 }
 EOF
-    fi
+  fi
 fi
 # The GRUB versions of this only correspond to single isolinux labels,
 # because we don't yet have the necessary technology in our GRUB menu stack
@@ -196,29 +222,34 @@ menuentry "OEM install (for manufacturers)" {
 	initrd	$CASPER_INITRD
 }
 EOF
-    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+else
+  for kp in $KERNEL_PREFIXES; do
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "OEM install (for manufacturers)" {
 	set gfxpayload=keep
-	linux	/install/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED quiet oem-config/enable=true ---
-	initrd	/install/initrd.gz
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} quiet oem-config/enable=true ---
+	initrd	/install/${!kp}initrd.gz
 }
 EOF
+  done
 fi
 if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     if [ "$PROJECT" = ubuntu-server ]; then
-	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+    for kp in $KERNEL_PREFIXES; do
+	cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "Install MAAS Region Controller" {
 	set gfxpayload=keep
-	linux	/install/vmlinuz $KERNEL_PARAMS modules=maas-region-udeb initrd=/install/initrd.gz quiet ---
-	initrd	/install/initrd.gz
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS modules=maas-region-udeb initrd=/install/${!kp}initrd.gz quiet ---
+	initrd	/install/${!kp}initrd.gz
 }
 
 menuentry "Install MAAS Rack Controller" {
 	set gfxpayload=keep
-	linux	/install/vmlinuz $KERNEL_PARAMS modules=maas-rack-udeb initrd=/install/initrd.gz quiet ---
-	initrd	/install/initrd.gz
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS modules=maas-rack-udeb initrd=/install/${!kp}initrd.gz quiet ---
+	initrd	/install/${!kp}initrd.gz
 }
 EOF
+    done
     fi
 fi
 if [ "$CDIMAGE_LIVE" = 1 ]; then
@@ -236,23 +267,30 @@ menuentry "Check disc for defects" {
 }
 EOF
 elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+  for kp in $KERNEL_PREFIXES; do
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "Check disc for defects" {
 	set gfxpayload=keep
-	linux	/install/vmlinuz $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu quiet ---
-	initrd	/install/initrd.gz
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu quiet ---
+	initrd	/install/${!kp}initrd.gz
 }
 EOF
-fi
-if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
-    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "Rescue a broken system" {
 	set gfxpayload=keep
-	linux	/install/vmlinuz $KERNEL_PARAMS rescue/enable=true ---
-	initrd	/install/initrd.gz
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS rescue/enable=true ---
+	initrd	/install/${!kp}initrd.gz
 }
 EOF
+  done
 fi
+if [ "$BACKPORT_KERNEL" ] && [ "$PROJECT" = ubuntu-server ]; then
+    cat >> $CDDIR/boot/grub/hwe-grub.cfg <<EOF
+}
+EOF
+    cat $CDDIR/boot/grub/hwe-grub.cfg >> $CDDIR/boot/grub/grub.cfg
+fi
+rm -f $CDDIR/boot/grub/hwe-grub.cfg
 fi
 
 # th,th, thats all
