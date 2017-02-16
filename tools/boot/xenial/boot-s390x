@@ -59,7 +59,7 @@ then
     mkdir -p $hwedir
     cp -lf "$DI_DIR/hwe-generic/ubuntu.exec" $hwedir
     sed -e 's/boot from CD-ROM or FTP-Server/rolling kernel/' \
-        "$DI_DIR/generic/ubuntu.ins" > $imagedir/ubuntu.ins
+        "$DI_DIR/generic/ubuntu.ins" > $hwedir/ubuntu.ins
     cp -lf "$DI_DIR/hwe-generic/parmfile.ubuntu" $hwedir
     cp -lf "$DI_DIR/hwe-generic/initrd.ubuntu" $hwedir
     cp -lf "$DI_DIR/hwe-generic/kernel.ubuntu" $hwedir
