@@ -248,7 +248,7 @@ case $DIST in
     export CAPCODENAME='Xenial Xerus'
     export DEBVERSION="16.04.2 LTS"
     export BACKPORT_KERNEL="hwe-16.04"
-    export OFFICIAL="Release"
+    export OFFICIAL="Beta"
     ;;
   yakkety)
     export PREV_CODENAME=xenial
