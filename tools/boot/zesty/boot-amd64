@@ -406,6 +406,9 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ]; then
 	livelabel="^Start $HUMANPROJECT"
 	liveparams=' maybe-ubiquity'
+    elif [ "$PROJECT" = ubuntu-server ]; then
+	livelabel="^Install $HUMANPROJECT"
+	liveparams=
     else
 	livelabel="^Try $HUMANPROJECT without installing"
 	liveparams=
@@ -430,7 +433,7 @@ menuentry "${livelabel#^}" {
 	initrd	$CASPER_INITRD
 }
 EOF
-    if [ "$PROJECT" != ubuntu-mid ] && [ "$PROJECT" != kubuntu ] && [ "$PROJECT" != kubuntu-plasma5 ]; then
+    if [ "$PROJECT" != ubuntu-mid ] && [ "$PROJECT" != kubuntu ] && [ "$PROJECT" != kubuntu-plasma5 ] && [ "$PROJECT" != ubuntu-server ]; then
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
