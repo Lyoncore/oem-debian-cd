@@ -408,7 +408,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 	liveparams=' maybe-ubiquity'
     elif [ "$PROJECT" = ubuntu-server ]; then
 	livelabel="^Install $HUMANPROJECT"
-	liveparams=
+	liveparams=' union=aufs'
     else
 	livelabel="^Try $HUMANPROJECT without installing"
 	liveparams=
