@@ -1,0 +1,296 @@
+#!/bin/bash
+#
+# Do install stuff for amd64, including making bootable CDs
+# Works with debian-installer
+#
+# $1 is the CD number
+# $2 is the temporary CD build dir
+
+. $BASEDIR/tools/boot/$DI_CODENAME/common.sh
+
+set -e
+
+N=$1
+CDDIR=$2
+BOOTDIR=
+if [ ! "$DI_DIST" ]; then
+   export DI_DIST="$DI_CODENAME"
+fi
+if [ -z "$DI_PATH" ]; then
+   DI_PATH="$($BASEDIR/tools/find-newest-installer)"
+fi
+
+default_preseed
+default_language
+
+cd $CDDIR/..
+
+#
+# This script is called with $1 (now $N) as the CD to 
+# make bootable.  N may be in the form "n" or "n_NONUS"
+# There may be more than 4 disks...support extras.
+
+# Strip NONUS part of disk number
+# NN will be 1...N so it can be used as an index
+#
+NN=`echo $N | sed -e 's/_NONUS//'`
+
+if [ "$CDIMAGE_ADDON" ]; then
+    # second disk, at least in spirit
+    NN=2
+fi
+
+> $N.mkisofs_opts
+
+# List of boot image for each CD
+KTYPE[1]="" #isolinux multiboot in fact
+KTYPE[2]=""
+# XXX add net-image back when it's fixed
+KTYPE[3]=""
+KTYPE[4]=""
+KTYPE[5]=""
+KTYPE[6]=""
+KTYPE[7]=""
+KTYPE[8]=""
+KTYPE[9]=""
+KTYPE[10]=""
+
+THISTYPE=${KTYPE[$NN]}
+
+PREFIX_PRESEED="$(dirname "$DEFAULT_PRESEED")/"
+PREFIX_GA=""
+PREFIX_HWE=""
+KERNEL_PREFIXES="PREFIX_GA"
+if [ "$BACKPORT_KERNEL" ]; then
+    PREFIX_HWE="hwe-"
+    if [ "$PROJECT" = ubuntu-server ]; then
+        KERNEL_PREFIXES="$KERNEL_PREFIXES PREFIX_HWE"
+    fi
+fi
+
+BOOT_IMAGES=""
+TAR_IMAGES=""
+DISK_IMAGES=""
+for kp in $KERNEL_PREFIXES; do
+    BOOT_IMAGES="$BOOT_IMAGES ${!kp}cdrom/vmlinuz ${!kp}cdrom/initrd.gz ${!kp}cdrom/debian-cd_info.tar.gz"
+    TAR_IMAGES="$TAR_IMAGES ${!kp}netboot/netboot.tar.gz"
+done
+
+FLAVOUR=generic
+
+# Download boot images
+for image in MANIFEST.udebs $BOOT_IMAGES $DISK_IMAGES $TAR_IMAGES; do
+    if [ ! -e "$image" ]; then
+	dir=$(dirname $image)
+	mkdir -p $dir
+	if [ ! "$DI_WWW_HOME" ];then
+		cp "$DI_PATH/current/images/$image" "$image"
+	else
+		wget "$DI_WWW_HOME/$image" -O "$image"
+	fi
+    fi
+done
+
+if [ "$NN" = "1" ]; then
+    list_kernel_abis $BOOT_IMAGES | check_kernel_sync $FLAVOUR
+
+    if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+    for kp in $KERNEL_PREFIXES; do
+      cp -lf "${!kp}cdrom/vmlinuz" "$CDDIR/install/${!kp}vmlinuz"
+      cp -lf "${!kp}cdrom/initrd.gz" "$CDDIR/install/${!kp}initrd.gz"
+    done
+    fi
+    if [ "$CDIMAGE_LIVE" = 1 ]; then
+	if [ -e "$CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed" ]; then
+	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed $CDDIR/casper/vmlinuz.efi
+	    rm -f $CDDIR/casper/filesystem.kernel-$FLAVOUR
+	    CASPER_KERNEL=/casper/vmlinuz.efi
+	else
+	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
+	    CASPER_KERNEL=/casper/vmlinuz
+	fi
+	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
+	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
+    fi
+    echo -n "-J -l -c boot/boot.cat -boot-load-size 4 -boot-info-table " >> $N.mkisofs_opts
+    echo -n "-eltorito-alt-boot --efi-boot boot/grub/efi.img -no-emul-boot " >> $N.mkisofs_opts
+fi
+
+#install_languages $CDDIR
+
+# Only disk one gets the extra files installed
+#
+if [ "$NN" = "1" ]; then
+
+
+# populate the install directory as well
+for disk in $DISK_IMAGES; do
+	dir=$(dirname $disk)
+	mkdir -p $CDDIR/install/$dir
+	cp -lf $disk $CDDIR/install/$dir
+done
+
+if [ "$CDIMAGE_INSTALL" = 1 ]; then
+	for tar in $TAR_IMAGES; do
+		dir=$(dirname $tar)
+		mkdir -p $CDDIR/install/$dir
+		tar -C $CDDIR/install/$dir -xzpf $tar
+	done
+fi
+
+mkdir -p $CDDIR/boot
+cat cdrom/debian-cd_info.tar.gz | (cd $CDDIR/boot/; tar xz)
+# If we want a copy of grub on the ISO as well, seems redundant:
+#mkdir -p $CDDIR/EFI/BOOT
+#mcopy -i $CDDIR/boot/grub/efi.img ::EFI/BOOT/bootaa64.efi $CDDIR/EFI/BOOT/bootaa64.efi
+sed -i '/^menuentry/Q' $CDDIR/boot/grub/grub.cfg
+
+if [ "$BACKPORT_KERNEL" ]; then
+    cat > $CDDIR/boot/grub/hwe-grub.cfg <<EOF
+submenu 'Boot and Install with the HWE kernel' {
+EOF
+fi
+
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ]; then
+	livelabel="^Start $HUMANPROJECT"
+	liveparams=' maybe-ubiquity'
+    else
+	livelabel="^Try $HUMANPROJECT without installing"
+	liveparams=
+    fi
+    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "${livelabel#^}" {
+	set gfxpayload=keep
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams quiet splash ---
+	initrd	$CASPER_INITRD
+}
+EOF
+    cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
+menuentry "${livelabel#^}" {
+	set gfxpayload=keep
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=\${iso_path} quiet splash ---
+	initrd	$CASPER_INITRD
+}
+EOF
+    if [ "$PROJECT" != ubuntu-mid ] && [ "$PROJECT" != kubuntu ] && [ "$PROJECT" != kubuntu-plasma5 ]; then
+	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Install $HUMANPROJECT" {
+	set gfxpayload=keep
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity quiet splash ---
+	initrd	$CASPER_INITRD
+}
+EOF
+	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
+menuentry "Install $HUMANPROJECT" {
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=\${iso_path} quiet splash ---
+	initrd	$CASPER_INITRD
+}
+EOF
+    fi
+fi
+if [ "$CDIMAGE_INSTALL" = 1 ]; then
+  if [ "$CDIMAGE_LIVE" != 1 ]; then
+    for kp in $KERNEL_PREFIXES; do
+	cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "Install $HUMANPROJECT" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} quiet ---
+	initrd	/install/${!kp}initrd.gz
+}
+EOF
+    done
+  else
+	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Install $HUMANPROJECT in text mode" {
+	set gfxpayload=keep
+	linux	/install/vmlinuz $KERNEL_PARAMS $DEFAULT_PRESEED quiet ---
+	initrd	/install/initrd.gz
+}
+EOF
+  fi
+fi
+# The GRUB versions of this only correspond to single isolinux labels,
+# because we don't yet have the necessary technology in our GRUB menu stack
+# to have a two-dimensional set of boot options, as is implemented for
+# isolinux using the gfxboot "applies" keyword.
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "OEM install (for manufacturers)" {
+	set gfxpayload=keep
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity quiet splash oem-config/enable=true ---
+	initrd	$CASPER_INITRD
+}
+EOF
+else
+  for kp in $KERNEL_PREFIXES; do
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "OEM install (for manufacturers)" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} quiet oem-config/enable=true ---
+	initrd	/install/${!kp}initrd.gz
+}
+EOF
+  done
+fi
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+    if [ "$PROJECT" = ubuntu-server ]; then
+    for kp in $KERNEL_PREFIXES; do
+	cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "Install MAAS Region Controller" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS modules=maas-region-udeb initrd=/install/${!kp}initrd.gz quiet ---
+	initrd	/install/${!kp}initrd.gz
+}
+
+menuentry "Install MAAS Rack Controller" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS modules=maas-rack-udeb initrd=/install/${!kp}initrd.gz quiet ---
+	initrd	/install/${!kp}initrd.gz
+}
+EOF
+    done
+    fi
+fi
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Check disc for defects" {
+	set gfxpayload=keep
+	linux	$CASPER_KERNEL $KERNEL_PARAMS boot=casper integrity-check quiet splash ---
+	initrd	$CASPER_INITRD
+}
+EOF
+    cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
+menuentry "Check disc for defects" {
+	linux	$CASPER_KERNEL $KERNEL_PARAMS boot=casper integrity-check iso-scan/filename=\${iso_path} quiet splash ---
+	initrd	$CASPER_INITRD
+}
+EOF
+elif [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+  for kp in $KERNEL_PREFIXES; do
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "Check disc for defects" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu quiet ---
+	initrd	/install/${!kp}initrd.gz
+}
+EOF
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "Rescue a broken system" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinuz $KERNEL_PARAMS rescue/enable=true ---
+	initrd	/install/${!kp}initrd.gz
+}
+EOF
+  done
+fi
+if [ "$BACKPORT_KERNEL" ] && [ "$PROJECT" = ubuntu-server ]; then
+    cat >> $CDDIR/boot/grub/hwe-grub.cfg <<EOF
+}
+EOF
+    cat $CDDIR/boot/grub/hwe-grub.cfg >> $CDDIR/boot/grub/grub.cfg
+fi
+rm -f $CDDIR/boot/grub/hwe-grub.cfg
+fi
+
+# th,th, thats all
