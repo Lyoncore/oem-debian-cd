@@ -2,6 +2,8 @@
 # This file provides some common code that is intented to be called
 # by the various boot-<arch> scripts.
 
+#OEMPROJECT=lyoncore
+#export OEMPROJECT
 
 # install_languages decompacts the language packs, you should give the path
 # to the CD temporary tree.
@@ -35,6 +37,7 @@ default_preseed() {
 	    ;;
 	ubuntu-server)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-server.seed'
+	    OEM_PRESEED='file=/cdrom/preseed/oem.seed'
 	    ;;
 	ubuntu-mid)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/mid.seed'
@@ -80,6 +83,9 @@ default_language() {
     case $PROJECT in
 	ubuntukylin)
 	    KERNEL_PARAMS="${KERNEL_PARAMS:+$KERNEL_PARAMS }locale=zh_CN keyboard-configuration/layoutcode?=cn"
+	    ;;
+	ubuntu-server)
+	    OEM_PARAMS="${KERNEL_PARAMS:+$KERNEL_PARAMS }locale=en_US keyboard-configuration/layoutcode=us"
 	    ;;
     esac
 }

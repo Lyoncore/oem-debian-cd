@@ -12,8 +12,8 @@ unset RESTRICTED        || true
 unset UNIVERSE          || true
 unset MULTIVERSE        || true
 # allow configuration on command line
-#unset LOCAL             || true
-#unset LOCALDEBS         || true
+unset LOCAL             || true
+unset LOCALDEBS         || true
 unset SECURED           || true
 unset SECRET_KEYRING    || true
 unset PUBLIC_KEYRING    || true
@@ -62,6 +62,10 @@ fi
 
 if [ -z "$DIST" ]; then
   DIST=karmic
+fi
+
+if [ -z "$OEMPROJECT" ]; then
+  OEMPROJECT=lyoncore
 fi
 
 # The debian-cd dir
@@ -347,7 +351,7 @@ fi
 # If your local packages are not under $MIRROR, but somewhere else, 
 # you can uncomment this line and edit to to point to a directory
 # containing dists/$CODENAME/local/binary-$ARCH
-# export LOCALDEBS=$CDIMAGE_ROOT/local/packages
+export LOCALDEBS=$CDIMAGE_ROOT/pool/extras
 
 # If you want a <codename>-secured tree with a copy of the signed
 # Release.gpg and files listed by this Release file, then
@@ -359,12 +363,12 @@ case $DIST in
   hoary|breezy|dapper|edgy|feisty|gutsy|hardy|intrepid|jaunty|karmic|lucid|maverick|natty|oneiric|precise|quantal|raring|saucy|trusty|utopic|vivid|wily)
     export SECRET_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/secring.gpg
     export PUBLIC_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/pubring.gpg
-    export SIGNING_KEYID=C5986B4F1257FFA86632CBA746181433FBB75451
+    export SIGNING_KEYID=C4B2FBE2
     ;;
   *)
     export SECRET_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/secring.gpg
     export PUBLIC_KEYRING=$CDIMAGE_ROOT/secret/dot-gnupg/pubring.gpg
-    export SIGNING_KEYID=843938DF228D22F7B3742BC0D94AA3F0EFE21092
+    export SIGNING_KEYID=C4B2FBE2
     ;;
 esac
 

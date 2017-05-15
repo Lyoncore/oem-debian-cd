@@ -305,7 +305,6 @@ mkdir -p $CDDIR/boot/grub
 mv boot$N/isolinux/grub/* $CDDIR/boot/grub/
 rmdir boot$N/isolinux/grub
 sed -i '/^menuentry/Q' $CDDIR/boot/grub/grub.cfg
-
 if [ "$BACKPORT_KERNEL" ]; then
     cat > $CDDIR/boot/grub/hwe-grub.cfg <<EOF
 submenu 'Boot and Install with the HWE kernel' {
@@ -395,6 +394,20 @@ cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label normal=Normal
 append normal=
 EOF
+
+# CUSTOM PRESEED FOR LYONCORE
+if [ ! -z "$OEMPROJECT" ]; then
+    if [ "$PROJECT" = ubuntu-server ]; then
+    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Install Ubuntu Server (OEM Delivery)" {
+	set gfxpayload=keep
+	linux	/install/vmlinuz $OEM_PARAMS ${OEM_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED} quiet  ---
+	initrd	/install/initrd.gz
+}
+EOF
+	fi
+fi
+
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ]; then
 	livelabel="^Start $HUMANPROJECT"
