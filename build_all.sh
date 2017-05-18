@@ -103,9 +103,9 @@ do
 		# ADD FILES FOR LYONCORE
 		if [ ! -z "$OEMPROJECT" ]; then
 			echo Generating extras files for images
-			make bin-extras CD=1 ROOTSRC=/img_store/cdimage/ubuntu-cdimage-test/custom-ubuntu-server-scripts/ DIR=preseed/oem.seed
-			make bin-extras CD=1 ROOTSRC=/img_store/cdimage/ubuntu-cdimage-test/custom-ubuntu-server-scripts/ DIR=factory
-			make bin-extras CD=1 ROOTSRC=/img_store/cdimage/ubuntu-cdimage-test/custom-ubuntu-server-scripts/ DIR=pool/extras
+			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/custom-ubuntu-server-scripts/ DIR=preseed/oem.seed
+			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/custom-ubuntu-server-scripts/ DIR=factory
+			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/custom-ubuntu-server-scripts/ DIR=pool/extras
 		fi
 		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		if [ $? -gt 0 ]; then
