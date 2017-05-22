@@ -103,7 +103,7 @@ do
 		# ADD FILES FOR LYONCORE
 		if [ ! -z "$OEMPROJECT" ]; then
 			echo Generating extras files for images
-			. $CDIMAGE_ROOT/oem-cdimage-script/make-pool.sh
+			. $CDIMAGE_ROOT/oem-cdimage-script/make-pool.sh $CDIMAGE_ROOT/oem-cdimage-script
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=preseed/oem.seed
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=factory
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=pool/extras
