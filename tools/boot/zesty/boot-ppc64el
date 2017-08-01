@@ -117,7 +117,7 @@ fi
 for kp in $KERNEL_PREFIXES; do
   if [ "$CDIMAGE_INSTALL" = 1 ]; then
     cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
-menuentry "Install $HUMANPROJECT" {
+menuentry "Install $HUMANPROJECT${!kp:+ (HWE)}" {
 	set gfxpayload=keep
 	linux	/install/${!kp}vmlinux $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} quiet ---
 	initrd	/install/${!kp}initrd.gz
@@ -127,27 +127,27 @@ EOF
 
   if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
     cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
-menuentry "Install MAAS Region Controller" {
+menuentry "Install MAAS Region Controller${!kp:+ (HWE)}" {
 	set gfxpayload=keep
 	linux	/install/${!kp}vmlinux $KERNEL_PARAMS modules=maas-region-udeb initrd=/install/${!kp}initrd.gz quiet ---
 	initrd	/install/${!kp}initrd.gz
 }
 
-menuentry "Install MAAS Rack Controller" {
+menuentry "Install MAAS Rack Controller${!kp:+ (HWE)}" {
 	set gfxpayload=keep
 	linux	/install/${!kp}vmlinux $KERNEL_PARAMS modules=maas-rack-udeb initrd=/install/${!kp}initrd.gz quiet ---
 	initrd	/install/${!kp}initrd.gz
 }
 EOF
     cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
-menuentry "Check disc for defects" {
+menuentry "Check disc for defects${!kp:+ (HWE)}" {
 	set gfxpayload=keep
 	linux	/install/${!kp}vmlinux $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu quiet ---
 	initrd	/install/${!kp}initrd.gz
 }
 EOF
     cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
-menuentry "Rescue a broken system" {
+menuentry "Rescue a broken system${!kp:+ (HWE)}" {
 	set gfxpayload=keep
 	linux	/install/${!kp}vmlinux $KERNEL_PARAMS rescue/enable=true ---
 	initrd	/install/${!kp}initrd.gz
