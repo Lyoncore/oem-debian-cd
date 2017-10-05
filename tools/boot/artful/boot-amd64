@@ -402,7 +402,7 @@ cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label normal=Normal
 append normal=
 EOF
-if [ "$CDIMAGE_LIVE" = 1 ]; then
+if [ "$CDIMAGE_LIVE" = 1 ] && [ "$PROJECT" != ubuntu-server ]; then
     if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ]; then
 	livelabel="^Start $HUMANPROJECT"
 	liveparams=' maybe-ubiquity'
