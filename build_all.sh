@@ -100,13 +100,14 @@ do
 	else
 		make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		export OUT=$TMP_OUT/$FULLARCH; mkdir -p $OUT
-		# ADD FILES FOR LYONCORE
+		# Add FILES for OEM project
 		if [ ! -z "$OEMPROJECT" ]; then
 			echo Generating extras files for images
 			. $CDIMAGE_ROOT/oem-cdimage-script/make-pool.sh
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=preseed/oem.seed
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=factory
-			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=pool/extras
+			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=pool
+			. $CDIMAGE_ROOT/oem-cdimage-script/clean-pool.sh
 		fi
 		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		if [ $? -gt 0 ]; then
