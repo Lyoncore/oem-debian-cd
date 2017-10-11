@@ -113,7 +113,7 @@ if [ "$NN" = "1" ]; then
 	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
     fi
     echo -n "-J -l -c boot/boot.cat " >> $N.mkisofs_opts
-    echo -n "-append_partition 2 0xef $CDDIR/boot/grub/efi.img --efi-boot boot/grub/efi.img -no-emul-boot " >> $N.mkisofs_opts
+    echo -n "-append_partition 2 0xef $CDDIR/boot/grub/efi.img -e boot/grub/efi.img -no-emul-boot " >> $N.mkisofs_opts
 fi
 
 #install_languages $CDDIR
