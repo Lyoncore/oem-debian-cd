@@ -112,8 +112,15 @@ if [ "$NN" = "1" ]; then
 	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
 	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
     fi
-    echo -n "-J -l -c boot/boot.cat -boot-load-size 4 -boot-info-table " >> $N.mkisofs_opts
-    echo -n "-eltorito-alt-boot --efi-boot boot/grub/efi.img -no-emul-boot " >> $N.mkisofs_opts
+    echo -n "-J -l -c boot/boot.cat -partition_offset 16 " >> $N.mkisofs_opts
+    # Once we move to xorriso >= 1.4.4, we should consider changing from
+    #  "-e boot/grub/efi.img"
+    #    to
+    #  "-e --interval:appended_partition_2:all::"
+    # This will point the el torito catalog to the appended partition instead
+    # of the in-ISO file, which will allow us to remove efi.img from the ISO
+    # filesystem and recover it's space.
+    echo -n "-append_partition 2 0xef $CDDIR/boot/grub/efi.img -e boot/grub/efi.img -no-emul-boot " >> $N.mkisofs_opts
 fi
 
 #install_languages $CDDIR
