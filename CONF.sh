@@ -269,7 +269,7 @@ case $DIST in
     export CODENAME=artful
     export CAPCODENAME='Artful Aardvark'
     export DEBVERSION="17.10"
-    export OFFICIAL="Beta"
+    export OFFICIAL="Release"
     ;;
 esac
 
