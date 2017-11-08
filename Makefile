@@ -235,7 +235,7 @@ else
  CDBASE = $(CODENAME)-live-$(FULLARCH)
     else
      ifeq ($(PROJECT),ubuntu-server)
- CDBASE = $(CODENAME)-live-$(FULLARCH)
+ CDBASE = $(CODENAME)-live-server-$(FULLARCH)
      else
       ifeq ($(PROJECT),ubuntu-mid)
  CDBASE = $(CODENAME)-mid-$(FULLARCH)
