@@ -271,6 +271,13 @@ case $DIST in
     export DEBVERSION="17.10"
     export OFFICIAL="Release"
     ;;
+  artful)
+    export PREV_CODENAME=artful
+    export CODENAME=bionic
+    export CAPCODENAME='Bionic Beaver'
+    export DEBVERSION="18.04 LTS"
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
