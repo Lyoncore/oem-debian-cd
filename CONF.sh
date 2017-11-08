@@ -271,7 +271,7 @@ case $DIST in
     export DEBVERSION="17.10"
     export OFFICIAL="Release"
     ;;
-  artful)
+  bionic)
     export PREV_CODENAME=artful
     export CODENAME=bionic
     export CAPCODENAME='Bionic Beaver'
