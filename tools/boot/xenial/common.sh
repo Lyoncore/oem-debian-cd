@@ -85,7 +85,7 @@ default_language() {
 	    KERNEL_PARAMS="${KERNEL_PARAMS:+$KERNEL_PARAMS }locale=zh_CN keyboard-configuration/layoutcode?=cn"
 	    ;;
 	ubuntu-server)
-	    OEM_PARAMS="${KERNEL_PARAMS:+$KERNEL_PARAMS }locale=en_US keyboard-configuration/layoutcode=us"
+	    OEM_PARAMS="${KERNEL_PARAMS:+$KERNEL_PARAMS }${CDIMAGE_OEM_PARAMS}"
 	    ;;
     esac
 }
