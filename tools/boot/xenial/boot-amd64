@@ -410,7 +410,7 @@ EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install Ubuntu (OEM Delivery)" {
 	set gfxpayload=keep
-	linux	/casper/vmlinuz.efi ${OEM_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED} $OEM_PARAMS quiet  ---
+	linux	/casper/vmlinuz.efi ${OEM_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED} boot=casper only-ubiquity $OEM_PARAMS quiet splash ---
 	initrd  /casper/initrd.lz
 }
 EOF
