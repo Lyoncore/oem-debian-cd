@@ -401,8 +401,17 @@ if [ ! -z "$OEMPROJECT" ]; then
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install Ubuntu Server (OEM Delivery)" {
 	set gfxpayload=keep
-	linux	/install/vmlinuz $OEM_PARAMS ${OEM_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED} quiet  ---
+	linux	/install/vmlinuz ${OEM_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED} $OEM_PARAMS quiet  ---
 	initrd	/install/initrd.gz
+}
+EOF
+	fi
+    if [ "$PROJECT" = ubuntu ]; then
+    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Install Ubuntu (OEM Delivery)" {
+	set gfxpayload=keep
+	linux	/casper/vmlinuz.efi ${OEM_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED} $OEM_PARAMS quiet  ---
+	initrd  /casper/initrd.lz
 }
 EOF
 	fi

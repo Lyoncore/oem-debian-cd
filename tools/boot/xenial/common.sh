@@ -22,6 +22,7 @@ default_preseed() {
     case $PROJECT in
 	ubuntu|ubuntukylin)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu.seed'
+	    OEM_PRESEED='file=/cdrom/preseed/oem.seed'
 	    ;;
 	kubuntu)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/kubuntu.seed'
@@ -84,7 +85,7 @@ default_language() {
 	ubuntukylin)
 	    KERNEL_PARAMS="${KERNEL_PARAMS:+$KERNEL_PARAMS }locale=zh_CN keyboard-configuration/layoutcode?=cn"
 	    ;;
-	ubuntu-server)
+	ubuntu|ubuntu-server)
 	    OEM_PARAMS="${KERNEL_PARAMS:+$KERNEL_PARAMS }${CDIMAGE_OEM_PARAMS}"
 	    ;;
     esac
