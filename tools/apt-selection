@@ -60,82 +60,82 @@ if [ ! -d "$APTTMP/$CODENAME-$FULLARCH/apt" ]; then
 fi
 if [ ! -e "$APTTMP/$CODENAME-$FULLARCH/apt/sources.list" ]; then
 	# Generating a correct sources.list file
-	echo "deb file:$MIRROR $CODENAME $sections" \
+	echo "deb [arch=$FULLARCH] file:$MIRROR $CODENAME $sections" \
 	> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	if [ -n "$NONUS" ]; then
-	     echo "deb file:$NONUS $CODENAME/non-US $sections" \
+	     echo "deb [arch=$FULLARCH] file:$NONUS $CODENAME/non-US $sections" \
 	     >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	fi
 	# Local packages ...
 	if [ -n "$LOCAL" ]; then
-	  echo "deb file:${LOCALDEBS:-$MIRROR} $CODENAME local" \
+	  echo "deb [arch=$FULLARCH] file:${LOCALDEBS:-$MIRROR} $CODENAME local" \
 	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	fi
         # Security mirror ...
         if [ -n "$SECURITY" ]; then
-	  echo "deb file:${SECURITY:-$MIRROR} $CODENAME-security $sections" \
+	  echo "deb [arch=$FULLARCH] file:${SECURITY:-$MIRROR} $CODENAME-security $sections" \
 	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
         fi
 	# Post-release updates
 	if [ "${UPDATES:-0}" != "0" ]; then
-	  echo "deb file:$MIRROR $CODENAME-updates $sections" \
+	  echo "deb [arch=$FULLARCH] file:$MIRROR $CODENAME-updates $sections" \
 	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	fi
 	if [ "${PROPOSED:-0}" != "0" ]; then
-	  echo "deb file:$MIRROR $CODENAME-proposed $sections" \
+	  echo "deb [arch=$FULLARCH] file:$MIRROR $CODENAME-proposed $sections" \
 	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	fi
 	# Debian-installer
 	if [ -e "$MIRROR/dists/$DI_CODENAME/main/debian-installer" ]; then
-	  echo "deb file:$MIRROR $DI_CODENAME main/debian-installer" \
+	  echo "deb [arch=$FULLARCH] file:$MIRROR $DI_CODENAME main/debian-installer" \
 	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  if [ -n "$SECURITY" -a -e "$MIRROR/dists/$DI_CODENAME-security/main/debian-installer" ]; then
-	    echo "deb file:${SECURITY:-$MIRROR} $DI_CODENAME-security main/debian-installer" \
+	    echo "deb [arch=$FULLARCH] file:${SECURITY:-$MIRROR} $DI_CODENAME-security main/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	  if [ "${UPDATES:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME-updates/main/debian-installer" ]; then
-	    echo "deb file:$MIRROR $DI_CODENAME-updates main/debian-installer" \
+	    echo "deb [arch=$FULLARCH] file:$MIRROR $DI_CODENAME-updates main/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	  if [ "${PROPOSED:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME-proposed/main/debian-installer" ]; then
-	    echo "deb file:$MIRROR $DI_CODENAME-proposed main/debian-installer" \
+	    echo "deb [arch=$FULLARCH] file:$MIRROR $DI_CODENAME-proposed main/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	fi
 	if [ "${RESTRICTED:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME/restricted/debian-installer" ]; then
-	  echo "deb file:$MIRROR $DI_CODENAME restricted/debian-installer" \
+	  echo "deb [arch=$FULLARCH] file:$MIRROR $DI_CODENAME restricted/debian-installer" \
 	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  if [ -n "$SECURITY" -a -e "$MIRROR/dists/$DI_CODENAME-security/restricted/debian-installer" ]; then
-	    echo "deb file:${SECURITY:-$MIRROR} $DI_CODENAME-security restricted/debian-installer" \
+	    echo "deb [arch=$FULLARCH] file:${SECURITY:-$MIRROR} $DI_CODENAME-security restricted/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	  if [ "${UPDATES:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME-updates/restricted/debian-installer" ]; then
-	    echo "deb file:$MIRROR $DI_CODENAME-updates restricted/debian-installer" \
+	    echo "deb [arch=$FULLARCH] file:$MIRROR $DI_CODENAME-updates restricted/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	  if [ "${PROPOSED:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME-proposed/restricted/debian-installer" ]; then
-	    echo "deb file:$MIRROR $DI_CODENAME-proposed restricted/debian-installer" \
+	    echo "deb [arch=$FULLARCH] file:$MIRROR $DI_CODENAME-proposed restricted/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	fi
 	if [ "${UNIVERSE:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME/universe/debian-installer" ]; then
-	  echo "deb file:$MIRROR $DI_CODENAME universe/debian-installer" \
+	  echo "deb [arch=$FULLARCH] file:$MIRROR $DI_CODENAME universe/debian-installer" \
 	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  if [ -n "$SECURITY" -a -e "$MIRROR/dists/$DI_CODENAME-security/universe/debian-installer" ]; then
-	    echo "deb file:${SECURITY:-$MIRROR} $DI_CODENAME-security universe/debian-installer" \
+	    echo "deb [arch=$FULLARCH] file:${SECURITY:-$MIRROR} $DI_CODENAME-security universe/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	  if [ "${UPDATES:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME-updates/universe/debian-installer" ]; then
-	    echo "deb file:$MIRROR $DI_CODENAME-updates universe/debian-installer" \
+	    echo "deb [arch=$FULLARCH] file:$MIRROR $DI_CODENAME-updates universe/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	  if [ "${PROPOSED:-0}" != "0" -a -e "$MIRROR/dists/$DI_CODENAME-proposed/universe/debian-installer" ]; then
-	    echo "deb file:$MIRROR $DI_CODENAME-proposed universe/debian-installer" \
+	    echo "deb [arch=$FULLARCH] file:$MIRROR $DI_CODENAME-proposed universe/debian-installer" \
 	    >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	  fi
 	fi
 	if [ -n "$LOCAL" -a -e "${LOCALDEBS:-$MIRROR}/dists/$DI_CODENAME/local/debian-installer" ]; then
-	  echo "deb file:${LOCALDEBS:-$MIRROR} $DI_CODENAME local/debian-installer" \
+	  echo "deb [arch=$FULLARCH] file:${LOCALDEBS:-$MIRROR} $DI_CODENAME local/debian-installer" \
 	  >> $APTTMP/$CODENAME-$FULLARCH/apt/sources.list
 	fi
 fi

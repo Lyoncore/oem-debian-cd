@@ -100,6 +100,16 @@ do
 	else
 		make bin-list $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		export OUT=$TMP_OUT/$FULLARCH; mkdir -p $OUT
+		# Add FILES for OEM project
+		if [ ! -z "$OEMPROJECT" ]; then
+			echo Generating extras files for images
+			. $CDIMAGE_ROOT/oem-cdimage-script/make-pool.sh
+			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=preseed
+			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=postinstall
+			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=pool
+			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=boot
+			. $CDIMAGE_ROOT/oem-cdimage-script/clean-pool.sh
+		fi
 		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
 		if [ $? -gt 0 ]; then
 			echo "ERROR WHILE BUILDING OFFICIAL IMAGES !!" >&2
