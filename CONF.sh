@@ -12,8 +12,8 @@ unset RESTRICTED        || true
 unset UNIVERSE          || true
 unset MULTIVERSE        || true
 # allow configuration on command line
-#unset LOCAL             || true
-#unset LOCALDEBS         || true
+unset LOCAL             || true
+unset LOCALDEBS         || true
 unset SECURED           || true
 unset SECRET_KEYRING    || true
 unset PUBLIC_KEYRING    || true
@@ -354,7 +354,7 @@ fi
 # If your local packages are not under $MIRROR, but somewhere else, 
 # you can uncomment this line and edit to to point to a directory
 # containing dists/$CODENAME/local/binary-$ARCH
-# export LOCALDEBS=$CDIMAGE_ROOT/local/packages
+export LOCALDEBS=$CDIMAGE_ROOT/pool/extras
 
 # If you want a <codename>-secured tree with a copy of the signed
 # Release.gpg and files listed by this Release file, then
