@@ -319,12 +319,12 @@ fi
 
 # Menu timeout, in seconds.
 # gfxboots will need it in deciseconds (it is converted as needed)
+menu_timeout=30
+
+# When using hidden timeout; use a shorter timeout while the user
+# only sees the accessibility logo at the bottom of the screen.
 if [ "$HIDDEN_TIMEOUT" ]; then
     menu_timeout=5
-elif [ "$CDIMAGE_LIVE" = 1 ]; then
-    menu_timeout=30
-else
-    menu_timeout=0
 fi
 
 # Set timeout for the GRUB menu
