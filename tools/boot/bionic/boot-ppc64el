@@ -108,14 +108,11 @@ tar -C "$CDDIR" -xf "$DI_DIR/cdrom/debian-cd_info.tar.gz"
 # setup grub menu
 sed -i '/^menuentry/Q' $CDDIR/boot/grub/grub.cfg
 
-<<<<<<< HEAD
-=======
 # Set a timeout for GRUB
 cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 set timeout=30
 EOF
 
->>>>>>> c05fe296b1d056785003ccdd9e91206a0bdad017
 if [ "$BACKPORT_KERNEL" ]; then
     cat > $CDDIR/boot/grub/hwe-grub.cfg <<EOF
 submenu 'Boot and Install with the HWE kernel' {

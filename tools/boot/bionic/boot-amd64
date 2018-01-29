@@ -202,14 +202,6 @@ if [ "$NN" = "1" ]; then
 HIDDEN_TIMEOUT=
 if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
     case $PROJECT in
-<<<<<<< HEAD
-	ubuntu|ubuntu-netbook|xubuntu|ubuntukylin|kubuntu|kubuntu-plasma5|ubuntu-gnome|ubuntu-desktop-next|ubuntu-mate|ubuntu-budgie)
-	    HIDDEN_TIMEOUT=2
-	    ;;
-	mythbuntu)
-	    HIDDEN_TIMEOUT=1
-	    ;;
-=======
 	mythbuntu)
 	    HIDDEN_TIMEOUT=1
 	    ;;
@@ -220,7 +212,6 @@ if [ "$CDIMAGE_LIVE" = 1 ] && [ "$CDIMAGE_DVD" != 1 ]; then
 	*)
 	    HIDDEN_TIMEOUT=2
 	    ;;
->>>>>>> c05fe296b1d056785003ccdd9e91206a0bdad017
     esac
     if [ -e "$BASEDIR/data/$DI_CODENAME/$PROJECT-access.pcx" ]; then
 	ACCESSPCX="$PROJECT-access.pcx"
@@ -326,8 +317,6 @@ EOF
     : > boot$N/isolinux/hwe-gfxboot.cfg
 fi
 
-<<<<<<< HEAD
-=======
 # Menu timeout, in seconds.
 # gfxboots will need it in deciseconds (it is converted as needed)
 menu_timeout=30
@@ -347,7 +336,6 @@ EOF
 sed -i "s/^timeout .*/timeout $(($menu_timeout * 10))/" \
     boot$N/isolinux/isolinux.cfg boot$N/isolinux/prompt.cfg
 
->>>>>>> c05fe296b1d056785003ccdd9e91206a0bdad017
 # Set up-to-date build dates. Kludgy because d-i sets its own version as
 # the build date.
 DI_VERSION="$(perl -lne 'if (/built on ([0-9a-z]*)/) { print $1 }' \
@@ -358,18 +346,6 @@ if [ "$DI_VERSION" ]; then
 	"boot$N"/isolinux/*.txt "boot$N"/isolinux/*.hlp
 fi
 
-<<<<<<< HEAD
-if [ "$HIDDEN_TIMEOUT" ]; then
-    timeout=50
-elif [ "$CDIMAGE_LIVE" = 1 ]; then
-    timeout=300
-else
-    timeout=0
-fi
-sed -i "s/^timeout .*/timeout $timeout/" \
-    boot$N/isolinux/isolinux.cfg boot$N/isolinux/prompt.cfg
-=======
->>>>>>> c05fe296b1d056785003ccdd9e91206a0bdad017
 # Isolinux config file.
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     DEFAULT_LABEL=live
