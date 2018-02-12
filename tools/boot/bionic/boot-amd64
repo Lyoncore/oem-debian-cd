@@ -426,7 +426,6 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 	livelabel="^Install $HUMANPROJECT"
 	liveparams=' union=overlay'
 	DEFAULT_PRESEED=
-	QUIET=
 	SPLASH=
     else
 	livelabel="^Try $HUMANPROJECT without installing"
