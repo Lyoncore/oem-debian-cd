@@ -108,6 +108,7 @@ do
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=postinstall
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=pool
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=boot
+			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=install
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=target_files
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=set-version.sh
 			. $CDIMAGE_ROOT/oem-cdimage-script/clean-pool.sh
