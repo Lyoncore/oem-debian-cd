@@ -47,6 +47,9 @@ if [ -e "$LIVEIMAGES/$FULLARCH.manifest-remove" ]; then
 elif [ -e "$LIVEIMAGES/$FULLARCH.manifest-desktop" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.manifest-desktop" "$BDIR/CD1/$DIR/filesystem.manifest-desktop" || true
 fi
+if [ -e "$LIVEIMAGES/$FULLARCH.manifest-minimal-remove" ]; then
+	ln "$LIVEIMAGES/$FULLARCH.manifest-minimal-remove" "$BDIR/CD1/$DIR/filesystem.manifest-minimal-remove" || true
+fi
 
 if [ "$PROJECT" = edubuntu ] && [ "$CDIMAGE_DVD" = 1 ]; then
 	case $ARCH in

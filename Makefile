@@ -1111,6 +1111,9 @@ ifeq ($(LIVE_FILESYSTEM),1)
 	elif [ -e $(LIVEIMAGES)/$(FULLARCH).manifest-desktop ]; then \
 		cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-desktop $(OUT)/$(call CDBASE,$$n).manifest-desktop; \
 	fi
+	-if [ -e $(LIVEIMAGES)/$(FULLARCH).manifest-minimal-remove ]; then \
+		cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-minimal-remove $(OUT)/$(call CDBASE,$$n).manifest-minimal-remove; \
+	fi
 ifeq ($(CDIMAGE_SQUASHFS_BASE),1)
 	-cp -a $(LIVEIMAGES)/$(FULLARCH).squashfs $(OUT)/$(call CDBASE,$$n).squashfs
 	-cp -a $(LIVEIMAGES)/$(FULLARCH).squashfs.gpg $(OUT)/$(call CDBASE,$$n).squashfs.gpg
