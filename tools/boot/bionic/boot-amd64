@@ -417,12 +417,15 @@ label normal=Normal
 append normal=
 EOF
 if [ "$CDIMAGE_LIVE" = 1 ]; then
+    QUIET=quiet
+    SPLASH=splash
     if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ]; then
 	livelabel="^Start $HUMANPROJECT"
 	liveparams=' maybe-ubiquity'
     elif [ "$PROJECT" = ubuntu-server ]; then
 	livelabel="^Install $HUMANPROJECT"
-	liveparams=' union=aufs'
+	liveparams=
+	SPLASH=
     else
 	livelabel="^Try $HUMANPROJECT without installing"
 	liveparams=
@@ -431,19 +434,19 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 label live
   menu label $livelabel
   kernel $CASPER_KERNEL
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD quiet splash ---
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD $QUIET $SPLASH ---
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams $QUIET $SPLASH ---
 	initrd	$CASPER_INITRD
 }
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=\${iso_path} quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=\${iso_path} $QUIET $SPLASH ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -452,18 +455,18 @@ EOF
 label live-install
   menu label ^Install $HUMANPROJECT
   kernel $CASPER_KERNEL
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=$CASPER_INITRD quiet splash ---
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity initrd=$CASPER_INITRD $QUIET $SPLASH ---
 EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity $QUIET $SPLASH ---
 	initrd	$CASPER_INITRD
 }
 EOF
 	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=\${iso_path} quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=\${iso_path} $QUIET $SPLASH ---
 	initrd	$CASPER_INITRD
 }
 EOF

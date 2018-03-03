@@ -34,7 +34,9 @@ default_preseed() {
 	    DEFAULT_PRESEED='file=/cdrom/preseed/xubuntu.seed'
 	    ;;
 	ubuntu-server)
-	    DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-server.seed'
+	    if [ "$CDIMAGE_LIVE" != 1 ]; then
+		DEFAULT_PRESEED='file=/cdrom/preseed/ubuntu-server.seed'
+	    fi
 	    ;;
 	ubuntu-mid)
 	    DEFAULT_PRESEED='file=/cdrom/preseed/mid.seed'
