@@ -108,6 +108,9 @@ do
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=postinstall
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=pool
 			make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=boot
+			for src in $OEMPROJECT_SRC; do
+				make bin-extras CD=1 ROOTSRC=$CDIMAGE_ROOT/oem-cdimage-script/ DIR=$src
+			done
 			. $CDIMAGE_ROOT/oem-cdimage-script/clean-pool.sh
 		fi
 		make bin-official_images $SIZE_ARGS SRCSIZELIMIT=$FULL_SIZE
