@@ -276,7 +276,7 @@ case $DIST in
     export CODENAME=bionic
     export CAPCODENAME='Bionic Beaver'
     export DEBVERSION="18.04 LTS"
-    export OFFICIAL="Beta"
+    export OFFICIAL="Alpha"
     ;;
 esac
 
