@@ -18,6 +18,14 @@ elif [ -e "$LIVEIMAGES/$FULLARCH.squashfs" ]; then
 	if [ -e "$LIVEIMAGES/$FULLARCH.squashfs.gpg" ]; then
 		ln "$LIVEIMAGES/$FULLARCH.squashfs.gpg" "$BDIR/CD1/$DIR/filesystem.squashfs.gpg"
 	fi
+	if [ -e "$LIVEIMAGES/$FULLARCH.maas-rack.squashfs" ]; then
+		mkdir -p "$BDIR/CD1/$DIR/maas/"
+		ln "$LIVEIMAGES/$FULLARCH.maas-rack.squashfs" "$BDIR/CD1/$DIR/maas/maas-rack.squashfs"
+	fi
+	if [ -e "$LIVEIMAGES/$FULLARCH.maas-region.squashfs" ]; then
+		mkdir -p "$BDIR/CD1/$DIR/maas/"
+		ln "$LIVEIMAGES/$FULLARCH.maas-region.squashfs" "$BDIR/CD1/$DIR/maas/maas-region.squashfs"
+	fi
 
 	if [ -e "$LIVEIMAGES/$FULLARCH.installer.squashfs" ]; then
 		ln "$LIVEIMAGES/$FULLARCH.installer.squashfs" "$BDIR/CD1/$DIR/installer.squashfs"
