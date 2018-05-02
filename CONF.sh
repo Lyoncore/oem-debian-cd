@@ -278,6 +278,13 @@ case $DIST in
     export DEBVERSION="18.04 LTS"
     export OFFICIAL="Release"
     ;;
+  cosmic)
+    export PREV_CODENAME=bionic
+    export CODENAME=cosmic
+    export CAPCODENAME='Cosmic CANIMAL'
+    export DEBVERSION="18.10"
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
