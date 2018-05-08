@@ -281,7 +281,7 @@ case $DIST in
   cosmic)
     export PREV_CODENAME=bionic
     export CODENAME=cosmic
-    export CAPCODENAME='Cosmic CANIMAL'
+    export CAPCODENAME='Cosmic Cuttlefish'
     export DEBVERSION="18.10"
     export OFFICIAL="Alpha"
     ;;
