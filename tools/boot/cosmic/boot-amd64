@@ -419,17 +419,25 @@ EOF
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     QUIET=quiet
     SPLASH=splash
-    if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ] || [ "$PROJECT" = lubuntu ]; then
-	livelabel="^Start $HUMANPROJECT"
-	liveparams=' maybe-ubiquity'
-    elif [ "$PROJECT" = ubuntu-server ]; then
-	livelabel="^Install $HUMANPROJECT"
-	liveparams=
-	SPLASH=
-    else
-	livelabel="^Try $HUMANPROJECT without installing"
-	liveparams=
-    fi
+    case "$PROJECT" in
+        kubuntu)
+            livelabel="^Start $HUMANPROJECT"
+            liveparams=' maybe-ubiquity'
+            ;;
+        lubuntu)
+            livelabel="^Start $HUMANPROJECT"
+            liveparams=
+            ;;
+        ubuntu-server)
+            livelabel="^Install $HUMANPROJECT"
+            liveparams=
+            SPLASH=
+            ;;
+        *)
+            livelabel="^Try $HUMANPROJECT without installing"
+            liveparams=
+    esac
+
     cat >> boot$N/isolinux/txt.cfg <<EOF
 label live
   menu label $livelabel
