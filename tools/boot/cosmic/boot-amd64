@@ -424,6 +424,10 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
             livelabel="^Start $HUMANPROJECT"
             liveparams=' maybe-ubiquity'
             ;;
+        kubuntu-plasma5)
+            livelabel="^Start $HUMANPROJECT"
+            liveparams=' maybe-ubiquity'
+            ;;
         lubuntu)
             livelabel="^Start $HUMANPROJECT"
             liveparams=
