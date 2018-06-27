@@ -86,7 +86,7 @@ if [ "$CDIMAGE_LIVE" ]; then
 		if [ -e conf/uuid.conf ]; then
 			mkdir -p "$BDIR/CD1/.disk"
 			mv conf/uuid.conf "$BDIR/CD1/.disk/casper-uuid-${path#$BDIR/CD1/casper/filesystem.initrd-}"
-		elif [ -e main/conf/uuid.conf ]
+		elif [ -e main/conf/uuid.conf ]; then
 			mkdir -p "$BDIR/CD1/.disk"
 			mv main/conf/uuid.conf "$BDIR/CD1/.disk/casper-uuid-${path#$BDIR/CD1/casper/filesystem.initrd-}"
 		fi
