@@ -423,20 +423,22 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
         kubuntu|kubuntu-plasma5)
             livelabel="^Start $HUMANPROJECT"
             liveparams=' maybe-ubiquity'
+            NOTRYONLYDO=true
             ;;
         lubuntu)
             livelabel="^Start $HUMANPROJECT"
             liveparams=
+            NOTRYONLYDO=true
             ;;
         ubuntu-server)
             livelabel="^Install $HUMANPROJECT"
             liveparams=
             SPLASH=
+            NOTRYONLYDO=true
             ;;
         *)
             livelabel="^Try $HUMANPROJECT without installing"
             liveparams=
-            NOTRYONLYDO=true
     esac
 
     cat >> boot$N/isolinux/txt.cfg <<EOF
@@ -459,7 +461,7 @@ menuentry "${livelabel#^}" {
 	initrd	$CASPER_INITRD
 }
 EOF
-    if [ "$NOTRYONLYDO" = "true" ]; then
+    if [ "$NOTRYONLYDO" != "true" ]; then
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
