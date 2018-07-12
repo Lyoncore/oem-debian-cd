@@ -436,6 +436,11 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
             SPLASH=
             NOTRYONLYDO=true
             ;;
+        ubuntu-mid)
+            livelabel="^Try $HUMANPROJECT without installing"
+            liveparams=
+            NOTRYONLYDO=true
+            ;;
         *)
             livelabel="^Try $HUMANPROJECT without installing"
             liveparams=
