@@ -380,13 +380,26 @@ label normal=Normal
 append normal=
 EOF
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    if [ "$PROJECT" = kubuntu ] || [ "$PROJECT" = kubuntu-plasma5 ]; then
-	livelabel="^Start $HUMANPROJECT"
-	liveparams=' maybe-ubiquity'
-    else
-	livelabel="^Try $HUMANPROJECT without installing"
-	liveparams=
-    fi
+    case "$PROJECT" in
+        kubuntu|kubuntu-plasma5)
+            livelabel="^Start $HUMANPROJECT"
+            liveparams=' maybe-ubiquity'
+            NOTRYONLYDO=true
+            ;;
+        lubuntu)
+            livelabel="^Start $HUMANPROJECT"
+            liveparams=
+            NOTRYONLYDO=true
+            ;;
+        ubuntu-mid)
+            livelabel="^Try $HUMANPROJECT without installing"
+            liveparams=
+            NOTRYONLYDO=true
+            ;;
+        *)
+            livelabel="^Try $HUMANPROJECT without installing"
+            liveparams=
+    esac
     cat >> boot$N/isolinux/txt.cfg <<EOF
 label live
   menu label $livelabel
@@ -399,7 +412,7 @@ menuentry "${livelabel#^}" {
 	initrd	$CASPER_INITRD
 }
 EOF
-    if [ "$PROJECT" != ubuntu-mid ] && [ "$PROJECT" != kubuntu ] && [ "$PROJECT" != kubuntu-plasma5 ]; then
+    if [ "$NOTRYONLYDO" != "true" ]; then
 	cat >> boot$N/isolinux/txt.cfg <<EOF
 label live-install
   menu label ^Install $HUMANPROJECT
