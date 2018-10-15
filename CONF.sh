@@ -283,7 +283,7 @@ case $DIST in
     export CODENAME=cosmic
     export CAPCODENAME='Cosmic Cuttlefish'
     export DEBVERSION="18.10"
-    export OFFICIAL="Beta"
+    export OFFICIAL="Release"
     ;;
 esac
 
