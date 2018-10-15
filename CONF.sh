@@ -451,10 +451,14 @@ export ISOLINUX=1
 
 # Set your disk size here in MB. Used in calculating package and
 # source file layouts in build.sh and build_all.sh. Defaults are for
-# CD-R, try ~4600 for DVD-R.
+# CD-R.  For DVD-R the size limit is 4700372992 (see ubuntu-cdimage
+# lib/cdimage/tree.py:DailyTreePublisher.size_limit) but we express here
+# in MiB, so round down to 4482MiB (4699717632 bytes).  If we round up to
+# 4483MiB we will *probably* still fit, but the limit would be 384KiB above
+# the actual limit so there's some risk of being oversize for media.
 if [ "$CDIMAGE_DVD" = 1 ]; then
-  export DEFBINSIZE=4600
-  export DEFSRCSIZE=4600
+  export DEFBINSIZE=4482
+  export DEFSRCSIZE=4482
 else
   #export DEFBINSIZE=700
   #export DEFSRCSIZE=645
