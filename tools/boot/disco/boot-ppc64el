@@ -1,0 +1,172 @@
+#!/bin/bash
+#
+# Do install stuff for ppc64el, including making bootable CDs
+# Works with debian-installer
+#
+# $1 is the CD number
+# $2 is the temporary CD build dir
+
+. $BASEDIR/tools/boot/$DI_CODENAME/common.sh
+
+set -e
+
+N=$1
+CDDIR=$2
+INSTALLDIR=$CDDIR/install
+if [ ! "$DI_DIST" ]; then
+   export DI_DIST="$DI_CODENAME"
+fi
+if [ -z "$DI_PATH" ]; then
+   DI_PATH="$($BASEDIR/tools/find-newest-installer)"
+fi
+
+default_preseed
+default_language
+
+cd $CDDIR/..
+
+# Only disk 1* bootable
+if [ $N != 1 ] && [ $N != 1_NONUS ] && [ -z "$CDIMAGE_ADDON" ]; then
+    # we don't need HFS cruft on anything but CD 1
+	:> $N.mkisofs_opts
+	exit 0
+fi
+
+install_languages $CDDIR
+
+echo -n "--netatalk -hfs -probe -map $BASEDIR/data/hfs.map" \
+        > $N.mkisofs_opts
+echo -n " -chrp-boot -iso-level 4" >> $N.mkisofs_opts
+# For newworld Mac booting  - Note, no spaces in volid!
+echo -n " -part -no-desktop -hfs-bless CD$N/install -hfs-volid ${CAPPROJECT}_PPC64EL_${CODENAME} " \
+	>> $N.mkisofs_opts
+# Recommended size for a HFS Catalog is 4 megas per giga, defaults to 4 megas
+if [ "$CDIMAGE_DVD" = 1 ]; then
+  if [ -n "$SIZELIMIT1" ];then
+    if [ "$SIZELIMIT1" -gt 1000000000 ];then
+      let newsize="$SIZELIMIT1"/256
+      echo -n " -hfs-parms MAX_XTCSIZE=$newsize" >> $N.mkisofs_opts
+    fi
+  else
+    if [ -n "$SIZELIMIT" ];then
+      if [ "$SIZELIMIT" -gt 1000000000 ];then
+        let newsize="$SIZELIMIT"/256
+        echo -n " -hfs-parms MAX_XTCSIZE=$newsize" >> $N.mkisofs_opts
+      fi
+    else
+      if [ -n "$DEFBINSIZE" ] && [ "$DEFBINSIZE" -gt 1000 ];then
+        let newsize="$DEFBINSIZE"*4096
+        echo -n " -hfs-parms MAX_XTCSIZE=$newsize" >> $N.mkisofs_opts
+      fi
+    fi
+  fi
+fi
+
+"$BASEDIR/tools/sorting_weights" "$N"
+echo -n " -sort $(pwd)/$N.weights " >> $N.mkisofs_opts
+
+PREFIX_PRESEED="$(dirname "$DEFAULT_PRESEED")/"
+PREFIX_GA=""
+PREFIX_HWE=""
+KERNEL_PREFIXES="PREFIX_GA"
+if [ "$BACKPORT_KERNEL" ]; then
+    PREFIX_HWE="hwe-"
+    if [ "$PROJECT" = ubuntu-server ]; then
+        KERNEL_PREFIXES="$KERNEL_PREFIXES PREFIX_HWE"
+    fi
+fi
+
+BOOT_IMAGES=""
+TAR_IMAGES=""
+for kp in $KERNEL_PREFIXES; do
+    BOOT_IMAGES="$BOOT_IMAGES ${!kp}cdrom/vmlinux ${!kp}cdrom/initrd.gz ${!kp}cdrom/debian-cd_info.tar.gz"
+    TAR_IMAGES="$TAR_IMAGES ${!kp}netboot/netboot.tar.gz"
+done
+
+(cd $CDDIR/..;
+ cp -a "$DI_PATH/current/images/MANIFEST.udebs" .
+ list_kernel_abis $BOOT_IMAGES | check_kernel_sync)
+
+DI_DIR="$DI_PATH/current/images"
+if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+for kp in $KERNEL_PREFIXES; do
+  cp -lf "$DI_DIR/${!kp}cdrom/vmlinux" "$CDDIR/install/${!kp}vmlinux"
+  cp -lf "$DI_DIR/${!kp}cdrom/initrd.gz" "$CDDIR/install/${!kp}initrd.gz"
+done
+fi
+
+if [ "$CDIMAGE_INSTALL" = 1 ]; then
+    for tar in $TAR_IMAGES; do
+        dir=$(dirname $tar)
+        mkdir -p $CDDIR/install/$dir
+        tar -C $CDDIR/install/$dir -xzpf "$DI_DIR/$tar"
+    done
+fi
+
+tar -C "$CDDIR" -xf "$DI_DIR/cdrom/debian-cd_info.tar.gz"
+
+# setup grub menu
+sed -i '/^menuentry/Q' $CDDIR/boot/grub/grub.cfg
+
+# Set a timeout for GRUB
+cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+set timeout=30
+EOF
+
+if [ "$BACKPORT_KERNEL" ]; then
+    cat > $CDDIR/boot/grub/hwe-grub.cfg <<EOF
+submenu 'Boot and Install with the HWE kernel' {
+EOF
+fi
+
+for kp in $KERNEL_PREFIXES; do
+  if [ "$CDIMAGE_INSTALL" = 1 ]; then
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "Install $HUMANPROJECT${!kp:+ (HWE)}" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinux $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} quiet ---
+	initrd	/install/${!kp}initrd.gz
+}
+EOF
+  fi
+
+  if [ "$CDIMAGE_INSTALL_BASE" = 1 ]; then
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "Install MAAS Region Controller${!kp:+ (HWE)}" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinux $KERNEL_PARAMS modules=maas-region-udeb initrd=/install/${!kp}initrd.gz quiet ---
+	initrd	/install/${!kp}initrd.gz
+}
+
+menuentry "Install MAAS Rack Controller${!kp:+ (HWE)}" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinux $KERNEL_PARAMS modules=maas-rack-udeb initrd=/install/${!kp}initrd.gz quiet ---
+	initrd	/install/${!kp}initrd.gz
+}
+EOF
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "Check disc for defects${!kp:+ (HWE)}" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinux $KERNEL_PARAMS MENU=/bin/cdrom-checker-menu quiet ---
+	initrd	/install/${!kp}initrd.gz
+}
+EOF
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "Rescue a broken system${!kp:+ (HWE)}" {
+	set gfxpayload=keep
+	linux	/install/${!kp}vmlinux $KERNEL_PARAMS rescue/enable=true ---
+	initrd	/install/${!kp}initrd.gz
+}
+EOF
+  fi
+done # KERNEL_PREFIXES
+
+if [ "$BACKPORT_KERNEL" ] && [ "$PROJECT" = ubuntu-server ]; then
+    cat >> $CDDIR/boot/grub/hwe-grub.cfg <<EOF
+}
+EOF
+    cat $CDDIR/boot/grub/hwe-grub.cfg >> $CDDIR/boot/grub/grub.cfg
+fi
+rm -f $CDDIR/boot/grub/hwe-grub.cfg
+
+exit 0
