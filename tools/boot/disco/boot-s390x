@@ -53,6 +53,16 @@ cp -lf "$DI_DIR/generic/kernel.ubuntu" $imagedir
 cp -lf "$DI_DIR/generic/initrd.off" $imagedir
 cp -lf "$DI_DIR/generic/initrd.siz" $imagedir
 
+# For server-live images, use casper's initrd and kernel instead
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+    CMDLINE="boot=casper --- quiet"
+    mv $CDDIR/casper/filesystem.initrd-generic $imagedir/initrd.ubuntu
+    mv $CDDIR/casper/filesystem.kernel-generic $imagedir/kernel.ubuntu
+    perl -e "print pack('N', -s '$imagedir/kernel.ubuntu')" > $imagedir/initrd.siz
+else
+    CMDLINE="''"
+fi
+
 hwedir="boot$N/boot-hwe"
 if [ -d "$DI_DIR/hwe-generic" ]
 then
@@ -67,7 +77,7 @@ then
     cp -lf "$DI_DIR/hwe-generic/initrd.siz" $hwedir
 fi
 
-$BASEDIR/tools/gen-s390-cd-kernel.pl --initrd=$imagedir/initrd.ubuntu --kernel=$imagedir/kernel.ubuntu --outfile=$imagedir/ubuntu.ikr
+$BASEDIR/tools/gen-s390-cd-kernel.pl --initrd=$imagedir/initrd.ubuntu --kernel=$imagedir/kernel.ubuntu --cmdline="$CMDLINE" --outfile=$imagedir/ubuntu.ikr
 
 cp "$DI_DIR/MANIFEST.udebs" .
 list_kernel_abis $images_S390 | check_kernel_sync
