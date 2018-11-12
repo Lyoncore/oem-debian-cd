@@ -1105,7 +1105,10 @@ bin-images: ok bin-md5list $(OUT)
 		fi; \
 	done
 ifeq ($(LIVE_FILESYSTEM),1)
-	-cp -a $(LIVEIMAGES)/$(FULLARCH).manifest $(OUT)/$(call CDBASE,$$n).manifest
+	-for p in $(LIVEIMAGES)/$(FULLARCH)*.manifest; do \
+		f=`basename $$p`; \
+		cp -a $$p $(OUT)/$(call CDBASE,$$n).`echo $$f|cut -d. -f2-`; \
+	done
 	-if [ -e $(LIVEIMAGES)/$(FULLARCH).manifest-remove ]; then \
 		cp -a $(LIVEIMAGES)/$(FULLARCH).manifest-remove $(OUT)/$(call CDBASE,$$n).manifest-remove; \
 	elif [ -e $(LIVEIMAGES)/$(FULLARCH).manifest-desktop ]; then \
