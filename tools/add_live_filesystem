@@ -19,16 +19,21 @@ elif [ -n "$(ls $LIVEIMAGES/$FULLARCH*.squashfs 2>/dev/null)" ]; then
 				filename="filesystem.$filename"
 			fi
 
+			# Copy in squashfs corresponding subdirectory for multi-layer with sublayers system
+			filepath=$(echo $filename|tr '_' '/')
 			case $filename in
 				maas*)
-					mkdir -p "$BDIR/CD1/$DIR/maas/"
-					ln "$LIVEIMAGES/$origfilename" "$BDIR/CD1/$DIR/maas/$filename"
+					filepath=maas/$filepath
 					;;
+			esac
+			mkdir -p $BDIR/CD1/$DIR/$(dirname $filepath)
+
+			case $filename in
 				*.manifest)
-					ln "$LIVEIMAGES/$origfilename" "$BDIR/CD1/$DIR/$filename" || true
+					ln "$LIVEIMAGES/$origfilename" "$BDIR/CD1/$DIR/$filepath" || true
 					;;
 				*)
-					ln "$LIVEIMAGES/$origfilename" "$BDIR/CD1/$DIR/$filename"
+					ln "$LIVEIMAGES/$origfilename" "$BDIR/CD1/$DIR/$filepath"
 					;;
 			esac
 		done
