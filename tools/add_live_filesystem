@@ -26,6 +26,10 @@ elif [ -e "$LIVEIMAGES/$FULLARCH.squashfs" ]; then
 		mkdir -p "$BDIR/CD1/$DIR/maas/"
 		ln "$LIVEIMAGES/$FULLARCH.maas-region.squashfs" "$BDIR/CD1/$DIR/maas/maas-region.squashfs"
 	fi
+	if [ -e "$LIVEIMAGES/$FULLARCH.modules.squashfs" ]; then
+		mkdir -p "$BDIR/CD1/$DIR/extras/"
+		ln "$LIVEIMAGES/$FULLARCH.modules.squashfs" "$BDIR/CD1/$DIR/extras/modules.squashfs"
+	fi
 
 	if [ -e "$LIVEIMAGES/$FULLARCH.installer.squashfs" ]; then
 		ln "$LIVEIMAGES/$FULLARCH.installer.squashfs" "$BDIR/CD1/$DIR/installer.squashfs"
