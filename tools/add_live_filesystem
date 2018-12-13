@@ -10,7 +10,6 @@ fi
 mkdir -p "$BDIR/CD1/$DIR"
 if [ -e "$LIVEIMAGES/$FULLARCH.cloop" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.cloop" "$BDIR/CD1/$DIR/filesystem.cloop"
-<<<<<<< TREE
 elif [ -n "$(ls $LIVEIMAGES/$FULLARCH*.squashfs 2>/dev/null)" ]; then
 	for ext in squashfs squashfs.gpg squashfs-generic size manifest; do
 		for origfilename in $(ls $LIVEIMAGES/$FULLARCH*.$ext 2>/dev/null); do
@@ -42,38 +41,6 @@ elif [ -n "$(ls $LIVEIMAGES/$FULLARCH*.squashfs 2>/dev/null)" ]; then
 			esac
 		done
 	done
-=======
-elif [ -e "$LIVEIMAGES/$FULLARCH.squashfs" ]; then
-	ln "$LIVEIMAGES/$FULLARCH.squashfs" "$BDIR/CD1/$DIR/filesystem.squashfs"
-	if [ -e "$LIVEIMAGES/$FULLARCH.size" ]; then
-		ln "$LIVEIMAGES/$FULLARCH.size" "$BDIR/CD1/$DIR/filesystem.size"
-	fi
-	if [ -e "$LIVEIMAGES/$FULLARCH.squashfs.gpg" ]; then
-		ln "$LIVEIMAGES/$FULLARCH.squashfs.gpg" "$BDIR/CD1/$DIR/filesystem.squashfs.gpg"
-	fi
-	if [ -e "$LIVEIMAGES/$FULLARCH.maas-rack.squashfs" ]; then
-		mkdir -p "$BDIR/CD1/$DIR/maas/"
-		ln "$LIVEIMAGES/$FULLARCH.maas-rack.squashfs" "$BDIR/CD1/$DIR/maas/maas-rack.squashfs"
-	fi
-	if [ -e "$LIVEIMAGES/$FULLARCH.maas-region.squashfs" ]; then
-		mkdir -p "$BDIR/CD1/$DIR/maas/"
-		ln "$LIVEIMAGES/$FULLARCH.maas-region.squashfs" "$BDIR/CD1/$DIR/maas/maas-region.squashfs"
-	fi
-	if [ -e "$LIVEIMAGES/$FULLARCH.modules.squashfs-generic" ]; then
-		mkdir -p "$BDIR/CD1/$DIR/extras/"
-		ln "$LIVEIMAGES/$FULLARCH.modules.squashfs-generic" "$BDIR/CD1/$DIR/extras/modules.squashfs-generic"
-	fi
-
-	if [ -e "$LIVEIMAGES/$FULLARCH.installer.squashfs" ]; then
-		ln "$LIVEIMAGES/$FULLARCH.installer.squashfs" "$BDIR/CD1/$DIR/installer.squashfs"
-		if [ -e "$LIVEIMAGES/$FULLARCH.installer.size" ]; then
-			ln "$LIVEIMAGES/$FULLARCH.installer.size" "$BDIR/CD1/$DIR/installer.size"
-		fi
-		if [ -e "$LIVEIMAGES/$FULLARCH.installer.squashfs.gpg" ]; then
-			ln "$LIVEIMAGES/$FULLARCH.installer.squashfs.gpg" "$BDIR/CD1/$DIR/installer.squashfs.gpg"
-		fi
-	fi
->>>>>>> MERGE-SOURCE
 else
 	echo "No filesystem for $FULLARCH!" >&2
 fi
