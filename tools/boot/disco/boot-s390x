@@ -58,7 +58,8 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     CMDLINE="boot=casper --- quiet"
     mv $CDDIR/casper/filesystem.initrd-generic $imagedir/initrd.ubuntu
     mv $CDDIR/casper/filesystem.kernel-generic $imagedir/kernel.ubuntu
-    perl -e "print pack('N', -s '$imagedir/kernel.ubuntu')" > $imagedir/initrd.siz
+    echo "$CMDLINE" > $imagedir/parmfile.ubuntu
+    perl -e "print pack('N', -s '$imagedir/initrd.ubuntu')" > $imagedir/initrd.siz
 else
     CMDLINE="''"
 fi
