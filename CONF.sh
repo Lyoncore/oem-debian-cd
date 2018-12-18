@@ -276,6 +276,7 @@ case $DIST in
     export CODENAME=bionic
     export CAPCODENAME='Bionic Beaver'
     export DEBVERSION="18.04.2 LTS"
+    export BACKPORT_KERNEL="hwe-18.04"
     export OFFICIAL="Beta"
     ;;
   cosmic)
