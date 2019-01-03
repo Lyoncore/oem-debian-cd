@@ -77,7 +77,12 @@ if [ "$CDIMAGE_LIVE" ]; then
 		mkdir -p "$BDIR/uuid"
 		cd "$BDIR/uuid"
 		# This can be replaced with a call to the system unmkinitramfs later:
-		/home/cdimage/unmkinitramfs $path .
+		# FIXME: refine the call path to be more generic
+		if [ ! -f /usr/bin/unmkinitramfs ]; then
+			echo "/usr/bin/unmkinitramfs not found!"
+		else
+			/usr/bin/unmkinitramfs $path .
+		fi
 		if [ -e conf/uuid.conf ]; then
 			mkdir -p "$BDIR/CD1/.disk"
 			mv conf/uuid.conf "$BDIR/CD1/.disk/casper-uuid-${path#$BDIR/CD1/casper/filesystem.initrd-}"
