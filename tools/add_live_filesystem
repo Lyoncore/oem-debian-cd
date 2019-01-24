@@ -20,16 +20,18 @@ elif [ -n "$(ls $LIVEIMAGES/$FULLARCH*.squashfs 2>/dev/null)" ]; then
 			fi
 
 			# Copy in squashfs corresponding subdirectory for multi-layer with sublayers system
-			filepath=$(echo $filename|tr '_' '/')
 			case $filename in
 				maas*)
-					filepath=maas/$filepath
+					filepath="maas/$filename"
 					;;
 				*.squashfs-generic)
-					filepath=extras/$filepath
+					filepath="extras/$filename"
+					;;
+				*)
+					filepath="$filename"
 					;;
 			esac
-			mkdir -p $BDIR/CD1/$DIR/$(dirname $filepath)
+			mkdir -p $BDIR/CD1/$DIR/$(dirname "$filepath")
 
 			case $filename in
 				*.manifest)
