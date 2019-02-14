@@ -70,6 +70,7 @@ KTYPE[10]=""
 THISTYPE=${KTYPE[$NN]}
 
 PREFIX_PRESEED="$(dirname "$DEFAULT_PRESEED")/"
+PREFIX_CASPER="casper/"
 PREFIX_GA=""
 PREFIX_HWE=""
 KERNEL_PREFIXES="PREFIX_GA"
@@ -154,13 +155,23 @@ if [ "$NN" = "1" ]; then
 	if [ -e "$CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed" ]; then
 	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed $CDDIR/casper/vmlinuz.efi
 	    rm -f $CDDIR/casper/filesystem.kernel-$FLAVOUR
+	    if [ -e "$CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe.efi.signed" ]; then
+	        mv $CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe.efi.signed $CDDIR/casper/hwe-vmlinuz.efi
+	        rm -f $CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe
+	    fi
 	    CASPER_KERNEL=/casper/vmlinuz.efi
 	else
 	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
+	    if [ -e "$CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe" ]; then
+	        mv $CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe $CDDIR/casper/hwe-vmlinuz
+	    fi
 	    CASPER_KERNEL=/casper/vmlinuz
 	fi
 	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
 	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
+	if [ -e "$CDDIR/casper/filesystem.initrd-${FLAVOUR}-hwe" ]; then
+	    mv $CDDIR/casper/filesystem.initrd-${FLAVOUR}-hwe "$CDDIR${CASPER_INITRD/$PREFIX_CASPER/${PREFIX_CASPER}hwe-}"
+	fi
     fi
     echo -n "-cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table " >> $N.mkisofs_opts
     case "$MKISOFS" in
@@ -430,19 +441,21 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 	livelabel="^Try $HUMANPROJECT without installing"
 	liveparams=
     fi
+    for kp in $KERNEL_PREFIXES; do
     cat >> boot$N/isolinux/txt.cfg <<EOF
-label live
-  menu label $livelabel
-  kernel $CASPER_KERNEL
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=$CASPER_INITRD $QUIET $SPLASH ---
+label ${!kp}live
+  menu label $livelabel${!kp:+ with the HWE kernel}
+  kernel ${CASPER_KERNEL/$PREFIX_CASPER/$PREFIX_CASPER${!kp}}
+  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams initrd=${CASPER_INITRD/$PREFIX_CASPER/$PREFIX_CASPER${!kp}} $QUIET $SPLASH ---
 EOF
-    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams $QUIET $SPLASH ---
-	initrd	$CASPER_INITRD
+	linux	${CASPER_KERNEL/$PREFIX_CASPER/$PREFIX_CASPER${!kp}} $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams $QUIET $SPLASH ---
+	initrd	${CASPER_INITRD/$PREFIX_CASPER/$PREFIX_CASPER${!kp}}
 }
 EOF
+    done
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep

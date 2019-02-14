@@ -30,6 +30,10 @@ elif [ -e "$LIVEIMAGES/$FULLARCH.squashfs" ]; then
 		mkdir -p "$BDIR/CD1/$DIR/extras/"
 		ln "$LIVEIMAGES/$FULLARCH.modules.squashfs-generic" "$BDIR/CD1/$DIR/extras/modules.squashfs-generic"
 	fi
+	if [ -e "$LIVEIMAGES/$FULLARCH.modules.squashfs-generic-hwe" ]; then
+		mkdir -p "$BDIR/CD1/$DIR/extras/"
+		ln "$LIVEIMAGES/$FULLARCH.modules.squashfs-generic-hwe" "$BDIR/CD1/$DIR/extras/modules.squashfs-generic-hwe"
+	fi
 
 	if [ -e "$LIVEIMAGES/$FULLARCH.installer.squashfs" ]; then
 		ln "$LIVEIMAGES/$FULLARCH.installer.squashfs" "$BDIR/CD1/$DIR/installer.squashfs"
