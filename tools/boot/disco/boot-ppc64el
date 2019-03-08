@@ -94,6 +94,10 @@ for kp in $KERNEL_PREFIXES; do
   cp -lf "$DI_DIR/${!kp}cdrom/initrd.gz" "$CDDIR/install/${!kp}initrd.gz"
 done
 fi
+if [ "$CDIMAGE_LIVE" = 1 ]; then
+  mv $CDDIR/casper/filesystem.kernel-generic $CDDIR/casper/vmlinux
+  mv $CDDIR/casper/filesystem.initrd-generic $CDDIR/casper/initrd.gz
+fi
 
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
     for tar in $TAR_IMAGES; do
@@ -120,6 +124,15 @@ EOF
 fi
 
 for kp in $KERNEL_PREFIXES; do
+  if [ "$CDIMAGE_LIVE" = 1 ]; then
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "Install $HUMANPROJECT${!kp:+ (HWE)}" {
+	set gfxpayload=keep
+	linux	/casper/${!kp}vmlinux $KERNEL_PARAMS boot=casper quiet ---
+	initrd	/casper/${!kp}initrd.gz
+}
+EOF
+  fi
   if [ "$CDIMAGE_INSTALL" = 1 ]; then
     cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT${!kp:+ (HWE)}" {
