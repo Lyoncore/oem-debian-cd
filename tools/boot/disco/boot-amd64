@@ -151,14 +151,8 @@ if [ "$NN" = "1" ]; then
     done
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
-	if [ -e "$CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed" ]; then
-	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed $CDDIR/casper/vmlinuz.efi
-	    rm -f $CDDIR/casper/filesystem.kernel-$FLAVOUR
-	    CASPER_KERNEL=/casper/vmlinuz.efi
-	else
-	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
-	    CASPER_KERNEL=/casper/vmlinuz
-	fi
+	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
+	CASPER_KERNEL=/casper/vmlinuz
 	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
 	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
     fi

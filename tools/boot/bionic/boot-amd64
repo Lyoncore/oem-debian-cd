@@ -152,21 +152,11 @@ if [ "$NN" = "1" ]; then
     done
     fi
     if [ "$CDIMAGE_LIVE" = 1 ]; then
-	if [ -e "$CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed" ]; then
-	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR.efi.signed $CDDIR/casper/vmlinuz.efi
-	    rm -f $CDDIR/casper/filesystem.kernel-$FLAVOUR
-	    if [ -e "$CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe.efi.signed" ]; then
-	        mv $CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe.efi.signed $CDDIR/casper/hwe-vmlinuz.efi
-	        rm -f $CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe
-	    fi
-	    CASPER_KERNEL=/casper/vmlinuz.efi
-	else
-	    mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
-	    if [ -e "$CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe" ]; then
-	        mv $CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe $CDDIR/casper/hwe-vmlinuz
-	    fi
-	    CASPER_KERNEL=/casper/vmlinuz
+	mv $CDDIR/casper/filesystem.kernel-$FLAVOUR $CDDIR/casper/vmlinuz
+	if [ -e "$CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe" ]; then
+	    mv $CDDIR/casper/filesystem.kernel-${FLAVOUR}-hwe $CDDIR/casper/hwe-vmlinuz
 	fi
+	CASPER_KERNEL=/casper/vmlinuz
 	CASPER_INITRD="/casper/initrd$(initrd_suffix "$CDDIR/casper/filesystem.initrd-$FLAVOUR")"
 	mv $CDDIR/casper/filesystem.initrd-$FLAVOUR "$CDDIR$CASPER_INITRD"
 	if [ -e "$CDDIR/casper/filesystem.initrd-${FLAVOUR}-hwe" ]; then
