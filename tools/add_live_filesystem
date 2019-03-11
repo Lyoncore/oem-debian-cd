@@ -86,13 +86,8 @@ if [ "$CDIMAGE_LIVE" ]; then
 		[ -e "$path" ] || continue
 		mkdir -p "$BDIR/uuid"
 		cd "$BDIR/uuid"
-		UNMKINITRAMFSBIN=unmkinitramfs		
-		# Support for multipart initrd has added to initramfs-tools 0.131 available on Cosmic+
-		# On older systems use a local version of unmkinitramfs
-		if dpkg --compare-versions "$(dpkg-query -W -f '${Version}' initramfs-tools)" lt "0.131"; then
-			UNMKINITRAMFSBIN=/home/cdimage/unmkinitramfs
-		fi
-		$UNMKINITRAMFSBIN $path .		
+		# This can be replaced with a call to the system unmkinitramfs later:
+		/home/cdimage/unmkinitramfs $path .
 		if [ -e conf/uuid.conf ]; then
 			mkdir -p "$BDIR/CD1/.disk"
 			mv conf/uuid.conf "$BDIR/CD1/.disk/casper-uuid-${path#$BDIR/CD1/casper/filesystem.initrd-}"
