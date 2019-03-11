@@ -31,16 +31,9 @@ elif [ -n "$(ls $LIVEIMAGES/$FULLARCH*.squashfs 2>/dev/null)" ]; then
 					filepath="$filename"
 					;;
 			esac
-			mkdir -p $BDIR/CD1/$DIR/$(dirname "$filepath")
 
-			case $filename in
-				*.manifest)
-					ln "$LIVEIMAGES/$origfilename" "$BDIR/CD1/$DIR/$filepath" || true
-					;;
-				*)
-					ln "$LIVEIMAGES/$origfilename" "$BDIR/CD1/$DIR/$filepath"
-					;;
-			esac
+			mkdir -p $BDIR/CD1/$DIR/$(dirname "$filepath")
+			ln "$LIVEIMAGES/$origfilename" "$BDIR/CD1/$DIR/$filepath"
 		done
 	done
 else
