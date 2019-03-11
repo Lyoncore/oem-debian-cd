@@ -11,7 +11,7 @@ mkdir -p "$BDIR/CD1/$DIR"
 if [ -e "$LIVEIMAGES/$FULLARCH.cloop" ]; then
 	ln "$LIVEIMAGES/$FULLARCH.cloop" "$BDIR/CD1/$DIR/filesystem.cloop"
 elif [ -n "$(ls $LIVEIMAGES/$FULLARCH*.squashfs 2>/dev/null)" ]; then
-	for ext in squashfs squashfs.gpg squashfs-generic squashfs-generic-hwe size manifest; do
+	for ext in squashfs squashfs.gpg modules.squashfs-generic modules.squashfs-generic-hwe size manifest; do
 		for origfilename in $(ls $LIVEIMAGES/$FULLARCH*.$ext 2>/dev/null); do
 			origfilename="$(basename ${origfilename})"
 			filename=${origfilename#$FULLARCH.}
