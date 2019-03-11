@@ -159,14 +159,14 @@ add_mkisofs_opt() {
    fi
 }
 
-# for multi-layer iamges, add a kernel command line option to set layerfs-path
+# for multi-layer images, add a kernel command line option to set layerfs-path
 # and select the leaf filesystem to determine the list of layers to merge in
 # an overlay and boot from.
 add_layerfs_path_opt() {
     case $PROJECT in
 	ubuntu)
 		if [ "$SUBPROJECT" = "canary" ]; then
-	    	echo 'layerfs-path=minimal.standard.live.squashfs'
+	    	echo ' layerfs-path=minimal.standard.live.squashfs'
 			return
 		fi
 	    ;;
