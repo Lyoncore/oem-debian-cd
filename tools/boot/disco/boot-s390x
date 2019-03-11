@@ -53,9 +53,11 @@ cp -lf "$DI_DIR/generic/kernel.ubuntu" $imagedir
 cp -lf "$DI_DIR/generic/initrd.off" $imagedir
 cp -lf "$DI_DIR/generic/initrd.siz" $imagedir
 
+LAYERFS_PATH_OPT=$(add_layerfs_path_opt)
+
 # For server-live images, use casper's initrd and kernel instead
 if [ "$CDIMAGE_LIVE" = 1 ]; then
-    CMDLINE="boot=casper --- quiet"
+    CMDLINE="boot=casper $LAYERFS_PATH_OPT --- quiet"
     mv $CDDIR/casper/filesystem.initrd-generic $imagedir/initrd.ubuntu
     mv $CDDIR/casper/filesystem.kernel-generic $imagedir/kernel.ubuntu
     echo "$CMDLINE" > $imagedir/parmfile.ubuntu
