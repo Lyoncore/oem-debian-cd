@@ -453,10 +453,24 @@ menuentry "${livelabel#^}" {
 	initrd	$CASPER_INITRD
 }
 EOF
+    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "${livelabel#^} in safe graphics mode" {
+	set gfxpayload=keep
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams $QUIET $SPLASH nomodeset ---
+	initrd	$CASPER_INITRD
+}
+EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep
 	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=\${iso_path} $QUIET $SPLASH ---
+	initrd	$CASPER_INITRD
+}
+EOF
+    cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
+menuentry "${livelabel#^} in safe graphics mode" {
+	set gfxpayload=keep
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams iso-scan/filename=\${iso_path} $QUIET $SPLASH nomodeset  ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -474,9 +488,22 @@ menuentry "Install $HUMANPROJECT" {
 	initrd	$CASPER_INITRD
 }
 EOF
+	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Install $HUMANPROJECT in safe graphics mode" {
+	set gfxpayload=keep
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity $QUIET $SPLASH nomodeset ---
+	initrd	$CASPER_INITRD
+}
+EOF
 	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
 	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=\${iso_path} $QUIET $SPLASH ---
+	initrd	$CASPER_INITRD
+}
+EOF
+	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
+menuentry "Install $HUMANPROJECT in safe graphics mode" {
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper only-ubiquity iso-scan/filename=\${iso_path} $QUIET $SPLASH nomodeset ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -557,6 +584,13 @@ EOF
 menuentry "OEM install (for manufacturers)" {
 	set gfxpayload=keep
 	linux	$CASPER_KERNEL $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} boot=casper only-ubiquity quiet splash oem-config/enable=true ---
+	initrd	$CASPER_INITRD
+}
+EOF
+    cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
+menuentry "OEM install (for manufacturers) in safe graphics mode" {
+	set gfxpayload=keep
+	linux	$CASPER_KERNEL $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} boot=casper only-ubiquity quiet splash oem-config/enable=true nomodeset ---
 	initrd	$CASPER_INITRD
 }
 EOF
