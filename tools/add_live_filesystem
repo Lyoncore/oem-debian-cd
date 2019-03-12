@@ -13,6 +13,10 @@ if [ -e "$LIVEIMAGES/$FULLARCH.cloop" ]; then
 elif [ -n "$(ls $LIVEIMAGES/$FULLARCH*.squashfs 2>/dev/null)" ]; then
 	for ext in squashfs squashfs.gpg modules.squashfs-generic modules.squashfs-generic-hwe size manifest; do
 		for origfilename in $(ls $LIVEIMAGES/$FULLARCH*.$ext 2>/dev/null); do
+			# Strip fullarch from file basename and optionally prepend "filesystem."
+			# For instance:
+			# <arch>.filename.<ext> -> filename.<ext>
+			# <arch>.<ext> -> filesystem.<ext>
 			origfilename="$(basename ${origfilename})"
 			filename=${origfilename#$FULLARCH.}
 			if [ "$filename" = "$ext" ]; then
@@ -24,7 +28,7 @@ elif [ -n "$(ls $LIVEIMAGES/$FULLARCH*.squashfs 2>/dev/null)" ]; then
 				maas*)
 					filepath="maas/$filename"
 					;;
-				*.squashfs-generic*)
+				*.modules.squashfs-*)
 					filepath="extras/$filename"
 					;;
 				*)
