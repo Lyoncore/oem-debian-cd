@@ -29,7 +29,8 @@ elif [ -n "$(ls $LIVEIMAGES/$FULLARCH*.squashfs 2>/dev/null)" ]; then
 					filepath="maas/$filename"
 					;;
 				*.modules.squashfs-*)
-					filepath="extras/$filename"
+					# Actually, do not prefix modules, initrd expects this name
+					filepath="extras/${filename#filesystem.}"
 					;;
 				*)
 					filepath="$filename"
