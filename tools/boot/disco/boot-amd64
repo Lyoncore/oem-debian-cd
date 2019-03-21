@@ -299,6 +299,7 @@ sed -i 's|%install%|install|' boot$N/isolinux/*.cfg
 mkdir -p $CDDIR/EFI/BOOT
 mcopy -i boot$N/isolinux/grub/efi.img ::EFI/BOOT/BOOTx64.EFI $CDDIR/EFI/BOOT/BOOTx64.EFI
 mcopy -i boot$N/isolinux/grub/efi.img ::EFI/BOOT/grubx64.efi $CDDIR/EFI/BOOT/grubx64.efi
+mcopy -i boot$N/isolinux/grub/efi.img ::EFI/BOOT/mmx64.efi $CDDIR/EFI/BOOT/mmx64.efi
 mkdir -p $CDDIR/boot/grub
 mv boot$N/isolinux/grub/* $CDDIR/boot/grub/
 rmdir boot$N/isolinux/grub
