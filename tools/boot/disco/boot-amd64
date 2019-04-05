@@ -449,13 +449,17 @@ label live
   kernel $CASPER_KERNEL
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams$LAYERFS_PATH_OPT initrd=$CASPER_INITRD $QUIET $SPLASH ---
 EOF
+for variant in "" " (safe graphics)^ nomodeset"; do
+    suffix="${variant%^*}"
+    extra_kopt="${variant#*^}"
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
-menuentry "${livelabel#^}" {
+menuentry "${livelabel#^}${suffix}" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams$LAYERFS_PATH_OPT $QUIET $SPLASH ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams$LAYERFS_PATH_OPT $QUIET $SPLASH$extra_kopt ---
 	initrd	$CASPER_INITRD
 }
 EOF
+done
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep
@@ -470,13 +474,17 @@ label live-install
   kernel $CASPER_KERNEL
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity initrd=$CASPER_INITRD $QUIET $SPLASH ---
 EOF
-	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
-menuentry "Install $HUMANPROJECT" {
+	for variant in "" " (safe graphics)^ nomodeset"; do
+	    suffix="${variant%^*}"
+	    extra_kopt="${variant#*^}"
+	    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
+menuentry "Install $HUMANPROJECT${suffix}" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity $QUIET $SPLASH ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity $QUIET $SPLASH$extra_kopt ---
 	initrd	$CASPER_INITRD
 }
 EOF
+	done
 	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
 	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity iso-scan/filename=\${iso_path} $QUIET $SPLASH ---
