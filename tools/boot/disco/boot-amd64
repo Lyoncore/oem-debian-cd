@@ -449,9 +449,8 @@ label live
   kernel $CASPER_KERNEL
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams$LAYERFS_PATH_OPT initrd=$CASPER_INITRD $QUIET $SPLASH ---
 EOF
-for variant in "" "(safe graphics)^ nomodeset"; do
+for variant in "" " (safe graphics)^ nomodeset"; do
     suffix="${variant%^*}"
-    suffix="${suffix:+ $suffix}"
     extra_kopt="${variant#*^}"
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "${livelabel#^}${suffix}" {
@@ -475,9 +474,8 @@ label live-install
   kernel $CASPER_KERNEL
   append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity initrd=$CASPER_INITRD $QUIET $SPLASH ---
 EOF
-	for variant in "" "(safe graphics)^ nomodeset"; do
+	for variant in "" " (safe graphics)^ nomodeset"; do
 	    suffix="${variant%^*}"
-	    suffix="${suffix:+ $suffix}"
 	    extra_kopt="${variant#*^}"
 	    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT${suffix}" {
