@@ -291,7 +291,7 @@ case $DIST in
     export CODENAME=disco
     export CAPCODENAME='Disco Dingo'
     export DEBVERSION="19.04"
-    export OFFICIAL="Alpha"
+    export OFFICIAL="Release"
     ;;
 esac
 
