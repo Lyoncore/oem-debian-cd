@@ -293,6 +293,13 @@ case $DIST in
     export DEBVERSION="19.04"
     export OFFICIAL="Release"
     ;;
+  eoan)
+    export PREV_CODENAME=disco
+    export CODENAME=eoan
+    export CAPCODENAME='Eoan EANIMAL'
+    export DEBVERSION="19.10"
+    export OFFICIAL="Alpha"
+    ;;
 esac
 
 # By default use Debian installer packages from $CODENAME
