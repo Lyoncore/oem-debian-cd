@@ -128,7 +128,7 @@ for kp in $KERNEL_PREFIXES; do
     cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT${!kp:+ (HWE)}" {
 	set gfxpayload=keep
-	linux	/casper/${!kp}vmlinux $KERNEL_PARAMS boot=casper quiet ---
+	linux	/casper/${!kp}vmlinux $KERNEL_PARAMS quiet ---
 	initrd	/casper/${!kp}initrd.gz
 }
 EOF

@@ -176,14 +176,14 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams$LAYERFS_PATH_OPT quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED $liveparams$LAYERFS_PATH_OPT quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams$LAYERFS_PATH_OPT iso-scan/filename=\${iso_path} quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED $liveparams$LAYERFS_PATH_OPT iso-scan/filename=\${iso_path} quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -191,13 +191,13 @@ EOF
 	cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED $LAYERFS_PATH_OPT only-ubiquity quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF
 	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity iso-scan/filename=\${iso_path} quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED $LAYERFS_PATH_OPT only-ubiquity iso-scan/filename=\${iso_path} quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -232,7 +232,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "OEM install (for manufacturers)" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity quiet splash oem-config/enable=true ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED $LAYERFS_PATH_OPT only-ubiquity quiet splash oem-config/enable=true ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -270,13 +270,13 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Check disc for defects" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS boot=casper$LAYERFS_PATH_OPT integrity-check quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $LAYERFS_PATH_OPT integrity-check quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Check disc for defects" {
-	linux	$CASPER_KERNEL $KERNEL_PARAMS boot=casper$LAYERFS_PATH_OPT integrity-check iso-scan/filename=\${iso_path} quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $LAYERFS_PATH_OPT integrity-check iso-scan/filename=\${iso_path} quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF

@@ -447,7 +447,7 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 label live
   menu label $livelabel
   kernel $CASPER_KERNEL
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams$LAYERFS_PATH_OPT initrd=$CASPER_INITRD $QUIET $SPLASH ---
+  append $KERNEL_PARAMS $DEFAULT_PRESEED $liveparams$LAYERFS_PATH_OPT initrd=$CASPER_INITRD $QUIET $SPLASH ---
 EOF
 for variant in "" " (safe graphics)^ nomodeset"; do
     suffix="${variant%^*}"
@@ -455,7 +455,7 @@ for variant in "" " (safe graphics)^ nomodeset"; do
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "${livelabel#^}${suffix}" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams$LAYERFS_PATH_OPT $QUIET $SPLASH$extra_kopt ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED $liveparams$LAYERFS_PATH_OPT $QUIET $SPLASH$extra_kopt ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -463,7 +463,7 @@ done
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "${livelabel#^}" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$liveparams$LAYERFS_PATH_OPT iso-scan/filename=\${iso_path} $QUIET $SPLASH ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED $liveparams$LAYERFS_PATH_OPT iso-scan/filename=\${iso_path} $QUIET $SPLASH ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -472,7 +472,7 @@ EOF
 label live-install
   menu label ^Install $HUMANPROJECT
   kernel $CASPER_KERNEL
-  append $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity initrd=$CASPER_INITRD $QUIET $SPLASH ---
+  append $KERNEL_PARAMS $DEFAULT_PRESEED $LAYERFS_PATH_OPT only-ubiquity initrd=$CASPER_INITRD $QUIET $SPLASH ---
 EOF
 	for variant in "" " (safe graphics)^ nomodeset"; do
 	    suffix="${variant%^*}"
@@ -480,14 +480,14 @@ EOF
 	    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT${suffix}" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity $QUIET $SPLASH$extra_kopt ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED $LAYERFS_PATH_OPT only-ubiquity $QUIET $SPLASH$extra_kopt ---
 	initrd	$CASPER_INITRD
 }
 EOF
 	done
 	cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Install $HUMANPROJECT" {
-	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED boot=casper$LAYERFS_PATH_OPT only-ubiquity iso-scan/filename=\${iso_path} $QUIET $SPLASH ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $DEFAULT_PRESEED $LAYERFS_PATH_OPT only-ubiquity iso-scan/filename=\${iso_path} $QUIET $SPLASH ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -567,7 +567,7 @@ EOF
     cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "OEM install (for manufacturers)" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} boot=casper$LAYERFS_PATH_OPT only-ubiquity quiet splash oem-config/enable=true ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS ${DEFAULT_PRESEED/$PREFIX_PRESEED/$PREFIX_PRESEED${!kp}} $LAYERFS_PATH_OPT only-ubiquity quiet splash oem-config/enable=true ---
 	initrd	$CASPER_INITRD
 }
 EOF
@@ -651,18 +651,18 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 label check
   menu label ^Check disc for defects
   kernel $CASPER_KERNEL
-  append $KERNEL_PARAMS boot=casper$LAYERFS_PATH_OPT integrity-check initrd=$CASPER_INITRD quiet splash ---
+  append $KERNEL_PARAMS $LAYERFS_PATH_OPT integrity-check initrd=$CASPER_INITRD quiet splash ---
 EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Check disc for defects" {
 	set gfxpayload=keep
-	linux	$CASPER_KERNEL $KERNEL_PARAMS boot=casper$LAYERFS_PATH_OPT integrity-check quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $LAYERFS_PATH_OPT integrity-check quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF
     cat >> $CDDIR/boot/grub/loopback.cfg <<EOF
 menuentry "Check disc for defects" {
-	linux	$CASPER_KERNEL $KERNEL_PARAMS boot=casper$LAYERFS_PATH_OPT integrity-check iso-scan/filename=\${iso_path} quiet splash ---
+	linux	$CASPER_KERNEL $KERNEL_PARAMS $LAYERFS_PATH_OPT integrity-check iso-scan/filename=\${iso_path} quiet splash ---
 	initrd	$CASPER_INITRD
 }
 EOF
