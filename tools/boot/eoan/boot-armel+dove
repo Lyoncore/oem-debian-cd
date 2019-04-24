@@ -120,7 +120,7 @@ if [ "$NN" = "1" ]; then
 	uboot_input_initrd="$CDDIR/casper/filesystem.initrd-$FLAVOUR"
 	uboot_kernel="/casper/uImage"
 	uboot_initrd="/casper/uInitrd"
-	uboot_extra_cmdline=" --- boot=casper"
+	uboot_extra_cmdline=" --- "
     fi
 
     if [ "$do_uboot" ]; then
