@@ -296,7 +296,7 @@ case $DIST in
   eoan)
     export PREV_CODENAME=disco
     export CODENAME=eoan
-    export CAPCODENAME='Eoan EANIMAL'
+    export CAPCODENAME='Eoan Ermine'
     export DEBVERSION="19.10"
     export OFFICIAL="Alpha"
     ;;
