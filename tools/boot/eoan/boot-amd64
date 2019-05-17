@@ -443,15 +443,15 @@ if [ "$CDIMAGE_LIVE" = 1 ]; then
 
     LAYERFS_PATH_OPT=$(add_layerfs_path_opt)
 
-    cat >> boot$N/isolinux/txt.cfg <<EOF
-label live
-  menu label $livelabel
-  kernel $CASPER_KERNEL
-  append $KERNEL_PARAMS $DEFAULT_PRESEED$liveparams$LAYERFS_PATH_OPT initrd=$CASPER_INITRD $QUIET $SPLASH ---
-EOF
 for variant in "" " (safe graphics)^ nomodeset"; do
     suffix="${variant%^*}"
     extra_kopt="${variant#*^}"
+    cat >> boot$N/isolinux/txt.cfg <<EOF
+label live$(echo "${extra_kopt}"|tr ' ' '-')
+  menu label ${livelabel}${suffix}
+  kernel $CASPER_KERNEL
+  append $KERNEL_PARAMS $DEFAULT_PRESEED$liveparams$LAYERFS_PATH_OPT initrd=$CASPER_INITRD $QUIET $SPLASH$extra_kopt ---
+EOF
     cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "${livelabel#^}${suffix}" {
 	set gfxpayload=keep
@@ -468,15 +468,15 @@ menuentry "${livelabel#^}" {
 }
 EOF
     if [ "$NOTRYONLYDO" != "true" ]; then
-	cat >> boot$N/isolinux/txt.cfg <<EOF
-label live-install
-  menu label ^Install $HUMANPROJECT
-  kernel $CASPER_KERNEL
-  append $KERNEL_PARAMS $DEFAULT_PRESEED$LAYERFS_PATH_OPT only-ubiquity initrd=$CASPER_INITRD $QUIET $SPLASH ---
-EOF
 	for variant in "" " (safe graphics)^ nomodeset"; do
 	    suffix="${variant%^*}"
 	    extra_kopt="${variant#*^}"
+	    cat >> boot$N/isolinux/txt.cfg <<EOF
+label live-install$(echo "${extra_kopt}"|tr ' ' '-')
+  menu label ^Install $HUMANPROJECT${suffix}
+  kernel $CASPER_KERNEL
+  append $KERNEL_PARAMS $DEFAULT_PRESEED$LAYERFS_PATH_OPT only-ubiquity initrd=$CASPER_INITRD $QUIET $SPLASH$extra_kopt ---
+EOF
 	    cat >> $CDDIR/boot/grub/grub.cfg <<EOF
 menuentry "Install $HUMANPROJECT${suffix}" {
 	set gfxpayload=keep
@@ -495,7 +495,7 @@ EOF
     cat >> boot$N/isolinux/gfxboot.cfg <<EOF
 label driverupdates=Use driver update disc
 append driverupdates=debian-installer/driver-update=true
-applies driverupdates=live live-install
+applies driverupdates=live live-install live-nomodeset live-install-nomodeset
 EOF
 fi
 if [ "$CDIMAGE_INSTALL" = 1 ]; then
@@ -562,7 +562,7 @@ append ${!kp}oem=oem-config/enable=true
 EOF
 if [ "$CDIMAGE_LIVE" = 1 ]; then
     cat >> boot$N/isolinux/${!kp}gfxboot.cfg <<EOF
-applies ${!kp}oem=live live-install install
+applies ${!kp}oem=live live-install install live-nomodeset live-install-nomodeset
 EOF
     cat >> $CDDIR/boot/grub/${!kp}grub.cfg <<EOF
 menuentry "OEM install (for manufacturers)" {
